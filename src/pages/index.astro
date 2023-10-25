@@ -1,5 +1,6 @@
 ---
 import Banner from "../components/solid/Banner.tsx";
+import MobileNav from "../components/solid/MobileNav.tsx";
 ---
 
 <html lang="en">
@@ -11,7 +12,8 @@ import Banner from "../components/solid/Banner.tsx";
     <title>Goodpluck</title>
   </head>
   <body>
-    <Banner client:visible />
+    <Banner client:load />
+    <MobileNav client:load />
     <h1>Homepage</h1>
   </body>
 </html>
