@@ -1,7 +1,8 @@
-import { createSignal } from "solid-js";
+import { type Component, Show, createSignal } from "solid-js";
+import { Motion, Presence } from "@motionone/solid";
 import logo from "../../assets/logo.png";
 
-export default function MobileNav() {
+const MobileNav: Component = () => {
   const [isMenuOpen, setIsMenuOpen] = createSignal(false);
 
   return (
@@ -32,39 +33,57 @@ export default function MobileNav() {
         </svg>
         <span class="absolute top-0 right-0 p-1">1</span>
       </button>
-      {`isMenuOpen?: ${isMenuOpen()}`}
 
       {/* Sidebar Menu */}
-      {isMenuOpen() && (
-        <aside class="fixed inset-y-0 left-0 bg-gray-200 w-4/5">
-          {/* Close button */}
-          <button
-            onClick={() => setIsMenuOpen(false)}
-            class="absolute top-0 right-0 m-4 p-2 bg-white"
+      <Presence exitBeforeEnter>
+        <Show when={isMenuOpen()}>
+          <Motion.aside
+            class="fixed inset-y-0 left-0 bg-gray-200 w-4/5"
+            animate={{
+              x: 0,
+            }}
+            initial={{
+              x: -400,
+            }}
+            exit={{
+              x: -400,
+            }}
+            transition={{
+              duration: 0.5,
+              easing: "ease-in-out",
+            }}
           >
-            ✖
-          </button>
+            {/* Close button */}
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              class="absolute top-0 right-0 m-4 p-2 bg-gray-200"
+            >
+              ✖
+            </button>
 
-          {/* Content of the sidebar */}
-          <div class="p-4">
-            {/* Logo */}
-            <img src={logo.src} alt="Goodpluck" class="h-8 w-auto my-4" />
+            {/* Content of the sidebar */}
+            <div class="p-4">
+              {/* Logo */}
+              <img src={logo.src} alt="Goodpluck" class="h-8 w-auto my-4" />
 
-            {/* Menu Items */}
-            <div class="space-y-4">
-              <div>About</div>
-              <div>Recipes</div>
-              <div>Kitchen & Bar</div>
-              <div>Buy a Gift Card</div>
+              {/* Menu Items */}
+              <div class="space-y-4">
+                <div>About</div>
+                <div>Recipes</div>
+                <div>Kitchen & Bar</div>
+                <div>Buy a Gift Card</div>
+              </div>
+
+              {/* Social Links */}
+              <div class="absolute bottom-0 left-4 flex space-x-4">
+                {/* ... social icons */}
+              </div>
             </div>
-
-            {/* Social Links */}
-            <div class="absolute bottom-0 left-4 flex space-x-4">
-              {/* ... social icons */}
-            </div>
-          </div>
-        </aside>
-      )}
+          </Motion.aside>
+        </Show>
+      </Presence>
     </nav>
   );
-}
+};
+
+export default MobileNav;
