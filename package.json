@@ -1,0 +1,19 @@
+{
+  "name": "goodpluckv2",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.2.1",
+    "@astrojs/solid-js": "^3.0.2",
+    "astro": "^3.3.4",
+    "solid-js": "^1.8.3",
+    "typescript": "^5.2.2"
+  }
+}
