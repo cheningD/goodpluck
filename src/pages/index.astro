@@ -1,5 +1,7 @@
 ---
 import Banner from "../components/solid/Banner.tsx";
+import Cart from "../components/solid/Cart.tsx";
+import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
 ---
 
@@ -12,8 +14,12 @@ import MobileNav from "../components/solid/MobileNav.tsx";
     <title>Goodpluck</title>
   </head>
   <body>
-    <Banner client:load />
-    <MobileNav client:load />
-    <h1>Homepage</h1>
+    <div class="sticky top-0 h-full">
+      <Banner client:load />
+      <MobileNav client:load />
+    </div>
+    <Cart client:load />
+    <Menu client:load />
   </body>
+  <h1>Homepage</h1>
 </html>

@@ -1,6 +1,7 @@
-import { type Component, Show, createSignal } from "solid-js";
-import { Motion, Presence } from "@motionone/solid";
+import { useStore } from "@nanostores/solid";
+import { Show, type Component } from "solid-js";
 import logo from "../../assets/logo.png";
+import { isCartOpen, isMenuOpen } from "../../store.js";
 
 const HamburgerIcon = (
   <svg class="w-8 h-8" viewBox="0 0 24 24">
@@ -20,15 +21,20 @@ const XIcon = (
 );
 
 const MobileNav: Component = () => {
-  const [isMenuOpen, setIsMenuOpen] = createSignal(false);
+  // read the store value with the `useStore` hook
+  const $isCartOpen = useStore(isCartOpen);
+  const $isMenuOpen = useStore(isMenuOpen);
 
   return (
-    <div>
+    <>
       <nav class="grid grid-cols-3 items-center px-6 h-20 bg-gray-200 gap-0">
         {/* First Column: Menu Button */}
         <div class="flex space-x-4">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen())}>
-            <Show when={isMenuOpen()} fallback={HamburgerIcon}>
+          <button
+            class="block lg:hidden"
+            onClick={() => isMenuOpen.set(!$isMenuOpen())}
+          >
+            <Show when={$isMenuOpen()} fallback={HamburgerIcon}>
               {XIcon}
             </Show>
           </button>
@@ -46,7 +52,7 @@ const MobileNav: Component = () => {
 
         {/* 3rd Column: Basket Button */}
         <div class="justify-self-end pr-2 pt-1">
-          <button class="relative">
+          <button class="relative" onClick={() => isCartOpen.set(!$isCartOpen())}>
             <svg
               class="w-7 h-6"
               viewBox="0 0 24 24"
@@ -65,47 +71,7 @@ const MobileNav: Component = () => {
           </button>
         </div>
       </nav>
-      {/* Sidebar Menu */}
-      <Presence exitBeforeEnter>
-        <Show when={isMenuOpen()}>
-          <Motion.aside
-            class="fixed top-20 bottom-0 left-0 bg-gray-100 w-4/5"
-            animate={{
-              x: 0,
-            }}
-            initial={{
-              x: -600,
-            }}
-            exit={{
-              x: -600,
-            }}
-            transition={{
-              duration: 0.5,
-              easing: "ease-in-out",
-            }}
-          >
-            {/* Content of the sidebar */}
-            <div class="p-4">
-              {/* Logo */}
-              <img src={logo.src} alt="Goodpluck" class="h-8 w-auto my-4" />
-
-              {/* Menu Items */}
-              <div class="space-y-4">
-                <div>About</div>
-                <div>Recipes</div>
-                <div>Kitchen & Bar</div>
-                <div>Buy a Gift Card</div>
-              </div>
-
-              {/* Social Links */}
-              <div class="absolute bottom-0 left-4 flex space-x-4">
-                {/* ... social icons */}
-              </div>
-            </div>
-          </Motion.aside>
-        </Show>
-      </Presence>
-    </div>
+    </>
   );
 };
 
