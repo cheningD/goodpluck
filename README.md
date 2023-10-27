@@ -1,47 +1,36 @@
-# Astro Starter Kit: Minimal
+# GoodpluckV2 Frontend & Backend Repo
 
-```sh
-npm create astro@latest -- --template minimal
-```
+## Technical Overview
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+This project employs Astro, SolidJS, and Tailwind. Aim for code simplicity and easy maintainability. For an understanding of what "simple" means, watch Rich Hickey's talk on [Simple Made Easy](https://www.infoq.com/presentations/Simple-Made-Easy/). Familiarize yourself with these technologies before diving in. We rely on a headless e-commerce solution, Swell. Store data in Swell when feasible to minimize codebase complexity.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
+Run these commands from the project root: You wull need to install _pnpm_ which we use instead of yarn or npm.
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command                    | Action                                      |
+| -------------------------- | ------------------------------------------- |
+| `pnpm install`             | Installs dependencies                       |
+| `pnpm run dev`             | Starts local dev server at `localhost:4321` |
+| `pnpm run build`           | Builds production site to `./dist/`         |
+| `pnpm run preview`         | Previews build locally before deployment    |
+| `pnpm run astro ...`       | Executes Astro CLI commands                 |
+| `pnpm run astro -- --help` | Astro CLI help                              |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Deployment
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+_[Todo]_ Deployment is managed through Cloudflare Pages, with backend functions running on workers. Set up a GitHub action for automatic preview deployments on push.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Testing
 
-Any static assets, like images, can be placed in the `public/` directory.
+_[Todo]_ We use Playwright for high-level automated tests. Focus on unit testing only for modules with complex or critical logic.
 
-## 🧞 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+### Todo Sections:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Contribution Guidelines**: Outline the process for making contributions to the repo.
+- **Architecture Overview**: Briefly describe how the different parts of your project interact.
+- **Local Environment Setup**: Detailed steps on how to set up the project locally.
+- **Code Review Process**: Guidelines for code reviews to maintain code quality.
+- **Error Handling**: Best practices for error handling within the project.
