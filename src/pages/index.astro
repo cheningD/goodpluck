@@ -3,6 +3,21 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
+import { stytch } from "../lib/stytch";
+
+let loggedin = null;
+const session_token = Astro.cookies.get("gp_session_token")?.value;
+try {
+  const resp = await stytch.sessions.authenticate({
+    session_token,
+  });
+  if (resp.status_code === 200) {
+    loggedin = true;
+  }
+} catch (err) {
+  loggedin = false;
+  console.log("err", err);
+}
 ---
 
 <html lang="en">
@@ -22,4 +37,5 @@ import MobileNav from "../components/solid/MobileNav.tsx";
     <Menu client:load />
   </body>
   <h1>Homepage</h1>
+  <p>Logged in: {JSON.stringify(loggedin)}</p>
 </html>
