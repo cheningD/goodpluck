@@ -5,7 +5,7 @@ let message = "";
 const session_token = Astro.cookies.get("gp_session_token")?.value;
 if (session_token) {
   try {
-    const resp = await stytch.sessions.revoke({ session_token });
+    await stytch.sessions.revoke({ session_token });
     message = `You have logged out`;
   } catch (e) {
     message = "You are not logged in";

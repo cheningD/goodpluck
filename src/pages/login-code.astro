@@ -17,17 +17,19 @@ if (Astro.request.method === "POST") {
     const code = data.get("otp-input")?.toString();
 
     const url = new URL(Astro.request.url);
-    const methodId = url.searchParams.get("method_id");
+    const method_id = url.searchParams.get("method_id");
 
     // Validate email
     if (!code || !/^[0-9]+$/.test(code)) {
       errors.code = `Code is not valid: ${code}`;
+    } else if (!method_id) {
+      errors.code = `Method ID is not valid`;
     } else {
       // Make stytch API call and handle errors within the same try-catch block
       try {
         const resp = await stytch.otps.authenticate({
           code,
-          methodId,
+          method_id,
           session_duration_minutes,
         });
 
