@@ -32,6 +32,9 @@ dependencies:
   solid-js:
     specifier: ^1.8.3
     version: 1.8.3
+  stytch:
+    specifier: ^9.0.6
+    version: 9.0.6
   tailwindcss:
     specifier: ^3.0.24
     version: 3.3.4
@@ -2621,6 +2624,10 @@ packages:
     hasBin: true
     dev: false
 
+  /jose@4.15.4:
+    resolution: {integrity: sha512-W+oqK4H+r5sITxfxpSU+MMdr/YSWGvgZMQDIsNoBDGGy4i7GBPTtvFKibQzW06n3U3TqHjhvBJsirShsEJ6eeQ==}
+    dev: false
+
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
     dev: false
@@ -4156,6 +4163,14 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /stytch@9.0.6:
+    resolution: {integrity: sha512-bNeb5RXf4ZeKoHTUk+3fb7RtQ3ZpcrbY25TkY1sPVPUqtTU4kVAgwC15AGXiIqW24Af4C1YRKFRw2WHWFhhnRg==}
+    engines: {node: '>= 18.0.0'}
+    dependencies:
+      jose: 4.15.4
+      undici: 5.27.2
+    dev: false
 
   /sucrase@3.34.0:
     resolution: {integrity: sha512-70/LQEZ07TEcxiU2dz51FKaE6hCTWC6vr7FOk3Gr0U60C3shtAN+H+BFr9XlYe5xqf3RA8nrc+VIwzCfnxuXJw==}
