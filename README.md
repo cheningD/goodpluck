@@ -19,18 +19,12 @@ Run these commands from the project root: You wull need to install _pnpm_ which 
 
 ## Deployment
 
-_[Todo]_ Deployment is managed through Cloudflare Pages, with backend functions running on workers. Set up a GitHub action for automatic preview deployments on push.
+Cloudflare automatically deploys each commit.
 
 ## Testing
 
-_[Todo]_ We use Playwright for high-level automated tests. Focus on unit testing only for modules with complex or critical logic.
+_[Todo]_ We will use Playwright for high-level automated tests.
 
----
+## Contribution Guidelines
 
-### Todo Sections:
-
-- **Contribution Guidelines**: Outline the process for making contributions to the repo.
-- **Architecture Overview**: Briefly describe how the different parts of your project interact.
-- **Local Environment Setup**: Detailed steps on how to set up the project locally.
-- **Code Review Process**: Guidelines for code reviews to maintain code quality.
-- **Error Handling**: Best practices for error handling within the project.
+For all changes, please submit a pull request (PR) for review.
