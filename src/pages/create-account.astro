@@ -6,6 +6,43 @@ import MobileNav from '../components/solid/MobileNav.tsx';
 import { stytch } from '../lib/stytch';
 import { session_duration_minutes } from '../lib/constants';
 import { StytchError } from 'stytch';
+
+const errors = { err: '' };
+
+if (Astro.request.method === 'POST') {
+  try {
+    const data = await Astro.request.formData();
+    const first_name = data.get('first_name')?.toString();
+    const last_name = data.get('last_name')?.toString();
+    const phone_number = data.get('phone_number');
+    const address = data.get('address');
+    const consent = data.get('consent');
+
+    const name = { first_name, last_name };
+    const untrusted_metadata = { address, consent, phone_number };
+
+    if (!first_name || !last_name || !phone_number || !address || !consent) {
+      errors.err = 'Please fill all the fields';
+    } else {
+      // handle Stytch API calls
+
+      // TODO: find how to get user_id from session
+      // https://stytch.com/docs/api/session-auth -> maybe this can be useful
+      try {
+        const response = await stytch.users.update({
+          user_id: '', // fill
+          name,
+          untrusted_metadata,
+        });
+
+        console.log(response);
+        Astro.redirect('/');
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  } catch (error) {}
+}
 ---
 
 <html lang='en'>
@@ -86,6 +123,10 @@ import { StytchError } from 'stytch';
             required
             class='border rounded-md p-2 w-1/2 mb-4'
           />
+          <button
+            class='bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600'
+            type='submit'>Submit</button
+          >
         </form>
       </div>
     </div>
