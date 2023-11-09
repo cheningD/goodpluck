@@ -1,11 +1,8 @@
 ---
-import Banner from "../components/solid/Banner.tsx";
-import Cart from "../components/solid/Cart.tsx";
-import Menu from "../components/solid/Menu";
-import MobileNav from "../components/solid/MobileNav.tsx";
 import { stytchclient } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
+import Layout from "../layouts/Layout.astro";
 // Initialize error state
 const errors = { code: "" };
 
@@ -67,22 +64,7 @@ if (Astro.request.method === "POST") {
 }
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Goodpluck</title>
-  </head>
-  <body>
-    <div class="sticky top-0 h-full">
-      <Banner client:load />
-      <MobileNav client:load />
-    </div>
-    <Cart client:load />
-    <Menu client:load />
-  </body>
+<Layout>
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
@@ -109,4 +91,4 @@ if (Astro.request.method === "POST") {
       </form>
     </div>
   </div>
-</html>
+</Layout>
