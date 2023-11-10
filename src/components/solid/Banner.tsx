@@ -1,6 +1,6 @@
 import { createSignal, onMount } from "solid-js"
 import { useStore } from "@nanostores/solid"
-import toast, { Toaster } from "solid-toast" // Corrected import
+import toast, { Toaster } from "solid-toast"
 import { isCartOpen } from "../../store"
 
 const toastPosition = "bottom-right"

@@ -3,27 +3,68 @@ import { stytchclient } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 import Layout from "../layouts/Layout.astro";
+import jwt from "jsonwebtoken";
+
 // Initialize error state
-const errors = { code: "" };
+const errors = { code: "", general: "", email: "" };
 
-// Handle POST request
-if (Astro.request.method === "POST") {
+// Extract method_id from the URL
+const url = new URL(Astro.request.url);
+const method_id = url.searchParams.get("method_id");
+
+function getEmailFromToken(token: string) {
+  const secretKey = "your_secret_key"; // env variable later
   try {
-    // Collect form data and initialize params object
-    const data = await Astro.request.formData();
-    const code = data.get("otp-input")?.toString();
-
-    const url = new URL(Astro.request.url);
-    const method_id = url.searchParams.get("method_id");
-
-    // Validate email
-    if (!code || !/^[0-9]+$/.test(code)) {
-      errors.code = `Code is not valid: ${code}`;
-    } else if (!method_id) {
-      errors.code = `Method ID is not valid`;
+    const decoded = jwt.verify(token, secretKey);
+    if (typeof decoded === "string") {
+      return decoded; 
+    } else if (decoded.email) {
+      return decoded.email; 
     } else {
-      // Make stytch API call and handle errors within the same try-catch block
-      try {
+      return null; 
+    }
+  } catch (error) {
+    return null; 
+  }
+}
+
+// Function to send OTP
+async function sendOTP(email: string) {
+  try {
+    const resp = await stytchclient.otps.email.send({ email, expiration_minutes: 10 });
+    console.log(`OTP sent: ${resp}`);
+    // Feedback to user can be added here
+  } catch (error) {
+    console.error(`Error sending OTP: ${error}`);
+    errors.general = "Error sending the code. Please try again later.";
+  }
+}
+
+// Handle POST request for both OTP submission and resend OTP request
+if (Astro.request.method === "POST") {
+  const data = await Astro.request.formData();
+
+  if (data.has("resend")) {
+    // Retrieve the token securely from astro cookies
+    const token = Astro.cookies.get("otp_token")?.value
+    const userEmail = getEmailFromToken(token as string)
+    if (userEmail) {
+      await sendOTP(userEmail);
+    } else {
+      errors.general = "Unable to resend the code without an email address.";
+    }
+  } else {
+    try {
+      // Collect form data for OTP submission
+      const code = data.get("otp-input")?.toString();
+
+      // Validate the code and method_id
+      if (!code || !/^[0-9]+$/.test(code)) {
+        errors.code = "Code is not valid.";
+      } else if (!method_id) {
+        errors.code = "Method ID is not valid.";
+      } else {
+        // Make stytchclient API call to authenticate OTP
         const resp = await stytchclient.otps.authenticate({
           code,
           method_id,
@@ -41,37 +82,40 @@ if (Astro.request.method === "POST") {
               Date.now() + session_duration_minutes * 60 * 1000,
             ),
           });
-        }
 
-        console.log(resp);
-        return Astro.redirect("/#basket");
-      } catch (err) {
-        if (
-          err instanceof StytchError &&
-          err.error_type === "otp_code_not_found"
-        ) {
-          errors.code = "Oops, code isn't valid. Please try again.";
+          console.log(resp);
+          return Astro.redirect("/");
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+      if (error instanceof StytchError) {
+        if (error.error_type === "otp_code_not_found") {
+          errors.code = "Oops, wrong passcode. Try again or request a new one!";
         } else {
           errors.code = "Unknown error, please reach out to us for help!";
         }
       }
     }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
   }
 }
+
 ---
 
 <Layout>
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
-        Check your email!
-      </h2>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">OTP Verification</h2>
+      <p class="text-sm text-gray-600 mb-6 text-center">We have sent a code to your email address. Please enter it below.</p>
       <form method="POST">
-        <label for="otp-input">Enter code</label>
+        <input
+          type="hidden"
+          name="method_id"
+          value="{method_id}" 
+        />
+        <label for="otp-input" class="block text-sm font-medium text-gray-700">Enter OTP:</label>
         <input
           class="border rounded-md p-2 w-full mb-4"
           id="otp-input"
@@ -82,12 +126,20 @@ if (Astro.request.method === "POST") {
           pattern="[0-9]*"
           required
         />
-        {errors.code && <p data-testid="login-code-error">{errors.code}</p>}
+        {errors.code && <p class="text-red-500">{errors.code}</p>}
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
-          type="submit"
-          data-testid="submit-login-code-btn">Submit</button
-        >
+          type="submit">Submit</button>
+      </form>
+      {errors.general && <p class="text-red-500">{errors.general}</p>}
+      <form method="POST">
+        <input type="hidden" name="resend" value="true" />
+          <p class="mt-6 text-sm text-center text-gray-600">
+            Didn't receive the code?      
+            <button class="text-orange-500 hover:underline" type="submit">
+              Resend code
+            </button>
+          </p>
       </form>
     </div>
   </div>
