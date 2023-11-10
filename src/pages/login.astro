@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 const errors = { email: "" };
 
 function generateTokenFromEmail(email: string) {
-  const secretKey = "your_secret_key"; // env variable later
+  const secretKey = import.meta.env.OTP_JWT_SECRET_KEY
   const token = jwt.sign({ email }, secretKey, { expiresIn: "15m" });
   return token;
 }

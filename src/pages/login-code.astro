@@ -10,33 +10,61 @@ const errors = { code: "", general: "", email: "" };
 
 // Extract method_id from the URL
 const url = new URL(Astro.request.url);
-const method_id = url.searchParams.get("method_id");
+let method_id = url.searchParams.get("method_id");
 
 function getEmailFromToken(token: string) {
-  const secretKey = "your_secret_key"; // env variable later
+  const secretKey = import.meta.env.OTP_JWT_SECRET_KEY;
   try {
     const decoded = jwt.verify(token, secretKey);
     if (typeof decoded === "string") {
-      return decoded; 
+      return decoded;
     } else if (decoded.email) {
-      return decoded.email; 
+      return decoded.email;
     } else {
-      return null; 
+      return null;
     }
   } catch (error) {
-    return null; 
+    return null;
   }
 }
 
+const canResendOTP = () => {
+  const token = Astro.cookies.get("otp_resend_token")?.value;
+  return !token;
+};
+
 // Function to send OTP
 async function sendOTP(email: string) {
-  try {
-    const resp = await stytchclient.otps.email.send({ email, expiration_minutes: 10 });
-    console.log(`OTP sent: ${resp}`);
-    // Feedback to user can be added here
-  } catch (error) {
-    console.error(`Error sending OTP: ${error}`);
-    errors.general = "Error sending the code. Please try again later.";
+  if (canResendOTP()) {
+    try {
+      const resp = await stytchclient.otps.email.send({
+        email,
+        expiration_minutes: 10,
+      });
+      // const resp = {
+      //   msg: "success",
+      // }
+
+      method_id = resp.email_id;
+      console.log(`OTP sent: ${resp}`);
+
+      const expirationTimestamp = Date.now() + 60 * 1000;
+      const token = jwt.sign({ email }, import.meta.env.OTP_JWT_SECRET_KEY, {
+        expiresIn: "1m",
+      });
+      Astro.cookies.set("otp_resend_token", token, {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        expires: new Date(expirationTimestamp),
+      });
+    } catch (error) {
+      console.error(`Error sending OTP: ${error}`);
+      errors.general = "Error sending the code. Please try again later.";
+    }
+  } else {
+    errors.general = "You can only request a new code once every 60 seconds.";
   }
 }
 
@@ -46,8 +74,9 @@ if (Astro.request.method === "POST") {
 
   if (data.has("resend")) {
     // Retrieve the token securely from astro cookies
-    const token = Astro.cookies.get("otp_token")?.value
-    const userEmail = getEmailFromToken(token as string)
+    const token = Astro.cookies.get("otp_token")?.value;
+    const userEmail = getEmailFromToken(token as string);
+
     if (userEmail) {
       await sendOTP(userEmail);
     } else {
@@ -101,21 +130,24 @@ if (Astro.request.method === "POST") {
     }
   }
 }
-
 ---
 
 <Layout>
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">OTP Verification</h2>
-      <p class="text-sm text-gray-600 mb-6 text-center">We have sent a code to your email address. Please enter it below.</p>
-      <form method="POST">
-        <input
-          type="hidden"
-          name="method_id"
-          value="{method_id}" 
-        />
-        <label for="otp-input" class="block text-sm font-medium text-gray-700">Enter OTP:</label>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+        OTP Verification
+      </h2>
+      <p class="text-sm text-gray-600 mb-6 text-center">
+        We have sent a code to your email address. Please enter it below.
+      </p>
+
+      <!-- OTP Verification Form -->
+      <form method="POST" id="otp-form">
+        <input type="hidden" name="method_id" value="{method_id}" />
+        <label for="otp-input" class="block text-sm font-medium text-gray-700"
+          >Enter OTP:</label
+        >
         <input
           class="border rounded-md p-2 w-full mb-4"
           id="otp-input"
@@ -129,17 +161,24 @@ if (Astro.request.method === "POST") {
         {errors.code && <p class="text-red-500">{errors.code}</p>}
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
-          type="submit">Submit</button>
+          type="submit">Submit</button
+        >
       </form>
       {errors.general && <p class="text-red-500">{errors.general}</p>}
-      <form method="POST">
+
+      <!-- Resend OTP Form -->
+      <form method="POST" id="resend-form">
         <input type="hidden" name="resend" value="true" />
-          <p class="mt-6 text-sm text-center text-gray-600">
-            Didn't receive the code?      
-            <button class="text-orange-500 hover:underline" type="submit">
-              Resend code
-            </button>
-          </p>
+        <p class="mt-6 text-sm text-center text-gray-600">
+          Didn't receive the code?
+          <button
+            id="resend-button"
+            class="text-orange-500 hover:underline"
+            type="submit"
+          >
+            Resend code
+          </button>
+        </p>
       </form>
     </div>
   </div>
