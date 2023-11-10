@@ -4,8 +4,6 @@ import Cart from '../components/solid/Cart.tsx';
 import Menu from '../components/solid/Menu';
 import MobileNav from '../components/solid/MobileNav.tsx';
 import { stytch } from '../lib/stytch';
-import { session_duration_minutes } from '../lib/constants';
-import { StytchError } from 'stytch';
 
 const errors = { err: '' };
 
@@ -24,18 +22,24 @@ if (Astro.request.method === 'POST') {
     if (!first_name || !last_name || !phone_number || !address || !consent) {
       errors.err = 'Please fill all the fields';
     } else {
-      // handle Stytch API calls
+      // handle Stytch API calls to get the user_id with the session token in order to authenticate the request.
+      const sessionToken = Astro.cookies.get('gp_session_token');
 
-      // TODO: find how to get user_id from session
-      // https://stytch.com/docs/api/session-auth -> maybe this can be useful
+      const session = stytch.sessions.authenticate({
+        session_token: sessionToken?.value,
+      });
+      const sessionData = await session;
+      const userId = sessionData.user.user_id;
+
       try {
         const response = await stytch.users.update({
-          user_id: '', // fill
+          user_id: userId,
           name,
           untrusted_metadata,
         });
 
-        console.log(response);
+        // TODO: handle a success/error message and a smooth transition
+
         Astro.redirect('/');
       } catch (error) {
         console.log(error);
