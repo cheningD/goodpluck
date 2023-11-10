@@ -54,7 +54,10 @@ const MobileNav: Component = () => {
 
         {/* 3rd Column: Basket Button */}
         <div class="justify-self-end pr-2 pt-1">
-          <button class="relative" onClick={() => isCartOpen.set(!$isCartOpen())}>
+          <button
+            class="relative"
+            onClick={() => isCartOpen.set(!$isCartOpen())}
+          >
             <svg
               class="w-7 h-6"
               viewBox="0 0 24 24"

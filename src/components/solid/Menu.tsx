@@ -1,9 +1,9 @@
-import { Motion, Presence } from '@motionone/solid';
+import { Motion, Presence } from "@motionone/solid";
 
-import { Show } from 'solid-js';
-import { isMenuOpen } from '../../store.js';
-import logo from '../../assets/logo.png';
-import { useStore } from '@nanostores/solid';
+import { Show } from "solid-js";
+import { isMenuOpen } from "../../store.js";
+import logo from "../../assets/logo.png";
+import { useStore } from "@nanostores/solid";
 
 export default function Menu() {
   const $isMenuOpen = useStore(isMenuOpen);
@@ -11,7 +11,7 @@ export default function Menu() {
     <Presence exitBeforeEnter>
       <Show when={$isMenuOpen()}>
         <Motion.aside
-          class='fixed top-20 bottom-0 left-0 bg-gray-100 w-4/5 overflow-y-auto'
+          class="fixed top-20 bottom-0 left-0 bg-gray-100 w-4/5 overflow-y-auto"
           animate={{
             x: 0,
           }}
@@ -23,25 +23,25 @@ export default function Menu() {
           }}
           transition={{
             duration: 0.5,
-            easing: 'ease-in-out',
+            easing: "ease-in-out",
           }}
         >
           {/* Content of the sidebar */}
-          <div class='p-4'>
+          <div class="p-4">
             {/* Logo */}
-            <a href='/'>
-              <img src={logo.src} alt='Goodpluck' class='h-8 w-auto my-4' />
+            <a href="/">
+              <img src={logo.src} alt="Goodpluck" class="h-8 w-auto my-4" />
             </a>
 
             {/* Menu Items */}
-            <div class='space-y-4'>
+            <div class="space-y-4">
               <div>About</div>
               <div>Recipes</div>
               <div>Kitchen & Bar</div>
               <div>Buy a Gift Card</div>
             </div>
 
-            <div class='space-y-12'>
+            <div class="space-y-12">
               <div>Scrolling Test</div>
               <div>Scrolling Test</div>
               <div>Scrolling Test & Bar</div>
@@ -53,7 +53,7 @@ export default function Menu() {
             </div>
 
             {/* Social Links */}
-            <div class='absolute bottom-0 left-4 flex space-x-4'>
+            <div class="absolute bottom-0 left-4 flex space-x-4">
               {/* ... social icons */}
             </div>
           </div>
