@@ -72,6 +72,7 @@ const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 if (sessionToken && (await isLoggedIn(sessionToken, runtime))) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
+
 ---
 
 <Layout>

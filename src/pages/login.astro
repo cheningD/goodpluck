@@ -2,6 +2,7 @@
 import { StytchError } from "stytch";
 import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import Layout from "../layouts/Layout.astro";
+import jwt from "jsonwebtoken";
 
 // Initialize error state
 const errors = { email: "", general: "" };
@@ -43,6 +44,7 @@ const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 if (sessionToken && (await isLoggedIn(sessionToken, runtime))) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
+
 ---
 
 <Layout>
