@@ -1,9 +1,7 @@
 import { createSignal, onMount } from "solid-js"
 import { useStore } from "@nanostores/solid"
-import toast, { Toaster } from "solid-toast"
+import toast from "solid-toast"
 import { isCartOpen } from "../../store"
-
-const toastPosition = "bottom-right"
 
 export default function Banner() {
   const $isCartOpen = useStore(isCartOpen)
@@ -26,19 +24,13 @@ export default function Banner() {
       const data = await response.json()
       if (response.ok) {
         setIsUserLoggedIn(false)
-        toast.success("Logged out successfully!", {
-          position: toastPosition,
-        })
+        toast.success("Logged out successfully!")
       } else {
-        toast.error("Logout failed", {
-          position: toastPosition,
-        })
+        toast.error("Logout failed")
         console.error("Logout failed:", data.message)
       }
     } catch (error) {
-      toast.error("Error during logout", {
-        position: toastPosition,
-      })
+      toast.error("Error during logout")
       console.error("Error during logout:", error)
     }
   }
@@ -69,7 +61,6 @@ export default function Banner() {
           )}
         </div>
       </div>
-      <Toaster />
     </div>
   )
 }

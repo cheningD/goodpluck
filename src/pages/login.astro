@@ -54,6 +54,30 @@ if (Astro.request.method === "POST") {
   }
 }
 
+// Function to check if the user's session is valid
+async function isSessionValid() {
+  const session_token = Astro.cookies.get("gp_session_token")?.value;
+  if (session_token) {
+    try {
+      // Verify the session token with Stytch
+      await stytch.sessions.authenticate({ session_token });
+      return true; // Session is valid
+    } catch (e) {
+      if (e instanceof Error) {
+        console.log("Session token invalid:", e.message);
+      } else {
+        console.log("An unexpected error occurred");
+      }
+    }
+  }
+  return false; // No valid session token found
+}
+
+// Redirect authenticated users away from login page
+if (await isSessionValid()) {
+  return Astro.redirect("/?logged_in=true"); 
+}
+
 ---
 
 <Layout>

@@ -45,7 +45,6 @@ async function sendOTP(email: string) {
       //   msg: "success",
       // }
 
-      method_id = resp.email_id;
       console.log(`OTP sent: ${resp}`);
 
       const expirationTimestamp = Date.now() + 60 * 1000;

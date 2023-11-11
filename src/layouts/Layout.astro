@@ -3,6 +3,7 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
+import { Toaster } from "solid-toast";
 
 ---
 
@@ -16,11 +17,12 @@ import MobileNav from "../components/solid/MobileNav.tsx";
   </head>
   <body>
     <div class="sticky top-0 h-full">
-      <Banner client:load  />
+      <Banner client:load />
       <MobileNav client:load />
     </div>
     <Cart client:load />
     <Menu client:load />
+    <Toaster position="bottom-right" gutter={8} client:visible />
     <slot />
   </body>
 </html>
