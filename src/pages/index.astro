@@ -1,17 +1,9 @@
 ---
+import ToastNotification from "../components/solid/ToastNotification";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
   <h1>Homepage</h1>
-  <script>
-    import toast from "solid-toast";
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const isLoggedIn = urlParams.get("logged_in");
-
-    if (isLoggedIn) {
-      toast.success("You are already logged in!")
-    }
-  </script>
+  <ToastNotification client:idle />
 </Layout>
