@@ -1,14 +1,13 @@
-import { onMount } from "solid-js"
+import { createSignal, onMount } from "solid-js"
 import { useStore } from "@nanostores/solid"
 import { isCartOpen } from "../../store"
-import { useAuth } from "../../hooks/useAuth"
 
-export default function Banner() {
+export default function Banner({ isLoggedIn }) {
   const $isCartOpen = useStore(isCartOpen)
-  const { isUserLoggedIn, checkAuth, handleLogout } = useAuth()
+  const [isUserLoggedIn, setIsUserLoggedIn] = createSignal(isLoggedIn)
 
   onMount(() => {
-    checkAuth()
+    setIsUserLoggedIn(isLoggedIn)
   })
 
   return (
@@ -25,9 +24,7 @@ export default function Banner() {
           </a>
           {isUserLoggedIn() ? (
             <div class="flex space-x-4">
-              <a href="#" onClick={handleLogout}>
-                Log out
-              </a>
+              <a href="/logout">Log out</a>
             </div>
           ) : (
             <div class="flex space-x-4">

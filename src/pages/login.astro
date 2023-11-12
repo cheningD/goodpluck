@@ -33,7 +33,13 @@ if (Astro.request.method === "POST") {
         console.log(resp);
         // Generate a token from the email
         const token = generateTokenFromEmail(email);
-        Astro.cookies.set("otp_token", token, { path: "/" });
+        Astro.cookies.set("otp_token", token, {             
+          path: "/",
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          expires: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+        });
         return Astro.redirect("/login-code?method_id=" + resp.email_id);
       } catch (err) {
         console.log(err);
@@ -75,7 +81,7 @@ async function isSessionValid() {
 
 // Redirect authenticated users away from login page
 if (await isSessionValid()) {
-  return Astro.redirect("/?logged_in=true"); 
+  return Astro.redirect("/"); 
 }
 
 ---
