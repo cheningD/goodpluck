@@ -1,39 +1,15 @@
-import { createSignal, onMount } from "solid-js"
+import { onMount } from "solid-js"
 import { useStore } from "@nanostores/solid"
-import toast from "solid-toast"
 import { isCartOpen } from "../../store"
+import { useAuth } from "../../hooks/useAuth"
 
 export default function Banner() {
   const $isCartOpen = useStore(isCartOpen)
-  const [isUserLoggedIn, setIsUserLoggedIn] = createSignal(false)
+  const { isUserLoggedIn, checkAuth, handleLogout } = useAuth()
 
-  onMount(async () => {
-    try {
-      const response = await fetch("/api/check-auth")
-      const { loggedIn } = await response.json()
-      setIsUserLoggedIn(loggedIn)
-    } catch (error) {
-      toast.error("Error fetching auth status")
-      console.error("Error fetching auth status:", error)
-    }
+  onMount(() => {
+    checkAuth()
   })
-
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("/api/logout", { method: "POST" })
-      const data = await response.json()
-      if (response.ok) {
-        setIsUserLoggedIn(false)
-        toast.success("Logged out successfully!")
-      } else {
-        toast.error("Logout failed")
-        console.error("Logout failed:", data.message)
-      }
-    } catch (error) {
-      toast.error("Error during logout")
-      console.error("Error during logout:", error)
-    }
-  }
 
   return (
     <div>
