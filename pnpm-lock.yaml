@@ -35,6 +35,9 @@ dependencies:
   stytch:
     specifier: ^9.0.6
     version: 9.0.6
+  swell-node:
+    specifier: ^5.4.0
+    version: 5.4.0
   tailwindcss:
     specifier: ^3.0.24
     version: 3.3.4
@@ -4196,6 +4199,11 @@ packages:
   /supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+    dev: false
+
+  /swell-node@5.4.0:
+    resolution: {integrity: sha512-UEYfMO1TqPu/3OJSHDDd1PyI8xAOohMZpFrP7gekJTmT4Qo2hxq/MM/LiOPgCJuw7ba6ZMfcUJrJvCjrxTnVUw==}
+    engines: {node: '>=14.19.1', npm: '>=8.17.0'}
     dev: false
 
   /tailwindcss@3.3.4:
