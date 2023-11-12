@@ -1,0 +1,24 @@
+---
+import swell from "../lib/swell.ts";
+export const prerender = true;
+
+const products = await swell.get("/products", {
+  where: { active: true },
+  fields: "name,slug,kind",
+  limit: 1000,
+  page: 1,
+});
+
+const { name, category } = Astro.props;
+---
+
+{/*This is an example of a market page */}
+<ul>
+  {
+    products.results.map((product: any) => (
+      <li>
+        {product.kind}: <a href={`/product/${product.slug}`}>{product.name}</a>
+      </li>
+    ))
+  }
+</ul>
