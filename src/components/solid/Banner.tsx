@@ -6,10 +6,6 @@ export default function Banner({ isLoggedIn }) {
   const $isCartOpen = useStore(isCartOpen)
   const [isUserLoggedIn, setIsUserLoggedIn] = createSignal(isLoggedIn)
 
-  onMount(() => {
-    setIsUserLoggedIn(isLoggedIn)
-  })
-
   return (
     <div>
       <div class="bg-black h-10 text-white py-2 px-6 w-full hidden md:flex justify-between items-center">

@@ -8,7 +8,6 @@ import { Toaster } from "solid-toast";
 // Only used for component rendering
 let loggedin = false;
 if (Astro.cookies.get("gp_session_token")?.value) {
-  console.log("logged in");
   loggedin = true;
 }
 

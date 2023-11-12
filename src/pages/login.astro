@@ -7,12 +7,6 @@ import jwt from "jsonwebtoken";
 // Initialize error state
 const errors = { email: "" };
 
-function generateTokenFromEmail(email: string) {
-  const secretKey = import.meta.env.OTP_JWT_SECRET_KEY
-  const token = jwt.sign({ email }, secretKey, { expiresIn: "15m" });
-  return token;
-}
-
 // Handle POST request
 if (Astro.request.method === "POST") {
   try {
@@ -77,6 +71,13 @@ async function isSessionValid() {
     }
   }
   return false; // No valid session token found
+}
+
+// Function to generate a JWT from the email
+function generateTokenFromEmail(email: string) {
+  const secretKey = import.meta.env.OTP_JWT_SECRET_KEY
+  const token = jwt.sign({ email }, secretKey, { expiresIn: "15m" });
+  return token;
 }
 
 // Redirect authenticated users away from login page
