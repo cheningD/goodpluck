@@ -29,7 +29,7 @@ function getEmailFromToken(token: string) {
 }
 
 const canResendOTP = () => {
-  const token = Astro.cookies.get("otp_resend_token")?.value;
+  const token = Astro.cookies.get("otp_resend_cooldown_time")?.value;
   return !token;
 };
 
@@ -49,17 +49,18 @@ async function sendOTP(email: string) {
 
       // Used to prevent spamming the resend button
       const expirationTimestamp = Date.now() + 60 * 1000;
-      const token = jwt.sign({ email }, import.meta.env.OTP_JWT_SECRET_KEY, {
-        expiresIn: "1m",
-      });
 
-      Astro.cookies.set("otp_resend_token", token, {
-        path: "/",
-        httpOnly: true,
-        secure: true,
-        sameSite: "lax",
-        expires: new Date(expirationTimestamp),
-      });
+      Astro.cookies.set(
+        "otp_resend_cooldown_time",
+        expirationTimestamp.toString(),
+        {
+          path: "/",
+          httpOnly: false,
+          secure: true,
+          sameSite: "lax",
+          expires: new Date(expirationTimestamp),
+        },
+      );
 
       // Set a cookie for the OTP resend toast message
       Astro.cookies.set("auth_message", "Success, OTP has been resent!", {
@@ -73,7 +74,7 @@ async function sendOTP(email: string) {
       errors.general = "Error sending the code. Please try again later.";
     }
   } else {
-    errors.general = "You can only request a new code once every 60 seconds.";
+    // errors.general = "You can only request a new code once every 60 seconds.";
   }
 }
 
@@ -121,7 +122,7 @@ if (Astro.request.method === "POST") {
             ),
           });
 
-          // Set success message cookie
+          // Set success message cookie -- gets displayed then deleted immediately
           Astro.cookies.set("auth_message", "Success, you are now logged in!", {
             path: "/",
             httpOnly: true,
@@ -131,7 +132,7 @@ if (Astro.request.method === "POST") {
 
           // Delete the OTP token cookies
           Astro.cookies.delete("email_secure_token");
-          Astro.cookies.delete("otp_resend_token");
+          Astro.cookies.delete("otp_resend_cooldown_time");
 
           console.log(resp);
           return Astro.redirect("/");
@@ -165,6 +166,13 @@ if (Astro.request.method === "POST") {
 
       <!-- OTP Verification Form -->
       <form method="POST" id="otp-form">
+        {
+          errors.general && (
+            <p class="mb-4 text-sm font-medium text-red-600 bg-red-50 p-2 rounded border border-red-500">
+              {errors.general}
+            </p>
+          )
+        }
         <input type="hidden" name="method_id" value="{method_id}" />
         <label
           for="otp-input"
@@ -186,13 +194,6 @@ if (Astro.request.method === "POST") {
             <p class="my-2 text-sm font-medium text-red-600">{errors.code}</p>
           )
         }
-        {
-          errors.general && (
-            <p class="my-2 text-sm font-medium text-red-600">
-              {errors.general}
-            </p>
-          )
-        }
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
           type="submit">Submit</button
@@ -202,8 +203,13 @@ if (Astro.request.method === "POST") {
       <!-- Resend OTP Form -->
       <form method="POST" id="resend-form">
         <input type="hidden" name="resend" value="true" />
-        <p class="mt-6 text-sm text-center text-gray-600">
+        <p class="mt-6 text-sm text-center text-gray-600" id="resend-text">
           Didn't receive the code?
+          <span id="countdown-timer" style="display: none;">
+            You can resend the OTP in <span class="text-orange-500"
+              ><span id="timer"></span> seconds</span
+            >
+          </span>
           <button
             id="resend-button"
             class="text-orange-500 hover:underline"
@@ -215,4 +221,70 @@ if (Astro.request.method === "POST") {
       </form>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      var cooldownTimerCookie = getCookie("otp_resend_cooldown_time");
+      if (cooldownTimerCookie) {
+        var expirationTime = new Date(parseInt(cooldownTimerCookie));
+        var currentTime = new Date();
+        var timeDiff = expirationTime.getTime() - currentTime.getTime();
+        if (timeDiff > 0) {
+          displayElement("countdown-timer", "block");
+          displayElement("resend-button", "none");
+          startCountdown(Math.ceil(timeDiff / 1000)); // Convert milliseconds to seconds and start countdown
+        } else {
+          displayElement("resend-button", "inline");
+          displayElement("countdown-timer", "none");
+        }
+      } else {
+        displayElement("resend-button", "inline");
+        displayElement("countdown-timer", "none");
+      }
+    });
+
+    const getCookie = (name: string): string | undefined => {
+      const value = "; " + document.cookie;
+      const parts = value.split("; " + name + "=");
+      if (parts.length === 2) {
+        const cookiePart = parts.pop();
+        if (cookiePart) {
+          return cookiePart.split(";").shift();
+        }
+      }
+      return undefined;
+    };
+
+    const startCountdown = (duration: number) => {
+      var timer = duration;
+      updateTimerDisplay(timer); // Update the display with the initial duration
+
+      var countdownInterval = setInterval(function () {
+        timer--; // Decrement the timer
+        updateTimerDisplay(timer); // Update the display after decrement
+
+        if (timer <= 0) {
+          clearInterval(countdownInterval);
+          displayElement("resend-button", "inline");
+          displayElement("countdown-timer", "none");
+        }
+      }, 1000);
+    };
+
+    const updateTimerDisplay = (seconds: number) => {
+      var formattedSeconds =
+        seconds < 10 ? "0" + seconds.toString() : seconds.toString();
+      var timerElement = document.getElementById("timer");
+      if (timerElement) {
+        timerElement.textContent = formattedSeconds;
+      }
+    };
+
+    const displayElement = (elementId: string, displayStyle: string): void => {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.style.display = displayStyle;
+      }
+    };
+  </script>
 </Layout>

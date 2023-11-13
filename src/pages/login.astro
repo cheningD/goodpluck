@@ -7,6 +7,10 @@ import jwt from "jsonwebtoken";
 // Initialize error state
 const errors = { email: "" };
 
+// Delete auth cookies
+Astro.cookies.delete("email_secure_token");
+Astro.cookies.delete("otp_resend_token");
+
 // Handle POST request
 if (Astro.request.method === "POST") {
   try {
@@ -27,7 +31,7 @@ if (Astro.request.method === "POST") {
         console.log(resp);
         // Generate a token from the email
         const token = generateTokenFromEmail(email);
-        Astro.cookies.set("email_secure_token", token, {             
+        Astro.cookies.set("email_secure_token", token, {
           path: "/",
           httpOnly: true,
           secure: true,
@@ -59,7 +63,7 @@ async function isSessionValid() {
   if (session_token) {
     try {
       // Verify the session token with Stytch
-      await stytch.sessions.authenticate({ session_token });
+      await stytchclient.sessions.authenticate({ session_token });
       return true; // Session is valid
     } catch (e) {
       if (e instanceof Error) {
@@ -74,23 +78,22 @@ async function isSessionValid() {
 
 // Function to generate a JWT from the email
 function generateTokenFromEmail(email: string) {
-  const secretKey = import.meta.env.OTP_JWT_SECRET_KEY
+  const secretKey = import.meta.env.OTP_JWT_SECRET_KEY;
   const token = jwt.sign({ email }, secretKey, { expiresIn: "15m" });
   return token;
 }
 
 // Redirect authenticated users away from login page
 if (await isSessionValid()) {
-    Astro.cookies.set("auth_message", "Error, you are already logged in.", {
+  Astro.cookies.set("auth_message", "Error, you are already logged in.", {
     path: "/",
     httpOnly: true,
     secure: true,
     sameSite: "lax",
   });
 
-  return Astro.redirect("/"); 
+  return Astro.redirect("/");
 }
-
 ---
 
 <Layout>
@@ -101,7 +104,12 @@ if (await isSessionValid()) {
         Welcome back! Enter your email to log in.
       </p>
       <form method="POST">
-        <label for="email" class={`block text-sm font-medium mb-2 ${errors.email ? 'text-red-700' : 'text-gray-700'}`}>
+        <label
+          for="email"
+          class={`block text-sm font-medium mb-2 ${
+            errors.email ? "text-red-700" : "text-gray-700"
+          }`}
+        >
           Email:
         </label>
         <input
@@ -110,9 +118,19 @@ if (await isSessionValid()) {
           name="email"
           placeholder="kale@example.com"
           required
-          class={`border rounded-md p-2 w-full mb-4 ${errors.email ? 'bg-red-50 border-red-500 placeholder-red-700 focus:ring-red-500 focus:border-red-500 !mb-0' : ''}`}
+          class={`border rounded-md p-2 w-full mb-4 ${
+            errors.email
+              ? "bg-red-50 border-red-500 placeholder-red-700 focus:ring-red-500 focus:border-red-500 !mb-0"
+              : ""
+          }`}
         />
-        {errors.email && <p class="my-2 text-sm font-medium text-red-600">Oops! {errors.email}</p>}
+        {
+          errors.email && (
+            <p class="my-2 text-sm font-medium text-red-600">
+              Oops! {errors.email}
+            </p>
+          )
+        }
         <button
           data-testid="login-btn"
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
