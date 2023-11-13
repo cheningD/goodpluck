@@ -3,21 +3,24 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import toast, { Toaster } from "solid-toast";
 import ToastHandler from "../components/solid/ToastHandler";
 
-// Only used for component rendering
-let loggedin = false;
-if (Astro.cookies.get("gp_session_token")?.value) {
-  loggedin = true;
+// Refactored for component rendering
+const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value;
+
+// Function to get and clear cookie message
+function getAndClearCookieMessage(cookieName: string) {
+  const message = Astro.cookies.get(cookieName)?.value;
+  if (message) {
+    Astro.cookies.set(cookieName, "", { expires: new Date(0) });
+    return message;
+  }
+  return null;
 }
 
-// Grab the logout_message cookie and display it
-let logoutMessage
-if (Astro.cookies.get("logout_message")?.value) {
-  logoutMessage = Astro.cookies.get("logout_message")?.value;
-  Astro.cookies.set("logout_message", "", { expires: new Date(0) });
-}
+// Grabbing and clearing the logout and login messages
+const logoutMessage = getAndClearCookieMessage("logout_message");
+const loginMessage = getAndClearCookieMessage("login_message");
 
 ---
 
@@ -31,13 +34,13 @@ if (Astro.cookies.get("logout_message")?.value) {
   </head>
   <body>
     <div class="sticky top-0 h-full">
-      <Banner isLoggedIn={loggedin} client:load/>
+      <Banner isLoggedIn={isLoggedIn} client:load/>
       <MobileNav client:load />
     </div>
     <Cart client:load />
     <Menu client:load />
-    <ToastHandler client:load message={logoutMessage} client:load/>
+    <ToastHandler message={loginMessage || logoutMessage} client:load/>
     <slot />
-    <p>Logged in: {JSON.stringify(loggedin)}</p>
+    <p>Logged in: {JSON.stringify(isLoggedIn)}</p>
   </body>
 </html>

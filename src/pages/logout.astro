@@ -18,6 +18,12 @@ if (session_token) {
 }
 
 // Redirection occurs regardless of the above conditions
-Astro.cookies.set("logout_message", message, { httpOnly: false, path: "/" });
+Astro.cookies.set("logout_message", message, {
+  path: "/",
+  httpOnly: true,
+  secure: true,
+  sameSite: "lax",
+});
+
 return Astro.redirect("/");
 ---
