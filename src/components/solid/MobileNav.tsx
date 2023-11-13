@@ -4,20 +4,11 @@ import logo from "../../assets/logo.png";
 import { isCartOpen, isMenuOpen } from "../../store.js";
 
 const HamburgerIcon = (
-  <svg class="w-8 h-8" viewBox="0 0 24 24">
-    <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" />
-  </svg>
+  <IconMdiMenu class="w-6 h-6"/>
 );
 
 const XIcon = (
-  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M6 18L18 6M6 6l12 12"
-    />
-  </svg>
+  <IconMdiMicrosoftXboxControllerMenu class="w-6 h-6"/>
 );
 
 const MobileNav: Component = () => {
@@ -40,9 +31,7 @@ const MobileNav: Component = () => {
           </button>
 
           {/* Search Icon */}
-          <svg class="w-7 h-7 pt-1" viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16a6.468 6.468 0 004.23-1.5l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-          </svg>
+          <IconMdiMagnify class="w-6 h-6"/>
         </div>
 
         {/* Center Column: Logo - This should be dead center */}
@@ -52,7 +41,7 @@ const MobileNav: Component = () => {
 
         {/* 3rd Column: Basket Button */}
         <div class="justify-self-end pr-2 pt-1">
-          <button class="relative" onClick={() => isCartOpen.set(!$isCartOpen())}>
+          {/* <button class="relative" onClick={() => isCartOpen.set(!$isCartOpen())}>
             <svg
               class="w-7 h-6"
               viewBox="0 0 24 24"
@@ -68,7 +57,8 @@ const MobileNav: Component = () => {
             <span class="absolute top-0 right-0 text-xs transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full px-1">
               3
             </span>
-          </button>
+          </button> */}
+          <a href="" class="text-sm uppercase font-semibold">Login</a>
         </div>
       </nav>
     </>

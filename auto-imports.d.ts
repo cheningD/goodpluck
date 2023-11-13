@@ -6,4 +6,7 @@
 export {}
 declare global {
   const IconMdiAccountBox: typeof import('~icons/mdi/account-box.jsx')['default']
+  const IconMdiMagnify: typeof import('~icons/mdi/magnify.jsx')['default']
+  const IconMdiMenu: typeof import('~icons/mdi/menu.jsx')['default']
+  const IconMdiMicrosoftXboxControllerMenu: typeof import('~icons/mdi/microsoft-xbox-controller-menu.jsx')['default']
 }
