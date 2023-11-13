@@ -8,15 +8,16 @@ if (session_token) {
   try {
     await stytchclient.sessions.revoke({ session_token });
     Astro.cookies.delete("gp_session_token");
-    message = `You have logged out`;
+    message = `Success, you are now logged out!`;
   } catch (e) {
     console.error("Error during session revocation:", e);
-    message = "Error during logout";
+    message = "Error logging out.";
   }
 } else {
-  message = "You are not logged in";
+  message = "Error, you are not logged in.";
 }
 
 // Redirection occurs regardless of the above conditions
-return Astro.redirect("/?message=" + encodeURIComponent(message));
+Astro.cookies.set("logout_message", message, { httpOnly: false, path: "/" });
+return Astro.redirect("/");
 ---

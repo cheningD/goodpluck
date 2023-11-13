@@ -3,12 +3,20 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import { Toaster } from "solid-toast";
+import toast, { Toaster } from "solid-toast";
+import ToastHandler from "../components/solid/ToastHandler";
 
 // Only used for component rendering
 let loggedin = false;
 if (Astro.cookies.get("gp_session_token")?.value) {
   loggedin = true;
+}
+
+// Grab the logout_message cookie and display it
+let logoutMessage
+if (Astro.cookies.get("logout_message")?.value) {
+  logoutMessage = Astro.cookies.get("logout_message")?.value;
+  Astro.cookies.set("logout_message", "", { expires: new Date(0) });
 }
 
 ---
@@ -28,7 +36,7 @@ if (Astro.cookies.get("gp_session_token")?.value) {
     </div>
     <Cart client:load />
     <Menu client:load />
-    <Toaster position="bottom-right" gutter={8} client:load />
+    <ToastHandler client:load message={logoutMessage} client:load/>
     <slot />
     <p>Logged in: {JSON.stringify(loggedin)}</p>
   </body>
