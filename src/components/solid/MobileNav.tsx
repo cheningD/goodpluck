@@ -47,15 +47,14 @@ const MobileNav: Component = () => {
 
         {/* Center Column: Logo - This should be dead center */}
         <div class="justify-self-center pb-2 ">
-          <img src={logo.src} alt="Goodpluck" class="h-8 w-auto" />
+          <a href="/">
+            <img src={logo.src} alt="Goodpluck" class="h-8 w-auto" />
+          </a>
         </div>
 
         {/* 3rd Column: Basket Button */}
         <div class="justify-self-end pr-2 pt-1">
-          <button
-            class="relative"
-            onClick={() => isCartOpen.set(!$isCartOpen())}
-          >
+          <button class="relative" onClick={() => isCartOpen.set(!$isCartOpen())}>
             <svg
               class="w-7 h-6"
               viewBox="0 0 24 24"
