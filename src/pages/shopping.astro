@@ -1,0 +1,32 @@
+---
+import { stytch } from "../lib/stytch.ts";
+import MobileNav from "@components/solid/MobileNav.tsx";
+import "@assets/styles/global.css";
+
+let loggedin = null;
+const session_token = Astro.cookies.get("gp_session_token")?.value;
+try {
+  const resp = await stytch.sessions.authenticate({
+    session_token,
+  });
+  if (resp.status_code === 200) {
+    loggedin = true;
+  }
+} catch (err) {
+  loggedin = false;
+  console.log("err", err);
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Goodpluck</title>
+  </head>
+  <body>
+    <MobileNav/>
+  </body>
+</html>
