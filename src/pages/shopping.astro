@@ -2,6 +2,7 @@
 import { stytch } from "../lib/stytch.ts";
 import MobileNav from "@components/solid/MobileNav.tsx";
 import "@assets/styles/global.css";
+import favicon from "@assets/img/favicon.png"
 
 let loggedin = null;
 const session_token = Astro.cookies.get("gp_session_token")?.value;
@@ -21,7 +22,7 @@ try {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href={favicon.src} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Goodpluck</title>
