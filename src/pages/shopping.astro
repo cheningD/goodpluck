@@ -1,6 +1,7 @@
 ---
-import App from "@components/solid/App.tsx";
 import { stytch } from "../lib/stytch.ts";
+import MobileNav from "@components/solid/MobileNav.tsx";
+import "@assets/styles/global.css";
 
 let loggedin = null;
 const session_token = Astro.cookies.get("gp_session_token")?.value;
@@ -26,6 +27,6 @@ try {
     <title>Goodpluck</title>
   </head>
   <body>
-    <App/>
+    <MobileNav/>
   </body>
 </html>
