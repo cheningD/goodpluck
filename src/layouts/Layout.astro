@@ -19,8 +19,7 @@ function getAndClearCookieMessage(cookieName: string) {
 }
 
 // Grabbing and clearing the logout and login messages
-const logoutMessage = getAndClearCookieMessage("logout_message");
-const loginMessage = getAndClearCookieMessage("login_message");
+const authMessage = getAndClearCookieMessage("auth_message");
 
 ---
 
@@ -39,7 +38,7 @@ const loginMessage = getAndClearCookieMessage("login_message");
     </div>
     <Cart client:load />
     <Menu client:load />
-    <ToastHandler message={loginMessage || logoutMessage} client:load/>
+    <ToastHandler message={authMessage} client:load/>
     <slot />
     <p>Logged in: {JSON.stringify(isLoggedIn)}</p>
   </body>

@@ -112,7 +112,7 @@ if (Astro.request.method === "POST") {
           });
 
           // Set success message cookie
-          Astro.cookies.set("login_message", "Welcome back, you are now logged in!", {
+          Astro.cookies.set("auth_message", "Success, you are now logged in!", {
             path: "/",
             httpOnly: true,
             secure: true,

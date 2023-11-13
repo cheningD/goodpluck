@@ -82,6 +82,13 @@ function generateTokenFromEmail(email: string) {
 
 // Redirect authenticated users away from login page
 if (await isSessionValid()) {
+    Astro.cookies.set("auth_message", "Error, you are already logged in.", {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+  });
+
   return Astro.redirect("/"); 
 }
 
