@@ -26,16 +26,19 @@ Cloudflare automatically deploys each commit.
 When you are ready to start working on a task, please adhere to the following steps to ensure consistency and traceability within the project workflow:
 
 1. **Task Assignment:**
+
    - Find a task you are interested in tackling from the issues list.
    - Assign the task to yourself to indicate that you are working on it.
    - Move the task to the "In Progress" column on the project board.
    - Update the task with a start date, marking when you began working on it.
 
 2. **Development Workflow:**
+
    - Create a new branch from `main` for your task using a reasonable name e.g. `feature/issue-number-short-description` or `wip/migrate-payment-info-tests`
    - Work on your task in this branch, committing code as you make progress.
 
 3. **Pull Requests (PR):**
+
    - Once your feature is complete and you have tested your changes, push your branch to the repository.
    - Create a Pull Request against the `main` branch.
    - Ensure your PR title clearly describes the feature or fix.
@@ -45,6 +48,7 @@ When you are ready to start working on a task, please adhere to the following st
    - Request a review from a team member, tagging them in the PR.
 
 4. **Code Review:**
+
    - Address any feedback given by reviewers in a timely manner.
    - Once approved, merge your PR into the `main` branch.
 
@@ -53,7 +57,6 @@ When you are ready to start working on a task, please adhere to the following st
    - Delete the feature branch after merging to keep the repository clean.
 
 By following these guidelines, we maintain a clear and efficient process for task management and code integration.
-
 
 ## Testing
 
