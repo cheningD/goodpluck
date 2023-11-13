@@ -5,7 +5,6 @@ import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
 import ToastHandler from "../components/solid/ToastHandler";
 
-// Refactored for component rendering
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value;
 
 // Function to get and clear cookie message
@@ -18,7 +17,6 @@ function getAndClearCookieMessage(cookieName: string) {
   return null;
 }
 
-// Grabbing and clearing the logout and login messages
 const authMessage = getAndClearCookieMessage("auth_message");
 
 ---
@@ -40,6 +38,5 @@ const authMessage = getAndClearCookieMessage("auth_message");
     <Menu client:load />
     <ToastHandler message={authMessage} client:load/>
     <slot />
-    <p>Logged in: {JSON.stringify(isLoggedIn)}</p>
   </body>
 </html>

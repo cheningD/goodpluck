@@ -47,16 +47,26 @@ async function sendOTP(email: string) {
 
       console.log(`OTP sent: ${resp}`);
 
+      // Used to prevent spamming the resend button
       const expirationTimestamp = Date.now() + 60 * 1000;
       const token = jwt.sign({ email }, import.meta.env.OTP_JWT_SECRET_KEY, {
         expiresIn: "1m",
       });
+
       Astro.cookies.set("otp_resend_token", token, {
         path: "/",
         httpOnly: true,
         secure: true,
         sameSite: "lax",
         expires: new Date(expirationTimestamp),
+      });
+
+      // Set a cookie for the OTP resend toast message
+      Astro.cookies.set("auth_message", "Success, OTP has been resent!", {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
       });
     } catch (error) {
       console.error(`Error sending OTP: ${error}`);
@@ -73,7 +83,7 @@ if (Astro.request.method === "POST") {
 
   if (data.has("resend")) {
     // Retrieve the token securely from astro cookies
-    const token = Astro.cookies.get("otp_token")?.value;
+    const token = Astro.cookies.get("email_secure_token")?.value;
     const userEmail = getEmailFromToken(token as string);
 
     if (userEmail) {
@@ -119,6 +129,10 @@ if (Astro.request.method === "POST") {
             sameSite: "lax",
           });
 
+          // Delete the OTP token cookies
+          Astro.cookies.delete("email_secure_token");
+          Astro.cookies.delete("otp_resend_token");
+
           console.log(resp);
           return Astro.redirect("/");
         }
@@ -131,7 +145,7 @@ if (Astro.request.method === "POST") {
         if (error.error_type === "otp_code_not_found") {
           errors.code = "Oops, wrong passcode. Try again or request a new one!";
         } else {
-          errors.code = "Unknown error, please reach out to us for help!";
+          errors.code = "Unknown error, please reach out to us for help!"; // also when code is expired
         }
       }
     }
@@ -152,26 +166,38 @@ if (Astro.request.method === "POST") {
       <!-- OTP Verification Form -->
       <form method="POST" id="otp-form">
         <input type="hidden" name="method_id" value="{method_id}" />
-        <label for="otp-input" class="block text-sm font-medium text-gray-700"
+        <label
+          for="otp-input"
+          class=`block text-sm font-medium text-gray-700 ${errors.code ? 'text-red-700' : 'text-gray-700'}`
           >Enter OTP:</label
         >
         <input
-          class="border rounded-md p-2 w-full mb-4"
+          class=`border rounded-md p-2 w-full mb-4 
+            ${errors.code ? 'bg-red-50 border-red-500 placeholder-red-700 focus:ring-red-500 focus:border-red-500 !m-0' : '' }`
           id="otp-input"
-          data-testid="otp-input"
           name="otp-input"
           autocomplete="one-time-code"
           inputmode="numeric"
           pattern="[0-9]*"
           required
         />
-        {errors.code && <p class="text-red-500">{errors.code}</p>}
+        {
+          errors.code && (
+            <p class="my-2 text-sm font-medium text-red-600">{errors.code}</p>
+          )
+        }
+        {
+          errors.general && (
+            <p class="my-2 text-sm font-medium text-red-600">
+              {errors.general}
+            </p>
+          )
+        }
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
           type="submit">Submit</button
         >
       </form>
-      {errors.general && <p class="text-red-500">{errors.general}</p>}
 
       <!-- Resend OTP Form -->
       <form method="POST" id="resend-form">
