@@ -22,12 +22,18 @@ if (Astro.request.method === "POST") {
     } else {
       // Make stytch API call and handle errors within the same try-catch block
       try {
-        const resp = await stytch.otps.email.send({ email, expiration_minutes: 10 });
+        const resp = await stytch.otps.email.send({
+          email,
+          expiration_minutes: 10,
+        });
         console.log(resp);
         return Astro.redirect("/login-code?method_id=" + resp.email_id);
       } catch (err) {
         console.log(err);
-        if (err instanceof StytchError && err.error_type === "email_not_found") {
+        if (
+          err instanceof StytchError &&
+          err.error_type === "email_not_found"
+        ) {
           errors.email = "Email not found. Do you need to create an account?";
         } else {
           errors.email = "Unknown error, please try again later.";
