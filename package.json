@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
+    "test": "pnpm exec playwright test --ui --project=chromium",
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky install"
@@ -26,6 +27,8 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.9.0",
     "husky": "^8.0.0",
     "lint-staged": "^15.1.0",
     "prettier": "^3.1.0",

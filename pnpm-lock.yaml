@@ -10,7 +10,7 @@ dependencies:
     version: 0.2.1(prettier-plugin-astro@0.12.2)(prettier@3.1.0)(typescript@5.2.2)
   "@astrojs/cloudflare":
     specifier: ^7.6.4
-    version: 7.6.4(astro@3.3.4)
+    version: 7.6.4(@types/node@20.9.0)(astro@3.3.4)
   "@astrojs/solid-js":
     specifier: ^3.0.2
     version: 3.0.2(solid-js@1.8.3)(vite@4.5.0)
@@ -25,7 +25,7 @@ dependencies:
     version: 0.4.2(nanostores@0.9.4)(solid-js@1.8.3)
   astro:
     specifier: ^3.3.4
-    version: 3.3.4(typescript@5.2.2)
+    version: 3.3.4(@types/node@20.9.0)(typescript@5.2.2)
   nanostores:
     specifier: ^0.9.4
     version: 0.9.4
@@ -46,6 +46,12 @@ dependencies:
     version: 5.2.2
 
 devDependencies:
+  "@playwright/test":
+    specifier: ^1.39.0
+    version: 1.39.0
+  "@types/node":
+    specifier: ^20.9.0
+    version: 20.9.0
   husky:
     specifier: ^8.0.0
     version: 8.0.3
@@ -99,7 +105,7 @@ packages:
       - prettier-plugin-astro
     dev: false
 
-  /@astrojs/cloudflare@7.6.4(astro@3.3.4):
+  /@astrojs/cloudflare@7.6.4(@types/node@20.9.0)(astro@3.3.4):
     resolution:
       {
         integrity: sha512-fConXiIxgnNPc7TL3l2JO9S8ULFiBImzILf6POm/+tTVOOXlx9OnxyXTwC4lxKMDhBI9CeuMLlostF7VVwHWUQ==,
@@ -110,13 +116,13 @@ packages:
       "@astrojs/underscore-redirects": 0.3.3
       "@cloudflare/workers-types": 4.20231025.0
       "@iarna/toml": 2.2.5
-      astro: 3.3.4(typescript@5.2.2)
+      astro: 3.3.4(@types/node@20.9.0)(typescript@5.2.2)
       dotenv: 16.3.1
       esbuild: 0.19.5
       find-up: 6.3.0
       miniflare: 3.20231010.0
       tiny-glob: 0.2.9
-      vite: 4.5.0
+      vite: 4.5.0(@types/node@20.9.0)
     transitivePeerDependencies:
       - "@types/node"
       - bufferutil
@@ -198,7 +204,7 @@ packages:
       astro: ^3.3.0
     dependencies:
       "@astrojs/prism": 3.0.0
-      astro: 3.3.4(typescript@5.2.2)
+      astro: 3.3.4(@types/node@20.9.0)(typescript@5.2.2)
       github-slugger: 2.0.0
       import-meta-resolve: 3.0.0
       mdast-util-definitions: 6.0.0
@@ -251,7 +257,7 @@ packages:
       astro: ^3.2.4
       tailwindcss: ^3.0.24
     dependencies:
-      astro: 3.3.4(typescript@5.2.2)
+      astro: 3.3.4(@types/node@20.9.0)(typescript@5.2.2)
       autoprefixer: 10.4.16(postcss@8.4.31)
       postcss: 8.4.31
       postcss-load-config: 4.0.1(postcss@8.4.31)
@@ -1528,6 +1534,17 @@ packages:
       fastq: 1.15.0
     dev: false
 
+  /@playwright/test@1.39.0:
+    resolution:
+      {
+        integrity: sha512-3u1iFqgzl7zr004bGPYiN/5EZpRUSFddQBra8Rqll5N0/vfpqlP9I9EXqAoGacuAbX6c9Ulg/Cjqglp5VkK6UQ==,
+      }
+    engines: { node: ">=16" }
+    hasBin: true
+    dependencies:
+      playwright: 1.39.0
+    dev: true
+
   /@solid-primitives/props@3.1.8(solid-js@1.8.3):
     resolution:
       {
@@ -1682,6 +1699,14 @@ packages:
     dependencies:
       "@types/unist": 2.0.9
     dev: false
+
+  /@types/node@20.9.0:
+    resolution:
+      {
+        integrity: sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==,
+      }
+    dependencies:
+      undici-types: 5.26.5
 
   /@types/parse5@6.0.3:
     resolution:
@@ -1939,7 +1964,7 @@ packages:
       printable-characters: 1.0.42
     dev: false
 
-  /astro@3.3.4(typescript@5.2.2):
+  /astro@3.3.4(@types/node@20.9.0)(typescript@5.2.2):
     resolution:
       {
         integrity: sha512-1yy1p8/QpACpToK2bYFxbbPug7+HeUW+IGvkIss2KQDv4pwDk19UbfQrS8aMHtW3nvR7PpBYL/H/Dprcqxy40A==,
@@ -1998,7 +2023,7 @@ packages:
       tsconfck: 3.0.0(typescript@5.2.2)
       unist-util-visit: 4.1.2
       vfile: 5.3.7
-      vite: 4.5.0
+      vite: 4.5.0(@types/node@20.9.0)
       vitefu: 0.2.5(vite@4.5.0)
       which-pm: 2.1.1
       yargs-parser: 21.1.1
@@ -3025,6 +3050,17 @@ packages:
         integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==,
       }
     dev: false
+
+  /fsevents@2.3.2:
+    resolution:
+      {
+        integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==,
+      }
+    engines: { node: ^8.16.0 || ^10.6.0 || >=11.0.0 }
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /fsevents@2.3.3:
     resolution:
@@ -5034,6 +5070,28 @@ packages:
       find-up: 4.1.0
     dev: false
 
+  /playwright-core@1.39.0:
+    resolution:
+      {
+        integrity: sha512-+k4pdZgs1qiM+OUkSjx96YiKsXsmb59evFoqv8SKO067qBA+Z2s/dCzJij/ZhdQcs2zlTAgRKfeiiLm8PQ2qvw==,
+      }
+    engines: { node: ">=16" }
+    hasBin: true
+    dev: true
+
+  /playwright@1.39.0:
+    resolution:
+      {
+        integrity: sha512-naE5QT11uC/Oiq0BwZ50gDmy8c8WLPRTEWuSSFVG2egBka/1qMoSqYQcROMT9zLwJ86oPofcTH2jBY/5wWOgIw==,
+      }
+    engines: { node: ">=16" }
+    hasBin: true
+    dependencies:
+      playwright-core: 1.39.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
   /postcss-import@15.1.0(postcss@8.4.31):
     resolution:
       {
@@ -6238,6 +6296,12 @@ packages:
     hasBin: true
     dev: false
 
+  /undici-types@5.26.5:
+    resolution:
+      {
+        integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==,
+      }
+
   /undici@5.27.2:
     resolution:
       {
@@ -6513,13 +6577,13 @@ packages:
       merge-anything: 5.1.7
       solid-js: 1.8.3
       solid-refresh: 0.5.3(solid-js@1.8.3)
-      vite: 4.5.0
+      vite: 4.5.0(@types/node@20.9.0)
       vitefu: 0.2.5(vite@4.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /vite@4.5.0:
+  /vite@4.5.0(@types/node@20.9.0):
     resolution:
       {
         integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==,
@@ -6550,6 +6614,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      "@types/node": 20.9.0
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.29.4
@@ -6568,7 +6633,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.5.0
+      vite: 4.5.0(@types/node@20.9.0)
     dev: false
 
   /volar-service-css@0.0.14(@volar/language-service@1.10.4):
