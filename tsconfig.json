@@ -9,6 +9,9 @@
       "@pages/*": ["src/pages/*"],
       "@layouts/*": ["src/layouts/*"],
       "@assets/*": ["src/assets/*"],
-    }
+    },
+    "types": [
+      "unplugin-icons/types/solid",
+    ]
   }
 }
