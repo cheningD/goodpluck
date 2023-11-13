@@ -3,6 +3,7 @@ import Banner from '../components/solid/Banner.tsx';
 import Cart from '../components/solid/Cart.tsx';
 import Menu from '../components/solid/Menu';
 import MobileNav from '../components/solid/MobileNav.tsx';
+import MapboxAutofill from '../components/solid/MabpoxAutofill';
 import { stytch } from '../lib/stytch';
 
 const errors = { err: '' };
@@ -56,6 +57,7 @@ if (Astro.request.method === 'POST') {
     <meta name='viewport' content='width=device-width' />
     <meta name='generator' content={Astro.generator} />
     <title>Create your account - Goodpluck</title>
+    <MapboxAutofill client:load />
   </head>
 
   <body>
@@ -65,6 +67,7 @@ if (Astro.request.method === 'POST') {
     </div>
     <Cart client:load />
     <Menu client:load />
+    <!-- <MapboxAutofill client:load /> -->
 
     <div>
       <h2 class='text-2xl font-bold text-gray-900 my-6 text-center'>
@@ -107,13 +110,70 @@ if (Astro.request.method === 'POST') {
             class='border rounded-md p-2 w-1/2 mb-4'
           />
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <!-- <label class='block text-sm font-medium text-gray-700 mb-2'
             >Your delivery address</label
           >
           <input
             type='text'
             name='address'
             required
+            class='border rounded-md p-2 w-1/2 mb-4'
+          /> -->
+
+          <h3>Your delivery address</h3>
+
+          <label class='block text-sm font-medium text-gray-700 mb-2'
+            >Your address</label
+          >
+          <input
+            type='text'
+            name='address'
+            required
+            autocomplete='address-line1'
+            class='border rounded-md p-2 w-1/2 mb-4'
+          />
+
+          <label class='block text-sm font-medium text-gray-700 mb-2'
+            >Your appartment</label
+          >
+          <input
+            type='text'
+            name='appartement'
+            required
+            autocomplete='address-line2'
+            class='border rounded-md p-2 w-1/2 mb-4'
+          />
+
+          <label class='block text-sm font-medium text-gray-700 mb-2'
+            >Your city</label
+          >
+          <input
+            type='text'
+            name='city'
+            required
+            autocomplete='address-level2'
+            class='border rounded-md p-2 w-1/2 mb-4'
+          />
+
+          <label class='block text-sm font-medium text-gray-700 mb-2'
+            >Your postal code</label
+          >
+          <input
+            type='text'
+            name='postcode'
+            required
+            autocomplete='postal-code'
+            class='border rounded-md p-2 w-1/2 mb-4'
+          />
+
+          <label class='block text-sm font-medium text-gray-700 mb-2'
+            >Your state</label
+          >
+          <input
+            type='text'
+            name='state'
+            required
+            autocomplete='address-level1'
             class='border rounded-md p-2 w-1/2 mb-4'
           />
 
