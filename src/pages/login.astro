@@ -79,8 +79,9 @@ if (Astro.request.method === "POST") {
           required
           class="border rounded-md p-2 w-full mb-4"
         />
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p data-testid="login-error">{errors.email}</p>}
         <button
+          data-testid="login-btn"
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
           >Continue</button
         >
