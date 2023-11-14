@@ -13,6 +13,7 @@ export default defineConfig({
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
+  timeout: 7 * 1000,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   // forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -24,12 +25,12 @@ export default defineConfig({
   /* Fail the build on CI if there are too many failures or flakes. */
   maxFailures: process.env.CI ? 4 : undefined,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  webServer: {
-    command: "npm run start",
-    port: 4321,
-    timeout: 60 * 1000,
-    reuseExistingServer: !process.env.CI,
-  },
+  // webServer: {
+  //   command: "npm run start",
+  //   port: 4321,
+  //   timeout: 60 * 1000,
+  //   reuseExistingServer: !process.env.CI,
+  // },
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL,
