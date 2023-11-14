@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
 test.describe("Login Form", () => {
-  test("should send otp, redirect to login-code if given a valid email address", async ({
+  test.only("should send otp, redirect to login-code if given a valid email address", async ({
     page,
   }) => {
     await page.goto("/login");
+    expect(page.url()).toContain("goodpluck.pages.dev/login");
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
     await expect(
