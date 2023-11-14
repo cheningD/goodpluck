@@ -23,7 +23,7 @@ jobs:
         uses: tj-actions/branch-names@v7
       - name: Run Playwright tests
         env:
-          BASE_URL: "https://$(echo '${{ steps.branch-name.outputs.current_branch }}' | sed 's/[^a-zA-Z0-9]/-/g').goodpluck.pages.dev"
+          BASE_URL: $(echo "https://"$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g')".goodpluck.pages.dev")
         run: echo $BASE_URL && npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
