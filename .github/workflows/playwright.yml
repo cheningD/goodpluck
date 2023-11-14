@@ -27,6 +27,18 @@ jobs:
         uses: tj-actions/branch-names@v7
       - name: echo branch url
         run: echo "https://${{ steps.branch-name.outputs.current_branch }}.goodpluck.pages.dev"
+      - name: cloudflare-preview-url
+        uses: zentered/cloudflare-preview-url@v1.0.0
+        id: cloudflare_preview_url
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_EMAIL: ${{ secrets.CLOUDFLARE_ACCOUNT_EMAIL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        with:
+          cloudflare_project_id: "repo-name"
+          wait_until_ready: true
+      - name: Get URL
+        run: echo "https://${{ steps.cloudflare_preview_url.outputs.preview_url }}"
       - name: Run Playwright tests
         env:
           BASE_URL: "https://${{ steps.branch-name.outputs.current_branch }}.goodpluck.pages.dev"
