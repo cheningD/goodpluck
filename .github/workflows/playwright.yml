@@ -26,7 +26,7 @@ jobs:
         run: echo "BASE_URL=https://$(echo '${{ steps.branch-name.outputs.current_branch }}' | sed 's/[^a-zA-Z0-9]/-/g').goodpluck.pages.dev" >> $GITHUB_ENV
       - name: Run Playwright tests
         env:
-          BASE_URL: ${{ steps.set_base_url.outputs.BASE_URL }}
+          BASE_URL: $(echo "https://"$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g')".goodpluck.pages.dev")
         run: echo $BASE_URL && npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
