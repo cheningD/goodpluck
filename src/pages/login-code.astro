@@ -236,6 +236,7 @@ if (Astro.request.method === "POST") {
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       var cooldownTimerCookie = getCookie("otp_resend_cooldown_time");
+      console.log("cooldownTimerCookie", cooldownTimerCookie);
       if (cooldownTimerCookie) {
         var expirationTime = new Date(parseInt(cooldownTimerCookie));
         var currentTime = new Date();
@@ -260,7 +261,7 @@ if (Astro.request.method === "POST") {
       if (parts.length === 2) {
         const cookiePart = parts.pop();
         if (cookiePart) {
-          return cookiePart.split("").shift();
+          return cookiePart.split(";").shift();
         }
       }
       return undefined;
