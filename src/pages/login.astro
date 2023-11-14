@@ -6,6 +6,10 @@ import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
 import { stytch } from "../lib/stytch";
 
+import { Logtail } from "@logtail/edge";
+const logtailSourceToken = import.meta.env.LOGTAIL_SOURCE_TOKEN;
+export const baseLogger = new Logtail(logtailSourceToken);
+
 // Initialize error state
 const errors = { email: "" };
 
@@ -35,11 +39,14 @@ if (Astro.request.method === "POST") {
           err.error_type === "email_not_found"
         ) {
           errors.email = "Email not found. Do you need to create an account?";
+          console.info(errors.email);
         } else {
           errors.email = `Unknown error, please try again later. ${JSON.stringify(
             err,
           )}`;
-          throw err;
+          console.error(err);
+          console.log(errors.email);
+          baseLogger.error(errors.email);
         }
       }
     }
