@@ -17,7 +17,6 @@ jobs:
         run: npm install
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - run: sleep 30
       - name: cloudflare-preview-url
         uses: zentered/cloudflare-preview-url@v1.0.0
         id: cloudflare_preview_url
