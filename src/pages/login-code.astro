@@ -3,7 +3,7 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import { stytch } from "../lib/stytch";
+import { stytchclient } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 // Initialize error state
@@ -27,7 +27,7 @@ if (Astro.request.method === "POST") {
     } else {
       // Make stytch API call and handle errors within the same try-catch block
       try {
-        const resp = await stytch.otps.authenticate({
+        const resp = await stytchclient.otps.authenticate({
           code,
           method_id,
           session_duration_minutes,

@@ -13,13 +13,18 @@ Run these commands from the project root: You wull need to install _pnpm_ which 
 | `pnpm install`             | Installs dependencies                       |
 | `pnpm run dev`             | Starts local dev server at `localhost:4321` |
 | `pnpm run build`           | Builds production site to `./dist/`         |
-| `pnpm run preview`         | Previews build locally before deployment    |
+| `pnpm run preview`         | Previews build locally using cloudflare     |
 | `pnpm run astro ...`       | Executes Astro CLI commands                 |
 | `pnpm run astro -- --help` | Astro CLI help                              |
 
-## Deployment
+## Local Deployment
 
-Cloudflare automatically deploys each commit.
+Cloudflare automatically deploys each commit on every push
+**To deploy locally in a production-like environment**
+
+- Create a `.dev.vars` file that matches your `.env` in the project root, to give cloudflare access to your env vars.
+- `pnpm run build` to create a production build of the app
+- `pnpm run preview`
 
 ## Workflow for Handling Tasks in This Repository:
 
