@@ -1,0 +1,33 @@
+on: [push]
+
+jobs:
+  publish_and_test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    name: Publish to Cloudflare Pages and run E2E tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Astro Project
+        run: pnpm run build
+
+      - name: Publish to Cloudflare Pages
+        id: publish
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: b8cd4cd6c22746871556c8214a712815
+          projectName: goodpluck
+          directory: ./dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Playwright E2E Tests
+        env:
+          BASE_URL: ${{ steps.publish.outputs.url }}
+        run: npx playwright test

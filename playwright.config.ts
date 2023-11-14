@@ -22,7 +22,7 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: "html",
   /* Fail the build on CI if there are too many failures or flakes. */
-  maxFailures: process.env.CI ? 1 : undefined,
+  maxFailures: process.env.CI ? 4 : undefined,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   webServer: {
     command: "npm run start",
@@ -32,7 +32,7 @@ export default defineConfig({
   },
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "http://localhost:4321",
+    baseURL: process.env.BASE_URL || "http://localhost:4321",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
