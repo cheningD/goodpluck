@@ -4,7 +4,7 @@ import sentry from "@sentry/astro";
 import solid from "@astrojs/solid-js";
 import tailwind from "@astrojs/tailwind";
 
-const SENTRY_AUTH_TOKEN = "process.env.SENTRY_AUTH_TOKEN";
+const SENTRY_AUTH_TOKEN = "import.meta.env.SENTRY_AUTH_TOKEN";
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,14 +18,13 @@ export default defineConfig({
         authToken: SENTRY_AUTH_TOKEN,
         org: "goodpluck",
       },
-      debug: true,
     }),
   ],
   output: "server",
   adapter: cloudflare(),
   vite: {
     define: {
-      "process.env.SENTRY_AUTH_TOKEN": process.env.SENTRY_AUTH_TOKEN,
+      "import.meta.env.SENTRY_AUTH_TOKEN": import.meta.env.SENTRY_AUTH_TOKEN,
     },
   },
 });

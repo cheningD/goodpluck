@@ -15,25 +15,25 @@ export default defineConfig({
   fullyParallel: true,
   timeout: 7 * 1000,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  // forbidOnly: !!process.env.CI,
+  // forbidOnly: !!import.meta.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 0 : 0,
+  retries: import.meta.env.CI ? 0 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : 4,
+  workers: import.meta.env.CI ? 1 : 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: "html",
   /* Fail the build on CI if there are too many failures or flakes. */
-  maxFailures: process.env.CI ? 4 : undefined,
+  maxFailures: import.meta.env.CI ? 4 : undefined,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   // webServer: {
   //   command: "npm run start",
   //   port: 4321,
   //   timeout: 60 * 1000,
-  //   reuseExistingServer: !process.env.CI,
+  //   reuseExistingServer: !import.meta.env.CI,
   // },
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.BASE_URL,
+    baseURL: import.meta.env.BASE_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
@@ -81,6 +81,6 @@ export default defineConfig({
   // webServer: {
   //   command: 'npm run start',
   //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
+  //   reuseExistingServer: !import.meta.env.CI,
   // },
 });
