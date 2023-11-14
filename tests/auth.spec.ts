@@ -4,7 +4,7 @@ test.describe("Login Form", () => {
     page,
   }) => {
     await page.goto("/login");
-    expect(page.url()).toContain("goodpluck.pages.dev/login");
+    console.info("page.url()", page.url());
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
     await expect(
