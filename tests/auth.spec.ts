@@ -31,7 +31,12 @@ test.describe("Validate Login Code", () => {
 
   test("should set session to localstorage, and redirect to #basket given valid code", async ({
     page,
+    browserName,
   }) => {
+    test.skip(
+      browserName === "webkit",
+      "Safari wont let you set a cookie on localhost without https",
+    );
     await page.getByTestId("otp-input").fill("000000");
     await page.getByTestId("submit-login-code-btn").click();
     await expect(page.url()).toContain("/#basket");
@@ -51,7 +56,10 @@ test.describe("Validate Login Code", () => {
     await expect(sessionCookie?.sameSite).toBe("Lax");
   });
 
-  test("should throw error if not valid code", async ({ page }) => {
+  test("should throw error if not valid code", async ({
+    page,
+    browserName,
+  }) => {
     await page.getByTestId("otp-input").fill("900900"); //Code is invalid
 
     await page.getByTestId("submit-login-code-btn").click();

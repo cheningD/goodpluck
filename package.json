@@ -7,6 +7,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "test:e2e": "pnpm exec playwright test --project=chromium",
+    "format": "prettier --write .",
     "preview": "wrangler pages dev --compatibility-date=2023-11-13 ./dist",
     "astro": "astro",
     "prepare": "husky install"
