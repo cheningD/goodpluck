@@ -21,9 +21,10 @@ jobs:
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v7
+      - name: Set BASE_URL
+        id: set_base_url
+        run: echo "BASE_URL=https://$(echo '${{ steps.branch-name.outputs.current_branch }}' | sed 's/[^a-zA-Z0-9]/-/g').goodpluck.pages.dev" >> $GITHUB_ENV
       - name: Run Playwright tests
-        env:
-          BASE_URL: $(echo "https://"$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g')".goodpluck.pages.dev")
         run: echo $BASE_URL && npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
