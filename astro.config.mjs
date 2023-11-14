@@ -14,7 +14,9 @@ export default defineConfig({
       sourceMapsUploadOptions: {
         project: "javascript-astro",
         authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: "goodpluck",
       },
+      debug: true,
     }),
   ],
   output: "server",
