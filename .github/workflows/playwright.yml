@@ -37,10 +37,10 @@ jobs:
         with:
           cloudflare_project_id: "repo-name"
       - name: Get URL
-        run: echo "https://${{ steps.cloudflare_preview_url.outputs.preview_url }}"
+        run: echo "https://${{ steps.cloudflare_preview_url.outputs.preview_url }}" | sed 's/[^a-zA-Z0-9]/-/g'
       - name: Run Playwright tests
         env:
-          BASE_URL: "https://${{ steps.branch-name.outputs.current_branch }}.goodpluck.pages.dev"
+          BASE_URL: $(echo "https://${{ steps.branch-name.outputs.current_branch }}.goodpluck.pages.dev" | sed 's/[^a-zA-Z0-9]/-/g')
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
