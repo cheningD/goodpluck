@@ -18,7 +18,6 @@
     "@astrojs/tailwind": "^5.0.2",
     "@motionone/solid": "^10.16.4",
     "@nanostores/solid": "^0.4.2",
-    "@sentry/astro": "^7.80.0",
     "astro": "^3.3.4",
     "nanostores": "^0.9.4",
     "solid-js": "^1.8.3",
