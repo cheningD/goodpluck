@@ -7,6 +7,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "wrangler pages dev ----compatibility-date 2023-11-14 --env development ./dist",
+    "test:e2e": " astro build && pnpm exec playwright test",
     "astro": "astro",
     "prepare": "husky install"
   },
@@ -26,6 +27,8 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.9.0",
     "husky": "^8.0.0",
     "lint-staged": "^15.1.0",
     "prettier": "^3.1.0",

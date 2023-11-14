@@ -1,6 +1,4 @@
-import stytch from "stytch";
-
-export const prerender = false;
+import * as stytch from "stytch";
 
 if (!process.env.STYTCH_PROJECT_ID) {
   throw new Error("Missing STYTCH_PROJECT_ID env var");
@@ -16,7 +14,9 @@ const client = new stytch.Client({
 });
 
 // Stytch is currently broken in cloudflare runtime so we use this patch
-const cl = client as any;
+/* eslint-disable */
+const cl = <any>client;
+/* eslint-enable */
 cl.fetchConfig.cache = undefined;
 
 export const stytchclient = client;

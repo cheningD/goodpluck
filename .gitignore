@@ -18,5 +18,11 @@ pnpm-debug.log*
 .env.production
 .dev.vars
 
+.wrangler/
+
 # macOS-specific files
 .DS_Store
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

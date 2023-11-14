@@ -65,7 +65,11 @@ By following these guidelines, we maintain a clear and efficient process for tas
 
 ## Testing
 
-_[Todo]_ We will use Playwright for high-level automated tests.
+- Use [Playwright](https://playwright.dev/docs/running-tests) to write end-to-end (e2e) tests for critical user paths, like authentication.
+- E2e tests, despite being slower and less stable than unit tests, are crucial for ensuring the reliability of critical user journeys.
+- See example e2e tests in ./test-examples
+
+- Todo: Use Vitest to unit test complex functions, like date manipulation
 
 ## Contribution Guidelines
 
