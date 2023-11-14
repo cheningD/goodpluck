@@ -12,21 +12,16 @@ const errors = { code: "", general: "", email: "" };
 const url = new URL(Astro.request.url);
 let method_id = url.searchParams.get("method_id");
 
-function getEmailFromToken(token: string) {
+const getEmailFromToken = (token: string): string | null => {
   const secretKey = import.meta.env.OTP_JWT_SECRET_KEY;
   try {
     const decoded = jwt.verify(token, secretKey);
-    if (typeof decoded === "string") {
-      return decoded;
-    } else if (decoded.email) {
-      return decoded.email;
-    } else {
-      return null;
-    }
+    return typeof decoded === "string" ? decoded : decoded.email || null;
   } catch (error) {
-    return null;
+    // Throw a specific error for token expiration (after 15 minutes) or validation failure
+    throw new Error("TokenExpired");
   }
-}
+};
 
 const canResendOTP = () => {
   const token = Astro.cookies.get("otp_resend_cooldown_time")?.value;
@@ -34,18 +29,15 @@ const canResendOTP = () => {
 };
 
 // Function to send OTP
-async function sendOTP(email: string) {
+const sendOTP = async (email: string) => {
   if (canResendOTP()) {
     try {
       const resp = await stytchclient.otps.email.send({
         email,
         expiration_minutes: 10,
       });
-      // const resp = {
-      //   msg: "success",
-      // }
 
-      console.log(`OTP sent: ${resp}`);
+      method_id = resp.email_id;
 
       // Used to prevent spamming the resend button
       const expirationTimestamp = Date.now() + 60 * 1000;
@@ -74,23 +66,43 @@ async function sendOTP(email: string) {
       errors.general = "Error sending the code. Please try again later.";
     }
   } else {
-    // errors.general = "You can only request a new code once every 60 seconds.";
+    console.error("You can only request a new code once every 60 seconds.");
   }
-}
+};
 
 // Handle POST request for both OTP submission and resend OTP request
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
 
   if (data.has("resend")) {
-    // Retrieve the token securely from astro cookies
-    const token = Astro.cookies.get("email_secure_token")?.value;
-    const userEmail = getEmailFromToken(token as string);
+    try {
+      // Retrieve the token securely from astro cookies
+      const token = Astro.cookies.get("email_secure_token")?.value;
+      const userEmail = getEmailFromToken(token as string);
 
-    if (userEmail) {
-      await sendOTP(userEmail);
-    } else {
-      errors.general = "Unable to resend the code without an email address.";
+      if (userEmail) {
+        await sendOTP(userEmail);
+      } else {
+        errors.general = "Unable to resend the code without an email address.";
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message === "TokenExpired") {
+        // Set the error message in a cookie
+        Astro.cookies.set(
+          "auth_message",
+          "Session expired. Please try again.",
+          {
+            path: "/",
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+          },
+        );
+
+        return Astro.redirect("/login");
+      } else {
+        console.error(error);
+      }
     }
   } else {
     try {
@@ -134,7 +146,6 @@ if (Astro.request.method === "POST") {
           Astro.cookies.delete("email_secure_token");
           Astro.cookies.delete("otp_resend_cooldown_time");
 
-          console.log(resp);
           return Astro.redirect("/");
         }
       }
@@ -205,7 +216,7 @@ if (Astro.request.method === "POST") {
         <input type="hidden" name="resend" value="true" />
         <p class="mt-6 text-sm text-center text-gray-600" id="resend-text">
           Didn't receive the code?
-          <span id="countdown-timer" style="display: none;">
+          <span id="countdown-timer" style="display: none">
             You can resend the OTP in <span class="text-orange-500"
               ><span id="timer"></span> seconds</span
             >
@@ -244,12 +255,12 @@ if (Astro.request.method === "POST") {
     });
 
     const getCookie = (name: string): string | undefined => {
-      const value = "; " + document.cookie;
-      const parts = value.split("; " + name + "=");
+      const value = " " + document.cookie;
+      const parts = value.split(" " + name + "=");
       if (parts.length === 2) {
         const cookiePart = parts.pop();
         if (cookiePart) {
-          return cookiePart.split(";").shift();
+          return cookiePart.split("").shift();
         }
       }
       return undefined;
@@ -259,7 +270,7 @@ if (Astro.request.method === "POST") {
       var timer = duration;
       updateTimerDisplay(timer); // Update the display with the initial duration
 
-      var countdownInterval = setInterval(function () {
+      var countdownInterval = setInterval(() => {
         timer--; // Decrement the timer
         updateTimerDisplay(timer); // Update the display after decrement
 

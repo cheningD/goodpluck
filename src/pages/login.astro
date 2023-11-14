@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 import jwt from "jsonwebtoken";
 
 // Initialize error state
-const errors = { email: "" };
+const errors = { email: "", general: "" };
 
 // Delete auth cookies
 Astro.cookies.delete("email_secure_token");
@@ -28,7 +28,7 @@ if (Astro.request.method === "POST") {
           email,
           expiration_minutes: 10,
         });
-        console.log(resp);
+
         // Generate a token from the email
         const token = generateTokenFromEmail(email);
         Astro.cookies.set("email_secure_token", token, {
@@ -39,20 +39,22 @@ if (Astro.request.method === "POST") {
         });
         return Astro.redirect("/login-code?method_id=" + resp.email_id);
       } catch (err) {
-        console.log(err);
+        console.error(err);
         if (
           err instanceof StytchError &&
           err.error_type === "email_not_found"
         ) {
           errors.email = "Email not found. Do you need to create an account?";
         } else {
-          errors.email = "Unknown error, please try again later.";
+          errors.general = "Unexpected error occurred, please try again later.";
         }
       }
     }
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
+      errors.general =
+        "A network error or unexpected issue occurred, please try again later.";
     }
   }
 }
@@ -67,9 +69,9 @@ async function isSessionValid() {
       return true; // Session is valid
     } catch (e) {
       if (e instanceof Error) {
-        console.log("Session token invalid:", e.message);
+        console.error("Session token invalid:", e.message);
       } else {
-        console.log("An unexpected error occurred");
+        console.error("An unexpected error occurred");
       }
     }
   }
@@ -104,6 +106,13 @@ if (await isSessionValid()) {
         Welcome back! Enter your email to log in.
       </p>
       <form method="POST">
+        {
+          errors.general && (
+            <p class="mb-4 text-sm font-medium text-red-600 bg-red-50 p-2 rounded border border-red-500">
+              {errors.general}
+            </p>
+          )
+        }
         <label
           for="email"
           class={`block text-sm font-medium mb-2 ${

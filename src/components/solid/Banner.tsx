@@ -1,10 +1,14 @@
-import { createSignal, onMount } from "solid-js"
-import { useStore } from "@nanostores/solid"
-import { isCartOpen } from "../../store"
+import { createSignal } from "solid-js";
+import { useStore } from "@nanostores/solid";
+import { isCartOpen } from "../../store";
 
-export default function Banner({ isLoggedIn }) {
-  const $isCartOpen = useStore(isCartOpen)
-  const [isUserLoggedIn, setIsUserLoggedIn] = createSignal(isLoggedIn)
+interface BannerProps {
+  readonly isLoggedIn: boolean;
+}
+
+export default function Banner({ isLoggedIn }: BannerProps) {
+  const $isCartOpen = useStore(isCartOpen);
+  const [isUserLoggedIn, setIsUserLoggedIn] = createSignal(isLoggedIn);
 
   return (
     <div>
@@ -31,5 +35,5 @@ export default function Banner({ isLoggedIn }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
