@@ -58,6 +58,7 @@ if (Astro.request.method === "POST") {
         } else {
           errors.code = `Unknown error: ${JSON.stringify(err)}`;
         }
+        console.log("Login code error", errors.code);
       }
     }
   } catch (error) {
