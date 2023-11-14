@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 test.describe("Login Form", () => {
   test("should send otp, redirect to login-code if given a valid email address", async ({
     page,
@@ -39,7 +39,7 @@ test.describe("Validate Login Code", () => {
     );
     await page.getByTestId("otp-input").fill("000000");
     await page.getByTestId("submit-login-code-btn").click();
-    await expect(page.url()).toContain("/#basket");
+    expect(page.url()).toContain("/#basket");
     // This is the default OTP code for the sandbox user
     const cookies = await page.context().cookies();
     const sessionCookie = cookies.find(
@@ -47,23 +47,20 @@ test.describe("Validate Login Code", () => {
     );
     expect(sessionCookie).toBeDefined();
 
-    await expect(sessionCookie?.value).toBe(
+    expect(sessionCookie?.value).toBe(
       "WJtR5BCy38Szd5AfoDpf0iqFKEt4EE5JhjlWUY7l3FtY",
     ); // This is the default session token for the sandbox user
 
-    await expect(sessionCookie?.secure).toBeTruthy();
-    await expect(sessionCookie?.httpOnly).toBeTruthy();
-    await expect(sessionCookie?.sameSite).toBe("Lax");
+    expect(sessionCookie?.secure).toBeTruthy();
+    expect(sessionCookie?.httpOnly).toBeTruthy();
+    expect(sessionCookie?.sameSite).toBe("Lax");
   });
 
-  test("should throw error if not valid code", async ({
-    page,
-    browserName,
-  }) => {
+  test("should throw error if not valid code", async ({ page }) => {
     await page.getByTestId("otp-input").fill("900900"); //Code is invalid
 
     await page.getByTestId("submit-login-code-btn").click();
-    await expect(page.getByTestId("login-code-error")).toHaveText(
+    expect(page.getByTestId("login-code-error")).toHaveText(
       "Oops, code isn't valid. Please try again.",
     );
 
