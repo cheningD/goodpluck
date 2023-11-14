@@ -13,8 +13,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Get branch name
