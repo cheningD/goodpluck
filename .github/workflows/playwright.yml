@@ -1,9 +1,5 @@
 name: Playwright Tests
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+on: push
 jobs:
   test:
     timeout-minutes: 60
@@ -18,19 +14,17 @@ jobs:
         name: Install pnpm
         with:
           version: 8
-      - name: Install dependencies
-        run: pnpm install
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - name: Install dependencies and Playwright Browsers
+        run: |
+          pnpm install
+          npx playwright install --with-deps
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v7
-      - name: echo branch url
-        run: echo "https://${{ steps.branch-name.outputs.current_branch }}.goodpluck.pages.dev" | sed 's/[^a-zA-Z0-9]/-/g'
       - name: Run Playwright tests
         env:
-          BASE_URL: $(echo "https://${{ steps.branch-name.outputs.current_branch }}.goodpluck.pages.dev" | sed 's/[^a-zA-Z0-9]/-/g')
-        run: npx playwright test
+          BASE_URL: "https://$(echo '${{ steps.branch-name.outputs.current_branch }}' | sed 's/[^a-zA-Z0-9]/-/g').goodpluck.pages.dev"
+        run: echo $BASE_URL && npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
