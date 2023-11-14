@@ -36,7 +36,9 @@ if (Astro.request.method === "POST") {
         ) {
           errors.email = "Email not found. Do you need to create an account?";
         } else {
-          errors.email = "Unknown error, please try again later.";
+          errors.email = `Unknown error, please try again later. ${JSON.stringify(
+            err,
+          )}`;
         }
       }
     }
