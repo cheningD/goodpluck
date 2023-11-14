@@ -7,6 +7,13 @@ jobs:
       contents: read
       deployments: write
     name: Publish to Cloudflare Pages and run E2E tests
+    env:
+      STYTCH_PROJECT_ID: ${{ secrets.STYTCH_PROJECT_ID }}
+      STYTCH_PROJECT_SECRET: ${{ secrets.STYTCH_PROJECT_SECRET }}
+      SWELL_STORE_ID: ${{ secrets.SWELL_STORE_ID }}
+      SWELL_SECRET_KEY: ${{ secrets.SWELL_SECRET_KEY }}
+      MAPBOX_AUTOCOMPLETE_ACCESS_TOKEN: ${{ secrets.MAPBOX_AUTOCOMPLETE_ACCESS_TOKEN }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
