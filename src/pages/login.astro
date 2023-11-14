@@ -39,6 +39,7 @@ if (Astro.request.method === "POST") {
           errors.email = `Unknown error, please try again later. ${JSON.stringify(
             err,
           )}`;
+          throw err;
         }
       }
     }
