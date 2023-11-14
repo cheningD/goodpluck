@@ -50,12 +50,13 @@ if (Astro.request.method === "POST") {
         return Astro.redirect("/#basket");
       } catch (err) {
         console.log(err);
-        if (err instanceof StytchError) {
-          if (err.error_type === "otp_code_not_found") {
-            errors.code = "Oops, code isn't valid. Please try again.";
-          } else {
-            errors.code = "Unknown error, please reach out to us for help!";
-          }
+        if (
+          err instanceof StytchError &&
+          err.error_type === "otp_code_not_found"
+        ) {
+          errors.code = "Oops, code isn't valid. Please try again.";
+        } else {
+          errors.code = `Unknown error: ${JSON.stringify(err)}`;
         }
       }
     }
