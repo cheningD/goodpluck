@@ -146,7 +146,7 @@ if (Astro.request.method === "POST") {
           Astro.cookies.delete("email_secure_token");
           Astro.cookies.delete("otp_resend_cooldown_time");
 
-          return Astro.redirect("/");
+          return Astro.redirect("/#basket");
         }
       }
     } catch (error) {
@@ -155,7 +155,7 @@ if (Astro.request.method === "POST") {
       }
       if (error instanceof StytchError) {
         if (error.error_type === "otp_code_not_found") {
-          errors.code = "Oops, wrong passcode. Try again or request a new one!";
+          errors.code = "Oops, wrong passcode. Try again or request a new one.";
         } else {
           errors.code = "Unknown error, please reach out to us for help!"; // also when code is expired
         }
@@ -202,11 +202,17 @@ if (Astro.request.method === "POST") {
         />
         {
           errors.code && (
-            <p class="my-2 text-sm font-medium text-red-600">{errors.code}</p>
+            <p
+              id="login-code-error"
+              class="my-2 text-sm font-medium text-red-600"
+            >
+              {errors.code}
+            </p>
           )
         }
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
+          id="submit-login-code-btn"
           type="submit">Submit</button
         >
       </form>
@@ -217,9 +223,8 @@ if (Astro.request.method === "POST") {
         <p class="mt-6 text-sm text-center text-gray-600" id="resend-text">
           Didn't receive the code?
           <span id="countdown-timer" style="display: none">
-            You can resend the OTP in <span class="text-orange-500"
-              ><span id="timer"></span> seconds</span
-            >
+            You can resend the OTP in
+            <span id="timer" class="text-orange-500"></span>
           </span>
           <button
             id="resend-button"
@@ -288,7 +293,12 @@ if (Astro.request.method === "POST") {
         seconds < 10 ? "0" + seconds.toString() : seconds.toString();
       var timerElement = document.getElementById("timer");
       if (timerElement) {
-        timerElement.textContent = formattedSeconds;
+        // Handle singular and plural forms of "second"
+        var timeText =
+          seconds === 1
+            ? `${formattedSeconds} second`
+            : `${formattedSeconds} seconds`;
+        timerElement.textContent = timeText;
       }
     };
 
