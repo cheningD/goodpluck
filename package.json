@@ -37,5 +37,10 @@
     "prettier-plugin-astro": "^0.12.2",
     "wrangler": "^3.15.0",
     "@types/jsonwebtoken": "^9.0.5"
+  },
+  "browser": {
+    "util": false,
+    "crypto": false,
+    "stream": false
   }
 }

@@ -9,7 +9,9 @@ test.describe("Login Form", () => {
   });
 
   // Test to check redirect to OTP page on valid email
-  test("should send otp, redirect to login-code if given a valid email address", async ({ page }) => {
+  test("should send otp, redirect to login-code if given a valid email address", async ({
+    page,
+  }) => {
     await page.fill('input[type="email"]', "sandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
     await expect(page.locator('h2:has-text("OTP Verification")')).toBeVisible();
@@ -20,7 +22,9 @@ test.describe("Login Form", () => {
   test("should show error if email is invalid", async ({ page }) => {
     await page.fill('input[type="email"]', "NOTsandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
-    await expect(page.locator('text=Email not found. Do you need to create an account?')).toBeVisible();
+    await expect(
+      page.locator("text=Email not found. Do you need to create an account?"),
+    ).toBeVisible();
   });
 
   // Test to check error message for invalid email format
@@ -31,7 +35,10 @@ test.describe("Login Form", () => {
     // Check if the email input is in an invalid state
     const isInvalid = await page.evaluate(() => {
       const emailInput = document.querySelector('input[type="email"]');
-      return emailInput instanceof HTMLInputElement && emailInput.validity.valid === false;
+      return (
+        emailInput instanceof HTMLInputElement &&
+        emailInput.validity.valid === false
+      );
     });
 
     expect(isInvalid).toBeTruthy();
@@ -55,15 +62,21 @@ test.describe("Login Form", () => {
     // Step 4: Check if the user is shown a toast message
     const toastSelector = 'div[role="status"][aria-live="polite"]';
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText('Error, you are already logged in.');
+    await expect(page.locator(toastSelector)).toHaveText(
+      "Error, you are already logged in.",
+    );
   });
 
   // Test to check JWT token & email session token set in cookies on successful OTP request
-  test("should set a JWT token in cookies on successful otp request", async ({ page }) => {
+  test("should set a JWT token in cookies on successful otp request", async ({
+    page,
+  }) => {
     await page.fill('input[type="email"]', "sandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
     const cookies = await page.context().cookies();
-    const hasToken = cookies.some(cookie => cookie.name === 'email_secure_token' && cookie.value);
+    const hasToken = cookies.some(
+      (cookie) => cookie.name === "email_secure_token" && cookie.value,
+    );
     expect(hasToken).toBeTruthy();
   });
 
@@ -88,7 +101,7 @@ test.describe("Validate Login Code", () => {
       browserName === "webkit",
       "Safari wont let you set a cookie on localhost without https",
     );
-    await page.fill('#otp-input', '000000');
+    await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
     expect(page.url()).toContain("/#basket");
     // This is the default OTP code for the sandbox user
@@ -109,14 +122,20 @@ test.describe("Validate Login Code", () => {
     // Check for toast message
     const toastSelector = 'div[role="status"][aria-live="polite"]';
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText('Success, you are now logged in!');
+    await expect(page.locator(toastSelector)).toHaveText(
+      "Success, you are now logged in!",
+    );
   });
 
   // Test error handling for invalid OTP code
   test("should throw error if not valid code", async ({ page }) => {
-    await page.fill('#otp-input', '900900'); // invalid code
+    await page.fill("#otp-input", "900900"); // invalid code
     await page.click('button[id="submit-login-code-btn"]');
-    await expect(page.locator('text=Oops, wrong passcode. Try again or request a new one.')).toBeVisible();
+    await expect(
+      page.locator(
+        "text=Oops, wrong passcode. Try again or request a new one.",
+      ),
+    ).toBeVisible();
 
     const cookies = await page.context().cookies();
     const sessionCookie = cookies.find(
@@ -127,12 +146,12 @@ test.describe("Validate Login Code", () => {
 
   // Test error handling for invalid OTP code
   test("should show error for invalid OTP code format", async ({ page }) => {
-    await page.fill('#otp-input', 'invalid-code');
+    await page.fill("#otp-input", "invalid-code");
     await page.click('button[id="submit-login-code-btn"]');
 
     // Check if the code input is in an invalid state
     const inputIsFocused = await page.evaluate(() => {
-      const otpInput = document.getElementById('otp-input');
+      const otpInput = document.getElementById("otp-input");
       return document.activeElement === otpInput;
     });
 
@@ -155,18 +174,19 @@ test.describe("Validate Login Code", () => {
     expect(sessionCookie?.sameSite).toBe("Lax");
 
     // Check if the countdown timer is visible
-    const isCountdownTimerVisible = await page.isVisible('#countdown-timer');
+    const isCountdownTimerVisible = await page.isVisible("#countdown-timer");
     expect(isCountdownTimerVisible).toBeTruthy();
 
     // Wait for 60 seconds
     await page.waitForTimeout(65000);
 
     // Check if the countdown timer is no longer visible
-    const isCountdownTimerVisibleAfterCooldown = await page.isVisible('#countdown-timer');
+    const isCountdownTimerVisibleAfterCooldown =
+      await page.isVisible("#countdown-timer");
     expect(isCountdownTimerVisibleAfterCooldown).toBeFalsy();
 
     // Check if the resend button is visible
-    const isResendButtonVisible = await page.isVisible('#resend-button');
+    const isResendButtonVisible = await page.isVisible("#resend-button");
     expect(isResendButtonVisible).toBeTruthy();
   });
 
@@ -192,7 +212,6 @@ test.describe("Logout", () => {
     // const toastSelector = 'div[role="status"][aria-live="polite"]';
     // await expect(page.locator(toastSelector)).toBeVisible();
     // await expect(page.locator(toastSelector)).toHaveText('Success, you are now logged out!');
-
     // // Check if the session cookie is deleted
     // const cookies = await page.context().cookies();
     // const sessionCookie = cookies.find(
@@ -202,14 +221,18 @@ test.describe("Logout", () => {
   });
 
   // Test to check if logged out user is redirected to login page on logout (w/ toast message)
-  test("should show error for users that are not logged in", async ({ page }) => {
+  test("should show error for users that are not logged in", async ({
+    page,
+  }) => {
     // 59cnLELtq5cFVS6uYK9f-pAWzBkhqZl8AvLhbhOvKNWw
     await page.goto(`${URL}/logout`);
     await expect(page).toHaveURL(`${URL}/`);
 
     const toastSelector = 'div[role="status"][aria-live="polite"]';
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText('Error, you are not logged in.');
+    await expect(page.locator(toastSelector)).toHaveText(
+      "Error, you are not logged in.",
+    );
   });
 
   // Test for general errors like network errors or unexpected errors.
@@ -218,7 +241,7 @@ test.describe("Logout", () => {
     await page.goto(`${URL}/login`);
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
-    await page.fill('#otp-input', '000000');
+    await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
 
     // Logout
@@ -227,6 +250,6 @@ test.describe("Logout", () => {
 
     const toastSelector = 'div[role="status"][aria-live="polite"]';
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText('Error logging out.');
+    await expect(page.locator(toastSelector)).toHaveText("Error logging out.");
   });
 });
