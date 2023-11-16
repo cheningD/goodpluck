@@ -4,7 +4,7 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import { stytch } from "../lib/stytch";
+import { stytchclient } from "../lib/stytch";
 
 // Initialize error state
 const errors = { email: "" };
@@ -22,7 +22,7 @@ if (Astro.request.method === "POST") {
     } else {
       // Make stytch API call and handle errors within the same try-catch block
       try {
-        const resp = await stytch.otps.email.send({
+        const resp = await stytchclient.otps.email.send({
           email,
           expiration_minutes: 10,
         });
@@ -79,8 +79,9 @@ if (Astro.request.method === "POST") {
           required
           class="border rounded-md p-2 w-full mb-4"
         />
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p data-testid="login-error">{errors.email}</p>}
         <button
+          data-testid="login-btn"
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
           >Continue</button
         >

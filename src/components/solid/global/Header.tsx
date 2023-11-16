@@ -9,7 +9,7 @@ const Header: Component = (props) => {
   const $isMenuOpen = useStore(isMenuOpen);
   const [isSearchOpen, setSearchOpen] = createSignal(false);
   const toggleSearch = () => setSearchOpen(!isSearchOpen());
-  console.log("log from tSX", props.collections);
+  // console.log("log from tSX", props.collections);
   return (
     <>
       {/* <!-- ========== HEADER ========== --> */}

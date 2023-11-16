@@ -7,7 +7,7 @@ import IconsResolver from "unplugin-icons/resolver";
 import AutoImport from "unplugin-auto-import/vite";
 import solidPlugin from "vite-plugin-solid";
 
-// https://astro.build/config
+//https://astro.build/config
 export default defineConfig({
   integrations: [solid(), tailwind()],
   output: "server",

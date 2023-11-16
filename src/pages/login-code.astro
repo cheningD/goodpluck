@@ -3,7 +3,7 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import { stytch } from "../lib/stytch";
+import { stytchclient } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 // Initialize error state
@@ -27,7 +27,7 @@ if (Astro.request.method === "POST") {
     } else {
       // Make stytch API call and handle errors within the same try-catch block
       try {
-        const resp = await stytch.otps.authenticate({
+        const resp = await stytchclient.otps.authenticate({
           code,
           method_id,
           session_duration_minutes,
@@ -47,16 +47,15 @@ if (Astro.request.method === "POST") {
         }
 
         console.log(resp);
-        return Astro.redirect("/");
+        return Astro.redirect("/#basket");
       } catch (err) {
-        console.log(err);
-        if (err instanceof StytchError) {
-          if (err.error_type === "otp_code_not_found") {
-            errors.code =
-              "Oops, wrong passcode. Try again or request a new one!";
-          } else {
-            errors.code = "Unknown error, please reach out to us for help!";
-          }
+        if (
+          err instanceof StytchError &&
+          err.error_type === "otp_code_not_found"
+        ) {
+          errors.code = "Oops, code isn't valid. Please try again.";
+        } else {
+          errors.code = "Unknown error, please reach out to us for help!";
         }
       }
     }
@@ -86,22 +85,26 @@ if (Astro.request.method === "POST") {
   </body>
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Log in</h2>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+        Check your email!
+      </h2>
       <form method="POST">
         <label for="otp-input">Enter code</label>
         <input
           class="border rounded-md p-2 w-full mb-4"
           id="otp-input"
+          data-testid="otp-input"
           name="otp-input"
           autocomplete="one-time-code"
           inputmode="numeric"
           pattern="[0-9]*"
           required
         />
-        {errors.code && <p>{errors.code}</p>}
+        {errors.code && <p data-testid="login-code-error">{errors.code}</p>}
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
-          type="submit">Submit</button
+          type="submit"
+          data-testid="submit-login-code-btn">Submit</button
         >
       </form>
     </div>
