@@ -40,7 +40,9 @@ if (Astro.request.method === "POST") {
             httpOnly: true,
             secure: true,
             sameSite: "lax",
-            expires: new Date(Date.now() + session_duration_minutes * 60 * 1000),
+            expires: new Date(
+              Date.now() + session_duration_minutes * 60 * 1000,
+            ),
           });
         }
 
@@ -50,7 +52,8 @@ if (Astro.request.method === "POST") {
         console.log(err);
         if (err instanceof StytchError) {
           if (err.error_type === "otp_code_not_found") {
-            errors.code = "Oops, wrong passcode. Try again or request a new one!";
+            errors.code =
+              "Oops, wrong passcode. Try again or request a new one!";
           } else {
             errors.code = "Unknown error, please reach out to us for help!";
           }

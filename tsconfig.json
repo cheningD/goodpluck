@@ -8,10 +8,8 @@
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@layouts/*": ["src/layouts/*"],
-      "@assets/*": ["src/assets/*"],
+      "@assets/*": ["src/assets/*"]
     },
-    "types": [
-      "unplugin-icons/types/solid",
-    ]
+    "types": ["unplugin-icons/types/solid"]
   }
 }
