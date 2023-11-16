@@ -1,69 +1,306 @@
-import { createMemo, For, type Component } from "solid-js";
-import swell from "../../lib/swell.ts";
-import Products from "@components/solid/Products.tsx";
+import { type Component } from "solid-js";
 
-interface IProps {
-  collections: any;
-  currentCollection: any;
-  products: any;
-}
-
-const Category: Component<IProps> = ({
-  collections,
-  currentCollection,
-  products,
-}) => {
-  const currentCategory =
-    currentCollection != null
-      ? collections.find((col) => col.id == currentCollection.id)
-      : null;
-
-  const currentCategoryName =
-    currentCategory !== null ? currentCategory.name : "";
-
-  function getCurrentSubCategories() {
-    if (currentCollection == null) {
-      return [];
-    }
-    const subCategories = collections.filter(
-      (col) => col.parent_id == currentCollection.id,
-    );
-    if (subCategories) {
-      return subCategories;
-    }
-    return [];
-  }
-
+const Cart: Component = () => {
   return (
     <>
       <div id="sidebar-page" class="relative w-full h-auto py-5">
-        {/* Start Sidbar */}
-        <div class="grid grid-cols-5">
-          <div class="hidden  lg:flex flex-col items-start px-10">
-            <h2 class="text-xl font-medium dark:text-white">
-              {currentCategoryName}
-            </h2>
-            <ul class="sticky top-[114px]">
-              <For each={getCurrentSubCategories()}>
-                {(collection, i) => (
-                  <li>
+        {/* Start SpySidbar */}
+        <div class="grid grid-cols-4">
+          <div class="hidden  lg:flex flex-col items-center">
+            <h2 class="text-xl font-medium dark:text-white">Navbar</h2>
+            <ul
+              class="w-1/2 sticky top-[114px]"
+              data-hs-scrollspy="#scrollspy-2"
+              data-hs-scrollspy-scrollable-parent="#sidebar-page"
+            >
+              <li data-hs-scrollspy-group>
+                <a
+                  href="#item-1"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                >
+                  Item 1
+                </a>
+                <ul>
+                  <li class="ms-4">
                     <a
-                      href={`/market/${collection.slug}`}
-                      class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                      href="#item-1-1"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
                     >
-                      {collection.name}
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 1-1
                     </a>
                   </li>
-                )}
-              </For>
+                  <li class="ms-4">
+                    <a
+                      href="#item-1-2"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 1-2
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a
+                  href="#item-2"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                >
+                  Item 2
+                </a>
+              </li>
+              <li data-hs-scrollspy-group>
+                <a
+                  href="#item-3"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                >
+                  Item 3
+                </a>
+                <ul>
+                  <li class="ms-4">
+                    <a
+                      href="#item-3-1"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 3-1
+                    </a>
+                  </li>
+                  <li class="ms-4">
+                    <a
+                      href="#item-3-2"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 3-2
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li data-hs-scrollspy-group>
+                <a
+                  href="#item-4"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                >
+                  Item 4
+                </a>
+                <ul>
+                  <li class="ms-4">
+                    <a
+                      href="#item-4-1"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 4-1
+                    </a>
+                  </li>
+                  <li class="ms-4">
+                    <a
+                      href="#item-4-2"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 4-2
+                    </a>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </div>
 
-          <div class="col-span-4 px-4">
-            <Products products={products} />
+          <div class="col-span-3 px-4">
+            <div id="scrollspy-2" class="space-y-4">
+              <div id="item-1">
+                <h3 class="text-lg font-semibold dark:text-white">Item 1</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-1-1">
+                <h3 class="text-lg font-semibold dark:text-white">Item 1-1</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-1-2">
+                <h3 class="text-lg font-semibold dark:text-white">Item 1-2</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-2">
+                <h3 class="text-lg font-semibold dark:text-white">Item 2</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-3">
+                <h3 class="text-lg font-semibold dark:text-white">Item 3</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-3-1">
+                <h3 class="text-lg font-semibold dark:text-white">Item 3-1</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-3-2">
+                <h3 class="text-lg font-semibold dark:text-white">Item 3-2</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-4">
+                <h3 class="text-lg font-semibold dark:text-white">Item 4</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-4-1">
+                <h3 class="text-lg font-semibold dark:text-white">Item 4-1</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+
+              <div id="item-4-2">
+                <h3 class="text-lg font-semibold dark:text-white">Item 4-2</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  This is some placeholder content for the scrollspy page. Note
+                  that as you scroll down the page, the appropriate navigation
+                  link is highlighted. It's repeated throughout the component
+                  example. We keep adding some more example copy here to
+                  emphasize the scrolling and highlighting.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-        {/* End Sidbar */}
+        {/* End SpySidbar */}
 
         <div
           id="sidebar-mini"
@@ -150,4 +387,4 @@ const Category: Component<IProps> = ({
   );
 };
 
-export default Category;
+export default Cart;
