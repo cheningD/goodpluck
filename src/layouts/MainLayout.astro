@@ -1,0 +1,49 @@
+---
+import Header from "@components/solid/global/Header.tsx";
+import Services from "@components/solid/global/Services.tsx";
+import SecondaryNav from "@components/solid/SecondaryNav.tsx";
+import Footer from "@components/solid/global/Footer.tsx";
+import "@assets/styles/global.css";
+import favicon from "@assets/img/favicon.png";
+const { title, products, categories, alert } = Astro.props;
+import swell from "../lib/swell.ts";
+
+const items = await swell.get("/products", {
+  where: { active: true },
+  fields: "name,slug,kind",
+  limit: 1000,
+  page: 1,
+});
+
+const collections = await swell.get("/categories", {
+  where: { active: true },
+  // fields: "name,slug,kind",
+  limit: 50,
+  page: 1,
+});
+---
+
+<script define:vars={{ items, collections }}>
+  console.log("collections from Swell", collections);
+
+  console.log("items from Swell", items);
+</script>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href={favicon.src} />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} - Goodpluck</title>
+  </head>
+  <body class="flex flex-col">
+    <SecondaryNav client:load />
+    <Header collections={collections.results} client:load />
+    <Services />
+    <main class="w-full h-full flex flex-col max-w-7xl mx-auto">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline src="./node_modules/preline/dist/preline.js"></script>
+  </body>
+</html>

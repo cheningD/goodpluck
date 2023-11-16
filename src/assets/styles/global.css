@@ -3,11 +3,17 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'GitLabMono';
-    src: url(../../../node_modules/@gitlab/fonts/gitlab-mono/GitLabMono.woff2);
+  font-family: "GitLabMono";
+  src: url(../../../node_modules/@gitlab/fonts/gitlab-mono/GitLabMono.woff2);
 }
 
 @font-face {
-    font-family: 'GitLabSans';
-    src: url(../../../node_modules/@gitlab/fonts/gitlab-sans/GitLabSans.woff2);
+  font-family: "GitLabSans";
+  src: url(../../../node_modules/@gitlab/fonts/gitlab-sans/GitLabSans.woff2);
+}
+
+div[data-hs-overlay-backdrop-template] {
+  position: absolute;
+  top: 140px;
+  z-index: 100;
 }
