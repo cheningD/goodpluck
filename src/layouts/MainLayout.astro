@@ -8,12 +8,12 @@ import favicon from "@assets/img/favicon.png";
 const { title, products, categories, alert } = Astro.props;
 import swell from "../lib/swell.ts";
 
-const items = await swell.get("/products", {
-  where: { active: true },
-  fields: "name,slug,kind",
-  limit: 1000,
-  page: 1,
-});
+// const items = await swell.get("/products", {
+//   where: { active: true },
+//   fields: "name,slug,kind",
+//   limit: 1000,
+//   page: 1,
+// });
 
 const collections = await swell.get("/categories", {
   where: { active: true },
