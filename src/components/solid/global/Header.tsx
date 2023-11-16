@@ -3,7 +3,11 @@ import { createSignal, Show, For, type Component } from "solid-js";
 import logo from "@assets/logo.png";
 import { isCartOpen, isMenuOpen } from "../../../store.js";
 
-const Header: Component = (props) => {
+interface IProps {
+  collections: any
+}
+
+const Header: Component<IProps> = ({collections}) => {
   // read the store value with the `useStore` hook
   const $isCartOpen = useStore(isCartOpen);
   const $isMenuOpen = useStore(isMenuOpen);
@@ -13,7 +17,7 @@ const Header: Component = (props) => {
   return (
     <>
       {/* <!-- ========== HEADER ========== --> */}
-      <header class="w-full max-w-7xl mx-auto  sticky top-0 flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full bg-white text-sm py-3 lg:py-0 dark:bg-gray-800">
+      <header class="max-w-7xl mx-auto  sticky top-0 flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full bg-white text-sm py-3 lg:py-0 dark:bg-gray-800">
         <nav
           class="max-w-[85rem] w-full mx-auto px-4 lg:px-6 xl:px-8"
           aria-label="Global"
