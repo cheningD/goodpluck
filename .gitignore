@@ -27,3 +27,7 @@ pnpm-debug.log*
 /blob-report/
 /playwright/.cache/
 auto-imports.d.ts
+<<<<<<< HEAD
+=======
+auto-imports.d.ts
+>>>>>>> 9ec6dc8 (opt(project): Modify ignore file)
