@@ -1,11 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-const URL = "http://localhost:4321";
-
 // Testing Login Form
 test.describe("Login Form", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${URL}/login`);
+    await page.goto(`/login`);
   });
 
   // Test to check redirect to OTP page on valid email
@@ -45,19 +43,27 @@ test.describe("Login Form", () => {
   });
 
   // Test for already logged-in users
-  test("should redirect already logged-in users", async ({ page }) => {
+  test("should redirect already logged-in users", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit",
+      "Safari wont let you set a cookie on localhost without https",
+    );
     // Step 1: Login with valid credentials
-    await page.goto(`${URL}/login`);
+    await page.goto(`/login`);
     await page.fill('input[type="email"]', "sandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
     await page.fill('input[name="otp-input"]', "000000");
     await page.click('button[type="submit"]');
 
     // Step 2: Attempt to navigate to the login page again
-    await page.goto(`${URL}/login`);
+    await page.goto(`/login`);
+    await page.waitForTimeout(2000);
 
     // Step 3: Check if the user is redirected to the homepage
-    await expect(page).toHaveURL(`${URL}/`);
+    await expect(page).toHaveURL(`/`);
 
     // Step 4: Check if the user is shown a toast message
     const toastSelector = 'div[role="status"][aria-live="polite"]';
@@ -70,9 +76,15 @@ test.describe("Login Form", () => {
   // Test to check JWT token & email session token set in cookies on successful OTP request
   test("should set a JWT token in cookies on successful otp request", async ({
     page,
+    browserName
   }) => {
+    test.skip(
+      browserName === "webkit",
+      "Safari wont let you set a cookie on localhost without https",
+    );
     await page.fill('input[type="email"]', "sandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
+    await page.waitForTimeout(2000);
     const cookies = await page.context().cookies();
     const hasToken = cookies.some(
       (cookie) => cookie.name === "email_secure_token" && cookie.value,
@@ -87,7 +99,7 @@ test.describe("Login Form", () => {
 test.describe("Validate Login Code", () => {
   test.beforeEach(async ({ page }) => {
     // OTP Login with Valid Email
-    await page.goto(`${URL}/login`);
+    await page.goto(`/login`);
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
   });
@@ -159,7 +171,14 @@ test.describe("Validate Login Code", () => {
   });
 
   // Test resending OTP code & error handling for too many requests
-  test("should allow resending OTP code after 60 seconds", async ({ page }) => {
+  test("should allow resending OTP code after 60 seconds", async ({
+    page,
+    browserName
+  }) => {
+    test.skip(
+      browserName === "webkit",
+      "Safari wont let you set a cookie on localhost without https",
+    );
     test.setTimeout(120000);
     await page.click('button[id="resend-button"]');
 
@@ -196,7 +215,7 @@ test.describe("Validate Login Code", () => {
     // test.setTimeout(1000000);
     // await page.waitForTimeout(905000);
     // await page.click('button[id="resend-button"]');
-    // await expect(page).toHaveURL(`${URL}/login`);
+    // await expect(page).toHaveURL(`/login`);
   });
 
   // TODO: Test for general errors like network errors or unexpected errors.
@@ -208,7 +227,7 @@ test.describe("Logout", () => {
   test("should successfully logout user", async ({ page }) => {
     // ! Can't seem to logout using the Stytch sandbox user but here's the test for it
     // Check if the user is redirected to the homepage with a toast message
-    // await page.goto(`${URL}/logout`);
+    // await page.goto(`/logout`);
     // const toastSelector = 'div[role="status"][aria-live="polite"]';
     // await expect(page.locator(toastSelector)).toBeVisible();
     // await expect(page.locator(toastSelector)).toHaveText('Success, you are now logged out!');
@@ -223,10 +242,15 @@ test.describe("Logout", () => {
   // Test to check if logged out user is redirected to login page on logout (w/ toast message)
   test("should show error for users that are not logged in", async ({
     page,
+    browserName
   }) => {
-    // 59cnLELtq5cFVS6uYK9f-pAWzBkhqZl8AvLhbhOvKNWw
-    await page.goto(`${URL}/logout`);
-    await expect(page).toHaveURL(`${URL}/`);
+    test.skip(
+      browserName === "webkit",
+      "Safari wont let you set a cookie on localhost without https",
+    );
+    await page.goto(`/logout`);
+    await page.waitForTimeout(2000);
+    await expect(page).toHaveURL(`/`);
 
     const toastSelector = 'div[role="status"][aria-live="polite"]';
     await expect(page.locator(toastSelector)).toBeVisible();
@@ -236,17 +260,25 @@ test.describe("Logout", () => {
   });
 
   // Test for general errors like network errors or unexpected errors.
-  test("should show error for logging out", async ({ page }) => {
+  test("should show error for logging out", async ({
+    page,
+    browserName
+  }) => {
+    test.skip(
+      browserName === "webkit",
+      "Safari wont let you set a cookie on localhost without https",
+    );
     // OTP Login with Valid Email
-    await page.goto(`${URL}/login`);
+    await page.goto(`/login`);
+    await page.waitForTimeout(2000);
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
 
     // Logout
-    await page.goto(`${URL}/logout`);
-    await expect(page).toHaveURL(`${URL}/`);
+    await page.goto(`/logout`);
+    await expect(page).toHaveURL(`/`);
 
     const toastSelector = 'div[role="status"][aria-live="polite"]';
     await expect(page.locator(toastSelector)).toBeVisible();

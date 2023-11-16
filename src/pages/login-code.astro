@@ -3,7 +3,7 @@ import { stytchclient } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 import Layout from "../layouts/Layout.astro";
-import jwt from "jsonwebtoken";
+import { jwtVerify, SignJWT } from "jose";
 
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
@@ -12,14 +12,23 @@ const errors = { code: "", general: "", email: "" };
 const url = new URL(Astro.request.url);
 let method_id = url.searchParams.get("method_id");
 
-const getEmailFromToken = (token: string): string | null => {
-  const secretKey = import.meta.env.OTP_JWT_SECRET_KEY;
+const getEmailFromToken = async (token: string): Promise<string | null> => {
+  const secretKey =
+    import.meta.env.OTP_JWT_SECRET_KEY ?? process.env.OTP_JWT_SECRET_KEY;
   try {
-    const decoded = jwt.verify(token, secretKey);
-    return typeof decoded === "string" ? decoded : decoded.email || null;
+    const { payload } = await jwtVerify(
+      token,
+      new TextEncoder().encode(secretKey),
+    );
+
+    // Check if email exists and is a string
+    if (payload && typeof payload.email === "string") {
+      return payload.email;
+    }
+    return null;
   } catch (error) {
-    // Throw a specific error for token expiration (after 15 minutes) or validation failure
-    throw new Error("TokenExpired");
+    // Adjust error handling as needed
+    throw new Error("InvalidToken");
   }
 };
 
@@ -78,7 +87,7 @@ if (Astro.request.method === "POST") {
     try {
       // Retrieve the token securely from astro cookies
       const token = Astro.cookies.get("email_secure_token")?.value;
-      const userEmail = getEmailFromToken(token as string);
+      const userEmail = await getEmailFromToken(token as string);
 
       if (userEmail) {
         await sendOTP(userEmail);
@@ -163,6 +172,37 @@ if (Astro.request.method === "POST") {
     }
   }
 }
+
+// Function to check if the user's session is valid
+async function isSessionValid() {
+  const session_token = Astro.cookies.get("gp_session_token")?.value;
+  if (session_token) {
+    try {
+      // Verify the session token with Stytch
+      await stytchclient.sessions.authenticate({ session_token });
+      return true; // Session is valid
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error("Session token invalid:", e.message);
+      } else {
+        console.error("An unexpected error occurred");
+      }
+    }
+  }
+  return false; // No valid session token found
+}
+
+// Redirect authenticated users away from login page
+if (await isSessionValid()) {
+  Astro.cookies.set("auth_message", "Error, you are already logged in.", {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+  });
+
+  return Astro.redirect("/");
+}
 ---
 
 <Layout>
@@ -241,7 +281,6 @@ if (Astro.request.method === "POST") {
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       var cooldownTimerCookie = getCookie("otp_resend_cooldown_time");
-      console.log("cooldownTimerCookie", cooldownTimerCookie);
       if (cooldownTimerCookie) {
         var expirationTime = new Date(parseInt(cooldownTimerCookie));
         var currentTime = new Date();
