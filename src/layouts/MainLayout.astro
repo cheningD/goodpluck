@@ -22,12 +22,12 @@ const collections = await swell.get("/categories", {
   page: 1,
 });
 ---
+
 <script define:vars={{ items, collections }}>
-console.log('collections from Swell', collections)
+  console.log("collections from Swell", collections);
 
-
-console.log('items from Swell', items)
-  </script>
+  console.log("items from Swell", items);
+</script>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -41,7 +41,7 @@ console.log('items from Swell', items)
     <Header collections={collections.results} client:load />
     <Services />
     <main class="w-full h-full flex flex-col max-w-7xl mx-auto">
-      <slot/>
+      <slot />
     </main>
     <Footer />
     <script is:inline src="./node_modules/preline/dist/preline.js"></script>
