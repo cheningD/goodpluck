@@ -3,46 +3,21 @@ import { createSignal, Show, For, type Component } from "solid-js";
 import logo from "@assets/logo.png";
 import { isCartOpen, isMenuOpen } from "../../../store.js";
 
-<<<<<<< HEAD
 interface IProps {
-  collections: any;
+  collections: any
 }
 
-const Header: Component<IProps> = ({ collections }) => {
-=======
-const Header: Component = (props) => {
->>>>>>> ab371f4 (opt(project): Add missing changes after cleanup)
+const Header: Component<IProps> = ({collections}) => {
   // read the store value with the `useStore` hook
   const $isCartOpen = useStore(isCartOpen);
   const $isMenuOpen = useStore(isMenuOpen);
   const [isSearchOpen, setSearchOpen] = createSignal(false);
-<<<<<<< HEAD
-
-  const toggleSearch = () => setSearchOpen(!isSearchOpen());
-
-  const categories = collections.filter((col) => col.parent_id == null);
-
-  function getSubCategories(parentId) {
-    const categories = collections.filter((col) => col.parent_id == parentId);
-
-    if (categories) {
-      return categories;
-    }
-    return [];
-  }
-
-  return (
-    <>
-      {/* <!-- ========== HEADER ========== --> */}
-      <header class="max-w-7xl mx-auto  sticky top-0 flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full bg-white text-sm py-3 lg:py-0 dark:bg-gray-800">
-=======
   const toggleSearch = () => setSearchOpen(!isSearchOpen());
   console.log("log from tSX", props.collections);
   return (
     <>
       {/* <!-- ========== HEADER ========== --> */}
-      <header class="w-full max-w-7xl mx-auto  sticky top-0 flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full bg-white text-sm py-3 lg:py-0 dark:bg-gray-800">
->>>>>>> ab371f4 (opt(project): Add missing changes after cleanup)
+      <header class="max-w-7xl mx-auto  sticky top-0 flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full bg-white text-sm py-3 lg:py-0 dark:bg-gray-800">
         <nav
           class="max-w-[85rem] w-full mx-auto px-4 lg:px-6 xl:px-8"
           aria-label="Global"
@@ -91,20 +66,7 @@ const Header: Component = (props) => {
                     </svg>
                   </button>
                   {/* Search Icon */}
-<<<<<<< HEAD
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-6 h-6"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5Z"
-                    />
-                  </svg>
-=======
                   <IconMdiMagnify class="w-6 h-6" />
->>>>>>> ab371f4 (opt(project): Add missing changes after cleanup)
                 </div>
                 {/* Center Column: Logo - This should be dead center */}
                 <div class="justify-self-center pb-2 lg:pr-6">
@@ -140,46 +102,6 @@ const Header: Component = (props) => {
                 class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow lg:flex lg:justify-center"
               >
                 <div class="flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-gray-200 lg:flex-row lg:items-center lg:justify-end lg:gap-x-7 lg:mt-0 lg:ps-7 lg:divide-y-0 lg:divide-solid dark:divide-gray-700">
-<<<<<<< HEAD
-                  <For each={categories}>
-                    {(collection, i) => (
-                      <Show
-                        when={getSubCategories(collection.id).length == 0}
-                        fallback={
-                          <div class="hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] md:[--trigger:hover] py-3 md:py-6">
-                            <a
-                              href={`/market/${collection.slug}`}
-                              class="flex items-center w-full text-gray-800 hover:text-gray-600 font-medium dark:text-gray-200 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                            >
-                              {collection.name}
-                            </a>
-
-                            <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 md:w-80 hidden z-10 bg-white md:shadow-2xl rounded-lg py-2 md:p-2 dark:bg-gray-800 dark:divide-gray-700 before:absolute top-full before:-top-5 before:start-0 before:w-full before:h-5">
-                              <For each={getSubCategories(collection.id)}>
-                                {(subCollection, i) => (
-                                  <a
-                                    class="inline-flex gap-x-5 w-full p-4 text-gray-600 rounded-lg hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                                    href={`/market/${subCollection.slug}`}
-                                  >
-                                    {subCollection.name}
-                                  </a>
-                                )}
-                              </For>
-                            </div>
-                          </div>
-                        }
-                      >
-                        <a
-                          class="font-medium text-gray-500 hover:text-gray-400 py-3 lg:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                          href={`/market/${collection.slug}`}
-                        >
-                          {collection.name}
-                        </a>
-                      </Show>
-                    )}
-                  </For>
-                </div>
-=======
                   <For each={props.collections}>
                     {(collection, i) => (
                       <a
@@ -381,31 +303,15 @@ const Header: Component = (props) => {
                   </div>
                 </div>
               </div> */}
->>>>>>> ab371f4 (opt(project): Add missing changes after cleanup)
               </div>
             </Show>
 
             <div class="hidden lg:flex items-center gap-x-4">
               {/* Search Icon */}
-<<<<<<< HEAD
-              <svg
-                onClick={toggleSearch}
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 cursor-pointer"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5Z"
-                />
-              </svg>
-
-=======
               <IconMdiMagnify
                 onClick={toggleSearch}
                 class="w-6 h-6 cursor-pointer"
               />
->>>>>>> ab371f4 (opt(project): Add missing changes after cleanup)
               {/* Basket icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
