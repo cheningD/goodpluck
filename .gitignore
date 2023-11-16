@@ -27,4 +27,3 @@ pnpm-debug.log*
 /blob-report/
 /playwright/.cache/
 auto-imports.d.ts
-auto-imports.d.ts
