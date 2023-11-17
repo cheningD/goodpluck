@@ -8,7 +8,7 @@ if (session_token) {
   try {
     await stytchclient.sessions.revoke({ session_token });
     Astro.cookies.delete("gp_session_token");
-    message = `successLoggedOut`;
+    message = `successLoggingOut`;
   } catch (e) {
     console.error("Error during session revocation:", e);
     message = "errorLoggingOut";

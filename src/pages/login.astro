@@ -46,7 +46,6 @@ if (Astro.request.method === "POST") {
   }
 }
 
-// TODO: move
 // Function to check if the user's session is valid
 async function isSessionValid() {
   const session_token = Astro.cookies.get("gp_session_token")?.value;

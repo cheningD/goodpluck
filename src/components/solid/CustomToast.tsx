@@ -19,6 +19,7 @@ export default function CustomToast({ message = "", duration = 3000 }) {
   return (
     <Show when={isVisible()}>
       <div
+        id="gp-custom-toast"
         class={`fixed bottom-4 right-4 p-4 rounded-lg shadow-md transition-opacity duration-300 ${
           isVisible() ? "opacity-100" : "opacity-0"
         } bg-white flex items-center`}

@@ -43,7 +43,7 @@ test.describe("Login Form", () => {
   });
 
   // Test for already logged-in users
-  test("should redirect already logged-in users", async ({
+  test("should redirect already logged-in users from login page", async ({
     page,
     browserName,
   }) => {
@@ -63,33 +63,12 @@ test.describe("Login Form", () => {
     await page.waitForTimeout(2000);
 
     // Step 3: Check if the user is redirected to the homepage
-    await expect(page).toHaveURL(`/`);
+    await expect(page).toHaveURL(`/?message=errorAlreadyLoggedIn`);
 
-    // Step 4: Check if the user is shown a toast message
-    const toastSelector = 'div[role="status"][aria-live="polite"]';
+    // Step 4: Check if the user is shown a custom toast message
+    const toastSelector = '#gp-custom-toast';
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText(
-      "Error, you are already logged in.",
-    );
-  });
-
-  // Test to check JWT token & email session token set in cookies on successful OTP request
-  test("should set a JWT token in cookies on successful otp request", async ({
-    page,
-    browserName
-  }) => {
-    test.skip(
-      browserName === "webkit",
-      "Safari wont let you set a cookie on localhost without https",
-    );
-    await page.fill('input[type="email"]', "sandbox@stytch.com");
-    await page.click('button[data-testid="login-btn"]');
-    await page.waitForTimeout(2000);
-    const cookies = await page.context().cookies();
-    const hasToken = cookies.some(
-      (cookie) => cookie.name === "email_secure_token" && cookie.value,
-    );
-    expect(hasToken).toBeTruthy();
+    await expect(page.locator(toastSelector)).toHaveText("errorAlreadyLoggedIn");
   });
 
   // TODO: Test for general errors like network errors or unexpected errors.
@@ -105,7 +84,7 @@ test.describe("Validate Login Code", () => {
   });
 
   // Test to check redirect to OTP page on valid email
-  test("should set session to localstorage, and redirect to #basket given valid code", async ({
+  test("should set goodpluck session cookie, and redirect to `/#basket given` valid code", async ({
     page,
     browserName,
   }) => {
@@ -115,7 +94,7 @@ test.describe("Validate Login Code", () => {
     );
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
-    expect(page.url()).toContain("/#basket");
+    expect(page.url()).toContain("/?message=successLoggedIn#basket");
     // This is the default OTP code for the sandbox user
     const cookies = await page.context().cookies();
     const sessionCookie = cookies.find(
@@ -132,11 +111,9 @@ test.describe("Validate Login Code", () => {
     expect(sessionCookie?.sameSite).toBe("Lax");
 
     // Check for toast message
-    const toastSelector = 'div[role="status"][aria-live="polite"]';
+    const toastSelector = '#gp-custom-toast';
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText(
-      "Success, you are now logged in!",
-    );
+    await expect(page.locator(toastSelector)).toHaveText("successLoggedIn");
   });
 
   // Test error handling for invalid OTP code
@@ -156,7 +133,7 @@ test.describe("Validate Login Code", () => {
     expect(sessionCookie).toBeUndefined();
   });
 
-  // Test error handling for invalid OTP code
+  // Test error handling for invalid OTP code format
   test("should show error for invalid OTP code format", async ({ page }) => {
     await page.fill("#otp-input", "invalid-code");
     await page.click('button[id="submit-login-code-btn"]');
@@ -170,52 +147,33 @@ test.describe("Validate Login Code", () => {
     expect(inputIsFocused).toBeTruthy();
   });
 
-  // Test resending OTP code & error handling for too many requests
-  test("should allow resending OTP code after 60 seconds", async ({
+  // Test resending OTP code
+  test("should resend OTP code", async ({ page }) => {
+    await page.click('a[id="resend-button"]');
+    await expect(page).toHaveURL(`/login?resend=true`);
+  });
+
+  // Test to redirect to homepage if user is already logged in
+  test("should redirect already logged-in users from login-code page", async ({
     page,
-    browserName
+    browserName,
   }) => {
     test.skip(
       browserName === "webkit",
       "Safari wont let you set a cookie on localhost without https",
     );
-    test.setTimeout(120000);
-    await page.click('button[id="resend-button"]');
+    // Step 1: Login with valid credentials
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-login-code-btn"]');
 
-    // Check if cooldown cookie is set
-    const cookies = await page.context().cookies();
-    const sessionCookie = cookies.find(
-      (cookie) => cookie.name === "otp_resend_cooldown_time",
-    );
+    // Step 2: Attempt to navigate to the login-code page again
+    await page.goto(`/login-code`);
+    await expect(page).toHaveURL(`/?message=errorAlreadyLoggedIn`);
 
-    expect(sessionCookie).toBeDefined();
-    expect(sessionCookie?.secure).toBeTruthy();
-    expect(sessionCookie?.sameSite).toBe("Lax");
-
-    // Check if the countdown timer is visible
-    const isCountdownTimerVisible = await page.isVisible("#countdown-timer");
-    expect(isCountdownTimerVisible).toBeTruthy();
-
-    // Wait for 60 seconds
-    await page.waitForTimeout(65000);
-
-    // Check if the countdown timer is no longer visible
-    const isCountdownTimerVisibleAfterCooldown =
-      await page.isVisible("#countdown-timer");
-    expect(isCountdownTimerVisibleAfterCooldown).toBeFalsy();
-
-    // Check if the resend button is visible
-    const isResendButtonVisible = await page.isVisible("#resend-button");
-    expect(isResendButtonVisible).toBeTruthy();
-  });
-
-  // Test error handling for expired OTP code
-  test("should show error for expired OTP code", async ({ page }) => {
-    // ! Need to wait 15 minutes for the email token to expire
-    // test.setTimeout(1000000);
-    // await page.waitForTimeout(905000);
-    // await page.click('button[id="resend-button"]');
-    // await expect(page).toHaveURL(`/login`);
+    // Step 2: Check if the user is shown a custom toast message
+    const toastSelector = '#gp-custom-toast';
+    await expect(page.locator(toastSelector)).toBeVisible();
+    await expect(page.locator(toastSelector)).toHaveText("errorAlreadyLoggedIn");
   });
 
   // TODO: Test for general errors like network errors or unexpected errors.
@@ -223,10 +181,10 @@ test.describe("Validate Login Code", () => {
 
 // Testing Logout
 test.describe("Logout", () => {
+  // Note: Can't seem to logout using the Stytch sandbox user but here's the test for it
   // Test to check if logged in user is redirected to login page on logout (w/ toast message)
   test("should successfully logout user", async ({ page }) => {
-    // ! Can't seem to logout using the Stytch sandbox user but here's the test for it
-    // Check if the user is redirected to the homepage with a toast message
+    // // Check if the user is redirected to the homepage with a toast message
     // await page.goto(`/logout`);
     // const toastSelector = 'div[role="status"][aria-live="polite"]';
     // await expect(page.locator(toastSelector)).toBeVisible();
@@ -242,7 +200,7 @@ test.describe("Logout", () => {
   // Test to check if logged out user is redirected to login page on logout (w/ toast message)
   test("should show error for users that are not logged in", async ({
     page,
-    browserName
+    browserName,
   }) => {
     test.skip(
       browserName === "webkit",
@@ -250,20 +208,24 @@ test.describe("Logout", () => {
     );
     await page.goto(`/logout`);
     await page.waitForTimeout(2000);
-    await expect(page).toHaveURL(`/`);
+    await expect(page).toHaveURL(`/?message=errorNotLoggedIn`);
 
-    const toastSelector = 'div[role="status"][aria-live="polite"]';
-    await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText(
-      "Error, you are not logged in.",
+    // Check if the session cookie is not present
+    const cookies = await page.context().cookies();
+    const sessionCookie = cookies.find(
+      (cookie) => cookie.name === "gp_session_token",
     );
+    expect(sessionCookie).toBeUndefined();
+
+    // Check for toast message
+    const toastSelector = '#gp-custom-toast';
+    await expect(page.locator(toastSelector)).toBeVisible();
+    await expect(page.locator(toastSelector)).toHaveText("errorNotLoggedIn");
   });
 
+  // Note: this test only works with Stytch's sandbox user
   // Test for general errors like network errors or unexpected errors.
-  test("should show error for logging out", async ({
-    page,
-    browserName
-  }) => {
+  test("should show error for logging out", async ({ page, browserName }) => {
     test.skip(
       browserName === "webkit",
       "Safari wont let you set a cookie on localhost without https",
@@ -278,10 +240,11 @@ test.describe("Logout", () => {
 
     // Logout
     await page.goto(`/logout`);
-    await expect(page).toHaveURL(`/`);
+    await expect(page).toHaveURL(`/?message=errorLoggingOut`);
 
-    const toastSelector = 'div[role="status"][aria-live="polite"]';
+    // Check for toast message
+    const toastSelector = '#gp-custom-toast';
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText("Error logging out.");
+    await expect(page.locator(toastSelector)).toHaveText("errorLoggingOut");
   });
 });

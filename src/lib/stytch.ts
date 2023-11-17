@@ -1,22 +1,19 @@
 import * as stytch from "stytch";
 
-function getEnvVariable(name: string): string {
-  const value = process.env[name] ?? import.meta.env?.[name];
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
-  return value;
+if (!import.meta.env.STYTCH_PROJECT_ID) {
+  throw new Error("Missing STYTCH_PROJECT_ID env var");
 }
 
-const stytchProjectId = getEnvVariable("STYTCH_PROJECT_ID");
-const stytchProjectSecret = getEnvVariable("STYTCH_PROJECT_SECRET");
+if (!import.meta.env.STYTCH_PROJECT_SECRET) {
+  throw new Error("Missing STYTCH_PROJECT_SECRET env var");
+}
 
 const client = new stytch.Client({
-  project_id: stytchProjectId,
-  secret: stytchProjectSecret,
+  project_id: import.meta.env.STYTCH_PROJECT_ID,
+  secret: import.meta.env.STYTCH_PROJECT_SECRET,
 });
 
-// Stytch patch for Cloudflare runtime (if still necessary)
+// Stytch is currently broken in cloudflare runtime so we use this patch
 /* eslint-disable */
 const cl = <any>client;
 /* eslint-enable */
