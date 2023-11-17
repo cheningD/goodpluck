@@ -7,7 +7,7 @@ const Services: Component = () => {
     <>
       {/* <!-- Announcement Banner --> */}
       <a
-        class=" sticky top-[68px] group block bg-gray-100 hover:bg-gray-200 px-4 py-1 md:px-4 md:py-1 text-center transition-all duration-300 dark:bg-white/[.05] dark:hover:bg-white/[.075]"
+        class="z-10 sticky top-[68px] group block bg-gray-100 hover:bg-gray-200 px-4 py-1 md:px-4 md:py-1 text-center transition-all duration-300 dark:bg-white/[.05] dark:hover:bg-white/[.075]"
         href="#"
       >
         <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto">

@@ -18,7 +18,6 @@ export default defineConfig({
       },
     },
     plugins: [
-      // solidPlugin(),
       /* ... */
       AutoImport({
         resolvers: [
