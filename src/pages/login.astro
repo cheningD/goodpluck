@@ -23,7 +23,6 @@ if (Astro.request.method === "POST") {
           email,
           expiration_minutes: 10,
         });
-
         return Astro.redirect("/login-code?method_id=" + resp.email_id);
       } catch (err) {
         console.error(err);
@@ -33,7 +32,7 @@ if (Astro.request.method === "POST") {
         ) {
           errors.email = "Email not found. Do you need to create an account?";
         } else {
-          errors.general = "Unexpected error occurred, please try again later.";
+          errors.general = `Unexpected error occurred, please try again later. ${err}`;
         }
       }
     }
