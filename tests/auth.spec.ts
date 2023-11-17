@@ -66,9 +66,11 @@ test.describe("Login Form", () => {
     await expect(page).toHaveURL(`/?message=errorAlreadyLoggedIn`);
 
     // Step 4: Check if the user is shown a custom toast message
-    const toastSelector = '#gp-custom-toast';
+    const toastSelector = "#gp-custom-toast";
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText("errorAlreadyLoggedIn");
+    await expect(page.locator(toastSelector)).toHaveText(
+      "errorAlreadyLoggedIn",
+    );
   });
 
   // TODO: Test for general errors like network errors or unexpected errors.
@@ -111,7 +113,7 @@ test.describe("Validate Login Code", () => {
     expect(sessionCookie?.sameSite).toBe("Lax");
 
     // Check for toast message
-    const toastSelector = '#gp-custom-toast';
+    const toastSelector = "#gp-custom-toast";
     await expect(page.locator(toastSelector)).toBeVisible();
     await expect(page.locator(toastSelector)).toHaveText("successLoggedIn");
   });
@@ -171,9 +173,11 @@ test.describe("Validate Login Code", () => {
     await expect(page).toHaveURL(`/?message=errorAlreadyLoggedIn`);
 
     // Step 2: Check if the user is shown a custom toast message
-    const toastSelector = '#gp-custom-toast';
+    const toastSelector = "#gp-custom-toast";
     await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText("errorAlreadyLoggedIn");
+    await expect(page.locator(toastSelector)).toHaveText(
+      "errorAlreadyLoggedIn",
+    );
   });
 
   // TODO: Test for general errors like network errors or unexpected errors.
@@ -218,7 +222,7 @@ test.describe("Logout", () => {
     expect(sessionCookie).toBeUndefined();
 
     // Check for toast message
-    const toastSelector = '#gp-custom-toast';
+    const toastSelector = "#gp-custom-toast";
     await expect(page.locator(toastSelector)).toBeVisible();
     await expect(page.locator(toastSelector)).toHaveText("errorNotLoggedIn");
   });
@@ -243,7 +247,7 @@ test.describe("Logout", () => {
     await expect(page).toHaveURL(`/?message=errorLoggingOut`);
 
     // Check for toast message
-    const toastSelector = '#gp-custom-toast';
+    const toastSelector = "#gp-custom-toast";
     await expect(page.locator(toastSelector)).toBeVisible();
     await expect(page.locator(toastSelector)).toHaveText("errorLoggingOut");
   });

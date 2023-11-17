@@ -5,7 +5,7 @@ import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
 import CustomToast from "../components/solid/CustomToast";
 
-const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value;
+const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
 const message = Astro.url.searchParams.get("message")! || "";
 ---
 

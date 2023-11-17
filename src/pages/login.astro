@@ -1,6 +1,6 @@
 ---
 import { StytchError } from "stytch";
-import { stytchclient } from "../lib/stytch";
+import { stytchclient, isLoggedIn } from "../lib/stytch";
 import Layout from "../layouts/Layout.astro";
 
 // Initialize error state
@@ -46,27 +46,9 @@ if (Astro.request.method === "POST") {
   }
 }
 
-// Function to check if the user's session is valid
-async function isSessionValid() {
-  const session_token = Astro.cookies.get("gp_session_token")?.value;
-  if (session_token) {
-    try {
-      // Verify the session token with Stytch
-      await stytchclient.sessions.authenticate({ session_token });
-      return true; // Session is valid
-    } catch (e) {
-      if (e instanceof Error) {
-        console.error("Session token invalid:", e.message);
-      } else {
-        console.error("An unexpected error occurred");
-      }
-    }
-  }
-  return false; // No valid session token found
-}
-
 // Redirect authenticated users away from login page
-if (await isSessionValid()) {
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+if (await isLoggedIn(sessionToken as string)) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---

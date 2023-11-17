@@ -20,3 +20,20 @@ const cl = <any>client;
 cl.fetchConfig.cache = undefined;
 
 export const stytchclient = client;
+
+export const isLoggedIn = async (session_token: string) => {
+  if (session_token) {
+    try {
+      // Verify the session token with Stytch
+      await stytchclient.sessions.authenticate({ session_token });
+      return true; // Session is valid
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error("Session token invalid:", e.message);
+      } else {
+        console.error("An unexpected error occurred");
+      }
+    }
+  }
+  return false; // No valid session token found
+};
