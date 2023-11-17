@@ -3,7 +3,6 @@ import { stytchclient } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 import Layout from "../layouts/Layout.astro";
-import { jwtVerify, SignJWT } from "jose";
 
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
@@ -12,162 +11,49 @@ const errors = { code: "", general: "", email: "" };
 const url = new URL(Astro.request.url);
 let method_id = url.searchParams.get("method_id");
 
-const getEmailFromToken = async (token: string): Promise<string | null> => {
-  const secretKey =
-    import.meta.env.OTP_JWT_SECRET_KEY ?? process.env.OTP_JWT_SECRET_KEY;
-  try {
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(secretKey),
-    );
-
-    // Check if email exists and is a string
-    if (payload && typeof payload.email === "string") {
-      return payload.email;
-    }
-    return null;
-  } catch (error) {
-    // Adjust error handling as needed
-    throw new Error("InvalidToken");
-  }
-};
-
-const canResendOTP = () => {
-  const token = Astro.cookies.get("otp_resend_cooldown_time")?.value;
-  return !token;
-};
-
-// Function to send OTP
-const sendOTP = async (email: string) => {
-  if (canResendOTP()) {
-    try {
-      const resp = await stytchclient.otps.email.send({
-        email,
-        expiration_minutes: 10,
-      });
-
-      method_id = resp.email_id;
-
-      // Used to prevent spamming the resend button
-      const expirationTimestamp = Date.now() + 60 * 1000;
-
-      Astro.cookies.set(
-        "otp_resend_cooldown_time",
-        expirationTimestamp.toString(),
-        {
-          path: "/",
-          httpOnly: false,
-          secure: true,
-          sameSite: "lax",
-          expires: new Date(expirationTimestamp),
-        },
-      );
-
-      // Set a cookie for the OTP resend toast message
-      Astro.cookies.set("auth_message", "Success, OTP has been resent!", {
-        path: "/",
-        httpOnly: true,
-        secure: true,
-        sameSite: "lax",
-      });
-    } catch (error) {
-      console.error(`Error sending OTP: ${error}`);
-      errors.general = "Error sending the code. Please try again later.";
-    }
-  } else {
-    console.error("You can only request a new code once every 60 seconds.");
-  }
-};
-
 // Handle POST request for both OTP submission and resend OTP request
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
 
-  if (data.has("resend")) {
-    try {
-      // Retrieve the token securely from astro cookies
-      const token = Astro.cookies.get("email_secure_token")?.value;
-      const userEmail = await getEmailFromToken(token as string);
+  try {
+    // Collect form data for OTP submission
+    const code = data.get("otp-input")?.toString();
 
-      if (userEmail) {
-        await sendOTP(userEmail);
-      } else {
-        errors.general = "Unable to resend the code without an email address.";
-      }
-    } catch (error) {
-      if (error instanceof Error && error.message === "TokenExpired") {
-        // Set the error message in a cookie
-        Astro.cookies.set(
-          "auth_message",
-          "Session expired. Please try again.",
-          {
-            path: "/",
-            httpOnly: true,
-            secure: true,
-            sameSite: "lax",
-          },
-        );
+    // Validate the code and method_id
+    if (!code || !/^[0-9]+$/.test(code)) {
+      errors.code = "Code is not valid.";
+    } else if (!method_id) {
+      errors.code = "Method ID is not valid.";
+    } else {
+      // Make stytchclient API call to authenticate OTP
+      const resp = await stytchclient.otps.authenticate({
+        code,
+        method_id,
+        session_duration_minutes,
+      });
 
-        return Astro.redirect("/login");
-      } else {
-        console.error(error);
-      }
-    }
-  } else {
-    try {
-      // Collect form data for OTP submission
-      const code = data.get("otp-input")?.toString();
-
-      // Validate the code and method_id
-      if (!code || !/^[0-9]+$/.test(code)) {
-        errors.code = "Code is not valid.";
-      } else if (!method_id) {
-        errors.code = "Method ID is not valid.";
-      } else {
-        // Make stytchclient API call to authenticate OTP
-        const resp = await stytchclient.otps.authenticate({
-          code,
-          method_id,
-          session_duration_minutes,
+      if (resp.session_token) {
+        // Set session cookie
+        Astro.cookies.set("gp_session_token", resp.session_token, {
+          path: "/",
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          expires: new Date(Date.now() + session_duration_minutes * 60 * 1000),
         });
 
-        if (resp.session_token) {
-          // Set session cookie
-          Astro.cookies.set("gp_session_token", resp.session_token, {
-            path: "/",
-            httpOnly: true,
-            secure: true,
-            sameSite: "lax",
-            expires: new Date(
-              Date.now() + session_duration_minutes * 60 * 1000,
-            ),
-          });
-
-          // Set success message cookie -- gets displayed then deleted immediately
-          Astro.cookies.set("auth_message", "Success, you are now logged in!", {
-            path: "/",
-            httpOnly: true,
-            secure: true,
-            sameSite: "lax",
-          });
-
-          // Delete the OTP token cookies
-          Astro.cookies.delete("email_secure_token");
-          Astro.cookies.delete("otp_resend_cooldown_time");
-
-          return Astro.redirect("/#basket");
-        }
+        return Astro.redirect("/?message=successLoggedIn#basket");
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-      if (error instanceof StytchError) {
-        if (error.error_type === "otp_code_not_found") {
-          errors.code = "Oops, wrong passcode. Try again or request a new one.";
-        } else {
-          errors.code = "Unknown error, please reach out to us for help!"; // also when code is expired
-        }
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+    if (error instanceof StytchError) {
+      if (error.error_type === "otp_code_not_found") {
+        errors.code = "Oops, wrong passcode. Try again or request a new one.";
+      } else {
+        errors.code = "Unknown error, please reach out to us for help!"; // also when code is expired
       }
     }
   }
@@ -194,14 +80,7 @@ async function isSessionValid() {
 
 // Redirect authenticated users away from login page
 if (await isSessionValid()) {
-  Astro.cookies.set("auth_message", "Error, you are already logged in.", {
-    path: "/",
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-  });
-
-  return Astro.redirect("/");
+  return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---
 
@@ -224,7 +103,6 @@ if (await isSessionValid()) {
             </p>
           )
         }
-        <input type="hidden" name="method_id" value="{method_id}" />
         <label
           for="otp-input"
           class=`block text-sm font-medium text-gray-700 ${errors.code ? 'text-red-700' : 'text-gray-700'}`
@@ -257,95 +135,18 @@ if (await isSessionValid()) {
         >
       </form>
 
-      <!-- Resend OTP Form -->
-      <form method="POST" id="resend-form">
-        <input type="hidden" name="resend" value="true" />
-        <p class="mt-6 text-sm text-center text-gray-600" id="resend-text">
-          Didn't receive the code?
-          <span id="countdown-timer" style="display: none">
-            You can resend the OTP in
-            <span id="timer" class="text-orange-500"></span>
-          </span>
-          <button
-            id="resend-button"
-            class="text-orange-500 hover:underline"
-            type="submit"
-          >
-            Resend code
-          </button>
-        </p>
-      </form>
+      <!-- Resend OTP -->
+      <p class="mt-6 text-sm text-center text-gray-600" id="resend-text">
+        Didn't receive the code?
+        <a
+          id="resend-button"
+          class="text-orange-500 hover:underline"
+          type="submit"
+          href="/login?resend=true"
+        >
+          Resend code
+        </a>
+      </p>
     </div>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      var cooldownTimerCookie = getCookie("otp_resend_cooldown_time");
-      if (cooldownTimerCookie) {
-        var expirationTime = new Date(parseInt(cooldownTimerCookie));
-        var currentTime = new Date();
-        var timeDiff = expirationTime.getTime() - currentTime.getTime();
-        if (timeDiff > 0) {
-          displayElement("countdown-timer", "block");
-          displayElement("resend-button", "none");
-          startCountdown(Math.ceil(timeDiff / 1000)); // Convert milliseconds to seconds and start countdown
-        } else {
-          displayElement("resend-button", "inline");
-          displayElement("countdown-timer", "none");
-        }
-      } else {
-        displayElement("resend-button", "inline");
-        displayElement("countdown-timer", "none");
-      }
-    });
-
-    const getCookie = (name: string): string | undefined => {
-      const value = " " + document.cookie;
-      const parts = value.split(" " + name + "=");
-      if (parts.length === 2) {
-        const cookiePart = parts.pop();
-        if (cookiePart) {
-          return cookiePart.split(";").shift();
-        }
-      }
-      return undefined;
-    };
-
-    const startCountdown = (duration: number) => {
-      var timer = duration;
-      updateTimerDisplay(timer); // Update the display with the initial duration
-
-      var countdownInterval = setInterval(() => {
-        timer--; // Decrement the timer
-        updateTimerDisplay(timer); // Update the display after decrement
-
-        if (timer <= 0) {
-          clearInterval(countdownInterval);
-          displayElement("resend-button", "inline");
-          displayElement("countdown-timer", "none");
-        }
-      }, 1000);
-    };
-
-    const updateTimerDisplay = (seconds: number) => {
-      var formattedSeconds =
-        seconds < 10 ? "0" + seconds.toString() : seconds.toString();
-      var timerElement = document.getElementById("timer");
-      if (timerElement) {
-        // Handle singular and plural forms of "second"
-        var timeText =
-          seconds === 1
-            ? `${formattedSeconds} second`
-            : `${formattedSeconds} seconds`;
-        timerElement.textContent = timeText;
-      }
-    };
-
-    const displayElement = (elementId: string, displayStyle: string): void => {
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.style.display = displayStyle;
-      }
-    };
-  </script>
 </Layout>

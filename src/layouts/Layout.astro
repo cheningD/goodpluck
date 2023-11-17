@@ -3,21 +3,10 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import ToastHandler from "../components/solid/ToastHandler";
+import CustomToast from "../components/solid/CustomToast";
 
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value;
-
-// Function to get and clear cookie message
-function getAndClearCookieMessage(cookieName: string) {
-  const message = Astro.cookies.get(cookieName)?.value;
-  if (message) {
-    Astro.cookies.set(cookieName, "", { expires: new Date(0) });
-    return message;
-  }
-  return null;
-}
-
-const authMessage = getAndClearCookieMessage("auth_message");
+const message = Astro.url.searchParams.get("message")! || "";
 ---
 
 <html lang="en">
@@ -35,7 +24,7 @@ const authMessage = getAndClearCookieMessage("auth_message");
     </div>
     <Cart client:load />
     <Menu client:load />
-    <ToastHandler message={authMessage} client:load />
+    <CustomToast message={message} client:load />
     <slot />
   </body>
 </html>

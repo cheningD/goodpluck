@@ -2,14 +2,9 @@
 import { StytchError } from "stytch";
 import { stytchclient } from "../lib/stytch";
 import Layout from "../layouts/Layout.astro";
-import { SignJWT } from "jose";
 
 // Initialize error state
 const errors = { email: "", general: "" };
-
-// Delete auth cookies
-Astro.cookies.delete("email_secure_token");
-Astro.cookies.delete("otp_resend_token");
 
 // Handle POST request
 if (Astro.request.method === "POST") {
@@ -27,16 +22,6 @@ if (Astro.request.method === "POST") {
         const resp = await stytchclient.otps.email.send({
           email,
           expiration_minutes: 10,
-        });
-
-        // Generate a token from the email
-        const token = await generateTokenFromEmail(email);
-
-        Astro.cookies.set("email_secure_token", token, {
-          path: "/",
-          httpOnly: true,
-          secure: true,
-          sameSite: "lax",
         });
 
         return Astro.redirect("/login-code?method_id=" + resp.email_id);
@@ -61,6 +46,7 @@ if (Astro.request.method === "POST") {
   }
 }
 
+// TODO: move
 // Function to check if the user's session is valid
 async function isSessionValid() {
   const session_token = Astro.cookies.get("gp_session_token")?.value;
@@ -80,41 +66,9 @@ async function isSessionValid() {
   return false; // No valid session token found
 }
 
-// Function to generate a JWT from the email
-async function generateTokenFromEmail(email: string): Promise<string> {
-  const secretKey =
-    import.meta.env.OTP_JWT_SECRET_KEY ?? process.env.OTP_JWT_SECRET_KEY;
-
-  if (!secretKey) {
-    throw new Error("Secret key is not defined");
-  }
-
-  try {
-    const encodedSecretKey = new TextEncoder().encode(secretKey);
-
-    const token = await new SignJWT({ email })
-      .setProtectedHeader({ alg: "HS256" })
-      .setIssuedAt()
-      .setExpirationTime("15m")
-      .sign(encodedSecretKey);
-
-    return token;
-  } catch (error) {
-    console.error("Error generating token:", error);
-    throw error;
-  }
-}
-
 // Redirect authenticated users away from login page
 if (await isSessionValid()) {
-  Astro.cookies.set("auth_message", "Error, you are already logged in.", {
-    path: "/",
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-  });
-
-  return Astro.redirect("/");
+  return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---
 

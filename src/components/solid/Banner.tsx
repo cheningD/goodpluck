@@ -1,4 +1,3 @@
-import { createSignal } from "solid-js";
 import { useStore } from "@nanostores/solid";
 import { isCartOpen } from "../../store";
 
@@ -8,7 +7,6 @@ interface BannerProps {
 
 export default function Banner({ isLoggedIn }: BannerProps) {
   const $isCartOpen = useStore(isCartOpen);
-  const [isUserLoggedIn, setIsUserLoggedIn] = createSignal(isLoggedIn);
 
   return (
     <div>
@@ -22,7 +20,7 @@ export default function Banner({ isLoggedIn }: BannerProps) {
           <a href="#" onClick={() => isCartOpen.set(!$isCartOpen())}>
             Please Enter Your Zip
           </a>
-          {isUserLoggedIn() ? (
+          {isLoggedIn ? (
             <div class="flex space-x-4">
               <a href="/logout">Log out</a>
             </div>
