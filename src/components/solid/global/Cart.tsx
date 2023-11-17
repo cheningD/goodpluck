@@ -1,69 +1,227 @@
-import { createMemo, For, type Component } from "solid-js";
-import swell from "../../lib/swell.ts";
-import Products from "@components/solid/Products.tsx";
+import { type Component } from "solid-js";
+import swell from "../../../lib/swell.ts";
 
-interface IProps {
-  collections: any;
-  currentCollection: any;
-  products: any;
-}
+const products = await swell.get("/products", {
+  where: { active: true },
+  fields: "name,slug,kind,price",
+  limit: 200,
+  page: 1,
+});
 
-const Category: Component<IProps> = ({
-  collections,
-  currentCollection,
-  products,
-}) => {
-  const currentCategory =
-    currentCollection != null
-      ? collections.find((col) => col.id == currentCollection.id)
-      : null;
+console.log('products', products)
 
-  const currentCategoryName =
-    currentCategory !== null ? currentCategory.name : "";
-
-  function getCurrentSubCategories() {
-    if (currentCollection == null) {
-      return [];
-    }
-    const subCategories = collections.filter(
-      (col) => col.parent_id == currentCollection.id,
-    );
-    if (subCategories) {
-      return subCategories;
-    }
-    return [];
-  }
-
+const Cart: Component = () => {
   return (
     <>
       <div id="sidebar-page" class="relative w-full h-auto py-5">
-        {/* Start Sidbar */}
-        <div class="grid grid-cols-5">
-          <div class="hidden  lg:flex flex-col items-start px-10">
-            <h2 class="text-xl font-medium dark:text-white">
-              {currentCategoryName}
-            </h2>
-            <ul class="sticky top-[114px]">
-              <For each={getCurrentSubCategories()}>
-                {(collection, i) => (
-                  <li>
+        {/* Start SpySidbar */}
+        <div class="grid grid-cols-4">
+          <div class="hidden  lg:flex flex-col items-center">
+            <h2 class="text-xl font-medium dark:text-white">Navbar</h2>
+            <ul
+              class="w-1/2 sticky top-[114px]"
+              data-hs-scrollspy="#scrollspy-2"
+              data-hs-scrollspy-scrollable-parent="#sidebar-page"
+            >
+              <li data-hs-scrollspy-group>
+                <a
+                  href="#item-1"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                >
+                  Item 1
+                </a>
+                <ul>
+                  <li class="ms-4">
                     <a
-                      href={`/market/${collection.slug}`}
-                      class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                      href="#item-1-1"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
                     >
-                      {collection.name}
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 1-1
                     </a>
                   </li>
-                )}
-              </For>
+                  <li class="ms-4">
+                    <a
+                      href="#item-1-2"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 1-2
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a
+                  href="#item-2"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                >
+                  Item 2
+                </a>
+              </li>
+              <li data-hs-scrollspy-group>
+                <a
+                  href="#item-3"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                >
+                  Item 3
+                </a>
+                <ul>
+                  <li class="ms-4">
+                    <a
+                      href="#item-3-1"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 3-1
+                    </a>
+                  </li>
+                  <li class="ms-4">
+                    <a
+                      href="#item-3-2"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 3-2
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li data-hs-scrollspy-group>
+                <a
+                  href="#item-4"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                >
+                  Item 4
+                </a>
+                <ul>
+                  <li class="ms-4">
+                    <a
+                      href="#item-4-1"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 4-1
+                    </a>
+                  </li>
+                  <li class="ms-4">
+                    <a
+                      href="#item-4-2"
+                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                    >
+                      <svg
+                        class="flex-shrink-0 w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                      Item 4-2
+                    </a>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </div>
 
-          <div class="col-span-4 px-4">
-            <Products products={products} />
+          <div class="col-span-3 px-4">
+            <div id="scrollspy-2" class="space-y-4">
+
+            <ul class="grid grid-cols-3 gap-10">
+  {
+    products.results.map((product: any) => (
+      <li class="flex flex-col gap-y-2">
+        <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
+        <button type="button" class="absolute bottom-2 right-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-full border-2 border-gray-900 text-white bg-gray-800 shadow-sm hover:bg-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+          + Quick add
+        </button>
+        </div>
+        <a class="text-lg font-serif" href={`/product/${product.slug}`}>{product.name}</a>
+       <div class="flex justify-between items-center">
+       <span class="text-xs text-gray-600">{product.kind}</span>
+        <span class="text-right font-semibold">${product.price}</span>
+       </div>
+      </li>
+    ))
+  }
+          </ul>
+
+            </div>
           </div>
         </div>
-        {/* End Sidbar */}
+        {/* End SpySidbar */}
 
         <div
           id="sidebar-mini"
@@ -150,4 +308,4 @@ const Category: Component<IProps> = ({
   );
 };
 
-export default Category;
+export default Cart;

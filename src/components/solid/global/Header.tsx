@@ -4,7 +4,7 @@ import logo from "@assets/logo.png";
 import { isCartOpen, isMenuOpen } from "../../../store.js";
 
 interface IProps {
-  collections: any
+  collections: any;
 }
 
 const Header: Component<IProps> = ({collections}) => {
