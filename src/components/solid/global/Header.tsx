@@ -7,7 +7,7 @@ interface IProps {
   collections: any;
 }
 
-const Header: Component<IProps> = ({collections}) => {
+const Header: Component<IProps> = ({ collections }) => {
   // read the store value with the `useStore` hook
   const $isCartOpen = useStore(isCartOpen);
   const $isMenuOpen = useStore(isMenuOpen);
