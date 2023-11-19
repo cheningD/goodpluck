@@ -1,36 +1,20 @@
 ---
-import Layout from "@layouts/MainLayout.astro";
-import Category from "@components/solid/Category.tsx";
-import { initSwell } from "../lib/swell";
+import swell from "../lib/swell.ts";
+export const prerender = true;
 
-const runtime = Astro.locals.runtime;
-const swell = initSwell(
-  runtime
-    ? runtime.env.PUBLIC_SWELL_STORE_ID
-    : import.meta.env.PUBLIC_SWELL_STORE_ID,
-  runtime
-    ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY
-    : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
-const categories = await swell.categories.list({
+const products = await swell.products.list({
   limit: 100,
-  page: 1,
-});
-
-let products = await swell.products.list({
-  limit: 9,
   page: 1,
 });
 ---
 
-<Layout
-  title="Shopping page"
-  description="Delivered farm fresh to you"
-  categories={categories.results}
->
-  <Category
-    currentCollection={null}
-    products={products.results}
-    collections={categories.results}
-  />
-</Layout>
+{/*This is an example of a market page */}
+<ul>
+  {
+    products.results.map((product: any) => (
+      <li>
+        {product.kind}: <a href={`/product/${product.slug}`}>{product.name}</a>
+      </li>
+    ))
+  }
+</ul>
