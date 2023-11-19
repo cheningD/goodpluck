@@ -9,8 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["GitLabMono", "sans-serif"],
-        serif: ["GitLabSans", "serif"],
+        sans: ["Arial", "sans-serif"],
       },
     },
   },
