@@ -1,0 +1,22 @@
+---
+import Layout from "@layouts/MainLayout.astro";
+import Category from "@components/solid/Category.tsx";
+import swell from "../../lib/swell";
+
+const { slug } = Astro.params;
+const categories = await swell.categories.list({
+  limit: 100,
+  page: 1,
+});
+
+const category = categories.results.find((category) => category.slug === slug);
+if (!category) return Astro.redirect("/404");
+const { name, description } = category;
+---
+
+<Layout
+  title={`${name} delivered farm fresh to you`}
+  description={description}
+  categories={categories.results}>
+  <Category collections={categories.results} />
+</Layout>

@@ -1,4 +1,11 @@
 import { For, type Component } from "solid-js";
+import swell from "../../lib/swell.ts";
+import Products from '@components/solid/Products.tsx';
+
+const products = await swell.products.list({
+  limit: 9,
+  page: 1,
+});
 
 interface IProps {
   collections: any
@@ -33,7 +40,7 @@ const Cart: Component<IProps> = ({collections}) => {
                     {(collection, i) => (
               <li>
                 <a
-                  href="#"
+                  href={`/market/${collection.slug}`}
                   class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
                 >
                   {collection.name}
@@ -45,117 +52,7 @@ const Cart: Component<IProps> = ({collections}) => {
           </div>
 
           <div class="col-span-4 px-4">
-            <div class="space-y-4">
-              <div id="item-1">
-                <h3 class="text-lg font-semibold dark:text-white">Item 1</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-1-1">
-                <h3 class="text-lg font-semibold dark:text-white">Item 1-1</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-1-2">
-                <h3 class="text-lg font-semibold dark:text-white">Item 1-2</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-2">
-                <h3 class="text-lg font-semibold dark:text-white">Item 2</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-3">
-                <h3 class="text-lg font-semibold dark:text-white">Item 3</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-3-1">
-                <h3 class="text-lg font-semibold dark:text-white">Item 3-1</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-3-2">
-                <h3 class="text-lg font-semibold dark:text-white">Item 3-2</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-4">
-                <h3 class="text-lg font-semibold dark:text-white">Item 4</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-4-1">
-                <h3 class="text-lg font-semibold dark:text-white">Item 4-1</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-
-              <div id="item-4-2">
-                <h3 class="text-lg font-semibold dark:text-white">Item 4-2</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  This is some placeholder content for the scrollspy page. Note
-                  that as you scroll down the page, the appropriate navigation
-                  link is highlighted. It's repeated throughout the component
-                  example. We keep adding some more example copy here to
-                  emphasize the scrolling and highlighting.
-                </p>
-              </div>
-            </div>
+          <Products products={products} />
           </div>
         </div>
         {/* End Sidbar */}
