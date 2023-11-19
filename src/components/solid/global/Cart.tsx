@@ -1,29 +1,32 @@
-import { For, type Component } from "solid-js";
+import { createMemo, For, type Component } from "solid-js";
 import swell from "../../lib/swell.ts";
-import Products from '@components/solid/Products.tsx';
-
-const products = await swell.products.list({
-  limit: 9,
-  page: 1,
-});
+import Products from "@components/solid/Products.tsx";
 
 interface IProps {
-  collections: any
+  collections: any;
+  currentCollection: any;
+  products: any;
 }
 
-const Cart: Component<IProps> = ({collections}) => {
-  const currentCategory = collections.find(col => col.id == '655023bb2919ba001292eb02') ;
-  const currentCategoryName =   currentCategory !== null ? currentCategory.name : '';
+const Cart: Component<IProps> = ({ collections, currentCollection, products }) => {
 
-  function getCurrentSubCategories(){
+  const currentCategory = currentCollection != null ? collections.find(
+    (col) => col.id == currentCollection.id) : null;
 
-    const subCategories = collections.filter(col => col.parent_id == '655023bb2919ba001292eb02');
-    console.log("categories:", subCategories);
+  const currentCategoryName =
+    currentCategory !== null ? currentCategory.name : "";
 
-    if(subCategories){
-      return subCategories
+  function getCurrentSubCategories() {
+    if (currentCollection == null) {
+      return [];
     }
-    return []
+    const subCategories = collections.filter(
+      (col) => col.parent_id == currentCollection.id,
+    );
+    if (subCategories) {
+      return subCategories;
+    }
+    return [];
   }
 
   return (
@@ -32,27 +35,27 @@ const Cart: Component<IProps> = ({collections}) => {
         {/* Start Sidbar */}
         <div class="grid grid-cols-5">
           <div class="hidden  lg:flex flex-col items-start px-10">
-            <h2 class="text-xl font-medium dark:text-white">{currentCategoryName}</h2>
-            <ul
-              class="sticky top-[114px]"
-            >
+            <h2 class="text-xl font-medium dark:text-white">
+              {currentCategoryName}
+            </h2>
+            <ul class="sticky top-[114px]">
               <For each={getCurrentSubCategories()}>
-                    {(collection, i) => (
-              <li>
-                <a
-                  href={`/market/${collection.slug}`}
-                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
-                >
-                  {collection.name}
-                </a>
-              </li>
-                    )}
-                </For>
+                {(collection, i) => (
+                  <li>
+                    <a
+                      href={`/market/${collection.slug}`}
+                      class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                    >
+                      {collection.name}
+                    </a>
+                  </li>
+                )}
+              </For>
             </ul>
           </div>
 
           <div class="col-span-4 px-4">
-          <Products products={products} />
+            <Products products={products} />
           </div>
         </div>
         {/* End Sidbar */}
