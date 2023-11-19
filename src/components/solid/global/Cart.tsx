@@ -1,193 +1,51 @@
-import { type Component } from "solid-js";
+import { For, type Component } from "solid-js";
 
-const Cart: Component = () => {
+interface IProps {
+  collections: any
+}
+
+const Cart: Component<IProps> = ({collections}) => {
+  const currentCategory = collections.find(col => col.id == '655023bb2919ba001292eb02') ;
+  const currentCategoryName =   currentCategory !== null ? currentCategory.name : '';
+
+  function getCurrentSubCategories(){
+
+    const subCategories = collections.filter(col => col.parent_id == '655023bb2919ba001292eb02');
+    console.log("categories:", subCategories);
+
+    if(subCategories){
+      return subCategories
+    }
+    return []
+  }
+
   return (
     <>
       <div id="sidebar-page" class="relative w-full h-auto py-5">
-        {/* Start SpySidbar */}
-        <div class="grid grid-cols-4">
-          <div class="hidden  lg:flex flex-col items-center">
-            <h2 class="text-xl font-medium dark:text-white">Navbar</h2>
+        {/* Start Sidbar */}
+        <div class="grid grid-cols-5">
+          <div class="hidden  lg:flex flex-col items-start px-10">
+            <h2 class="text-xl font-medium dark:text-white">{currentCategoryName}</h2>
             <ul
-              class="w-1/2 sticky top-[114px]"
-              data-hs-scrollspy="#scrollspy-2"
-              data-hs-scrollspy-scrollable-parent="#sidebar-page"
+              class="sticky top-[114px]"
             >
-              <li data-hs-scrollspy-group>
-                <a
-                  href="#item-1"
-                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
-                >
-                  Item 1
-                </a>
-                <ul>
-                  <li class="ms-4">
-                    <a
-                      href="#item-1-1"
-                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
-                    >
-                      <svg
-                        class="flex-shrink-0 w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="m9 18 6-6-6-6" />
-                      </svg>
-                      Item 1-1
-                    </a>
-                  </li>
-                  <li class="ms-4">
-                    <a
-                      href="#item-1-2"
-                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
-                    >
-                      <svg
-                        class="flex-shrink-0 w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="m9 18 6-6-6-6" />
-                      </svg>
-                      Item 1-2
-                    </a>
-                  </li>
-                </ul>
-              </li>
+              <For each={getCurrentSubCategories()}>
+                    {(collection, i) => (
               <li>
                 <a
-                  href="#item-2"
-                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
+                  href="#"
+                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
                 >
-                  Item 2
+                  {collection.name}
                 </a>
               </li>
-              <li data-hs-scrollspy-group>
-                <a
-                  href="#item-3"
-                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
-                >
-                  Item 3
-                </a>
-                <ul>
-                  <li class="ms-4">
-                    <a
-                      href="#item-3-1"
-                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
-                    >
-                      <svg
-                        class="flex-shrink-0 w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="m9 18 6-6-6-6" />
-                      </svg>
-                      Item 3-1
-                    </a>
-                  </li>
-                  <li class="ms-4">
-                    <a
-                      href="#item-3-2"
-                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
-                    >
-                      <svg
-                        class="flex-shrink-0 w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="m9 18 6-6-6-6" />
-                      </svg>
-                      Item 3-2
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li data-hs-scrollspy-group>
-                <a
-                  href="#item-4"
-                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
-                >
-                  Item 4
-                </a>
-                <ul>
-                  <li class="ms-4">
-                    <a
-                      href="#item-4-1"
-                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
-                    >
-                      <svg
-                        class="flex-shrink-0 w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="m9 18 6-6-6-6" />
-                      </svg>
-                      Item 4-1
-                    </a>
-                  </li>
-                  <li class="ms-4">
-                    <a
-                      href="#item-4-2"
-                      class="group flex items-center gap-x-2 py-0.5 text-sm text-gray-700 leading-6 hover:text-gray-800 focus:outline-none focus:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400"
-                    >
-                      <svg
-                        class="flex-shrink-0 w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="m9 18 6-6-6-6" />
-                      </svg>
-                      Item 4-2
-                    </a>
-                  </li>
-                </ul>
-              </li>
+                    )}
+                </For>
             </ul>
           </div>
 
-          <div class="col-span-3 px-4">
-            <div id="scrollspy-2" class="space-y-4">
+          <div class="col-span-4 px-4">
+            <div class="space-y-4">
               <div id="item-1">
                 <h3 class="text-lg font-semibold dark:text-white">Item 1</h3>
                 <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
@@ -300,7 +158,7 @@ const Cart: Component = () => {
             </div>
           </div>
         </div>
-        {/* End SpySidbar */}
+        {/* End Sidbar */}
 
         <div
           id="sidebar-mini"
