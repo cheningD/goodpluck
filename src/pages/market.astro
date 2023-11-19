@@ -1,28 +1,20 @@
 ---
-import { initSwell } from "../lib/swell.ts";
-import Layout from "../layouts/Layout.astro";
+import swell from "../lib/swell.ts";
+export const prerender = true;
 
-const runtime = Astro.locals.runtime;
-const swell = initSwell(
-  runtime ? runtime.env.SWELL_STORE_ID : import.meta.env.SWELL_STORE_ID,
-  runtime ? runtime.env.SWELL_SECRET_KEY : import.meta.env.SWELL_SECRET_KEY,
-);
 const products = await swell.products.list({
   limit: 100,
   page: 1,
 });
 ---
 
-<Layout>
-  {/*This is an example of a market page */}
-  <ul>
-    {
-      products.results.map((product: any) => (
-        <li>
-          {product.kind}:{" "}
-          <a href={`/product/${product.slug}`}>{product.name}</a>
-        </li>
-      ))
-    }
-  </ul>
-</Layout>
+{/*This is an example of a market page */}
+<ul>
+  {
+    products.results.map((product: any) => (
+      <li>
+        {product.kind}: <a href={`/product/${product.slug}`}>{product.name}</a>
+      </li>
+    ))
+  }
+</ul>
