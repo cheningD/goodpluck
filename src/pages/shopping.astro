@@ -1,14 +1,24 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
-import Cart from "@components/solid/global/Cart.tsx";
-import swell from "../lib/swell.ts";
+import Category from "@components/solid/Category.tsx";
+import swell from "../lib/swell";
 
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
 });
+
+let products =  await swell.products.list({
+    limit: 9,
+    page: 1,
+  });
+
 ---
 
-<Layout categories={categories.results} title="Shopping page">
-  <Cart collections={categories.results} />
+<Layout
+  title="Shopping page"
+  description="Delivered farm fresh to you"
+  categories={categories.results}
+>
+  <Category products={products}  collections={categories.results} />
 </Layout>
