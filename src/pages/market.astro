@@ -2,10 +2,8 @@
 import swell from "../lib/swell.ts";
 export const prerender = true;
 
-const products = await swell.get("/products", {
-  where: { active: true },
-  fields: "name,slug,kind",
-  limit: 1000,
+const products = await swell.products.list({
+  limit: 100,
   page: 1,
 });
 ---

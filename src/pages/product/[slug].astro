@@ -3,10 +3,8 @@ import swell from "../../lib/swell.ts";
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const result = await swell.get("/products", {
-    where: { active: true },
-    fields: "name,slug",
-    limit: 1000,
+  const result = await swell.products.list({
+    limit: 100,
     page: 1,
   });
 
