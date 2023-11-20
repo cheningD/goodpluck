@@ -36,6 +36,7 @@ export const isLoggedIn = async (session_token: string, runtime: any) => {
     try {
       const stytchclient = getStytchClient(runtime);
       // Verify the session token with Stytch
+      const stytchclient = createStytchClient(runtimeEnv);
       await stytchclient.sessions.authenticate({ session_token });
       return true; // Session is valid
     } catch (e) {
@@ -48,3 +49,9 @@ export const isLoggedIn = async (session_token: string, runtime: any) => {
   }
   return false; // No valid session token found
 };
+
+// Validate OTP code
+
+// Send OTP code
+
+// Revoke session
