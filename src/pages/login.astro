@@ -1,6 +1,6 @@
 ---
 import { StytchError } from "stytch";
-import { isLoggedIn, createStytchClient } from "../lib/stytch";
+import { stytchclient, isLoggedIn } from "../lib/stytch";
 import Layout from "../layouts/Layout.astro";
 
 // Initialize error state
@@ -19,7 +19,6 @@ if (Astro.request.method === "POST") {
     } else {
       // Make stytch API call and handle errors within the same try-catch block
       try {
-        const stytchclient = createStytchClient(Astro.locals.runtime.env);
         const resp = await stytchclient.otps.email.send({
           email,
           expiration_minutes: 10,
@@ -48,7 +47,7 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-if (await isLoggedIn(Astro.locals.runtime.env, sessionToken as string)) {
+if (await isLoggedIn(sessionToken as string)) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---
