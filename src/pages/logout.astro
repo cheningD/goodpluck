@@ -1,11 +1,12 @@
 ---
-import { stytchclient } from "../lib/stytch";
+import { createStytchClient } from "../lib/stytch";
 
 let message = "";
 const session_token = Astro.cookies.get("gp_session_token")?.value;
 
 if (session_token) {
   try {
+    const stytchclient = createStytchClient(Astro.locals.runtime.env);
     await stytchclient.sessions.revoke({ session_token });
     Astro.cookies.delete("gp_session_token");
     message = `successLoggingOut`;

@@ -1,5 +1,5 @@
 ---
-import { isLoggedIn, stytchclient } from "../lib/stytch";
+import { createStytchClient, isLoggedIn } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 import Layout from "../layouts/Layout.astro";
@@ -25,6 +25,7 @@ if (Astro.request.method === "POST") {
     } else if (!method_id) {
       errors.code = "Method ID is not valid.";
     } else {
+      const stytchclient = createStytchClient(Astro.locals.runtime.env);
       // Make stytchclient API call to authenticate OTP
       const resp = await stytchclient.otps.authenticate({
         code,
@@ -61,7 +62,7 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-if (await isLoggedIn(sessionToken as string)) {
+if (await isLoggedIn(Astro.locals.runtime.env, sessionToken as string)) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---
