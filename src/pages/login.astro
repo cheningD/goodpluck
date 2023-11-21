@@ -43,9 +43,12 @@ const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 if (sessionToken && (await isLoggedIn(sessionToken, runtime))) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
+
+const runtime = Astro.locals.runtime;
 ---
 
 <Layout>
+  <pre>{JSON.stringify(runtime.env.STYTCH_PROJECT_ID)}</pre>
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Log in</h2>
