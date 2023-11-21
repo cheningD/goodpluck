@@ -29,14 +29,10 @@ test.describe("Validate Login Code", () => {
     await page.getByTestId("login-btn").click();
   });
 
+  // Cookies do not work on safari outside of a https instance. This test may fail locally if run using webkit.
   test("should set session to localstorage, and redirect to #basket given valid code", async ({
     page,
-    browserName,
   }) => {
-    test.skip(
-      browserName === "webkit",
-      "Safari wont let you set a cookie on localhost without https",
-    );
     await page.getByTestId("otp-input").fill("000000");
     await page.getByTestId("submit-login-code-btn").click();
     expect(page.url()).toContain("/#basket");
