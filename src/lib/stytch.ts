@@ -1,29 +1,32 @@
 import * as stytch from "stytch";
 
-if (!import.meta.env.STYTCH_PROJECT_ID) {
-  throw new Error("Missing STYTCH_PROJECT_ID env var");
-}
+export const createStytchClient = (env: any) => {
+  if (!env.STYTCH_PROJECT_ID) {
+    throw new Error("Missing STYTCH_PROJECT_ID env var");
+  }
 
-if (!import.meta.env.STYTCH_PROJECT_SECRET) {
-  throw new Error("Missing STYTCH_PROJECT_SECRET env var");
-}
+  if (!env.STYTCH_PROJECT_SECRET) {
+    throw new Error("Missing STYTCH_PROJECT_SECRET env var");
+  }
 
-const client = new stytch.Client({
-  project_id: import.meta.env.STYTCH_PROJECT_ID,
-  secret: import.meta.env.STYTCH_PROJECT_SECRET,
-});
+  const client = new stytch.Client({
+    project_id: env.STYTCH_PROJECT_ID,
+    secret: env.STYTCH_PROJECT_SECRET,
+  });
 
-// Stytch is currently broken in cloudflare runtime so we use this patch
-/* eslint-disable */
-const cl = <any>client;
-/* eslint-enable */
-cl.fetchConfig.cache = undefined;
+  // Stytch is currently broken in cloudflare runtime so we use this patch
+  /* eslint-disable */
+  const cl = <any>client;
+  /* eslint-enable */
+  cl.fetchConfig.cache = undefined;
 
-export const stytchclient = client;
+  return client;
+};
 
-export const isLoggedIn = async (session_token: string) => {
+export const isLoggedIn = async (session_token: string, env: any) => {
   if (session_token) {
     try {
+      const stytchclient = createStytchClient(env);
       // Verify the session token with Stytch
       await stytchclient.sessions.authenticate({ session_token });
       return true; // Session is valid
