@@ -13,12 +13,12 @@ jobs:
         run: npm install -g pnpm && pnpm install
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
+      - name: Set env vars
+        run: echo "BRANCH=$GITHUB_REF_NAME" >> $GITHUB_ENV
       - name: Inspect env vars
         run: env
-      - name: Set env vars
-        run: echo "GITHUB_HEAD_REF=$GITHUB_HEAD_REF" >> $BRANCH_REF
       - name: Run Playwright tests
-        run: BRANCH=$BRANCH_REF pnpm exec playwright test --forbid-only -c ./playwright.config.ts -u -x
+        run: $BRANCH pnpm exec playwright test --forbid-only -c ./playwright.config.ts -u -x
       - uses: actions/upload-artifact@v3
         if: always()
         with:
