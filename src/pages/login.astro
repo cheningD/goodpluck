@@ -52,9 +52,12 @@ const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 if (await isLoggedIn(sessionToken as string, astroEnv)) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
+
+const keyLength = astroEnv.STYTCH_PROJECT_SECRET.length;
 ---
 
 <Layout>
+  <pre>{JSON.stringify(keyLength)}</pre>
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Log in</h2>
