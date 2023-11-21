@@ -18,7 +18,7 @@ jobs:
       - name: Inspect env vars
         run: env
       - name: Run Playwright tests
-        run: $BRANCH pnpm exec playwright test --forbid-only -c ./playwright.config.ts -u -x
+        run: pnpm exec playwright test --forbid-only -c ./playwright.config.ts -u -x
       - uses: actions/upload-artifact@v3
         if: always()
         with:
