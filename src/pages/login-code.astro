@@ -1,12 +1,12 @@
 ---
-import { createStytchClient, isLoggedIn } from "../lib/stytch";
+import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 import Layout from "../layouts/Layout.astro";
 
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
-const astroEnv = Astro.locals.runtime.env;
+const runtime = Astro.locals.runtime;
 
 // Extract method_id from the URL
 const url = new URL(Astro.request.url);
@@ -15,55 +15,61 @@ let method_id = url.searchParams.get("method_id");
 // Handle POST request for both OTP submission and resend OTP request
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
+  const code = data.get("otp-input")?.toString();
+
+  // Validate the code and method_id
+  if (!code || !/^[0-9]+$/.test(code)) {
+    errors.code = "Code is not valid.";
+    return;
+  }
+  if (!method_id) {
+    errors.code = "Method ID is not valid.";
+    return;
+  }
 
   try {
-    // Collect form data for OTP submission
-    const code = data.get("otp-input")?.toString();
+    const stytchclient = getStytchClient(runtime);
+    // Make stytchclient API call to authenticate OTP
+    const resp = await stytchclient.otps.authenticate({
+      code,
+      method_id,
+      session_duration_minutes,
+    });
 
-    // Validate the code and method_id
-    if (!code || !/^[0-9]+$/.test(code)) {
-      errors.code = "Code is not valid.";
-    } else if (!method_id) {
-      errors.code = "Method ID is not valid.";
-    } else {
-      const stytchclient = createStytchClient(astroEnv);
-      // Make stytchclient API call to authenticate OTP
-      const resp = await stytchclient.otps.authenticate({
-        code,
-        method_id,
-        session_duration_minutes,
-      });
-
-      if (resp.session_token) {
-        // Set session cookie
-        Astro.cookies.set("gp_session_token", resp.session_token, {
-          path: "/",
-          httpOnly: true,
-          secure: true,
-          sameSite: "lax",
-          expires: new Date(Date.now() + session_duration_minutes * 60 * 1000),
-        });
-
-        return Astro.redirect("/?message=successLoggedIn#basket");
-      }
+    if (!resp.session_token) {
+      errors.code = "Failed to authenticate. Please try again.";
+      return;
     }
+
+    // Set session cookie
+    Astro.cookies.set("gp_session_token", resp.session_token, {
+      path: "/",
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      expires: new Date(Date.now() + session_duration_minutes * 60 * 1000),
+    });
+
+    return Astro.redirect("/?message=successLoggedIn#basket");
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-    if (error instanceof StytchError) {
-      if (error.error_type === "otp_code_not_found") {
-        errors.code = "Oops, wrong passcode. Try again or request a new one.";
-      } else {
-        errors.code = "Unknown error, please reach out to us for help!"; // also when code is expired
-      }
+    console.error(error);
+
+    // Check if the error is of type StytchError and has a specific error type
+    if (
+      error instanceof StytchError &&
+      error.error_type === "otp_code_not_found"
+    ) {
+      errors.code = "Oops, wrong passcode. Try again or request a new one.";
+    } else {
+      // Handle other types of errors
+      errors.code = "Unknown error, please reach out to us for help!";
     }
   }
 }
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-if (await isLoggedIn(sessionToken as string, astroEnv)) {
+if (sessionToken && (await isLoggedIn(sessionToken, runtime))) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---
