@@ -1,17 +1,19 @@
 import * as stytch from "stytch";
 
 export const createStytchClient = (env: any) => {
-  if (!env.STYTCH_PROJECT_ID) {
+  const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } = env;
+
+  if (!STYTCH_PROJECT_ID) {
     throw new Error("Missing STYTCH_PROJECT_ID env var");
   }
 
-  if (!env.STYTCH_PROJECT_SECRET) {
+  if (!STYTCH_PROJECT_SECRET) {
     throw new Error("Missing STYTCH_PROJECT_SECRET env var");
   }
 
   const client = new stytch.Client({
-    project_id: env.STYTCH_PROJECT_ID,
-    secret: env.STYTCH_PROJECT_SECRET,
+    project_id: STYTCH_PROJECT_ID,
+    secret: STYTCH_PROJECT_SECRET,
   });
 
   // Stytch is currently broken in cloudflare runtime so we use this patch

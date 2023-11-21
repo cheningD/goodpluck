@@ -6,6 +6,7 @@ import Layout from "../layouts/Layout.astro";
 
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
+const astroEnv = Astro.locals.runtime.env;
 
 // Extract method_id from the URL
 const url = new URL(Astro.request.url);
@@ -25,7 +26,7 @@ if (Astro.request.method === "POST") {
     } else if (!method_id) {
       errors.code = "Method ID is not valid.";
     } else {
-      const stytchclient = createStytchClient(Astro.locals.runtime.env);
+      const stytchclient = createStytchClient(astroEnv);
       // Make stytchclient API call to authenticate OTP
       const resp = await stytchclient.otps.authenticate({
         code,
@@ -62,7 +63,7 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-if (await isLoggedIn(sessionToken as string, Astro.locals.runtime.env)) {
+if (await isLoggedIn(sessionToken as string, astroEnv)) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---

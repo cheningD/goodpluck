@@ -5,6 +5,7 @@ import Layout from "../layouts/Layout.astro";
 
 // Initialize error state
 const errors = { email: "", general: "" };
+const astroEnv = Astro.locals.runtime.env;
 
 // Handle POST request
 if (Astro.request.method === "POST") {
@@ -19,7 +20,7 @@ if (Astro.request.method === "POST") {
     } else {
       // Make stytch API call and handle errors within the same try-catch block
       try {
-        const stytchclient = createStytchClient(Astro.locals.runtime.env);
+        const stytchclient = createStytchClient(astroEnv);
         const resp = await stytchclient.otps.email.send({
           email,
           expiration_minutes: 10,
@@ -48,15 +49,12 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-if (await isLoggedIn(sessionToken as string, Astro.locals.runtime.env)) {
+if (await isLoggedIn(sessionToken as string, astroEnv)) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
-
-const runtime = Astro.locals.runtime;
 ---
 
 <Layout>
-  <pre>{JSON.stringify(runtime.env.STYTCH_PROJECT_ID)}</pre>
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Log in</h2>
