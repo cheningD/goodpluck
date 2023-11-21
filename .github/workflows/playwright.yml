@@ -14,7 +14,7 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Run Playwright tests
-        run: pnpm exec playwright test --forbid-only -c ./playwright.config.ts -u -x
+        run: GITHUB_BASE_REF=${{env.GITHUB_BASE_REF}} pnpm exec playwright test --forbid-only -c ./playwright.config.ts -u -x
         env:
           GITHUB_BASE_REF: ${{env.GITHUB_BASE_REF}}
       - uses: actions/upload-artifact@v3
