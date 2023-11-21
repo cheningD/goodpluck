@@ -4,7 +4,9 @@ let stytchClientInstance: stytch.Client | null = null; // Singleton
 
 export const getStytchClient = (runtime: any) => {
   if (!stytchClientInstance) {
-    const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } = runtime.env;
+    // Note: Use `import.meta.env` for environment variables in local development with `pnpm run dev`.
+    const STYTCH_PROJECT_ID = runtime?.env.STYTCH_PROJECT_ID || import.meta.env.STYTCH_PROJECT_ID;
+    const STYTCH_PROJECT_SECRET = runtime?.env.STYTCH_PROJECT_SECRET || import.meta.env.STYTCH_PROJECT_SECRET;
 
     if (!STYTCH_PROJECT_ID) {
       throw new Error("Missing STYTCH_PROJECT_ID env var");
