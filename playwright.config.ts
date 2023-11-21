@@ -35,7 +35,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.CI
-      ? `https://${process.env.GITHUB_HEAD_REF}.goodpluck.pages.dev`
+      ? `https://${process.env.BRANCH}.goodpluck.pages.dev`
       : "http://localhost:8788",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
