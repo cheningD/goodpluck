@@ -3,6 +3,7 @@ test.describe("Login Form", () => {
   test("should send otp, redirect to login-code if given a valid email address", async ({
     page,
   }) => {
+    console.log("The URL:", page.url());
     await page.goto("/login");
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
