@@ -13,5 +13,5 @@ type ENV = {
 // use `DirectoryRuntime<ENV>` for directory runtime mode
 type Runtime = import("@astrojs/cloudflare").AdvancedRuntime<ENV>;
 declare namespace App {
-  interface Locals extends Runtime {}
+  interface Locals extends Runtime { }
 }
