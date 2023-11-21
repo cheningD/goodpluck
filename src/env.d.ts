@@ -1,13 +1,6 @@
-/// <reference types="astro/client" />
-interface WorkerRuntime {
-  runtime: {
-    waitUntil: (promise: Promise<any>) => void;
-    env: Env;
-    cf: CFRequest["cf"];
-    caches: typeof caches;
-  };
-}
+/// <reference types="astro/client" />\
 
+type Runtime = import("@astrojs/cloudflare").AdvancedRuntime<ENV>;
 declare namespace App {
-  interface Locals extends WorkerRuntime {}
+  interface Locals extends Runtime {}
 }
