@@ -1,11 +1,16 @@
 ---
-import swell from "../lib/swell.ts";
-export const prerender = true;
+import { initSwell } from "../lib/swell.ts";
+// export const prerender = true;
 
-const products = await swell.get("/products", {
-  where: { active: true },
-  fields: "name,slug,kind",
-  limit: 1000,
+    const runtime = Astro.locals.runtime;
+    // const runtime = context.locals.runtime;
+
+    
+
+const swell = initSwell(runtime ? runtime.env.SWELL_STORE_ID : import.meta.env.SWELL_STORE_ID,
+runtime ? runtime.env.SWELL_PUBLIC_KEY : import.meta.env.SWELL_PUBLIC_KEY);
+const products = await swell.products.list({
+  limit: 100,
   page: 1,
 });
 ---

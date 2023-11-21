@@ -1,6 +1,8 @@
-import swell from "swell-node";
+import swell from "swell-js";
 
-export default swell.init(
-  import.meta.env.SWELL_STORE_ID,
-  import.meta.env.SWELL_SECRET_KEY,
-);
+  function initSwell(storeId: string, publicKey: string) {
+    swell.init(storeId, publicKey);
+    return swell;
+}
+
+export { initSwell };
