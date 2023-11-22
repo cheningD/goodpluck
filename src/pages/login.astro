@@ -4,45 +4,44 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import { stytchclient } from "../lib/stytch";
+import { getStytchClient } from "../lib/stytch";
 
 // Initialize error state
-const errors = { email: "" };
+const errors = { email: "", general: "" };
+const runtime = Astro.locals.runtime;
+const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
+  runtime?.env || import.meta.env;
 
 // Handle POST request
 if (Astro.request.method === "POST") {
-  try {
-    // Collect form data and initialize params object
-    const data = await Astro.request.formData();
-    const email = data.get("email")?.toString();
+  const data = await Astro.request.formData();
+  const email = data.get("email")?.toString();
 
-    // Validate email
-    if (typeof email !== "string") {
-      errors.email = "Email is not valid.";
+  // Validate email
+  if (typeof email !== "string") {
+    errors.email = "Email is not valid.";
+    return; // Stop execution if the email is invalid
+  }
+
+  try {
+    const stytchclient = getStytchClient(
+      STYTCH_PROJECT_ID,
+      STYTCH_PROJECT_SECRET,
+    );
+    const resp = await stytchclient.otps.email.send({
+      email,
+      expiration_minutes: 10,
+    });
+    return Astro.redirect("/login-code?method_id=" + resp.email_id);
+  } catch (err) {
+    console.error(err);
+    if (err instanceof StytchError && err.error_type === "email_not_found") {
+      errors.email = "Email not found. Do you need to create an account?";
+    } else if (err instanceof Error) {
+      errors.general =
+        "A network error or unexpected issue occurred, please try again later.";
     } else {
-      // Make stytch API call and handle errors within the same try-catch block
-      try {
-        const resp = await stytchclient.otps.email.send({
-          email,
-          expiration_minutes: 10,
-        });
-        console.log(resp);
-        return Astro.redirect("/login-code?method_id=" + resp.email_id);
-      } catch (err) {
-        console.log(err);
-        if (
-          err instanceof StytchError &&
-          err.error_type === "email_not_found"
-        ) {
-          errors.email = "Email not found. Do you need to create an account?";
-        } else {
-          errors.email = "Unknown error, please try again later.";
-        }
-      }
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
+      errors.general = `Unexpected error occurred, please try again later.`;
     }
   }
 }
