@@ -19,7 +19,11 @@ export const getStytchClient = (projectID: string, projectSecret: string) => {
   return stytchClientInstance;
 };
 
-export const isLoggedIn = async (session_token: string, projectID: string, projectSecret: string) => {
+export const isLoggedIn = async (
+  session_token: string,
+  projectID: string,
+  projectSecret: string,
+) => {
   if (session_token) {
     try {
       const stytchclient = getStytchClient(projectID, projectSecret);
