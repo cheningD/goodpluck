@@ -1,0 +1,28 @@
+---
+import Banner from "../components/solid/Banner.tsx";
+import Cart from "../components/solid/Cart.tsx";
+import Menu from "../components/solid/Menu";
+import MobileNav from "../components/solid/MobileNav.tsx";
+
+const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
+const message = Astro.url.searchParams.get("message")! || "";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Goodpluck</title>
+  </head>
+  <body>
+    <div class="sticky top-0 h-full">
+      <Banner client:load />
+      <MobileNav client:load />
+    </div>
+    <Cart client:load />
+    <Menu client:load />
+    <slot />
+  </body>
+</html>
