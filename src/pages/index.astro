@@ -28,6 +28,7 @@ if (session_token) {
     console.log("err", err);
   }
 }
+const message = Astro.url.searchParams.get("message")! || "";
 ---
 
 <html lang="en">
@@ -48,4 +49,5 @@ if (session_token) {
   </body>
   <h1>Homepage</h1>
   <p>Logged in: {JSON.stringify(loggedin)}</p>
+  <p>{message}</p>
 </html>
