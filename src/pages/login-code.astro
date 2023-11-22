@@ -83,7 +83,7 @@ const isUserLoggedIn = await isLoggedIn(
   STYTCH_PROJECT_SECRET,
 );
 
-if (sessionToken && isUserLoggedIn) {
+if (isUserLoggedIn) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---
