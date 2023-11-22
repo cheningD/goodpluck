@@ -1,7 +1,10 @@
 ---
 import { StytchError } from "stytch";
 import { getStytchClient, isLoggedIn } from "../lib/stytch";
-import Layout from "../layouts/Layout.astro";
+import Banner from "../components/solid/Banner.tsx";
+import Cart from "../components/solid/Cart.tsx";
+import Menu from "../components/solid/Menu";
+import MobileNav from "../components/solid/MobileNav.tsx";
 
 // Initialize error state
 const errors = { email: "", general: "" };
@@ -45,10 +48,13 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-if (
-  sessionToken &&
-  (await isLoggedIn(sessionToken, STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET))
-) {
+const isUserLoggedIn = await isLoggedIn(
+  sessionToken as string,
+  STYTCH_PROJECT_ID,
+  STYTCH_PROJECT_SECRET,
+);
+
+if (sessionToken && isUserLoggedIn) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 
