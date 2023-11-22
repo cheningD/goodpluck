@@ -7,6 +7,8 @@ import Layout from "../layouts/Layout.astro";
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
 const runtime = Astro.locals.runtime;
+const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
+  runtime?.env || import.meta.env;
 
 // Extract method_id from the URL
 const url = new URL(Astro.request.url);
@@ -28,7 +30,10 @@ if (Astro.request.method === "POST") {
   }
 
   try {
-    const stytchclient = getStytchClient(runtime);
+    const stytchclient = getStytchClient(
+      STYTCH_PROJECT_ID,
+      STYTCH_PROJECT_SECRET,
+    );
     // Make stytchclient API call to authenticate OTP
     const resp = await stytchclient.otps.authenticate({
       code,
@@ -69,7 +74,10 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-if (sessionToken && (await isLoggedIn(sessionToken, runtime))) {
+if (
+  sessionToken &&
+  (await isLoggedIn(sessionToken, STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET))
+) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---
@@ -78,7 +86,7 @@ if (sessionToken && (await isLoggedIn(sessionToken, runtime))) {
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
-        OTP Verification
+        Check your email!
       </h2>
       <p class="text-sm text-gray-600 mb-6 text-center">
         We have sent a code to your email address. Please enter it below.

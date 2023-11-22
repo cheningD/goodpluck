@@ -6,6 +6,8 @@ import Layout from "../layouts/Layout.astro";
 // Initialize error state
 const errors = { email: "", general: "" };
 const runtime = Astro.locals.runtime;
+const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
+  runtime?.env || import.meta.env;
 
 // Handle POST request
 if (Astro.request.method === "POST") {
@@ -19,7 +21,10 @@ if (Astro.request.method === "POST") {
   }
 
   try {
-    const stytchclient = getStytchClient(runtime);
+    const stytchclient = getStytchClient(
+      STYTCH_PROJECT_ID,
+      STYTCH_PROJECT_SECRET,
+    );
     const resp = await stytchclient.otps.email.send({
       email,
       expiration_minutes: 10,
@@ -40,7 +45,10 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-if (sessionToken && (await isLoggedIn(sessionToken, runtime))) {
+if (
+  sessionToken &&
+  (await isLoggedIn(sessionToken, STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET))
+) {
   return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 

@@ -6,8 +6,7 @@ test.describe("Login Form", () => {
     await page.goto(`/login`);
   });
 
-  // Test to check redirect to OTP page on valid email
-  test("should send otp, redirect to login-code if given a valid email address", async ({
+  test("entering a valid email should redirect to OTP verification page", async ({
     page,
   }) => {
     await page.fill('input[type="email"]', "sandbox@stytch.com");
@@ -16,8 +15,7 @@ test.describe("Login Form", () => {
     await expect(page.locator('input[name="otp-input"]')).toBeVisible();
   });
 
-  // Test to check error message for unregistered email
-  test("should show error if email is invalid", async ({ page }) => {
+  test("entering an unregistered email shows error", async ({ page }) => {
     await page.fill('input[type="email"]', "NOTsandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
     await expect(
