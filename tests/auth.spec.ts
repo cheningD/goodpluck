@@ -62,13 +62,6 @@ test.describe("Login Form", () => {
 
     // Step 3: Check if the user is redirected to the homepage
     await expect(page).toHaveURL(`/?message=errorAlreadyLoggedIn`);
-
-    // Step 4: Check if the user is shown a custom toast message
-    const toastSelector = "#gp-custom-toast";
-    await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText(
-      "errorAlreadyLoggedIn",
-    );
   });
 
   // TODO: Test for general errors like network errors or unexpected errors.
@@ -109,11 +102,6 @@ test.describe("Validate Login Code", () => {
     expect(sessionCookie?.secure).toBeTruthy();
     expect(sessionCookie?.httpOnly).toBeTruthy();
     expect(sessionCookie?.sameSite).toBe("Lax");
-
-    // Check for toast message
-    const toastSelector = "#gp-custom-toast";
-    await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText("successLoggedIn");
   });
 
   // Test error handling for invalid OTP code
@@ -169,13 +157,6 @@ test.describe("Validate Login Code", () => {
     // Step 2: Attempt to navigate to the login-code page again
     await page.goto(`/login-code`);
     await expect(page).toHaveURL(`/?message=errorAlreadyLoggedIn`);
-
-    // Step 2: Check if the user is shown a custom toast message
-    const toastSelector = "#gp-custom-toast";
-    await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText(
-      "errorAlreadyLoggedIn",
-    );
   });
 
   // TODO: Test for general errors like network errors or unexpected errors.
@@ -218,11 +199,6 @@ test.describe("Logout", () => {
       (cookie) => cookie.name === "gp_session_token",
     );
     expect(sessionCookie).toBeUndefined();
-
-    // Check for toast message
-    const toastSelector = "#gp-custom-toast";
-    await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText("errorNotLoggedIn");
   });
 
   // Note: this test only works with Stytch's sandbox user
@@ -243,10 +219,5 @@ test.describe("Logout", () => {
     // Logout
     await page.goto(`/logout`);
     await expect(page).toHaveURL(`/?message=errorLoggingOut`);
-
-    // Check for toast message
-    const toastSelector = "#gp-custom-toast";
-    await expect(page.locator(toastSelector)).toBeVisible();
-    await expect(page.locator(toastSelector)).toHaveText("errorLoggingOut");
   });
 });

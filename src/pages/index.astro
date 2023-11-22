@@ -5,6 +5,7 @@ import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
 
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
+const message = Astro.url.searchParams.get("message")! || "";
 ---
 
 <html lang="en">
@@ -23,5 +24,6 @@ const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local ch
     <Cart client:load />
     <Menu client:load />
     <h1>Homepage</h1>
+    <p>{message}</p>
   </body>
 </html>
