@@ -28,7 +28,7 @@ const message = Astro.url.searchParams.get("message")! || "";
   </head>
   <body>
     <div class="sticky top-0 h-full">
-      <Banner client:load />
+      <Banner isLoggedIn={isUserLoggedIn} client:load />
       <MobileNav client:load />
     </div>
     <Cart client:load />
