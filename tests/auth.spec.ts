@@ -11,7 +11,9 @@ test.describe("Login Form", () => {
   }) => {
     await page.fill('input[type="email"]', "sandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
-    await expect(page.locator('h2:has-text("Check your email!")')).toBeVisible();
+    await expect(
+      page.locator('h2:has-text("Check your email!")'),
+    ).toBeVisible();
     await expect(page.locator('input[name="otp-input"]')).toBeVisible();
   });
 
