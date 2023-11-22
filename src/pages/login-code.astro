@@ -3,7 +3,7 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import { getStytchClient } from "../lib/stytch";
+import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 
@@ -73,6 +73,18 @@ if (Astro.request.method === "POST") {
       errors.code = "Unknown error, please reach out to us for help!";
     }
   }
+}
+
+// Redirect authenticated users away from login page
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const isUserLoggedIn = await isLoggedIn(
+  sessionToken as string,
+  STYTCH_PROJECT_ID,
+  STYTCH_PROJECT_SECRET,
+);
+
+if (isUserLoggedIn) {
+  return Astro.redirect("/?message=errorAlreadyLoggedIn");
 }
 ---
 
