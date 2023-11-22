@@ -3,31 +3,18 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import { getStytchClient } from "../lib/stytch";
+import { isLoggedIn } from "../lib/stytch";
 
 const runtime = Astro.locals.runtime;
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
   runtime?.env || import.meta.env;
 
-let loggedin = null;
-const session_token = Astro.cookies.get("gp_session_token")?.value;
-if (session_token) {
-  try {
-    const stytchclient = getStytchClient(
-      STYTCH_PROJECT_ID,
-      STYTCH_PROJECT_SECRET,
-    );
-    const resp = await stytchclient.sessions.authenticate({
-      session_token,
-    });
-    if (resp.status_code === 200) {
-      loggedin = true;
-    }
-  } catch (err) {
-    loggedin = false;
-    console.log("err", err);
-  }
-}
+const isUserLoggedIn = await isLoggedIn(
+  sessionToken as string,
+  STYTCH_PROJECT_ID,
+  STYTCH_PROJECT_SECRET,
+);
 const message = Astro.url.searchParams.get("message")! || "";
 ---
 
@@ -48,6 +35,6 @@ const message = Astro.url.searchParams.get("message")! || "";
     <Menu client:load />
   </body>
   <h1>Homepage</h1>
-  <p>Logged in: {JSON.stringify(loggedin)}</p>
+  <p>Logged in: {JSON.stringify(isUserLoggedIn)}</p>
   <p>{message}</p>
 </html>
