@@ -3,12 +3,20 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import { stytchclient } from "../lib/stytch";
+import { getStytchClient } from "../lib/stytch";
+
+const runtime = Astro.locals.runtime;
+const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
+  runtime?.env || import.meta.env;
 
 let loggedin = null;
 const session_token = Astro.cookies.get("gp_session_token")?.value;
 if (session_token) {
   try {
+    const stytchclient = getStytchClient(
+      STYTCH_PROJECT_ID,
+      STYTCH_PROJECT_SECRET,
+    );
     const resp = await stytchclient.sessions.authenticate({
       session_token,
     });
