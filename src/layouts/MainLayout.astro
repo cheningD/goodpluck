@@ -1,6 +1,5 @@
 ---
 import Header from "@components/solid/global/Header.tsx";
-import Services from "@components/solid/global/Services.tsx";
 import SecondaryNav from "@components/solid/SecondaryNav.tsx";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
@@ -18,7 +17,6 @@ const { title, categories } = Astro.props;
   <body class="flex flex-col">
     <SecondaryNav client:load />
     <Header collections={categories} client:load />
-    <Services />
     <main class="w-full h-full flex flex-col max-w-7xl mx-auto">
       <slot />
     </main>
