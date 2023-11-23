@@ -15,7 +15,8 @@ const isUserLoggedIn = await isLoggedIn(
   STYTCH_PROJECT_ID,
   STYTCH_PROJECT_SECRET,
 );
-const message = Astro.url.searchParams.get("message")! || "";
+const encodedMessage = Astro.url.searchParams.get("message")! || "";
+const message = decodeURIComponent(encodedMessage);
 ---
 
 <html lang="en">

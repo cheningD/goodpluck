@@ -58,7 +58,8 @@ if (Astro.request.method === "POST") {
       expires: new Date(Date.now() + session_duration_minutes * 60 * 1000),
     });
 
-    return Astro.redirect("/?message=successLoggedIn#basket");
+    const message = encodeURIComponent("You are now logged in");
+    return Astro.redirect(`/?message=${message}#basket`);
   } catch (error) {
     console.error(error);
 
@@ -84,7 +85,9 @@ const isUserLoggedIn = await isLoggedIn(
 );
 
 if (isUserLoggedIn) {
-  return Astro.redirect("/?message=errorAlreadyLoggedIn");
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are already logged in"),
+  );
 }
 ---
 
