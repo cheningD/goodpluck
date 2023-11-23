@@ -24,5 +24,6 @@ let products = await swell.products.list({
   description="Delivered farm fresh to you"
   categories={categories.results}
 >
-  <Category products={products} collections={categories.results} />
+  <Category currentCollection={null}
+ products={products} collections={categories.results} />
 </Layout>
