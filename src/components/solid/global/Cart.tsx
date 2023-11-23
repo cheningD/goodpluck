@@ -8,10 +8,15 @@ interface IProps {
   products: any;
 }
 
-const Cart: Component<IProps> = ({ collections, currentCollection, products }) => {
-
-  const currentCategory = currentCollection != null ? collections.find(
-    (col) => col.id == currentCollection.id) : null;
+const Category: Component<IProps> = ({
+  collections,
+  currentCollection,
+  products,
+}) => {
+  const currentCategory =
+    currentCollection != null
+      ? collections.find((col) => col.id == currentCollection.id)
+      : null;
 
   const currentCategoryName =
     currentCategory !== null ? currentCategory.name : "";
@@ -145,4 +150,4 @@ const Cart: Component<IProps> = ({ collections, currentCollection, products }) =
   );
 };
 
-export default Cart;
+export default Category;
