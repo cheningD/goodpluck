@@ -1,5 +1,4 @@
 import { type Component } from "solid-js";
-import logo from "@assets/logo.png";
 
 const Footer: Component = () => {
   return (

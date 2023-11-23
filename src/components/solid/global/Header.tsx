@@ -4,20 +4,20 @@ import logo from "@assets/logo.png";
 import { isCartOpen, isMenuOpen } from "../../../store.js";
 
 interface IProps {
-  collections: any
+  collections: any;
 }
 
-const Header: Component<IProps> = ({collections}) => {
+const Header: Component<IProps> = ({ collections }) => {
   // read the store value with the `useStore` hook
   const $isCartOpen = useStore(isCartOpen);
   const $isMenuOpen = useStore(isMenuOpen);
   const [isSearchOpen, setSearchOpen] = createSignal(false);
+
   const toggleSearch = () => setSearchOpen(!isSearchOpen());
 
   const categories = collections.filter((col) => col.parent_id == null);
 
   function getSubCategories(parentId) {
-
     const categories = collections.filter((col) => col.parent_id == parentId);
 
     if (categories) {
@@ -78,7 +78,16 @@ const Header: Component<IProps> = ({collections}) => {
                     </svg>
                   </button>
                   {/* Search Icon */}
-                  <IconMdiMagnify class="w-6 h-6" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-6 h-6"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5Z"
+                    />
+                  </svg>
                 </div>
                 {/* Center Column: Logo - This should be dead center */}
                 <div class="justify-self-center pb-2 lg:pr-6">
@@ -157,10 +166,18 @@ const Header: Component<IProps> = ({collections}) => {
 
             <div class="hidden lg:flex items-center gap-x-4">
               {/* Search Icon */}
-              <IconMdiMagnify
+              <svg
                 onClick={toggleSearch}
+                xmlns="http://www.w3.org/2000/svg"
                 class="w-6 h-6 cursor-pointer"
-              />
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5Z"
+                />
+              </svg>
+
               {/* Basket icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"

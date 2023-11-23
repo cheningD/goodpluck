@@ -1,5 +1,8 @@
 import swell from "swell-js";
 
-swell.init(import.meta.env.SWELL_STORE_ID, import.meta.env.SWELL_PUBLIC_KEY);
-
-export default swell;
+// Initialize Swell, Access the envirnoment variables from the runtime
+// https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-runtime
+export default function initSwell(storeId: string, publicKey: string) {
+  swell.init(storeId, publicKey);
+  return swell;
+}
