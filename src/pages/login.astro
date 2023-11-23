@@ -55,7 +55,9 @@ const isUserLoggedIn = await isLoggedIn(
 );
 
 if (isUserLoggedIn) {
-  return Astro.redirect("/?message=errorAlreadyLoggedIn");
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are already logged in"),
+  );
 }
 ---
 
