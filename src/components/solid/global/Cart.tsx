@@ -1,22 +1,26 @@
 import { For, type Component } from "solid-js";
 
 interface IProps {
-  collections: any
+  collections: any;
 }
 
-const Cart: Component<IProps> = ({collections}) => {
-  const currentCategory = collections.find(col => col.id == '655023bb2919ba001292eb02') ;
-  const currentCategoryName =   currentCategory !== null ? currentCategory.name : '';
+const Cart: Component<IProps> = ({ collections }) => {
+  const currentCategory = collections.find(
+    (col) => col.id == "655023bb2919ba001292eb02",
+  );
+  const currentCategoryName =
+    currentCategory !== null ? currentCategory.name : "";
 
-  function getCurrentSubCategories(){
-
-    const subCategories = collections.filter(col => col.parent_id == '655023bb2919ba001292eb02');
+  function getCurrentSubCategories() {
+    const subCategories = collections.filter(
+      (col) => col.parent_id == "655023bb2919ba001292eb02",
+    );
     console.log("categories:", subCategories);
 
-    if(subCategories){
-      return subCategories
+    if (subCategories) {
+      return subCategories;
     }
-    return []
+    return [];
   }
 
   return (
@@ -25,22 +29,22 @@ const Cart: Component<IProps> = ({collections}) => {
         {/* Start Sidbar */}
         <div class="grid grid-cols-5">
           <div class="hidden  lg:flex flex-col items-start px-10">
-            <h2 class="text-xl font-medium dark:text-white">{currentCategoryName}</h2>
-            <ul
-              class="sticky top-[114px]"
-            >
+            <h2 class="text-xl font-medium dark:text-white">
+              {currentCategoryName}
+            </h2>
+            <ul class="sticky top-[114px]">
               <For each={getCurrentSubCategories()}>
-                    {(collection, i) => (
-              <li>
-                <a
-                  href="#"
-                  class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
-                >
-                  {collection.name}
-                </a>
-              </li>
-                    )}
-                </For>
+                {(collection, i) => (
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                    >
+                      {collection.name}
+                    </a>
+                  </li>
+                )}
+              </For>
             </ul>
           </div>
 

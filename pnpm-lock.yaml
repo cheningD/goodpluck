@@ -23,12 +23,18 @@ dependencies:
   "@nanostores/solid":
     specifier: ^0.4.2
     version: 0.4.2(nanostores@0.9.4)(solid-js@1.8.3)
+  "@tailwindcss/forms":
+    specifier: ^0.5.7
+    version: 0.5.7(tailwindcss@3.3.4)
   astro:
     specifier: ^3.3.4
     version: 3.3.4(@types/node@20.9.0)(typescript@5.2.2)
   nanostores:
     specifier: ^0.9.4
     version: 0.9.4
+  preline:
+    specifier: ^2.0.1
+    version: 2.0.1
   solid-js:
     specifier: ^1.8.3
     version: 1.8.3
@@ -52,9 +58,6 @@ devDependencies:
   "@types/node":
     specifier: ^20.9.0
     version: 20.9.0
-  crypto:
-    specifier: ^1.0.1
-    version: 1.0.1
   events:
     specifier: ^3.3.0
     version: 3.3.0
@@ -2081,6 +2084,13 @@ packages:
       playwright: 1.39.0
     dev: true
 
+  /@popperjs/core@2.11.8:
+    resolution:
+      {
+        integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==,
+      }
+    dev: false
+
   /@solid-primitives/props@3.1.8(solid-js@1.8.3):
     resolution:
       {
@@ -2125,6 +2135,18 @@ packages:
       solid-js: ^1.6.12
     dependencies:
       solid-js: 1.8.3
+    dev: false
+
+  /@tailwindcss/forms@0.5.7(tailwindcss@3.3.4):
+    resolution:
+      {
+        integrity: sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==,
+      }
+    peerDependencies:
+      tailwindcss: ">=3.0.0 || >= 3.0.0-alpha.1"
+    dependencies:
+      mini-svg-data-uri: 1.4.4
+      tailwindcss: 3.3.4
     dev: false
 
   /@types/babel__core@7.20.3:
@@ -3141,14 +3163,6 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-
-  /crypto@1.0.1:
-    resolution:
-      {
-        integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==,
-      }
-    deprecated: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
-    dev: true
 
   /cssesc@3.0.0:
     resolution:
@@ -5390,6 +5404,14 @@ packages:
     dev: false
     optional: true
 
+  /mini-svg-data-uri@1.4.4:
+    resolution:
+      {
+        integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==,
+      }
+    hasBin: true
+    dev: false
+
   /miniflare@2.13.0:
     resolution:
       {
@@ -6095,6 +6117,15 @@ packages:
       find-yarn-workspace-root2: 1.2.16
       path-exists: 4.0.0
       which-pm: 2.0.0
+    dev: false
+
+  /preline@2.0.1:
+    resolution:
+      {
+        integrity: sha512-czXGDJn0VTRjDTH0Iit6KxWY+wdnMIsavN5aHw9LnowePgfA3e9u0HHYY/4wDSAF8iPPLEG5SVfcy3fJLClR/g==,
+      }
+    dependencies:
+      "@popperjs/core": 2.11.8
     dev: false
 
   /prettier-plugin-astro@0.12.2:

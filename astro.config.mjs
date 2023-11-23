@@ -2,9 +2,6 @@ import { defineConfig } from "astro/config";
 import solid from "@astrojs/solid-js";
 import tailwind from "@astrojs/tailwind";
 import cloudflare from "@astrojs/cloudflare";
-import Icons from "unplugin-icons/vite";
-import IconsResolver from "unplugin-icons/resolver";
-import AutoImport from "unplugin-auto-import/vite";
 
 //https://astro.build/config
 export default defineConfig({
@@ -17,21 +14,6 @@ export default defineConfig({
         "@": "./src",
       },
     },
-    plugins: [
-      // solidPlugin(),
-      /* ... */
-      AutoImport({
-        resolvers: [
-          IconsResolver({
-            prefix: "Icon",
-            extension: "jsx",
-          }),
-        ],
-      }),
-      Icons({
-        compiler: "solid", // or 'solid',
-        autoInstall: true,
-      }),
-    ],
+    plugins: [],
   },
 });

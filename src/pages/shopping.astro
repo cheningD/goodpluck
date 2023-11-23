@@ -1,7 +1,13 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
 import Cart from "@components/solid/global/Cart.tsx";
-import swell from "../lib/swell.ts";
+import initSwell from "../lib/swell.ts";
+
+const runtime = Astro.locals.runtime;
+const swell = initSwell(
+  runtime ? runtime.env.SWELL_STORE_ID : import.meta.env.SWELL_STORE_ID,
+  runtime ? runtime.env.SWELL_PUBLIC_KEY : import.meta.env.SWELL_PUBLIC_KEY,
+);
 
 const categories = await swell.categories.list({
   limit: 100,
