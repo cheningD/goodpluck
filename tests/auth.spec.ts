@@ -1,12 +1,14 @@
 import { expect, test } from "@playwright/test";
 
+const environment = process.env.NODE_ENV ?? "development";
+
 // Testing Login Form
 test.describe("Login Form", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`/login`);
   });
 
-  test("entering a valid email should redirect to OTP verification page", async ({
+  test("should redirect to OTP verification page upon entering a valid email", async ({
     page,
   }) => {
     await page.fill('input[type="email"]', "sandbox@stytch.com");
@@ -17,7 +19,9 @@ test.describe("Login Form", () => {
     await expect(page.locator('input[name="otp-input"]')).toBeVisible();
   });
 
-  test("entering an unregistered email shows error", async ({ page }) => {
+  test("should display an error for unregistered email entries", async ({
+    page,
+  }) => {
     await page.fill('input[type="email"]', "NOTsandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
     await expect(
@@ -25,8 +29,9 @@ test.describe("Login Form", () => {
     ).toBeVisible();
   });
 
-  // Test to check error message for invalid email format
-  test("should display error for invalid email format", async ({ page }) => {
+  test("should display a tooltip when an invalid email format is entered", async ({
+    page,
+  }) => {
     await page.fill('input[type="email"]', "invalid-email");
     await page.click('button[data-testid="login-btn"]');
 
@@ -42,14 +47,13 @@ test.describe("Login Form", () => {
     expect(isInvalid).toBeTruthy();
   });
 
-  // Test for already logged-in users
-  test("should redirect already logged-in users from login page", async ({
+  test("should redirect users to the homepage if they are already logged in and attempt to visit the login page", async ({
     page,
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit",
-      "Safari wont let you set a cookie on localhost without https",
+      browserName === "webkit" && environment === "development",
+      "Safari won't let you set a cookie on localhost without https in development environment",
     );
     // Step 1: Login with valid credentials
     await page.goto(`/login`);
@@ -63,10 +67,10 @@ test.describe("Login Form", () => {
     await page.waitForTimeout(2000);
 
     // Step 3: Check if the user is redirected to the homepage
-    await expect(page).toHaveURL(`/?message=errorAlreadyLoggedIn`);
+    const message = "You are already logged in";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
   });
-
-  // TODO: Test for general errors like network errors or unexpected errors.
 });
 
 // Testing OTP Login
@@ -78,18 +82,22 @@ test.describe("Validate Login Code", () => {
     await page.getByTestId("login-btn").click();
   });
 
-  // Test to check redirect to OTP page on valid email
-  test("should set goodpluck session cookie, and redirect to `/#basket given` valid code", async ({
+  test("should set goodpluck session cookie, and redirect to `/#basket` given valid code", async ({
     page,
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit",
+      browserName === "webkit" && environment === "development",
       "Safari wont let you set a cookie on localhost without https",
     );
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
-    expect(page.url()).toContain("/?message=successLoggedIn#basket");
+
+    // Check if the user is redirected to the homepage
+    const message = "You are now logged in";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}#basket`);
+
     // This is the default OTP code for the sandbox user
     const cookies = await page.context().cookies();
     const sessionCookie = cookies.find(
@@ -106,8 +114,9 @@ test.describe("Validate Login Code", () => {
     expect(sessionCookie?.sameSite).toBe("Lax");
   });
 
-  // Test error handling for invalid OTP code
-  test("should throw error if not valid code", async ({ page }) => {
+  test("should throw an error when an invalid code is entered", async ({
+    page,
+  }) => {
     await page.fill("#otp-input", "900900"); // invalid code
     await page.click('button[id="submit-login-code-btn"]');
     await expect(
@@ -123,8 +132,7 @@ test.describe("Validate Login Code", () => {
     expect(sessionCookie).toBeUndefined();
   });
 
-  // Test error handling for invalid OTP code format
-  test("should show error for invalid OTP code format", async ({ page }) => {
+  test("should show an error for invalid OTP code format", async ({ page }) => {
     await page.fill("#otp-input", "invalid-code");
     await page.click('button[id="submit-login-code-btn"]');
 
@@ -137,19 +145,19 @@ test.describe("Validate Login Code", () => {
     expect(inputIsFocused).toBeTruthy();
   });
 
-  // Test resending OTP code
-  test("should resend OTP code", async ({ page }) => {
+  test("should redirect users to the 'login' page when a resend OTP code request is sent", async ({
+    page,
+  }) => {
     await page.click('a[id="resend-button"]');
     await expect(page).toHaveURL(`/login?resend=true`);
   });
 
-  // Test to redirect to homepage if user is already logged in
-  test("should redirect already logged-in users from login-code page", async ({
+  test("should redirect users to the homepage if they are already logged in and attempt to visit the login-code page", async ({
     page,
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit",
+      browserName === "webkit" && environment === "development",
       "Safari wont let you set a cookie on localhost without https",
     );
     // Step 1: Login with valid credentials
@@ -158,22 +166,22 @@ test.describe("Validate Login Code", () => {
 
     // Step 2: Attempt to navigate to the login-code page again
     await page.goto(`/login-code`);
-    await expect(page).toHaveURL(`/?message=errorAlreadyLoggedIn`);
+    const message = "You are already logged in";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
   });
-
-  // TODO: Test for general errors like network errors or unexpected errors.
 });
 
 // Testing Logout
 test.describe("Logout", () => {
-  // Note: Can't seem to logout using the Stytch sandbox user but here's the test for it
-  // Test to check if logged in user is redirected to login page on logout (w/ toast message)
-  test("should successfully logout user", async ({ page }) => {
+  test("should successfully log out a user if a session exists", async ({
+    page,
+  }) => {
     // // Check if the user is redirected to the homepage with a toast message
     // await page.goto(`/logout`);
-    // const toastSelector = 'div[role="status"][aria-live="polite"]';
-    // await expect(page.locator(toastSelector)).toBeVisible();
-    // await expect(page.locator(toastSelector)).toHaveText('Success, you are now logged out!');
+    // const message = "Successfully logged out"
+    // const encodedMessage = encodeURIComponent(message);
+    // expect(page.url()).toContain(`/?message=${encodedMessage}`);
     // // Check if the session cookie is deleted
     // const cookies = await page.context().cookies();
     // const sessionCookie = cookies.find(
@@ -182,18 +190,20 @@ test.describe("Logout", () => {
     // expect(sessionCookie).toBeUndefined();
   });
 
-  // Test to check if logged out user is redirected to login page on logout (w/ toast message)
-  test("should show error for users that are not logged in", async ({
+  test("should show an error for users who are not logged in and attempt to log out", async ({
     page,
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit",
+      browserName === "webkit" && environment === "development",
       "Safari wont let you set a cookie on localhost without https",
     );
     await page.goto(`/logout`);
     await page.waitForTimeout(2000);
-    await expect(page).toHaveURL(`/?message=errorNotLoggedIn`);
+
+    const message = "You are not logged in";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
 
     // Check if the session cookie is not present
     const cookies = await page.context().cookies();
@@ -203,11 +213,12 @@ test.describe("Logout", () => {
     expect(sessionCookie).toBeUndefined();
   });
 
-  // Note: this test only works with Stytch's sandbox user
-  // Test for general errors like network errors or unexpected errors.
-  test("should show error for logging out", async ({ page, browserName }) => {
+  test("should show an error when attempting to log out using Stytch's sandbox user", async ({
+    page,
+    browserName,
+  }) => {
     test.skip(
-      browserName === "webkit",
+      browserName === "webkit" && environment === "development",
       "Safari wont let you set a cookie on localhost without https",
     );
     // OTP Login with Valid Email
@@ -220,6 +231,9 @@ test.describe("Logout", () => {
 
     // Logout
     await page.goto(`/logout`);
-    await expect(page).toHaveURL(`/?message=errorLoggingOut`);
+
+    const message = "Error logging out";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
   });
 });
