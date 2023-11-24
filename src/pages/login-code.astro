@@ -9,6 +9,10 @@ import { StytchError } from "stytch";
 // Initialize error state
 const errors = { code: "" };
 
+// Check for message in URL
+const url = new URL(Astro.request.url);
+const userExists = url.searchParams.get("user-exists");
+
 // Handle POST request
 if (Astro.request.method === "POST") {
   try {
@@ -16,7 +20,6 @@ if (Astro.request.method === "POST") {
     const data = await Astro.request.formData();
     const code = data.get("otp-input")?.toString();
 
-    const url = new URL(Astro.request.url);
     const method_id = url.searchParams.get("method_id");
 
     // Validate email
@@ -88,6 +91,13 @@ if (Astro.request.method === "POST") {
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
         Check your email!
       </h2>
+      {
+        userExists && (
+          <p class="mb-4 text-center">
+            It looks like you already have an account, please proceed to log in.
+          </p>
+        )
+      }
       <form method="POST">
         <label for="otp-input">Enter code</label>
         <input
