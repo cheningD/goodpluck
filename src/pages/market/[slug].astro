@@ -1,6 +1,7 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
 import Category from "@components/solid/Category.tsx";
+import Breadcrumb from "@components/solid/Breadcrumb.tsx";
 import initSwell from "../../lib/swell";
 
 const runtime = Astro.locals.runtime;
@@ -33,6 +34,7 @@ const { name, description } = collection;
   description={description}
   categories={categories.results}
 >
+<Breadcrumb collections={categories.results} currentCollectionId={collection.id}/>
   <Category
     products={products}
     currentCollection={collection}
