@@ -1,4 +1,4 @@
-import { onMount } from "solid-js";
+import { onCleanup, onMount } from "solid-js";
 
 interface MapboxAutofillProps {
   readonly mapboxToken: string;
@@ -8,17 +8,21 @@ interface MapboxAutofillProps {
 const MapboxAutofill = ({ mapboxToken }: MapboxAutofillProps) => {
   onMount(() => {
     const script = document.createElement("script");
-    script.src = "https://api.mapbox.com/search-js/v1.0.0-beta.17/web.js";
+    script.src = "https://api.mapbox.com/search-js/v1.0.0-beta.18/web.js";
     script.defer = true;
     document.body.appendChild(script);
 
     script.onload = () => {
-      // console.log("mapbox loaded: ", mapboxsearch);
       // @ts-ignore
       mapboxsearch.autofill({
         accessToken: mapboxToken,
+        options: { country: "us" },
       });
     };
+
+    onCleanup(() => {
+      script.remove();
+    });
   });
 
   return null;

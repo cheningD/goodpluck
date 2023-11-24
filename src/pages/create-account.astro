@@ -14,13 +14,36 @@ if (Astro.request.method === "POST") {
     const first_name = data.get("first_name")?.toString();
     const last_name = data.get("last_name")?.toString();
     const phone_number = data.get("phone_number");
-    const address = data.get("address");
+    const address = data.get("address address-search")?.toString();
+    const apartment = data.get("apartment");
+    const city = data.get("city");
+    const postcode = data.get("postcode");
+    const state = data.get("state");
     const consent = data.get("consent");
 
     const name = { first_name, last_name };
-    const untrusted_metadata = { address, consent, phone_number };
+    const untrusted_metadata = {
+      address,
+      apartment,
+      city,
+      postcode,
+      state,
+      phone_number,
+      consent,
+    };
 
-    if (!first_name || !last_name || !phone_number || !address || !consent) {
+    const requiredFields = [
+      first_name,
+      last_name,
+      phone_number,
+      address,
+      city,
+      postcode,
+      state,
+      consent,
+    ];
+
+    if (requiredFields.some((field) => !field)) {
       errors.err = "Please fill all the fields";
     } else {
       // handle Stytch API calls to get the user_id with the session token in order to authenticate the request.
@@ -32,6 +55,8 @@ if (Astro.request.method === "POST") {
       const sessionData = await session;
       const userId = sessionData.user.user_id;
 
+      console.log("userId: ", userId);
+
       try {
         const response = await stytchclient.users.update({
           user_id: userId,
@@ -42,24 +67,26 @@ if (Astro.request.method === "POST") {
           },
         });
 
+        console.log("response: ", response);
+
         // TODO: handle a success/error message and a smooth transition
 
-        Astro.redirect("/");
+        return Astro.redirect("/");
       } catch (error) {
         console.log(error);
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Check for message in URL
 const url = new URL(Astro.request.url);
 const onboardingRedirect = url.searchParams.get("onboarding-redirect");
-
-const runtime = Astro.locals.runtime;
-const mapboxToken = runtime
-  ? runtime.env.MAPBOX_DEFAULT_PUBLIC_TOKEN
-  : import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
+const mapboxToken =
+  Astro.locals.runtime?.env.MAPBOX_DEFAULT_PUBLIC_TOKEN ||
+  import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 ---
 
 <html lang="en">
@@ -68,8 +95,8 @@ const mapboxToken = runtime
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Create your account - Goodpluck</title>
     <MapboxAutofill client:load mapboxToken={mapboxToken} />
+    <title>Create your account - Goodpluck</title>
   </head>
 
   <body>
@@ -79,7 +106,6 @@ const mapboxToken = runtime
     </div>
     <Cart client:load />
     <Menu client:load />
-    <!-- <MapboxAutofill client:load /> -->
 
     <div>
       <h2 class="text-2xl font-bold text-gray-900 my-6 text-center">
@@ -92,11 +118,13 @@ const mapboxToken = runtime
 
       {
         onboardingRedirect && (
-          <p class="text-center text-red-500">
+          <p class="text-center">
             Please complete setting up your account before placing your order.
           </p>
         )
       }
+
+      {errors.err && <p class="text-center text-red-500">{errors.err}</p>}
 
       <div class="flex flex-col mt-12 w-1/2 ml-10">
         <form method="POST">
@@ -130,16 +158,6 @@ const mapboxToken = runtime
             class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <!-- <label class='block text-sm font-medium text-gray-700 mb-2'
-            >Your delivery address</label
-          >
-          <input
-            type='text'
-            name='address'
-            required
-            class='border rounded-md p-2 w-1/2 mb-4'
-          /> -->
-
           <h3>Your delivery address</h3>
 
           <label class="block text-sm font-medium text-gray-700 mb-2"
@@ -154,12 +172,11 @@ const mapboxToken = runtime
           />
 
           <label class="block text-sm font-medium text-gray-700 mb-2"
-            >Your appartment</label
+            >Your apartment</label
           >
           <input
             type="text"
-            name="appartement"
-            required
+            name="apartment"
             autocomplete="address-line2"
             class="border rounded-md p-2 w-1/2 mb-4"
           />
@@ -197,16 +214,17 @@ const mapboxToken = runtime
             class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >I consent to receive order updates and other communications to the
-            provided phone number</label
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            I consent to receive order updates and other communications to the
+            provided phone number
+          </label>
           <input
             type="checkbox"
             name="consent"
             required
             class="border rounded-md p-2 w-1/2 mb-4"
           />
+
           <button
             class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
             type="submit">Submit</button
@@ -214,7 +232,5 @@ const mapboxToken = runtime
         </form>
       </div>
     </div>
-
-     ../components/solid/MapboxAutofill.tsx
   </body>
 </html>

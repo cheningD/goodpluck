@@ -64,7 +64,7 @@ if (session_token) {
 
     if (onboardingComplete) {
       // If the user has finished onboarding, redirect to the home page
-      return Astro.redirect("/");
+      return Astro.redirect("/?logged-in=true");
     } else {
       // If the user has not finished onboarding, redirect to the create-account page
       return Astro.redirect("/create-account?onboarding-redirect=true");
