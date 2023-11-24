@@ -46,6 +46,37 @@ if (Astro.request.method === "POST") {
     }
   }
 }
+
+// Check for existing session token
+const session_token = Astro.cookies.get("gp_session_token")?.value;
+if (session_token) {
+  try {
+    // Verify the session token with Stytch
+    const sessionResp = await stytchclient.sessions.authenticate({
+      session_token,
+    });
+    const userId = sessionResp.user.user_id;
+
+    // Retrieve user data to check onboarding status
+    const userResp = await stytchclient.users.get({ user_id: userId });
+    const onboardingComplete =
+      userResp.trusted_metadata?.onboarding_complete === true;
+
+    if (onboardingComplete) {
+      // If the user has finished onboarding, redirect to the home page
+      return Astro.redirect("/");
+    } else {
+      // If the user has not finished onboarding, redirect to the create-account page
+      return Astro.redirect("/create-account?onboarding-redirect=true");
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      console.error("Session token invalid:", e.message);
+    } else {
+      console.error("An unexpected error occurred");
+    }
+  }
+}
 ---
 
 <html lang="en">

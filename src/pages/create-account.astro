@@ -37,6 +37,9 @@ if (Astro.request.method === "POST") {
           user_id: userId,
           name,
           untrusted_metadata,
+          trusted_metadata: {
+            onboarding_complete: true, // Marking the onboarding as complete
+          },
         });
 
         // TODO: handle a success/error message and a smooth transition
@@ -48,6 +51,10 @@ if (Astro.request.method === "POST") {
     }
   } catch (error) {}
 }
+
+// Check for message in URL
+const url = new URL(Astro.request.url);
+const onboardingRedirect = url.searchParams.get("onboarding-redirect");
 
 const runtime = Astro.locals.runtime;
 const mapboxToken = runtime
@@ -82,6 +89,14 @@ const mapboxToken = runtime
         We need some informations to complete your account. Let's complete it
         before you can make your first order!
       </p>
+
+      {
+        onboardingRedirect && (
+          <p class="text-center text-red-500">
+            Please complete setting up your account before placing your order.
+          </p>
+        )
+      }
 
       <div class="flex flex-col mt-12 w-1/2 ml-10">
         <form method="POST">
