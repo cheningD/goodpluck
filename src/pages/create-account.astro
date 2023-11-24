@@ -1,39 +1,39 @@
 ---
-import Banner from '../components/solid/Banner.tsx';
-import Cart from '../components/solid/Cart.tsx';
-import Menu from '../components/solid/Menu';
-import MobileNav from '../components/solid/MobileNav.tsx';
-import MapboxAutofill from '../components/solid/MabpoxAutofill';
-import { stytch } from '../lib/stytch';
+import Banner from "../components/solid/Banner.tsx";
+import Cart from "../components/solid/Cart.tsx";
+import Menu from "../components/solid/Menu";
+import MobileNav from "../components/solid/MobileNav.tsx";
+import MapboxAutofill from "../components/solid/MabpoxAutofill";
+import { stytchclient } from "../lib/stytch";
 
-const errors = { err: '' };
+const errors = { err: "" };
 
-if (Astro.request.method === 'POST') {
+if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
-    const first_name = data.get('first_name')?.toString();
-    const last_name = data.get('last_name')?.toString();
-    const phone_number = data.get('phone_number');
-    const address = data.get('address');
-    const consent = data.get('consent');
+    const first_name = data.get("first_name")?.toString();
+    const last_name = data.get("last_name")?.toString();
+    const phone_number = data.get("phone_number");
+    const address = data.get("address");
+    const consent = data.get("consent");
 
     const name = { first_name, last_name };
     const untrusted_metadata = { address, consent, phone_number };
 
     if (!first_name || !last_name || !phone_number || !address || !consent) {
-      errors.err = 'Please fill all the fields';
+      errors.err = "Please fill all the fields";
     } else {
       // handle Stytch API calls to get the user_id with the session token in order to authenticate the request.
-      const sessionToken = Astro.cookies.get('gp_session_token');
+      const sessionToken = Astro.cookies.get("gp_session_token");
 
-      const session = stytch.sessions.authenticate({
+      const session = stytchclient.sessions.authenticate({
         session_token: sessionToken?.value,
       });
       const sessionData = await session;
       const userId = sessionData.user.user_id;
 
       try {
-        const response = await stytch.users.update({
+        const response = await stytchclient.users.update({
           user_id: userId,
           name,
           untrusted_metadata,
@@ -41,7 +41,7 @@ if (Astro.request.method === 'POST') {
 
         // TODO: handle a success/error message and a smooth transition
 
-        Astro.redirect('/');
+        Astro.redirect("/");
       } catch (error) {
         console.log(error);
       }
@@ -50,18 +50,18 @@ if (Astro.request.method === 'POST') {
 }
 ---
 
-<html lang='en'>
+<html lang="en">
   <head>
-    <meta charset='utf-8' />
-    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-    <meta name='viewport' content='width=device-width' />
-    <meta name='generator' content={Astro.generator} />
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
     <title>Create your account - Goodpluck</title>
     <MapboxAutofill client:load />
   </head>
 
   <body>
-    <div class='sticky top-0 h-full'>
+    <div class="sticky top-0 h-full">
       <Banner client:load />
       <MobileNav client:load />
     </div>
@@ -70,44 +70,44 @@ if (Astro.request.method === 'POST') {
     <!-- <MapboxAutofill client:load /> -->
 
     <div>
-      <h2 class='text-2xl font-bold text-gray-900 my-6 text-center'>
+      <h2 class="text-2xl font-bold text-gray-900 my-6 text-center">
         Let's complete your informations
       </h2>
-      <p class='text-center'>
+      <p class="text-center">
         We need some informations to complete your account. Let's complete it
         before you can make your first order!
       </p>
 
-      <div class='flex flex-col mt-12 w-1/2 ml-10'>
-        <form method='POST'>
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+      <div class="flex flex-col mt-12 w-1/2 ml-10">
+        <form method="POST">
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >Your first name</label
           >
           <input
-            type='text'
-            name='first_name'
+            type="text"
+            name="first_name"
             required
-            class='border rounded-md p-2 w-1/2 mb-4'
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >Your last name</label
           >
           <input
-            type='text'
-            name='last_name'
+            type="text"
+            name="last_name"
             required
-            class='border rounded-md p-2 w-1/2 mb-4'
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >Your phone number</label
           >
           <input
-            type='text'
-            name='phone_number'
+            type="text"
+            name="phone_number"
             required
-            class='border rounded-md p-2 w-1/2 mb-4'
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
 
           <!-- <label class='block text-sm font-medium text-gray-700 mb-2'
@@ -122,74 +122,74 @@ if (Astro.request.method === 'POST') {
 
           <h3>Your delivery address</h3>
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >Your address</label
           >
           <input
-            type='text'
-            name='address'
+            type="text"
+            name="address"
             required
-            autocomplete='address-line1'
-            class='border rounded-md p-2 w-1/2 mb-4'
+            autocomplete="address-line1"
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >Your appartment</label
           >
           <input
-            type='text'
-            name='appartement'
+            type="text"
+            name="appartement"
             required
-            autocomplete='address-line2'
-            class='border rounded-md p-2 w-1/2 mb-4'
+            autocomplete="address-line2"
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >Your city</label
           >
           <input
-            type='text'
-            name='city'
+            type="text"
+            name="city"
             required
-            autocomplete='address-level2'
-            class='border rounded-md p-2 w-1/2 mb-4'
+            autocomplete="address-level2"
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >Your postal code</label
           >
           <input
-            type='text'
-            name='postcode'
+            type="text"
+            name="postcode"
             required
-            autocomplete='postal-code'
-            class='border rounded-md p-2 w-1/2 mb-4'
+            autocomplete="postal-code"
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >Your state</label
           >
           <input
-            type='text'
-            name='state'
+            type="text"
+            name="state"
             required
-            autocomplete='address-level1'
-            class='border rounded-md p-2 w-1/2 mb-4'
+            autocomplete="address-level1"
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
 
-          <label class='block text-sm font-medium text-gray-700 mb-2'
+          <label class="block text-sm font-medium text-gray-700 mb-2"
             >I consent to receive order updates and other communications to the
             provided phone number</label
           >
           <input
-            type='checkbox'
-            name='consent'
+            type="checkbox"
+            name="consent"
             required
-            class='border rounded-md p-2 w-1/2 mb-4'
+            class="border rounded-md p-2 w-1/2 mb-4"
           />
           <button
-            class='bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600'
-            type='submit'>Submit</button
+            class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
+            type="submit">Submit</button
           >
         </form>
       </div>
