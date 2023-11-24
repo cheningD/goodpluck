@@ -3,7 +3,7 @@ import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu";
 import MobileNav from "../components/solid/MobileNav.tsx";
-import MapboxAutofill from "../components/solid/MabpoxAutofill";
+import MapboxAutofill from "../components/solid/MapboxAutofill.tsx";
 import { stytchclient } from "../lib/stytch";
 
 const errors = { err: "" };
@@ -48,6 +48,11 @@ if (Astro.request.method === "POST") {
     }
   } catch (error) {}
 }
+
+const runtime = Astro.locals.runtime;
+const mapboxToken = runtime
+  ? runtime.env.MAPBOX_DEFAULT_PUBLIC_TOKEN
+  : import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 ---
 
 <html lang="en">
@@ -57,7 +62,7 @@ if (Astro.request.method === "POST") {
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Create your account - Goodpluck</title>
-    <MapboxAutofill client:load />
+    <MapboxAutofill client:load mapboxToken={mapboxToken} />
   </head>
 
   <body>
@@ -194,5 +199,7 @@ if (Astro.request.method === "POST") {
         </form>
       </div>
     </div>
+
+     ../components/solid/MapboxAutofill.tsx
   </body>
 </html>
