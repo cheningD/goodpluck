@@ -8,18 +8,19 @@ const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
   runtime?.env || import.meta.env;
 
 if (session_token) {
+  const stytchclient = getStytchClient(
+    STYTCH_PROJECT_ID,
+    STYTCH_PROJECT_SECRET,
+  );
   try {
-    const stytchclient = getStytchClient(
-      STYTCH_PROJECT_ID,
-      STYTCH_PROJECT_SECRET,
-    );
     await stytchclient.sessions.revoke({ session_token });
-    Astro.cookies.delete("gp_session_token");
     message = `Successfully logged out`;
   } catch (e) {
     console.error("Error during session revocation:", e);
     message = "Error logging out";
   }
+  // Ensure cookie is deleted irrespective of session revocation success
+  Astro.cookies.delete("gp_session_token");
 } else {
   message = "You are not logged in";
 }
