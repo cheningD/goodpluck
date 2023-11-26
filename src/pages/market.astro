@@ -14,15 +14,16 @@ const categories = await swell.categories.list({
 });
 
 let products = await swell.products.list({
-  limit: 9,
+  limit: 100,
   page: 1,
 });
 ---
 
 <Layout
-  title="Shopping page"
+  title={`Shopping page`}
   description="Delivered farm fresh to you"
   categories={categories.results}
 >
-  <Category products={products} collections={categories.results} />
+  <Category products={products.results}
+    currentCollection={null} collections={categories.results} />
 </Layout>
