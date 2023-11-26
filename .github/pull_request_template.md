@@ -17,10 +17,10 @@ Check if your PR fulfills the following requirements:
 
 ## Does this PR introduce a breaking change?
 
+<!-- In case this PR contains a breaking change, describe the impact and migration path below. (i.e mention the team members by the appropriate changes) -->
+
 -   [ ] Yes
 -   [ ] No
-
-<!-- In case this PR contains a breaking change, describe the impact and migration path below. (i.e mention the team members by the appropriate changes) -->
 
 ### Screenshots:
 
