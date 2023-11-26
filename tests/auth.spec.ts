@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const environment = process.env.NODE_ENV ?? "development";
+const isDevelopment = !process.env.CI;
 
 // Testing Login Form
 test.describe("Login Form", () => {
@@ -52,7 +52,7 @@ test.describe("Login Form", () => {
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit" && environment === "development",
+      browserName === "webkit" && isDevelopment,
       "Safari won't let you set a cookie on localhost without https in development environment",
     );
     // Step 1: Login with valid credentials
@@ -87,7 +87,7 @@ test.describe("Validate Login Code", () => {
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit" && environment === "development",
+      browserName === "webkit" && isDevelopment,
       "Safari wont let you set a cookie on localhost without https",
     );
     await page.fill("#otp-input", "000000");
@@ -157,7 +157,7 @@ test.describe("Validate Login Code", () => {
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit" && environment === "development",
+      browserName === "webkit" && isDevelopment,
       "Safari wont let you set a cookie on localhost without https",
     );
     // Step 1: Login with valid credentials
@@ -195,7 +195,7 @@ test.describe("Logout", () => {
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit" && environment === "development",
+      browserName === "webkit" && isDevelopment,
       "Safari wont let you set a cookie on localhost without https",
     );
     await page.goto(`/logout`);
@@ -218,7 +218,7 @@ test.describe("Logout", () => {
     browserName,
   }) => {
     test.skip(
-      browserName === "webkit" && environment === "development",
+      browserName === "webkit" && isDevelopment,
       "Safari wont let you set a cookie on localhost without https",
     );
     // OTP Login with Valid Email
