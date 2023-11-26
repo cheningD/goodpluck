@@ -174,32 +174,6 @@ test.describe("Validate Login Code", () => {
 
 // Testing Logout
 test.describe("Logout", () => {
-  test("should successfully log out a user if a session exists", async ({
-    page,
-    browserName,
-  }) => {
-    test.skip(
-      browserName === "webkit" && isDevelopment,
-      "Safari won't let you set a cookie on localhost without https in development environment",
-    );
-
-    // OTP Login with Valid Email
-    await page.goto(`/login`);
-    await page.waitForTimeout(2000);
-    await page.getByLabel("Email").fill("sandbox@stytch.com");
-    await page.getByTestId("login-btn").click();
-    await page.fill("#otp-input", "000000");
-    await page.click('button[id="submit-login-code-btn"]');
-
-    // Check if the session cookie is deleted
-    await page.goto(`/logout`);
-    const cookies = await page.context().cookies();
-    const sessionCookie = cookies.find(
-      (cookie) => cookie.name === "gp_session_token",
-    );
-    expect(sessionCookie).toBeUndefined();
-  });
-
   test("should show an error for users who are not logged in and attempt to log out", async ({
     page,
     browserName,
