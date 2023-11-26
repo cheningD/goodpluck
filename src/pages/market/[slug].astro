@@ -10,6 +10,7 @@ const swell = initSwell(
   runtime ? runtime.env.SWELL_PUBLIC_KEY : import.meta.env.SWELL_PUBLIC_KEY,
 );
 const { slug } = Astro.params;
+
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
@@ -22,7 +23,7 @@ if (!collection) return Astro.redirect("/404");
 
 let products = await swell.products.list({
   category: collection.id, // Slug or ID
-  limit: 9,
+  limit: 100,
   page: 1,
 });
 
@@ -36,7 +37,7 @@ const { name, description } = collection;
 >
 <Breadcrumb collections={categories.results} currentCollectionId={collection.id}/>
   <Category
-    products={products}
+    products={products.results} 
     currentCollection={collection}
     collections={categories.results}
   />
