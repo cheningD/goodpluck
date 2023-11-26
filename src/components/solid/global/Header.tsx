@@ -91,7 +91,13 @@ const Header: Component<IProps> = ({ collections }) => {
                 </div>
                 {/* Center Column: Logo - This should be dead center */}
                 <div class="justify-self-center pb-2 lg:pr-6">
-                  <img src={logo.src} alt="Goodpluck" class="h-8 w-auto" />
+                  <img
+                    src={logo.src}
+                    alt="Goodpluck"
+                    width="32"
+                    height="32"
+                    class="h-8 w-auto"
+                  />
                 </div>
 
                 {/* 3rd Column: Login Button / Basket Button */}
