@@ -174,6 +174,40 @@ test.describe("Validate Login Code", () => {
 
 // Testing Logout
 test.describe("Logout", () => {
+  test("should delete the session cookie even if Stytch API fails to invalidate the cookie", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari won't let you set a cookie on localhost without https in development environment",
+    );
+
+    // OTP Login with sandbox email
+    await page.goto(`/login`);
+    await page.waitForTimeout(2000);
+    await page.getByLabel("Email").fill("sandbox@stytch.com");
+    await page.getByTestId("login-btn").click();
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-login-code-btn"]');
+
+    // Attempt to logout
+    await page.goto(`/logout`);
+    await page.waitForTimeout(2000);
+
+    // Check if the session cookie is deleted
+    const cookies = await page.context().cookies();
+    const sessionCookie = cookies.find(
+      (cookie) => cookie.name === "gp_session_token",
+    );
+    expect(sessionCookie).toBeUndefined();
+
+    // Check for the successful logout message in the URL
+    const message = "Successfully logged out";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
+  });
+
   test("should show an error for users who are not logged in and attempt to log out", async ({
     page,
     browserName,
@@ -185,38 +219,15 @@ test.describe("Logout", () => {
     await page.goto(`/logout`);
     await page.waitForTimeout(2000);
 
-    const message = "You are not logged in";
-    const encodedMessage = encodeURIComponent(message);
-    expect(page.url()).toContain(`/?message=${encodedMessage}`);
-
     // Check if the session cookie is not present
     const cookies = await page.context().cookies();
     const sessionCookie = cookies.find(
       (cookie) => cookie.name === "gp_session_token",
     );
     expect(sessionCookie).toBeUndefined();
-  });
 
-  test("should show an error when attempting to log out using Stytch's sandbox user", async ({
-    page,
-    browserName,
-  }) => {
-    test.skip(
-      browserName === "webkit" && isDevelopment,
-      "Safari wont let you set a cookie on localhost without https",
-    );
-    // OTP Login with Valid Email
-    await page.goto(`/login`);
-    await page.waitForTimeout(2000);
-    await page.getByLabel("Email").fill("sandbox@stytch.com");
-    await page.getByTestId("login-btn").click();
-    await page.fill("#otp-input", "000000");
-    await page.click('button[id="submit-login-code-btn"]');
-
-    // Logout
-    await page.goto(`/logout`);
-
-    const message = "Error logging out";
+    // Check for the error message in the URL
+    const message = "You are not logged in";
     const encodedMessage = encodeURIComponent(message);
     expect(page.url()).toContain(`/?message=${encodedMessage}`);
   });
