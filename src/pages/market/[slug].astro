@@ -1,6 +1,5 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
-import Category from "@components/solid/Category.tsx";
 import Breadcrumb from "@components/solid/Breadcrumb.tsx";
 import Products from "@components/solid/Products.tsx";
 
@@ -70,7 +69,7 @@ const { name, description } = currentCollection;
           </div>
 
           <div class="col-span-5 md:col-span-4 px-4">
-            <Products client:only />
+            <Products currentCategory={currentCollection} client:only />
           </div>
         </div>
         {/* End Sidbar */}
