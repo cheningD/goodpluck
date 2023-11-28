@@ -1,5 +1,6 @@
 ---
 import { initSwell } from "../lib/swell.ts";
+import Layout from "../layouts/Layout.astro";
 
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
@@ -12,13 +13,16 @@ const products = await swell.products.list({
 });
 ---
 
-{/*This is an example of a market page */}
-<ul>
-  {
-    products.results.map((product: any) => (
-      <li>
-        {product.kind}: <a href={`/product/${product.slug}`}>{product.name}</a>
-      </li>
-    ))
-  }
-</ul>
+<Layout>
+  {/*This is an example of a market page */}
+  <ul>
+    {
+      products.results.map((product: any) => (
+        <li>
+          {product.kind}:{" "}
+          <a href={`/product/${product.slug}`}>{product.name}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
