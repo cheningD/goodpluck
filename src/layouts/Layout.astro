@@ -1,4 +1,5 @@
 ---
+import Footer from "@components/solid/global/Footer";
 import Banner from "../components/solid/Banner.tsx";
 import Cart from "../components/solid/Cart.tsx";
 import Menu from "../components/solid/Menu.tsx";
@@ -15,13 +16,16 @@ const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local ch
     <meta name="generator" content={Astro.generator} />
     <title>Goodpluck</title>
   </head>
-  <body>
-    <div class="sticky top-0 h-full">
-      <Banner isLoggedIn={isLoggedIn} client:load />
-      <MobileNav client:load />
+  <body class="flex flex-col min-h-screen">
+    <div id="content" class="flex flex-col flex-grow">
+      <div class="sticky top-0 h-full">
+        <Banner isLoggedIn={isLoggedIn} client:load />
+        <MobileNav client:load />
+      </div>
+      <Cart client:load />
+      <Menu client:load />
+      <slot />
     </div>
-    <Cart client:load />
-    <Menu client:load />
-    <slot />
+    <Footer client:load />
   </body>
 </html>
