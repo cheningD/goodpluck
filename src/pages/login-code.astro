@@ -1,11 +1,8 @@
 ---
-import Banner from "../components/solid/Banner.tsx";
-import Cart from "../components/solid/Cart.tsx";
-import Menu from "../components/solid/Menu";
-import MobileNav from "../components/solid/MobileNav.tsx";
 import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
+import Layout from "@layouts/Layout.astro";
 
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
@@ -76,10 +73,10 @@ if (Astro.request.method === "POST") {
   }
 }
 
-// Redirect authenticated users away from login page
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+// Redirect authenticated users away from login-code page
+const session_token = Astro.cookies.get("gp_session_token")?.value;
 const isUserLoggedIn = await isLoggedIn(
-  sessionToken as string,
+  session_token as string,
   STYTCH_PROJECT_ID,
   STYTCH_PROJECT_SECRET,
 );
@@ -91,84 +88,69 @@ if (isUserLoggedIn) {
 }
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Goodpluck</title>
-  </head>
-  <body>
-    <div class="sticky top-0 h-full">
-      <Banner isLoggedIn={isUserLoggedIn} client:load />
-      <MobileNav client:load />
-    </div>
-    <Cart client:load />
-    <Menu client:load />
-    <div class="flex items-center justify-center h-screen bg-gray-100">
-      <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
-          Check your email!
-        </h2>
-        <p class="text-sm text-gray-600 mb-6 text-center">
-          We have sent a code to your email address. Please enter it below.
-        </p>
+<Layout>
+  <div class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+        Check your email!
+      </h2>
+      <p class="text-sm text-gray-600 mb-6 text-center">
+        We have sent a code to your email address. Please enter it below.
+      </p>
 
-        <!-- OTP Verification Form -->
-        <form method="POST" id="otp-form">
-          {
-            errors.general && (
-              <p class="mb-4 text-sm font-medium text-red-600 bg-red-50 p-2 rounded border border-red-500">
-                {errors.general}
-              </p>
-            )
-          }
-          <label
-            for="otp-input"
-            class=`block text-sm font-medium text-gray-700 ${errors.code ? 'text-red-700' : 'text-gray-700'}`
-            >Enter OTP:</label
-          >
-          <input
-            class=`border rounded-md p-2 w-full mb-4 
+      <!-- OTP Verification Form -->
+      <form method="POST" id="otp-form">
+        {
+          errors.general && (
+            <p class="mb-4 text-sm font-medium text-red-600 bg-red-50 p-2 rounded border border-red-500">
+              {errors.general}
+            </p>
+          )
+        }
+        <label
+          for="otp-input"
+          class=`block text-sm font-medium text-gray-700 ${errors.code ? 'text-red-700' : 'text-gray-700'}`
+          >Enter OTP:</label
+        >
+        <input
+          class=`border rounded-md p-2 w-full mb-4 
             ${errors.code ? 'bg-red-50 border-red-500 placeholder-red-700 focus:ring-red-500 focus:border-red-500 !m-0' : '' }`
-            id="otp-input"
-            name="otp-input"
-            autocomplete="one-time-code"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            required
-          />
-          {
-            errors.code && (
-              <p
-                id="login-code-error"
-                class="my-2 text-sm font-medium text-red-600"
-              >
-                {errors.code}
-              </p>
-            )
-          }
-          <button
-            class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
-            id="submit-login-code-btn"
-            type="submit">Submit</button
-          >
-        </form>
+          id="otp-input"
+          name="otp-input"
+          autocomplete="one-time-code"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          required
+        />
+        {
+          errors.code && (
+            <p
+              id="login-code-error"
+              class="my-2 text-sm font-medium text-red-600"
+            >
+              {errors.code}
+            </p>
+          )
+        }
+        <button
+          class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
+          id="submit-login-code-btn"
+          type="submit">Submit</button
+        >
+      </form>
 
-        <!-- Resend OTP -->
-        <p class="mt-6 text-sm text-center text-gray-600" id="resend-text">
-          Didn't receive the code?
-          <a
-            id="resend-button"
-            class="text-orange-500 hover:underline"
-            type="submit"
-            href="/login?resend=true"
-          >
-            Resend code
-          </a>
-        </p>
-      </div>
+      <!-- Resend OTP -->
+      <p class="mt-6 text-sm text-center text-gray-600" id="resend-text">
+        Didn't receive the code?
+        <a
+          id="resend-button"
+          class="text-orange-500 hover:underline"
+          type="submit"
+          href="/login?resend=true"
+        >
+          Resend code
+        </a>
+      </p>
     </div>
-  </body>
-</html>
+  </div>
+</Layout>
