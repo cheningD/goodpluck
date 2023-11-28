@@ -1,41 +1,10 @@
 ---
-import Banner from "../components/solid/Banner.tsx";
-import Cart from "../components/solid/Cart.tsx";
-import Menu from "../components/solid/Menu";
-import MobileNav from "../components/solid/MobileNav.tsx";
-import { isLoggedIn } from "../lib/stytch";
+import Layout from "../layouts/Layout.astro";
 
-const runtime = Astro.locals.runtime;
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
-  runtime?.env || import.meta.env;
-
-const isUserLoggedIn = await isLoggedIn(
-  sessionToken as string,
-  STYTCH_PROJECT_ID,
-  STYTCH_PROJECT_SECRET,
-);
-const encodedMessage = Astro.url.searchParams.get("message")! || "";
-const message = decodeURIComponent(encodedMessage);
+const encoded_message = Astro.url.searchParams.get("message")! || "";
+const message = decodeURIComponent(encoded_message);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Goodpluck</title>
-  </head>
-  <body>
-    <div class="sticky top-0 h-full">
-      <Banner isLoggedIn={isUserLoggedIn} client:load />
-      <MobileNav client:load />
-    </div>
-    <Cart client:load />
-    <Menu client:load />
-  </body>
-  <h1>Homepage</h1>
-  <p>Logged in: {JSON.stringify(isUserLoggedIn)}</p>
+<Layout>
   <p>{message}</p>
-</html>
+</Layout>
