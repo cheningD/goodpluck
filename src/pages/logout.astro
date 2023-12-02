@@ -13,13 +13,14 @@ if (session_token) {
       STYTCH_PROJECT_ID,
       STYTCH_PROJECT_SECRET,
     );
-    await stytchclient.sessions.revoke({ session_token });
-    Astro.cookies.delete("gp_session_token");
-    message = `Successfully logged out`;
+    const resp = await stytchclient.sessions.revoke({ session_token });
+    console.log("Successfully revoked session", resp);
   } catch (e) {
     console.error("Error during session revocation:", e);
-    message = "Error logging out";
   }
+  // Cookie is deleted irrespective of session revocation success
+  Astro.cookies.delete("gp_session_token");
+  message = `Successfully logged out`;
 } else {
   message = "You are not logged in";
 }
