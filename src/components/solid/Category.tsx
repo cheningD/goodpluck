@@ -1,24 +1,17 @@
-import { For, type Component } from "solid-js";
+import { For, Component, createSignal } from "solid-js";
 import Products from "@components/solid/Products.tsx";
 
-interface IProps {
+interface iProps {
   collections: any;
-  currentCollection: any;
   products: any;
+  currentCollection: any;
 }
 
-const Category: Component<IProps> = ({
-  collections,
-  currentCollection,
-  products,
-}) => {
-  const currentCategory =
-    currentCollection != null
-      ? collections.find((col) => col.id == currentCollection.id)
-      : null;
+const Category: Component<iProps> = (props) => {
+  const { collections, currentCollection, products, productsPage } = props;
 
   const currentCategoryName =
-    currentCategory !== null ? currentCategory.name : "";
+    currentCollection !== null ? currentCollection.name : "";
 
   function getCurrentSubCategories() {
     if (currentCollection == null) {
@@ -58,7 +51,7 @@ const Category: Component<IProps> = ({
             </ul>
           </div>
 
-          <div class="col-span-4 px-4">
+          <div class="col-span-5 lg:col-span-4 px-4">
             <Products products={products} />
           </div>
         </div>

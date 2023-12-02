@@ -1,5 +1,5 @@
 ---
-import {initSwell} from "../../lib/swell.ts";
+import { initSwell } from "../../lib/swell.ts";
 
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
@@ -8,7 +8,9 @@ const swell = initSwell(
 );
 const { slug } = Astro.params;
 
- const product = await swell.products.get(slug === undefined ? '' : slug);
+const product = await swell.products.get(slug === undefined ? "" : slug);
 ---
 
-<h1 class="text-5xl text-gray-800 p-4">Product name: <span class="text-blue-500">{product.name}</span></h1>
+<h1 class="text-5xl text-gray-800 p-4">
+  Product name: <span class="text-blue-500">{product.name}</span>
+</h1>
