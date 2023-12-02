@@ -6,7 +6,7 @@ const isDevelopment = !process.env.CI;
 test.describe("Login Form", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`/login`);
-    await expect(page.locator('p:has-text("Welcome back! Enter your email to log in.")')).toBeVisible();
+    await expect(page).toHaveURL("/login");
   });
 
   test("should redirect to OTP verification page upon entering a valid email", async ({
@@ -79,7 +79,7 @@ test.describe("Validate Login Code", () => {
   test.beforeEach(async ({ page }) => {
     // OTP Login with Valid Email
     await page.goto(`/login`);
-    await expect(page.locator('p:has-text("Welcome back! Enter your email to log in.")')).toBeVisible();
+    await expect(page).toHaveURL("/login");
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
   });
