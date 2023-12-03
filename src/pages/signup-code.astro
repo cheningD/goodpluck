@@ -1,23 +1,28 @@
 ---
-import Banner from '../components/solid/Banner.tsx';
-import Cart from '../components/solid/Cart.tsx';
-import Menu from '../components/solid/Menu';
-import MobileNav from '../components/solid/MobileNav.tsx';
-import { stytch } from '../lib/stytch';
-import { session_duration_minutes } from '../lib/constants';
-import { StytchError } from 'stytch';
+import Banner from "../components/solid/Banner.tsx";
+import Cart from "../components/solid/Cart.tsx";
+import Menu from "../components/solid/Menu";
+import MobileNav from "../components/solid/MobileNav.tsx";
+import { getStytchClient } from "../lib/stytch";
+import { session_duration_minutes } from "../lib/constants";
+import { StytchError } from "stytch";
+
 // Initialize error state
-const errors = { code: '' };
+const errors = { code: "" };
+
+const runtime = Astro.locals.runtime;
+const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
+  runtime?.env || import.meta.env;
 
 // Handle POST request
-if (Astro.request.method === 'POST') {
+if (Astro.request.method === "POST") {
   try {
     // Collect form data and initialize params object
     const data = await Astro.request.formData();
-    const code = data.get('otp-input')?.toString();
+    const code = data.get("otp-input")?.toString();
 
     const url = new URL(Astro.request.url);
-    const method_id = url.searchParams.get('method_id');
+    const method_id = url.searchParams.get("method_id");
 
     // Validate email
     if (!code || !/^[0-9]+$/.test(code)) {
@@ -25,9 +30,14 @@ if (Astro.request.method === 'POST') {
     } else if (!method_id) {
       errors.code = `Method ID is not valid`;
     } else {
+      const stytchclient = getStytchClient(
+        STYTCH_PROJECT_ID,
+        STYTCH_PROJECT_SECRET,
+      );
+
       // Make stytch API call and handle errors within the same try-catch block
       try {
-        const resp = await stytch.otps.authenticate({
+        const resp = await stytchclient.otps.authenticate({
           code,
           method_id,
           session_duration_minutes,
@@ -35,27 +45,27 @@ if (Astro.request.method === 'POST') {
 
         if (resp.session_token) {
           // Set session cookie
-          Astro.cookies.set('gp_session_token', resp.session_token, {
-            path: '/',
+          Astro.cookies.set("gp_session_token", resp.session_token, {
+            path: "/",
             httpOnly: true,
             secure: true,
-            sameSite: 'lax',
+            sameSite: "lax",
             expires: new Date(
-              Date.now() + session_duration_minutes * 60 * 1000
+              Date.now() + session_duration_minutes * 60 * 1000,
             ),
           });
         }
 
         console.log(resp);
-        return Astro.redirect('/create-account');
+        return Astro.redirect("/create-account");
       } catch (err) {
         console.log(err);
         if (err instanceof StytchError) {
-          if (err.error_type === 'otp_code_not_found') {
+          if (err.error_type === "otp_code_not_found") {
             errors.code =
-              'Oops, wrong passcode. Try again or request a new one!';
+              "Oops, wrong passcode. Try again or request a new one!";
           } else {
-            errors.code = 'Unknown error, please reach out to us for help!';
+            errors.code = "Unknown error, please reach out to us for help!";
           }
         }
       }
@@ -68,40 +78,40 @@ if (Astro.request.method === 'POST') {
 }
 ---
 
-<html lang='en'>
+<html lang="en">
   <head>
-    <meta charset='utf-8' />
-    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-    <meta name='viewport' content='width=device-width' />
-    <meta name='generator' content={Astro.generator} />
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
     <title>Sign up code - Goodpluck</title>
   </head>
   <body>
-    <div class='sticky top-0 h-full'>
+    <div class="sticky top-0 h-full">
       <Banner client:load />
       <MobileNav client:load />
     </div>
     <Cart client:load />
     <Menu client:load />
   </body>
-  <div class='flex items-center justify-center h-screen bg-gray-100'>
-    <div class='bg-white p-8 rounded shadow-md w-full max-w-sm'>
-      <h2 class='text-2xl font-bold text-gray-900 mb-6 text-center'>Sign up</h2>
-      <form method='POST'>
-        <label for='otp-input'>Enter the code you received by email</label>
+  <div class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Sign up</h2>
+      <form method="POST">
+        <label for="otp-input">Enter the code you received by email</label>
         <input
-          class='border rounded-md p-2 w-full mb-4'
-          id='otp-input'
-          name='otp-input'
-          autocomplete='one-time-code'
-          inputmode='numeric'
-          pattern='[0-9]*'
+          class="border rounded-md p-2 w-full mb-4"
+          id="otp-input"
+          name="otp-input"
+          autocomplete="one-time-code"
+          inputmode="numeric"
+          pattern="[0-9]*"
           required
         />
         {errors.code && <p>{errors.code}</p>}
         <button
-          class='bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600'
-          type='submit'>Submit</button
+          class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
+          type="submit">Submit</button
         >
       </form>
     </div>
