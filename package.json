@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "preview": "wrangler pages dev ----compatibility-date 2023-11-14 --env development ./dist",
+    "preview": "wrangler pages dev --compatibility-date 2023-11-14 --env development ./dist",
     "test:e2e": "astro build && pnpm exec playwright test --trace on",
     "astro": "astro",
     "prepare": "husky install"

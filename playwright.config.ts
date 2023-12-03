@@ -1,12 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
@@ -23,23 +17,16 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: "html",
-  webServer: process.env.CI
-    ? undefined
-    : {
-        command: "npm run preview",
-        url: `http://127.0.0.1:8788/`,
-        timeout: 120 * 1000,
-        reuseExistingServer: !process.env.CI,
-      },
+  webServer: {
+    command: "pnpm run preview",
+    url: `http://127.0.0.1:8788/`,
+    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI,
+  },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.CI
-      ? `https://${process.env.GITHUB_REF_NAME?.replace(
-          /[^a-zA-Z0-9]/g,
-          "-",
-        )}.goodpluck.pages.dev`
-      : "http://localhost:8788",
+    baseURL: `http://127.0.0.1:8788/`,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
