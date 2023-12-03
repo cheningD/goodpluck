@@ -18,7 +18,7 @@ if (Astro.request.method === "POST") {
     const first_name = data.get("first_name")?.toString();
     const last_name = data.get("last_name")?.toString();
     const phone_number = data.get("phone_number");
-    const address = data.get("address");
+    const address = data.get("address address-search")?.toString();
     const consent = data.get("consent");
 
     const name = { first_name, last_name };
@@ -48,7 +48,7 @@ if (Astro.request.method === "POST") {
           untrusted_metadata,
         });
 
-        Astro.redirect("/");
+        return Astro.redirect("/");
       } catch (error) {
         console.log(error);
       }
@@ -99,16 +99,6 @@ if (Astro.request.method === "POST") {
           class="border rounded-md p-2 w-1/2 mb-4"
         />
 
-        <!-- <label class='block text-sm font-medium text-gray-700 mb-2'
-            >Your delivery address</label
-          >
-          <input
-            type='text'
-            name='address'
-            required
-            class='border rounded-md p-2 w-1/2 mb-4'
-          /> -->
-
         <h3>Your delivery address</h3>
 
         <label class="block text-sm font-medium text-gray-700 mb-2"
@@ -127,8 +117,7 @@ if (Astro.request.method === "POST") {
         >
         <input
           type="text"
-          name="appartement"
-          required
+          name="appartment"
           autocomplete="address-line2"
           class="border rounded-md p-2 w-1/2 mb-4"
         />
