@@ -17,6 +17,13 @@ jobs:
         run: env
       - name: Run Playwright tests
         run: pnpm exec playwright test --forbid-only -c ./playwright.config.ts
+        env: # Or as an environment variable
+          MAPBOX_AUTOCOMPLETE_ACCESS_TOKEN: ${{ secrets.MAPBOX_AUTOCOMPLETE_ACCESS_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          STYTCH_PROJECT_ID: ${{ secrets.STYTCH_PROJECT_ID }}
+          STYTCH_PROJECT_SECRET: ${{ secrets.STYTCH_PROJECT_SECRET }}
+          SWELL_SECRET_KEY: ${{ secrets.SWELL_SECRET_KEY }}
+          SWELL_STORE_ID: ${{ secrets.SWELL_STORE_ID }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
