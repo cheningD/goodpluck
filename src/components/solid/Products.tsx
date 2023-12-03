@@ -5,7 +5,7 @@ import {
   createEffect,
   onCleanup,
 } from "solid-js";
-import initSwell from "../../lib/swell";
+import { initSwell } from "../../lib/swell";
 import { throttle } from "../../lib/throttle";
 
 interface iProps {
