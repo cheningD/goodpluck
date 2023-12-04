@@ -21,7 +21,7 @@ export default defineConfig({
     command: "pnpm run build && pnpm run preview",
     url: `http://127.0.0.1:8788/`,
     timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

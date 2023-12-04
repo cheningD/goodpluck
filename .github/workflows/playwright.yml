@@ -26,8 +26,17 @@ jobs:
           echo "STYTCH_PROJECT_SECRET=${{ secrets.STYTCH_PROJECT_SECRET }}" | head -c 25
           echo "SWELL_SECRET_KEY=${{ secrets.SWELL_SECRET_KEY }}" | head -c 25
           echo "SWELL_STORE_ID=${{ secrets.SWELL_STORE_ID }}" | head -c 25
+      - name: Build
+        run: pnpm build
+      - name: Start Server
+        run: pnpm run preview
       - name: Run Playwright tests
-        run: pnpm exec playwright test --forbid-only -c ./playwright.config.ts --trace on
+        run: pnpm exec playwright test --forbid-only -c ./playwright.config.ts --trace on &
+        env:
+          STYTCH_PROJECT_ID: ${{ secrets.STYTCH_PROJECT_ID }}
+          STYTCH_PROJECT_SECRET: ${{ secrets.STYTCH_PROJECT_SECRET }}
+          SWELL_SECRET_KEY: ${{ secrets.SWELL_SECRET_KEY }}
+          SWELL_STORE_ID: ${{ secrets.SWELL_STORE_ID }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
