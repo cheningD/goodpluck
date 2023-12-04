@@ -15,19 +15,8 @@ jobs:
         run: pnpm exec playwright install --with-deps
       - name: Inspect env vars
         run: env
-      - name: Build the app
-        run: pnpm run build
-        env:
-          MAPBOX_AUTOCOMPLETE_ACCESS_TOKEN: ${{ secrets.MAPBOX_AUTOCOMPLETE_ACCESS_TOKEN }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          STYTCH_PROJECT_ID: ${{ secrets.STYTCH_PROJECT_ID }}
-          STYTCH_PROJECT_SECRET: ${{ secrets.STYTCH_PROJECT_SECRET }}
-          SWELL_SECRET_KEY: ${{ secrets.SWELL_SECRET_KEY }}
-          SWELL_STORE_ID: ${{ secrets.SWELL_STORE_ID }}
       - name: Run Playwright tests
         env:
-          MAPBOX_AUTOCOMPLETE_ACCESS_TOKEN: ${{ secrets.MAPBOX_AUTOCOMPLETE_ACCESS_TOKEN }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           STYTCH_PROJECT_ID: ${{ secrets.STYTCH_PROJECT_ID }}
           STYTCH_PROJECT_SECRET: ${{ secrets.STYTCH_PROJECT_SECRET }}
           SWELL_SECRET_KEY: ${{ secrets.SWELL_SECRET_KEY }}
