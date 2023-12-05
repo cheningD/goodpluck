@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const isDevelopment = !process.env.CI;
 
+/* Login Flow */
 // Testing Login Form
 test.describe("Login Form", () => {
   test.beforeEach(async ({ page }) => {
@@ -233,24 +234,27 @@ test.describe("Logout", () => {
   });
 });
 
+/* Create Account Flow */
 // Testing Join Form
-test.describe('Goodpluck Sign-up Form', () => {
+test.describe("Goodpluck Sign-up Form", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/join');
+    await page.goto("/join");
   });
 
   const validEmail = "sandbox@stytch.com";
   const validZipcode = "48201";
 
-  test('should redirect to OTP verification page for valid inputs', async ({ page }) => {
-    await page.fill('#email', validEmail);
-    await page.fill('#zipcode', validZipcode);
+  test("should redirect to OTP verification page for valid inputs", async ({
+    page,
+  }) => {
+    await page.fill("#email", validEmail);
+    await page.fill("#zipcode", validZipcode);
     await page.click('button:text("Continue")');
     expect(page.url()).toMatch(/\/signup-code/);
   });
 
-  test('should validate when an email is not entered', async ({ page }) => {
-    await page.fill('#zipcode', validZipcode);
+  test("should validate when an email is not entered", async ({ page }) => {
+    await page.fill("#zipcode", validZipcode);
     await page.click('button:text("Continue")');
 
     const isInvalid = await page.evaluate(() => {
@@ -264,8 +268,8 @@ test.describe('Goodpluck Sign-up Form', () => {
     expect(isInvalid).toBeTruthy();
   });
 
-  test('should validate for invalid email format', async ({ page }) => {
-    await page.fill('#zipcode', validZipcode);
+  test("should validate for invalid email format", async ({ page }) => {
+    await page.fill("#zipcode", validZipcode);
     await page.click('button:text("Continue")');
 
     const isInvalid = await page.evaluate(() => {
@@ -279,8 +283,8 @@ test.describe('Goodpluck Sign-up Form', () => {
     expect(isInvalid).toBeTruthy();
   });
 
-  test('should validate when a zip code is not entered', async ({ page }) => {
-    await page.fill('#email', validEmail);
+  test("should validate when a zip code is not entered", async ({ page }) => {
+    await page.fill("#email", validEmail);
     await page.click('button:text("Continue")');
 
     const isInvalid = await page.evaluate(() => {
@@ -294,16 +298,20 @@ test.describe('Goodpluck Sign-up Form', () => {
     expect(isInvalid).toBeTruthy();
   });
 
-  test('should throw an error for an unserviced zip code', async ({ page }) => {
-    await page.fill('#email', validEmail);
-    await page.fill('#zipcode', '99999');
+  test("should throw an error for an unserviced zip code", async ({ page }) => {
+    await page.fill("#email", validEmail);
+    await page.fill("#zipcode", "99999");
     await page.click('button:text("Continue")');
-    await expect(page.locator('text=We are not delivering to your area yet')).toBeVisible();
+    await expect(
+      page.locator("text=We are not delivering to your area yet"),
+    ).toBeVisible();
   });
 
-  test('should redirect to login page on clicking `Log in` link', async ({ page }) => {
-    await page.click('text=Log in');
-    await expect(page).toHaveURL('/login');
+  test("should redirect to login page on clicking `Log in` link", async ({
+    page,
+  }) => {
+    await page.click("text=Log in");
+    await expect(page).toHaveURL("/login");
   });
 
   test("should redirect users to the homepage if they are already logged in and attempt to visit the join page", async ({
@@ -328,5 +336,106 @@ test.describe('Goodpluck Sign-up Form', () => {
     const message = "You are already logged in";
     const encodedMessage = encodeURIComponent(message);
     expect(page.url()).toContain(`/?message=${encodedMessage}`);
+  });
+});
+
+// Testing OTP Join
+test.describe("Validate Join Code", () => {
+  test.beforeEach(async ({ page }) => {
+    // OTP Join with Valid Email
+    await page.goto(`/join`);
+    await page.fill("#email", "sandbox@stytch.com");
+    await page.fill("#zipcode", "48201");
+    await page.click('button:text("Continue")');
+  });
+
+  test("should set goodpluck session cookie, and redirect to `/create-account` given valid code", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari wont let you set a cookie on localhost without https",
+    );
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-signup-code-btn"]');
+
+    // Check if the user is redirected to the create-account page
+    expect(page.url()).toContain(`/create-account`);
+
+    // This is the default OTP code for the sandbox user
+    const cookies = await page.context().cookies();
+    const sessionCookie = cookies.find(
+      (cookie) => cookie.name === "gp_session_token",
+    );
+    expect(sessionCookie).toBeDefined();
+
+    expect(sessionCookie?.value).toBe(
+      "WJtR5BCy38Szd5AfoDpf0iqFKEt4EE5JhjlWUY7l3FtY",
+    ); // This is the default session token for the sandbox user
+
+    expect(sessionCookie?.secure).toBeTruthy();
+    expect(sessionCookie?.httpOnly).toBeTruthy();
+    expect(sessionCookie?.sameSite).toBe("Lax");
+  });
+
+  test("should throw an error when a wrong code is entered", async ({
+    page,
+  }) => {
+    await page.fill("#otp-input", "900900"); // invalid code
+    await page.click('button[id="submit-signup-code-btn"]');
+    await expect(
+      page.locator(
+        "text=Oops, wrong passcode. Try again or request a new one!",
+      ),
+    ).toBeVisible();
+
+    const cookies = await page.context().cookies();
+    const sessionCookie = cookies.find(
+      (cookie) => cookie.name === "gp_session_token",
+    );
+    expect(sessionCookie).toBeUndefined();
+  });
+
+  test("should redirect users to the homepage if they are already logged in and attempt to visit the signup-code page", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari wont let you set a cookie on localhost without https",
+    );
+    // Step 1: Join with valid credentials
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-signup-code-btn"]');
+
+    // Step 2: Attempt to navigate to the signup-code page again
+    await page.goto(`/signup-code`);
+
+    // Step 3: Check if the user is redirected to the homepage
+    const message = "You are already logged in";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
+  });
+
+  test("should show an error when user leaves OTP input blank", async ({ page }) => {
+    await page.click('button[id="submit-signup-code-btn"]');
+
+    // Check if the code input is in an invalid state
+    const inputIsFocused = await page.evaluate(() => {
+      const otpInput = document.getElementById("otp-input");
+      return document.activeElement === otpInput;
+    });
+
+    expect(inputIsFocused).toBeTruthy();
+  });
+
+  test("should show an error for OTP less than 6 digits", async ({ page }) => {
+    const invalidCode = "12345";
+    await page.fill("#otp-input", invalidCode);
+    await page.click('button[id="submit-signup-code-btn"]');
+    await expect(
+      page.locator(`text=Code is not valid: ${invalidCode}`),
+    ).toBeVisible();
   });
 });

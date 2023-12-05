@@ -1,5 +1,5 @@
 ---
-import { getStytchClient } from "../lib/stytch";
+import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import { session_duration_minutes } from "../lib/constants";
 import { StytchError } from "stytch";
 import Layout from "@layouts/Layout.astro";
@@ -22,7 +22,7 @@ if (Astro.request.method === "POST") {
     const method_id = url.searchParams.get("method_id");
 
     // Validate email
-    if (!code || !/^[0-9]+$/.test(code)) {
+    if (!code || !/^[0-9]{6}$/.test(code)) {
       errors.code = `Code is not valid: ${code}`;
     } else if (!method_id) {
       errors.code = `Method ID is not valid`;
@@ -73,6 +73,20 @@ if (Astro.request.method === "POST") {
     }
   }
 }
+
+// Redirect authenticated users away from join page
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const isUserLoggedIn = await isLoggedIn(
+  sessionToken as string,
+  STYTCH_PROJECT_ID,
+  STYTCH_PROJECT_SECRET,
+);
+
+if (isUserLoggedIn) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are already logged in"),
+  );
+}
 ---
 
 <Layout>
@@ -93,6 +107,7 @@ if (Astro.request.method === "POST") {
         {errors.code && <p>{errors.code}</p>}
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
+          id="submit-signup-code-btn"
           type="submit">Submit</button
         >
       </form>
