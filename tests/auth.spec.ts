@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { S } from "dist/_astro/solid.2e357416";
 
 const isDevelopment = !process.env.CI;
 
@@ -230,5 +231,79 @@ test.describe("Logout", () => {
     const message = "You are not logged in";
     const encodedMessage = encodeURIComponent(message);
     expect(page.url()).toContain(`/?message=${encodedMessage}`);
+  });
+});
+
+// Testing Join Form
+test.describe('Goodpluck Sign-up Form', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/join');
+  });
+
+  const validEmail = "sandbox@stytch.com";
+  const validZipcode = "48201";
+
+  test('should redirect to OTP verification page for valid inputs', async ({ page }) => {
+    await page.fill('#email', validEmail);
+    await page.fill('#zipcode', validZipcode);
+    await page.click('button:text("Continue")');
+    expect(page.url()).toMatch(/\/signup-code/);
+  });
+
+  test('should validate when an email is not entered', async ({ page }) => {
+    await page.fill('#zipcode', validZipcode);
+    await page.click('button:text("Continue")');
+
+    const isInvalid = await page.evaluate(() => {
+      const emailInput = document.querySelector('input[id="email"]');
+      return (
+        emailInput instanceof HTMLInputElement &&
+        emailInput.validity.valid === false
+      );
+    });
+
+    expect(isInvalid).toBeTruthy();
+  });
+
+  test('should validate for invalid email format', async ({ page }) => {
+    await page.fill('#zipcode', validZipcode);
+    await page.click('button:text("Continue")');
+
+    const isInvalid = await page.evaluate(() => {
+      const emailInput = document.querySelector('input[id="email"]');
+      return (
+        emailInput instanceof HTMLInputElement &&
+        emailInput.validity.valid === false
+      );
+    });
+
+    expect(isInvalid).toBeTruthy();
+  });
+
+  test('should validate when a zip code is not entered', async ({ page }) => {
+    await page.fill('#email', validEmail);
+    await page.click('button:text("Continue")');
+
+    const isInvalid = await page.evaluate(() => {
+      const zipcodeInput = document.querySelector('input[id="zipcode"]');
+      return (
+        zipcodeInput instanceof HTMLInputElement &&
+        zipcodeInput.validity.valid === false
+      );
+    });
+
+    expect(isInvalid).toBeTruthy();
+  });
+
+  test('should throw an error for an unserviced zip code', async ({ page }) => {
+    await page.fill('#email', validEmail);
+    await page.fill('#zipcode', '99999');
+    await page.click('button:text("Continue")');
+    await expect(page.locator('text=We are not delivering to your area yet')).toBeVisible();
+  });
+
+  test('should redirect to login page on clicking `Log in` link', async ({ page }) => {
+    await page.click('text=Log in');
+    await expect(page).toHaveURL('/login');
   });
 });
