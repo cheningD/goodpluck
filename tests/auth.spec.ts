@@ -1,5 +1,4 @@
 import { expect, test } from "@playwright/test";
-import { S } from "dist/_astro/solid.2e357416";
 
 const isDevelopment = !process.env.CI;
 
@@ -305,5 +304,29 @@ test.describe('Goodpluck Sign-up Form', () => {
   test('should redirect to login page on clicking `Log in` link', async ({ page }) => {
     await page.click('text=Log in');
     await expect(page).toHaveURL('/login');
+  });
+
+  test("should redirect users to the homepage if they are already logged in and attempt to visit the join page", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari won't let you set a cookie on localhost without https in development environment",
+    );
+    // Step 1: Login with valid credentials
+    await page.goto(`/login`);
+    await page.fill('input[type="email"]', "sandbox@stytch.com");
+    await page.click('button[data-testid="login-btn"]');
+    await page.fill('input[name="otp-input"]', "000000");
+    await page.click('button[type="submit"]');
+
+    // Step 2: Attempt to navigate to the join page
+    await page.goto(`/join`);
+
+    // Step 3: Check if the user is redirected to the homepage
+    const message = "You are already logged in";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
   });
 });

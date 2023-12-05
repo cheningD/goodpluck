@@ -1,6 +1,6 @@
 ---
 import { StytchError } from "stytch";
-import { getStytchClient } from "../lib/stytch";
+import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
 
 const errors = { email: "" };
@@ -49,6 +49,20 @@ if (Astro.request.method === "POST") {
       console.error(error.message);
     }
   }
+}
+
+// Redirect authenticated users away from join page
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const isUserLoggedIn = await isLoggedIn(
+  sessionToken as string,
+  STYTCH_PROJECT_ID,
+  STYTCH_PROJECT_SECRET,
+);
+
+if (isUserLoggedIn) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are already logged in"),
+  );
 }
 ---
 
