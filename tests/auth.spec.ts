@@ -418,7 +418,9 @@ test.describe("Validate Join Code", () => {
     expect(page.url()).toContain(`/?message=${encodedMessage}`);
   });
 
-  test("should show an error when user leaves OTP input blank", async ({ page }) => {
+  test("should show an error when user leaves OTP input blank", async ({
+    page,
+  }) => {
     await page.click('button[id="submit-signup-code-btn"]');
 
     // Check if the code input is in an invalid state
@@ -437,5 +439,38 @@ test.describe("Validate Join Code", () => {
     await expect(
       page.locator(`text=Code is not valid: ${invalidCode}`),
     ).toBeVisible();
+  });
+});
+
+// Testing Create Account
+test.describe("Detailed Sign-Up (Create Account)", () => {
+  test("should redirect to login page if user is unauthenticated", async ({
+    page,
+  }) => {
+    await page.goto(`/create-account`);
+    expect(page.url()).toContain(`/?message=You%20are%20not%20logged%20in`);
+  });
+
+  test('should not submit form if required fields are missing', async ({ page }) => {
+    // OTP Join with Valid Email
+    await page.goto(`/join`);
+    await page.fill("#email", "sandbox@stytch.com");
+    await page.fill("#zipcode", "48201");
+    await page.click('button:text("Continue")');
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-signup-code-btn"]');
+    expect(page.url()).toContain(`/create-account`);
+
+    // Check if the user is redirected to the create-account page
+    expect(page.url()).toContain(`/create-account`);
+
+    // Fill out only some fields
+    await page.fill('input[name="first_name"]', 'John');
+
+    // Try to submit the form
+    await page.click('button[type="submit"]');
+
+    // Assert that the form has not been submitted
+    await expect(page).toHaveURL('/create-account');
   });
 });

@@ -1,6 +1,6 @@
 ---
 import MapboxAutofill from "../components/solid/MapboxAutofill";
-import { getStytchClient } from "../lib/stytch";
+import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
 
 const errors = { err: "" };
@@ -51,9 +51,24 @@ if (Astro.request.method === "POST") {
         return Astro.redirect("/");
       } catch (error) {
         console.log(error);
+        errors.err = "An error occured, please try again";
       }
     }
   } catch (error) {}
+}
+
+// Redirect unauthenticated users to the login page
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const isUserLoggedIn = await isLoggedIn(
+  sessionToken as string,
+  STYTCH_PROJECT_ID,
+  STYTCH_PROJECT_SECRET,
+);
+
+if (!isUserLoggedIn) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are not logged in"),
+  );
 }
 ---
 
@@ -66,6 +81,8 @@ if (Astro.request.method === "POST") {
       We need some informations to complete your account. Let's complete it
       before you can make your first order!
     </p>
+
+    <p class="text-center text-red-500 mt-4">{errors.err}</p>
 
     <div class="flex flex-col mt-12 w-1/2 ml-10">
       <form method="POST">
