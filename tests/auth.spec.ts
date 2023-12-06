@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 
 const isDevelopment = !process.env.CI;
 
-/* Login Flow */
 // Testing Login Form
 test.describe("Login Form", () => {
   test.beforeEach(async ({ page }) => {
@@ -234,7 +233,6 @@ test.describe("Logout", () => {
   });
 });
 
-/* Create Account Flow */
 // Testing Join Form
 test.describe("Goodpluck Sign-up Form", () => {
   test.beforeEach(async ({ page }) => {
