@@ -3,7 +3,8 @@ import Header from "@components/solid/global/Header";
 import Footer from "@components/solid/global/Footer";
 import Cart from "@components/solid/Cart";
 import Banner from "@components/solid/Banner";
-import Breadcrumb from "@components/solid/Breadcrumb.tsx";
+import Breadcrumb from "@components/solid/Breadcrumb";
+import ScrollSpy from "@components/solid/global/ScrollSpy";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
 
@@ -55,23 +56,11 @@ function getCurrentSubCategories() {
       <div class="grid grid-cols-5">
         {
           currentCollection && (
-            <div>
-              <h2 class="text-xl font-medium dark:text-white">
-                {currentCategoryName}
-              </h2>
-              <ul class="sticky top-[114px]">
-                {getCurrentSubCategories().map((collection: any) => (
-                  <li>
-                    <a
-                      href={`/market/${collection.slug}`}
-                      class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
-                    >
-                      {collection.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                    <ScrollSpy
+          categorySlug={currentCollection.slug}
+          categories={categories}
+          client:only
+        />
           )
         }
         {!currentCollection && <div />}
@@ -80,8 +69,8 @@ function getCurrentSubCategories() {
           {
             currentCollection && (
               <Breadcrumb
-                collections={categories}
-                currentCollectionId={currentCollection.id}
+                categories={categories}
+                collectionId={currentCollection.id}
               />
             )
           }
@@ -91,7 +80,6 @@ function getCurrentSubCategories() {
       <Cart postcode={postcode} />
     </main>
     <Footer client:load />
-    <!-- <script is:inline src="../../node_modules/preline/dist/preline.js"></script> -->
     <script type="module">
       import "../../node_modules/preline/dist/preline.js";
     </script>
