@@ -13,9 +13,18 @@
     "lint": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,astro,html}": "eslint --fix",
-    "*.{css,scss}": "stylelint --fix",
-    "*.json": "prettier --write"
+    "*.{js,ts,tsx,astro,html}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "@astrojs/check": "^0.2.1",
