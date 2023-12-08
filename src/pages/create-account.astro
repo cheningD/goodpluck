@@ -20,6 +20,7 @@ if (Astro.request.method === "POST") {
     const phone_number = data.get("phone_number");
     const address = data.get("address address-search")?.toString();
     const consent = data.get("consent");
+    const postcode = data.get("postcode")?.toString();
 
     const name = { first_name, last_name };
     const untrusted_metadata = { address, consent, phone_number };
@@ -46,6 +47,14 @@ if (Astro.request.method === "POST") {
           user_id: userId,
           name,
           untrusted_metadata,
+        });
+
+        // Set the cookie with the user's zip code
+        Astro.cookies.set("user_postcode", postcode as string, {
+          httpOnly: true,
+          secure: true,
+          path: "/",
+          maxAge: 60 * 60 * 24 * 30, // 30 days
         });
 
         return Astro.redirect("/");
