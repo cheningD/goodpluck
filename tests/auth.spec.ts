@@ -1,12 +1,12 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from '@playwright/test'
 
-const isDevelopment = !process.env.CI;
+const isDevelopment = typeof process.env.CI === 'undefined'
 
 // Testing Login Form
-test.describe("Login Form", () => {
+test.describe('Login Form', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`/login`);
-  });
+    await page.goto('/login')
+  })
 
   test("should redirect to OTP verification page upon entering a valid email", async ({
     page,
