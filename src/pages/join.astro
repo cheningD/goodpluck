@@ -5,6 +5,7 @@ import Layout from "@layouts/Layout.astro";
 
 const errors = { email: "" };
 const confirmedZipcodes = ["48201", "48202", "48203", "48204", "48205"];
+let email;
 
 const runtime = Astro.locals.runtime;
 const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
@@ -13,7 +14,7 @@ const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
-    const email = data.get("email")?.toString();
+    email = data.get("email")?.toString();
     const zipcode = data.get("zipcode")?.toString();
 
     if (!email) {
@@ -86,6 +87,7 @@ if (isUserLoggedIn) {
           placeholder="kale@example.com"
           required
           class="border rounded-md p-2 w-full mb-4"
+          value={email}
         />
         <label
           for="zipcode"
