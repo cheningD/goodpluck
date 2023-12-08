@@ -39,8 +39,7 @@ test.describe('Login Form', () => {
     const isInvalid = await page.evaluate(() => {
       const emailInput = document.querySelector('input[type="email"]')
       return (
-        emailInput instanceof HTMLInputElement &&
-        !emailInput.validity.valid
+        emailInput instanceof HTMLInputElement && !emailInput.validity.valid
       )
     })
 
