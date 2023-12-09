@@ -1,7 +1,7 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
 import Category from "@components/solid/Category.tsx";
-import {initSwell} from "../lib/swell";
+import { initSwell } from "../lib/swell";
 
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
@@ -24,6 +24,9 @@ let products = await swell.products.list({
   description="Delivered farm fresh to you"
   categories={categories.results}
 >
-  <Category currentCollection={null}
- products={products} collections={categories.results} />
+  <Category
+    currentCollection={null}
+    products={products}
+    collections={categories.results}
+  />
 </Layout>

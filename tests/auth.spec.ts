@@ -39,8 +39,7 @@ test.describe('Login Form', () => {
     const isInvalid = await page.evaluate(() => {
       const emailInput = document.querySelector('input[type="email"]')
       return (
-        emailInput instanceof HTMLInputElement &&
-        !emailInput.validity.valid
+        emailInput instanceof HTMLInputElement && !emailInput.validity.valid
       )
     })
 
@@ -256,8 +255,7 @@ test.describe('Goodpluck Sign-up Form', () => {
     const isInvalid = await page.evaluate(() => {
       const emailInput = document.querySelector('input[id="email"]')
       return (
-        emailInput instanceof HTMLInputElement &&
-        !emailInput.validity.valid
+        emailInput instanceof HTMLInputElement && !emailInput.validity.valid
       )
     })
 
@@ -271,8 +269,7 @@ test.describe('Goodpluck Sign-up Form', () => {
     const isInvalid = await page.evaluate(() => {
       const emailInput = document.querySelector('input[id="email"]')
       return (
-        emailInput instanceof HTMLInputElement &&
-        !emailInput.validity.valid
+        emailInput instanceof HTMLInputElement && !emailInput.validity.valid
       )
     })
 
@@ -286,8 +283,7 @@ test.describe('Goodpluck Sign-up Form', () => {
     const isInvalid = await page.evaluate(() => {
       const zipcodeInput = document.querySelector('input[id="zipcode"]')
       return (
-        zipcodeInput instanceof HTMLInputElement &&
-        !zipcodeInput.validity.valid
+        zipcodeInput instanceof HTMLInputElement && !zipcodeInput.validity.valid
       )
     })
 
