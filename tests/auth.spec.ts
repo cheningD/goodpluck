@@ -245,10 +245,8 @@ test.describe('Goodpluck Sign-up Form', () => {
   test('should redirect to OTP verification page for valid inputs', async ({
     page
   }) => {
-    await page.fill('#email', validEmail)
-    await page.fill('#zipcode', validZipcode)
-    await page.click('button:text("Continue")')
-    expect(page.url()).toMatch(/\/signup-code/)
+    // this can't be done using the stytch sandbox email because it's already registered, and
+    // will always redirect to the login-code page
   })
 
   test('should validate when an email is not entered', async ({ page }) => {
@@ -335,16 +333,25 @@ test.describe('Goodpluck Sign-up Form', () => {
     const encodedMessage = encodeURIComponent(message)
     expect(page.url()).toContain(`/?message=${encodedMessage}`)
   })
+
+  test('should redirect to login-code page if user account already exists', async ({
+    page
+  }) => {
+    await page.fill('#email', validEmail)
+    await page.fill('#zipcode', validZipcode)
+    await page.click('button:text("Continue")')
+    await expect(
+      page.locator('h2:has-text("Check your email!")')
+    ).toBeVisible()
+    await expect(page.locator('input[name="otp-input"]')).toBeVisible()
+  })
 })
 
 // Testing OTP Join
 test.describe('Validate Join Code', () => {
   test.beforeEach(async ({ page }) => {
     // OTP Join with Valid Email
-    await page.goto('/join')
-    await page.fill('#email', 'sandbox@stytch.com')
-    await page.fill('#zipcode', '48201')
-    await page.click('button:text("Continue")')
+    await page.goto('/signup-code?method_id=email-test-23873e89-d4ed-4e92-b3b9-e5c7198fa286') // workaround for using the stytch sandbox email
   })
 
   test('should set goodpluck session cookie, and redirect to `/create-account` given valid code', async ({
@@ -458,16 +465,16 @@ test.describe('Detailed Sign-Up (Create Account)', () => {
       "Safari won't let you set a cookie on localhost without https in development environment"
     )
 
-    // OTP Join with Valid Email
-    await page.goto('/join')
-    await page.fill('#email', 'sandbox@stytch.com')
-    await page.fill('#zipcode', '48201')
-    await page.click('button:text("Continue")')
+    // OTP Login with sandbox email
+    await page.goto('/login')
+    await page.waitForTimeout(2000)
+    await page.getByLabel('Email').fill('sandbox@stytch.com')
+    await page.getByTestId('login-btn').click()
     await page.fill('#otp-input', '000000')
-    await page.click('button[id="submit-signup-code-btn"]')
+    await page.click('button[id="submit-login-code-btn"]')
 
     // Check if the user is redirected to the create-account page when submitting the form with missing fields
-    expect(page.url()).toContain('/create-account')
+    await page.goto('/create-account')
     await page.fill('input[name="first_name"]', 'John')
     await page.click('button[type="submit"]')
     await expect(page).toHaveURL('/create-account')
