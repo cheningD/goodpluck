@@ -40,7 +40,7 @@ export default defineConfig({
           const basePart = 'https://'
           const domainPart = '.goodpluck.pages.dev'
           const maxRefNameLength = max_length_cloudflare_base_url - (basePart.length + domainPart.length)
-          const safeRefName = process.env.GITHUB_REF_NAME?.replace(/[^a-zA-Z0-9]/g, '-').substring(0, maxRefNameLength)
+          const safeRefName = process.env.GITHUB_REF_NAME?.replace(/[^a-zA-Z0-9]/g, '-').substring(0, maxRefNameLength).replace(/-+$/, '')
           return `${basePart}${safeRefName}${domainPart}`
         })()
       : 'http://localhost:8788',
