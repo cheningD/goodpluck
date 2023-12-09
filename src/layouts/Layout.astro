@@ -6,6 +6,7 @@ import Menu from "../components/solid/Menu.tsx";
 import MobileNav from "../components/solid/MobileNav.tsx";
 
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
+const postcode = Astro.cookies.get("user_postcode")?.value;
 ---
 
 <html lang="en">
@@ -22,7 +23,7 @@ const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local ch
         <Banner isLoggedIn={isLoggedIn} client:load />
         <MobileNav client:load />
       </div>
-      <Cart client:load />
+      <Cart postcode={postcode} client:load />
       <Menu client:load />
       <slot />
     </div>

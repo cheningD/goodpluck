@@ -4,7 +4,11 @@ import { Show } from "solid-js";
 import { isCartOpen } from "../../store.js";
 import { useStore } from "@nanostores/solid";
 
-export default function Cart() {
+interface CartProps {
+  readonly postcode: string | undefined;
+}
+
+export default function Cart({ postcode }: CartProps) {
   const $isCartOpen = useStore(isCartOpen);
   return (
     <Presence exitBeforeEnter>
@@ -33,7 +37,7 @@ export default function Cart() {
             <Show when={true}>
               <form>
                 <label for="zip">Enter ZIP Code:</label>
-                <input type="text" id="zip" name="zip" />
+                <input type="text" id="zip" name="zip" value={postcode} />
                 <input type="submit" value="Submit" />
               </form>
             </Show>

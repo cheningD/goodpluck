@@ -29,7 +29,9 @@ export default function Menu() {
           {/* Content of the sidebar */}
           <div class="p-4">
             {/* Logo */}
-            <img src={logo.src} alt="Goodpluck" class="h-8 w-auto my-4" />
+            <a href="/">
+              <img src={logo.src} alt="Goodpluck" class="h-8 w-auto my-4" />
+            </a>
 
             {/* Menu Items */}
             <div class="space-y-4">
