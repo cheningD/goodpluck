@@ -227,248 +227,249 @@ test.describe("Logout", () => {
     expect(sessionCookie).toBeUndefined();
 
     // Check for the error message in the URL
-    const message = "You are not logged in";
-    const encodedMessage = encodeURIComponent(message);
-    expect(page.url()).toContain(`/?message=${encodedMessage}`);
-  });
-});
+    const message = 'You are not logged in'
+    const encodedMessage = encodeURIComponent(message)
+    expect(page.url()).toContain(`/?message=${encodedMessage}`)
+  })
+})
 
 // Testing Join Form
-test.describe("Goodpluck Sign-up Form", () => {
+test.describe('Goodpluck Sign-up Form', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/join");
-  });
+    await page.goto('/join')
+  })
 
-  const validEmail = "sandbox@stytch.com";
-  const validZipcode = "48201";
+  const validEmail = 'sandbox@stytch.com'
+  const validZipcode = '48201'
 
-  test("should redirect to OTP verification page for valid inputs", async ({
-    page,
+  test('should redirect to OTP verification page for valid inputs', async ({
+    page
   }) => {
-    await page.fill("#email", validEmail);
-    await page.fill("#zipcode", validZipcode);
-    await page.click('button:text("Continue")');
-    expect(page.url()).toMatch(/\/signup-code/);
-  });
+    await page.fill('#email', validEmail)
+    await page.fill('#zipcode', validZipcode)
+    await page.click('button:text("Continue")')
+    expect(page.url()).toMatch(/\/signup-code/)
+  })
 
-  test("should validate when an email is not entered", async ({ page }) => {
-    await page.fill("#zipcode", validZipcode);
-    await page.click('button:text("Continue")');
+  test('should validate when an email is not entered', async ({ page }) => {
+    await page.fill('#zipcode', validZipcode)
+    await page.click('button:text("Continue")')
 
     const isInvalid = await page.evaluate(() => {
-      const emailInput = document.querySelector('input[id="email"]');
+      const emailInput = document.querySelector('input[id="email"]')
       return (
         emailInput instanceof HTMLInputElement &&
-        emailInput.validity.valid === false
-      );
-    });
+        !emailInput.validity.valid
+      )
+    })
 
-    expect(isInvalid).toBeTruthy();
-  });
+    expect(isInvalid).toBeTruthy()
+  })
 
-  test("should validate for invalid email format", async ({ page }) => {
-    await page.fill("#zipcode", validZipcode);
-    await page.click('button:text("Continue")');
+  test('should validate for invalid email format', async ({ page }) => {
+    await page.fill('#zipcode', validZipcode)
+    await page.click('button:text("Continue")')
 
     const isInvalid = await page.evaluate(() => {
-      const emailInput = document.querySelector('input[id="email"]');
+      const emailInput = document.querySelector('input[id="email"]')
       return (
         emailInput instanceof HTMLInputElement &&
-        emailInput.validity.valid === false
-      );
-    });
+        !emailInput.validity.valid
+      )
+    })
 
-    expect(isInvalid).toBeTruthy();
-  });
+    expect(isInvalid).toBeTruthy()
+  })
 
-  test("should validate when a zip code is not entered", async ({ page }) => {
-    await page.fill("#email", validEmail);
-    await page.click('button:text("Continue")');
+  test('should validate when a zip code is not entered', async ({ page }) => {
+    await page.fill('#email', validEmail)
+    await page.click('button:text("Continue")')
 
     const isInvalid = await page.evaluate(() => {
-      const zipcodeInput = document.querySelector('input[id="zipcode"]');
+      const zipcodeInput = document.querySelector('input[id="zipcode"]')
       return (
         zipcodeInput instanceof HTMLInputElement &&
-        zipcodeInput.validity.valid === false
-      );
-    });
+        !zipcodeInput.validity.valid
+      )
+    })
 
-    expect(isInvalid).toBeTruthy();
-  });
+    expect(isInvalid).toBeTruthy()
+  })
 
-  test("should throw an error for an unserviced zip code", async ({ page }) => {
-    await page.fill("#email", validEmail);
-    await page.fill("#zipcode", "99999");
-    await page.click('button:text("Continue")');
+  test('should throw an error for an unserviced zip code', async ({ page }) => {
+    await page.fill('#email', validEmail)
+    await page.fill('#zipcode', '99999')
+    await page.click('button:text("Continue")')
     await expect(
-      page.locator("text=We are not delivering to your area yet"),
-    ).toBeVisible();
-  });
+      page.locator('text=We are not delivering to your area yet')
+    ).toBeVisible()
+  })
 
-  test("should redirect to login page on clicking `Log in` link", async ({
-    page,
+  test('should redirect to login page on clicking `Log in` link', async ({
+    page
   }) => {
-    await page.click("text=Log in");
-    await expect(page).toHaveURL("/login");
-  });
+    await page.click('text=Log in')
+    await expect(page).toHaveURL('/login')
+  })
 
-  test("should redirect users to the homepage if they are already logged in and attempt to visit the join page", async ({
+  test('should redirect users to the homepage if they are already logged in and attempt to visit the join page', async ({
     page,
-    browserName,
+    browserName
   }) => {
     test.skip(
-      browserName === "webkit" && isDevelopment,
-      "Safari won't let you set a cookie on localhost without https in development environment",
-    );
+      browserName === 'webkit' && isDevelopment,
+      "Safari won't let you set a cookie on localhost without https in development environment"
+    )
     // Step 1: Login with valid credentials
-    await page.goto(`/login`);
-    await page.fill('input[type="email"]', "sandbox@stytch.com");
-    await page.click('button[data-testid="login-btn"]');
-    await page.fill('input[name="otp-input"]', "000000");
-    await page.click('button[type="submit"]');
+    await page.goto('/login')
+    await page.fill('input[type="email"]', 'sandbox@stytch.com')
+    await page.click('button[data-testid="login-btn"]')
+    await page.fill('input[name="otp-input"]', '000000')
+    await page.click('button[type="submit"]')
 
     // Step 2: Attempt to navigate to the join page
-    await page.goto(`/join`);
+    await page.goto('/join')
 
     // Step 3: Check if the user is redirected to the homepage
-    const message = "You are already logged in";
-    const encodedMessage = encodeURIComponent(message);
-    expect(page.url()).toContain(`/?message=${encodedMessage}`);
-  });
-});
+    const message = 'You are already logged in'
+    const encodedMessage = encodeURIComponent(message)
+    expect(page.url()).toContain(`/?message=${encodedMessage}`)
+  })
+})
 
 // Testing OTP Join
-test.describe("Validate Join Code", () => {
+test.describe('Validate Join Code', () => {
   test.beforeEach(async ({ page }) => {
     // OTP Join with Valid Email
-    await page.goto(`/join`);
-    await page.fill("#email", "sandbox@stytch.com");
-    await page.fill("#zipcode", "48201");
-    await page.click('button:text("Continue")');
-  });
+    await page.goto('/join')
+    await page.fill('#email', 'sandbox@stytch.com')
+    await page.fill('#zipcode', '48201')
+    await page.click('button:text("Continue")')
+  })
 
-  test("should set goodpluck session cookie, and redirect to `/create-account` given valid code", async ({
+  test('should set goodpluck session cookie, and redirect to `/create-account` given valid code', async ({
     page,
-    browserName,
+    browserName
   }) => {
     test.skip(
-      browserName === "webkit" && isDevelopment,
-      "Safari wont let you set a cookie on localhost without https",
-    );
-    await page.fill("#otp-input", "000000");
-    await page.click('button[id="submit-signup-code-btn"]');
+      browserName === 'webkit' && isDevelopment,
+      'Safari wont let you set a cookie on localhost without https'
+    )
+    await page.fill('#otp-input', '000000')
+    await page.click('button[id="submit-signup-code-btn"]')
 
     // Check if the user is redirected to the create-account page
-    expect(page.url()).toContain(`/create-account`);
+    expect(page.url()).toContain('/create-account')
 
     // This is the default OTP code for the sandbox user
-    const cookies = await page.context().cookies();
+    const cookies = await page.context().cookies()
     const sessionCookie = cookies.find(
-      (cookie) => cookie.name === "gp_session_token",
-    );
-    expect(sessionCookie).toBeDefined();
+      (cookie) => cookie.name === 'gp_session_token'
+    )
+    expect(sessionCookie).toBeDefined()
 
     expect(sessionCookie?.value).toBe(
-      "WJtR5BCy38Szd5AfoDpf0iqFKEt4EE5JhjlWUY7l3FtY",
-    ); // This is the default session token for the sandbox user
+      'WJtR5BCy38Szd5AfoDpf0iqFKEt4EE5JhjlWUY7l3FtY'
+    ) // This is the default session token for the sandbox user
 
-    expect(sessionCookie?.secure).toBeTruthy();
-    expect(sessionCookie?.httpOnly).toBeTruthy();
-    expect(sessionCookie?.sameSite).toBe("Lax");
-  });
+    expect(sessionCookie?.secure).toBeTruthy()
+    expect(sessionCookie?.httpOnly).toBeTruthy()
+    expect(sessionCookie?.sameSite).toBe('Lax')
+  })
 
-  test("should throw an error when a wrong code is entered", async ({
-    page,
+  test('should throw an error when a wrong code is entered', async ({
+    page
   }) => {
-    await page.fill("#otp-input", "900900"); // invalid code
-    await page.click('button[id="submit-signup-code-btn"]');
+    await page.fill('#otp-input', '900900') // invalid code
+    await page.click('button[id="submit-signup-code-btn"]')
     await expect(
       page.locator(
-        "text=Oops, wrong passcode. Try again or request a new one!",
-      ),
-    ).toBeVisible();
+        'text=Oops, wrong passcode. Try again or request a new one!'
+      )
+    ).toBeVisible()
 
-    const cookies = await page.context().cookies();
+    const cookies = await page.context().cookies()
     const sessionCookie = cookies.find(
-      (cookie) => cookie.name === "gp_session_token",
-    );
-    expect(sessionCookie).toBeUndefined();
-  });
+      (cookie) => cookie.name === 'gp_session_token'
+    )
+    expect(sessionCookie).toBeUndefined()
+  })
 
-  test("should redirect users to the homepage if they are already logged in and attempt to visit the signup-code page", async ({
+  test('should redirect users to the homepage if they are already logged in and attempt to visit the signup-code page', async ({
     page,
-    browserName,
+    browserName
   }) => {
     test.skip(
-      browserName === "webkit" && isDevelopment,
-      "Safari wont let you set a cookie on localhost without https",
-    );
+      browserName === 'webkit' && isDevelopment,
+      'Safari wont let you set a cookie on localhost without https'
+    )
     // Step 1: Join with valid credentials
-    await page.fill("#otp-input", "000000");
-    await page.click('button[id="submit-signup-code-btn"]');
+    await page.fill('#otp-input', '000000')
+    await page.click('button[id="submit-signup-code-btn"]')
 
     // Step 2: Attempt to navigate to the signup-code page again
-    await page.goto(`/signup-code`);
+    await page.goto('/signup-code')
 
     // Step 3: Check if the user is redirected to the homepage
-    const message = "You are already logged in";
-    const encodedMessage = encodeURIComponent(message);
-    expect(page.url()).toContain(`/?message=${encodedMessage}`);
-  });
+    const message = 'You are already logged in'
+    const encodedMessage = encodeURIComponent(message)
+    expect(page.url()).toContain(`/?message=${encodedMessage}`)
+  })
 
-  test("should show an error when user leaves OTP input blank", async ({
-    page,
+  test('should show an error when user leaves OTP input blank', async ({
+    page
   }) => {
-    await page.click('button[id="submit-signup-code-btn"]');
+    await page.click('button[id="submit-signup-code-btn"]')
 
     // Check if the code input is in an invalid state
     const inputIsFocused = await page.evaluate(() => {
-      const otpInput = document.getElementById("otp-input");
-      return document.activeElement === otpInput;
-    });
+      const otpInput = document.getElementById('otp-input')
+      return document.activeElement === otpInput
+    })
 
-    expect(inputIsFocused).toBeTruthy();
-  });
+    expect(inputIsFocused).toBeTruthy()
+  })
 
-  test("should show an error for OTP less than 6 digits", async ({ page }) => {
-    const invalidCode = "12345";
-    await page.fill("#otp-input", invalidCode);
-    await page.click('button[id="submit-signup-code-btn"]');
+  test('should show an error for OTP less than 6 digits', async ({ page }) => {
+    const invalidCode = '12345'
+    await page.fill('#otp-input', invalidCode)
+    await page.click('button[id="submit-signup-code-btn"]')
     await expect(
-      page.locator(`text=Code is not valid: ${invalidCode}`),
-    ).toBeVisible();
-  });
-});
+      page.locator(`text=Code is not valid: ${invalidCode}`)
+    ).toBeVisible()
+  })
+})
 
 // Testing Create Account
-test.describe("Detailed Sign-Up (Create Account)", () => {
-  test("should redirect to login page if user is unauthenticated", async ({
-    page,
+test.describe('Detailed Sign-Up (Create Account)', () => {
+  test('should redirect to login page if user is unauthenticated', async ({
+    page
   }) => {
-    await page.goto(`/create-account`);
-    expect(page.url()).toContain(`/?message=You%20are%20not%20logged%20in`);
-  });
+    await page.goto('/create-account')
+    expect(page.url()).toContain('/?message=You%20are%20not%20logged%20in')
+  })
 
-  test('should not submit form if required fields are missing', async ({ page }) => {
+  test('should not submit form if required fields are missing', async ({
+    page,
+    browserName
+  }) => {
+    test.skip(
+      browserName === 'webkit' && isDevelopment,
+      "Safari won't let you set a cookie on localhost without https in development environment"
+    )
+
     // OTP Join with Valid Email
-    await page.goto(`/join`);
-    await page.fill("#email", "sandbox@stytch.com");
-    await page.fill("#zipcode", "48201");
-    await page.click('button:text("Continue")');
-    await page.fill("#otp-input", "000000");
-    await page.click('button[id="submit-signup-code-btn"]');
-    expect(page.url()).toContain(`/create-account`);
+    await page.goto('/join')
+    await page.fill('#email', 'sandbox@stytch.com')
+    await page.fill('#zipcode', '48201')
+    await page.click('button:text("Continue")')
+    await page.fill('#otp-input', '000000')
+    await page.click('button[id="submit-signup-code-btn"]')
 
-    // Check if the user is redirected to the create-account page
-    expect(page.url()).toContain(`/create-account`);
-
-    // Fill out only some fields
-    await page.fill('input[name="first_name"]', 'John');
-
-    // Try to submit the form
-    await page.click('button[type="submit"]');
-
-    // Assert that the form has not been submitted
-    await expect(page).toHaveURL('/create-account');
-  });
-});
+    // Check if the user is redirected to the create-account page when submitting the form with missing fields
+    expect(page.url()).toContain('/create-account')
+    await page.fill('input[name="first_name"]', 'John')
+    await page.click('button[type="submit"]')
+    await expect(page).toHaveURL('/create-account')
+  })
+})
