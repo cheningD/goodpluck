@@ -95,12 +95,15 @@ if (isUserLoggedIn) {
           >Your ZIP code</label
         >
         <input
-          type="number"
+          type="text"
           id="zipcode"
           name="zipcode"
+          pattern="^[0-9]{5}(-[0-9]{4})?$"
           placeholder="48201"
           required
           class="border rounded-md p-2 w-full mb-4"
+          title="Enter a 5-digit ZIP code or a 9-digit ZIP+4 code."
+          maxlength="10"
         />
         {errors.email && <p class="text-red-400">{errors.email}</p>}
         <button
