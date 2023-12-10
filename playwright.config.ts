@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test'
+
 import { max_length_cloudflare_base_url } from 'src/lib/constants'
 
 /**
@@ -37,10 +38,20 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.CI
       ? (() => {
+          if (process.env.GITHUB_REF_NAME === 'main') {
+            return 'https://goodpluck.pages.dev'
+          }
           const basePart = 'https://'
           const domainPart = '.goodpluck.pages.dev'
-          const maxRefNameLength = max_length_cloudflare_base_url - (basePart.length + domainPart.length)
-          const safeRefName = process.env.GITHUB_REF_NAME?.replace(/[^a-zA-Z0-9]/g, '-').substring(0, maxRefNameLength).replace(/-+$/, '')
+          const maxRefNameLength =
+            max_length_cloudflare_base_url -
+            (basePart.length + domainPart.length)
+          const safeRefName = process.env.GITHUB_REF_NAME?.replace(
+            /[^a-zA-Z0-9]/g,
+            '-'
+          )
+            .substring(0, maxRefNameLength)
+            .replace(/-+$/, '')
           return `${basePart}${safeRefName}${domainPart}`
         })()
       : 'http://localhost:8788',

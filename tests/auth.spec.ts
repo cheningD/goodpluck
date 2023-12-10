@@ -347,7 +347,9 @@ test.describe('Goodpluck Sign-up Form', () => {
 test.describe('Validate Join Code', () => {
   test.beforeEach(async ({ page }) => {
     // OTP Join with Valid Email
-    await page.goto('/signup-code?method_id=email-test-23873e89-d4ed-4e92-b3b9-e5c7198fa286') // workaround for using the stytch sandbox email
+    await page.goto(
+      '/signup-code?method_id=email-test-23873e89-d4ed-4e92-b3b9-e5c7198fa286'
+    ) // workaround for using the stytch sandbox email
   })
 
   test('should set goodpluck session cookie, and redirect to `/create-account` given valid code', async ({
