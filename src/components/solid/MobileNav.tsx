@@ -1,13 +1,13 @@
-import { useStore } from "@nanostores/solid";
-import { Show, type Component } from "solid-js";
-import logo from "../../assets/logo.png";
-import { isCartOpen, isMenuOpen } from "../../store.js";
+import { useStore } from '@nanostores/solid'
+import { Show, type Component } from 'solid-js'
+import logo from '../../assets/logo.png'
+import { isCartOpen, isMenuOpen } from '../../store.js'
 
 const HamburgerIcon = (
   <svg class="w-8 h-8" viewBox="0 0 24 24">
     <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" />
   </svg>
-);
+)
 
 const XIcon = (
   <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,12 +18,12 @@ const XIcon = (
       d="M6 18L18 6M6 6l12 12"
     />
   </svg>
-);
+)
 
 const MobileNav: Component = () => {
   // read the store value with the `useStore` hook
-  const $isCartOpen = useStore(isCartOpen);
-  const $isMenuOpen = useStore(isMenuOpen);
+  const $isCartOpen = useStore(isCartOpen)
+  const $isMenuOpen = useStore(isMenuOpen)
 
   return (
     <>
@@ -32,7 +32,7 @@ const MobileNav: Component = () => {
         <div class="flex space-x-4">
           <button
             class="block lg:hidden"
-            onClick={() => isMenuOpen.set(!$isMenuOpen())}
+            onClick={() => { isMenuOpen.set(!$isMenuOpen()) }}
           >
             <Show when={$isMenuOpen()} fallback={HamburgerIcon}>
               {XIcon}
@@ -56,7 +56,7 @@ const MobileNav: Component = () => {
         <div class="justify-self-end pr-2 pt-1">
           <button
             class="relative"
-            onClick={() => isCartOpen.set(!$isCartOpen())}
+            onClick={() => { isCartOpen.set(!$isCartOpen()) }}
           >
             <svg
               class="w-7 h-6"
@@ -77,7 +77,7 @@ const MobileNav: Component = () => {
         </div>
       </nav>
     </>
-  );
-};
+  )
+}
 
-export default MobileNav;
+export default MobileNav

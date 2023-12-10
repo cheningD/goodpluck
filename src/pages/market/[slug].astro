@@ -1,32 +1,41 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
 import Category from "@components/solid/Category.tsx";
-import { initSwell } from "../lib/swell";
+import { initSwell } from "../../lib/swell";
 
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
   runtime ? runtime.env.SWELL_STORE_ID : import.meta.env.SWELL_STORE_ID,
   runtime ? runtime.env.SWELL_PUBLIC_KEY : import.meta.env.SWELL_PUBLIC_KEY,
 );
+const { slug } = Astro.params;
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
 });
 
+const collection = categories.results.find(
+  (category) => category.slug === slug,
+);
+if (!collection) return Astro.redirect("/404");
+
 let products = await swell.products.list({
+  category: collection.id, // Slug or ID
   limit: 9,
   page: 1,
 });
+
+const { name, description } = collection;
 ---
 
 <Layout
-  title="Shopping page"
-  description="Delivered farm fresh to you"
+  title={`${name} delivered farm fresh to you`}
+  description={description}
   categories={categories.results}
 >
   <Category
-    currentCollection={null}
     products={products}
+    currentCollection={collection}
     collections={categories.results}
   />
 </Layout>
