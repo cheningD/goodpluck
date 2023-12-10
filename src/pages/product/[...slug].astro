@@ -1,29 +1,20 @@
 ---
 import { initSwell } from "../../lib/swell.ts";
-import type { GetStaticPathsResult } from "astro";
 
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
-  runtime ? runtime.env.SWELL_STORE_ID : import.meta.env.SWELL_STORE_ID,
-  runtime ? runtime.env.SWELL_PUBLIC_KEY : import.meta.env.SWELL_PUBLIC_KEY,
+  runtime
+    ? runtime.env.PUBLIC_SWELL_STORE_ID
+    : import.meta.env.PUBLIC_SWELL_STORE_ID,
+  runtime
+    ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY
+    : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
-
-export async function getStaticPaths(): Promise<GetStaticPathsResult> {
-  const result = await swell.products.list({
-    limit: 100,
-    page: 1,
-  });
-
-  return result.results.map((product: any) => ({
-    params: { slug: product.slug },
-    props: { name: product.name },
-  }));
-}
-
 const { slug } = Astro.params;
-const { name } = Astro.props;
+
+const product = await swell.products.get(slug === undefined ? "" : slug);
 ---
 
-{/*This is an example of a product page being statically renndered */}
-<div>Slug: {slug}</div>
-<div>Name: {name}</div>
+<h1 class="text-5xl text-gray-800 p-4">
+  Product name: <span class="text-blue-500">{product.name}</span>
+</h1>
