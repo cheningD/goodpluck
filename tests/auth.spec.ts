@@ -299,7 +299,7 @@ test.describe('Goodpluck Sign-up Form', () => {
     await page.fill('#zipcode', '99999')
     await page.click('button:text("Continue")')
     await expect(
-      page.locator('text=We are not delivering to your area yet')
+      page.locator('h2', { hasText: "Unfortunately, we don't deliver to 99999 yet!" })
     ).toBeVisible()
   })
 
