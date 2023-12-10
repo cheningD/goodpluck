@@ -34,8 +34,18 @@ if (Astro.request.method === "POST") {
           email,
           expiration_minutes: 10,
         });
+
         console.log(response);
-        return Astro.redirect("/signup-code?method_id=" + response.email_id);
+
+        if (response.user_created) {
+          // New user created, proceed with signup
+          return Astro.redirect("/signup-code?method_id=" + response.email_id);
+        } else {
+          // User already exists, redirect to login-code with a message
+          return Astro.redirect(
+            "/login-code?method_id=" + response.email_id + "&user_exists=true",
+          );
+        }
       } catch (error) {
         console.log(error);
         if (error instanceof StytchError) {
