@@ -32,7 +32,9 @@ const MobileNav: Component = () => {
         <div class="flex space-x-4">
           <button
             class="block lg:hidden"
-            onClick={() => { isMenuOpen.set(!$isMenuOpen()) }}
+            onClick={() => {
+              isMenuOpen.set(!$isMenuOpen())
+            }}
           >
             <Show when={$isMenuOpen()} fallback={HamburgerIcon}>
               {XIcon}
@@ -56,7 +58,9 @@ const MobileNav: Component = () => {
         <div class="justify-self-end pr-2 pt-1">
           <button
             class="relative"
-            onClick={() => { isCartOpen.set(!$isCartOpen()) }}
+            onClick={() => {
+              isCartOpen.set(!$isCartOpen())
+            }}
           >
             <svg
               class="w-7 h-6"
