@@ -7,7 +7,7 @@ interface IProps {
 const Products: Component<IProps> = ({ products }) => {
   return (
     <>
-      <ul class="grid grid-cols-3 gap-10">
+      <ul class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {products.results.map((product: any) => (
           <li class="flex flex-col gap-y-2">
             <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">

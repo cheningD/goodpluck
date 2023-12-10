@@ -5,7 +5,7 @@ import type { GetStaticPathsResult } from "astro";
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
   runtime ? runtime.env.SWELL_STORE_ID : import.meta.env.SWELL_STORE_ID,
-  runtime ? runtime.env.SWELL_SECRET_KEY : import.meta.env.SWELL_SECRET_KEY,
+  runtime ? runtime.env.SWELL_PUBLIC_KEY : import.meta.env.SWELL_PUBLIC_KEY,
 );
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
