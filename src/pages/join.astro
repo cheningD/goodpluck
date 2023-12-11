@@ -22,7 +22,9 @@ if (Astro.request.method === "POST") {
     } else if (!zipcode) {
       errors.email = "ZIP code is required";
     } else if (zipcode && !confirmed_zipcodes.includes(zipcode)) {
-      return Astro.redirect("/waitlist?zipcode=" + zipcode);
+      return Astro.redirect(
+        `/waitlist?zipcode=${zipcode}&email=${encodeURIComponent(email)}`,
+      );
     } else {
       try {
         const stytchclient = getStytchClient(
