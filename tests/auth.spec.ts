@@ -301,6 +301,9 @@ test.describe('Goodpluck Sign-up Form', () => {
     await expect(
       page.locator('h2', { hasText: "Unfortunately, we don't deliver to 99999 yet!" })
     ).toBeVisible()
+    await page.click('button[id="join-waitlist-btn"]')
+    expect(page.url()).toContain(`https://airtable.com/appJVu70KyaMMofIb/shrs9WED21nlCwrrc?prefill_email=${validEmail}&prefill_zip=99999`
+    )
   })
 
   test('should redirect to login page on clicking `Log in` link', async ({
