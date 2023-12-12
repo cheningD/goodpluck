@@ -19,23 +19,22 @@ const { title, description, categories, currentCollection } = Astro.props;
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
 const postcode = Astro.cookies.get("user_postcode")?.value;
 
-  let currentCollectionId = 0;
-  const currentCategoryName =
-    currentCollection != null ? currentCollection.name : "";
+let currentCollectionId = 0;
+const currentCategoryName =
+  currentCollection != null ? currentCollection.name : "";
 
-  function getCurrentSubCategories() {
-    if (currentCollection == null) {
-      return [];
-    }
-    const subCategories = categories.filter(
-      (col: any) => col.parent_id == currentCollection.id,
-    );
-    if (subCategories) {
-      return subCategories;
-    }
+function getCurrentSubCategories() {
+  if (currentCollection == null) {
     return [];
   }
-
+  const subCategories = categories.filter(
+    (col: any) => col.parent_id == currentCollection.id,
+  );
+  if (subCategories) {
+    return subCategories;
+  }
+  return [];
+}
 ---
 
 <html lang="en">
@@ -49,15 +48,19 @@ const postcode = Astro.cookies.get("user_postcode")?.value;
   <body class="flex flex-col min-h-screen">
     <Banner isLoggedIn={isLoggedIn} client:load />
     <Header collections={categories} client:load />
-    <main id="sidebar-page" class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto">
-        <div class="grid grid-cols-5">
-          { currentCollection &&  
-           <div>
-           <h2 class="text-xl font-medium dark:text-white">
-              {currentCategoryName}
-            </h2>
-            <ul class="sticky top-[114px]">
-              {getCurrentSubCategories().map((collection: any) => (
+    <main
+      id="sidebar-page"
+      class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
+    >
+      <div class="grid grid-cols-5">
+        {
+          currentCollection && (
+            <div>
+              <h2 class="text-xl font-medium dark:text-white">
+                {currentCategoryName}
+              </h2>
+              <ul class="sticky top-[114px]">
+                {getCurrentSubCategories().map((collection: any) => (
                   <li>
                     <a
                       href={`/market/${collection.slug}`}
@@ -66,24 +69,31 @@ const postcode = Astro.cookies.get("user_postcode")?.value;
                       {collection.name}
                     </a>
                   </li>
-                    ))}
-            </ul>
+                ))}
+              </ul>
             </div>
-            }
-          { !currentCollection && <div></div>}
+          )
+        }
+        {!currentCollection && <div />}
 
-          <div class="col-span-5 md:col-span-4 px-4">
-           { currentCollection &&  <Breadcrumb collections={categories} currentCollectionId={currentCollection.id}/>
-         }
-            <slot/>
-          </div>
+        <div class="col-span-5 md:col-span-4 px-4">
+          {
+            currentCollection && (
+              <Breadcrumb
+                collections={categories}
+                currentCollectionId={currentCollection.id}
+              />
+            )
+          }
+          <slot />
         </div>
-      <Cart postcode={postcode}/>
+      </div>
+      <Cart postcode={postcode} />
     </main>
     <Footer client:load />
     <!-- <script is:inline src="../../node_modules/preline/dist/preline.js"></script> -->
-    <script type="text/javascript">
-      import "preline/dist/preline.js";
+    <script type="module">
+      import "../../node_modules/preline/dist/preline.js";
     </script>
   </body>
 </html>
