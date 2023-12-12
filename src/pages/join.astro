@@ -2,9 +2,9 @@
 import { StytchError } from "stytch";
 import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
+import { confirmed_zipcodes } from "../lib/constants";
 
 const errors = { email: "" };
-const confirmedZipcodes = ["48201", "48202", "48203", "48204", "48205"];
 let email;
 
 const runtime = Astro.locals.runtime;
@@ -21,8 +21,10 @@ if (Astro.request.method === "POST") {
       errors.email = "Email is required";
     } else if (!zipcode) {
       errors.email = "ZIP code is required";
-    } else if (zipcode && !confirmedZipcodes.includes(zipcode)) {
-      errors.email = "We are not delivering to your area yet";
+    } else if (zipcode && !confirmed_zipcodes.includes(zipcode)) {
+      return Astro.redirect(
+        `/waitlist?zipcode=${zipcode}&email=${encodeURIComponent(email)}`,
+      );
     } else {
       try {
         const stytchclient = getStytchClient(
