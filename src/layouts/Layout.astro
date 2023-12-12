@@ -56,11 +56,11 @@ function getCurrentSubCategories() {
       <div class="grid grid-cols-5">
         {
           currentCollection && (
-                    <ScrollSpy
-          categorySlug={currentCollection.slug}
-          categories={categories}
-          client:only
-        />
+            <ScrollSpy
+              categorySlug={currentCollection.slug}
+              categories={categories}
+              client:only
+            />
           )
         }
         {!currentCollection && <div />}
@@ -80,8 +80,9 @@ function getCurrentSubCategories() {
       <Cart postcode={postcode} />
     </main>
     <Footer client:load />
-    <script type="module">
-      import "../../node_modules/preline/dist/preline.js";
+    <!-- <script is:inline src="../../node_modules/preline/dist/preline.js"></script> -->
+    <script>
+      import "preline/dist/preline.js";
     </script>
   </body>
 </html>
