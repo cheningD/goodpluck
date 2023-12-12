@@ -1,32 +1,99 @@
 ---
+import Header from "@components/solid/global/Header";
 import Footer from "@components/solid/global/Footer";
-import Banner from "../components/solid/Banner.tsx";
-import Cart from "../components/solid/Cart.tsx";
-import Menu from "../components/solid/Menu.tsx";
-import MobileNav from "../components/solid/MobileNav.tsx";
+import Cart from "@components/solid/Cart";
+import Banner from "@components/solid/Banner";
+import Breadcrumb from "@components/solid/Breadcrumb.tsx";
+import "@assets/styles/global.css";
+import favicon from "@assets/img/favicon.png";
+
+/*interface Props{
+  title: string;
+  description: string;
+  categories: any;
+  currentCollection: any;
+}*/
+
+const { title, description, categories, currentCollection } = Astro.props;
 
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
 const postcode = Astro.cookies.get("user_postcode")?.value;
+
+let currentCollectionId = 0;
+const currentCategoryName =
+  currentCollection != null ? currentCollection.name : "";
+
+function getCurrentSubCategories() {
+  if (currentCollection == null) {
+    return [];
+  }
+  const subCategories = categories.filter(
+    (col: any) => col.parent_id == currentCollection.id,
+  );
+  if (subCategories) {
+    return subCategories;
+  }
+  return [];
+}
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href={favicon.src} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Goodpluck</title>
+    <title>{title} - Goodpluck</title>
   </head>
   <body class="flex flex-col min-h-screen">
-    <div id="content" class="flex flex-col flex-grow">
-      <div class="sticky top-0 h-full">
-        <Banner isLoggedIn={isLoggedIn} client:load />
-        <MobileNav client:load />
+    <Banner isLoggedIn={isLoggedIn} client:load />
+    <Header collections={categories} client:load />
+    <main
+      id="sidebar-page"
+      class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
+    >
+      <div class="grid grid-cols-5">
+        {
+          currentCollection && (
+            <div>
+              <h2 class="text-xl font-medium dark:text-white">
+                {currentCategoryName}
+              </h2>
+              <ul class="sticky top-[114px]">
+                {getCurrentSubCategories().map((collection: any) => (
+                  <li>
+                    <a
+                      href={`/market/${collection.slug}`}
+                      class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                    >
+                      {collection.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        {!currentCollection && <div />}
+
+        <div class="col-span-5 md:col-span-4 px-4">
+          {
+            currentCollection && (
+              <Breadcrumb
+                collections={categories}
+                currentCollectionId={currentCollection.id}
+              />
+            )
+          }
+          <slot />
+        </div>
       </div>
-      <Cart postcode={postcode} client:load />
-      <Menu client:load />
-      <slot />
-    </div>
+      <Cart postcode={postcode} />
+    </main>
     <Footer client:load />
+    <!-- <script is:inline src="../../node_modules/preline/dist/preline.js"></script> -->
+    <script type="module">
+      import "../../node_modules/preline/dist/preline.js";
+    </script>
   </body>
 </html>
