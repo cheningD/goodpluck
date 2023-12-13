@@ -1,88 +1,93 @@
-import {
-  Show,
-  Component,
-  createSignal,
-  createEffect,
-  onCleanup,
-} from "solid-js";
-import { initSwell } from "../../lib/swell";
-import { throttle } from "../../lib/throttle";
+import { Show, type Component, createSignal, onCleanup } from 'solid-js'
+import { initSwell } from '../../lib/swell'
+import { throttle } from '../../lib/throttle'
 
-interface iProps {
-  currentCategory: any;
+interface IProps {
+  currentCategory: string | undefined
 }
 
-const Products: Component<iProps> = (props) => {
+const Products: Component<IProps> = ({ currentCategory }) => {
   const swell = initSwell(
     import.meta.env.PUBLIC_SWELL_STORE_ID,
-    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-  );
+    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY
+  )
 
-  const [products, setProducts] = createSignal([]);
-  const [isLoading, setIsLoading] = createSignal(false);
-  const [page, setPage] = createSignal(1);
-  const [totalProducts, setTotalProducts] = createSignal(122); // total number of products in Swell currently
-  let isFetching = false; // flag to indicate if fetching is in progress
-  const [error, setError] = createSignal(false);
-  const [errorMsg, setErrorMsg] = createSignal("");
+  const [products, setProducts] = createSignal([])
+  const [isLoading, setIsLoading] = createSignal(false)
+  const [page, setPage] = createSignal(1)
+  const [totalProducts, setTotalProducts] = createSignal(0)
+  setTotalProducts(122) // total number of products in Swell currently
+  let isFetching = false // flag to indicate if fetching is in progress
+  const [error, setError] = createSignal(false)
+  const [errorMsg, setErrorMsg] = createSignal('')
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (): Promise<void> => {
     if (products().length >= totalProducts() || isFetching) {
-      return;
+      return
     }
 
-    isFetching = true;
-    setError(false);
-    setErrorMsg("");
-    setIsLoading(true);
+    isFetching = true
+    setError(false)
+    setErrorMsg('')
+    setIsLoading(true)
 
     try {
-      const newProducts = await swell.products.list({
-        limit: 10,
-        page: page(),
-      });
+      let newProducts = []
+      newProducts.results = []
+      if (currentCategory !== '') {
+        newProducts = await swell.products.list({
+          category: `${currentCategory}`, // Slug or ID
+          limit: 10,
+          page: page()
+        })
+      } else {
+        newProducts = await swell.products.list({
+          limit: 10,
+          page: page()
+        })
+      }
 
-      setProducts([...products(), ...newProducts.results]);
-      setPage(page() + 1);
+      setProducts([...products(), ...newProducts.results])
+      setPage(page() + 1)
     } catch (err) {
-      setError(true);
-      setErrorMsg("Failed to load products. Try again later.");
+      setError(true)
+      setErrorMsg('Failed to load products. Try again later.')
     }
 
-    isFetching = false;
-    setIsLoading(false);
-  };
+    isFetching = false
+    setIsLoading(false)
+  }
 
-  const checkScroll = () => {
+  const checkScroll = async (): Promise<void> => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      fetchProducts();
+      await fetchProducts()
     }
-  };
+  }
 
   // Throttle the scroll event to prevent rapid firing
-  const throttledCheckScroll = throttle(checkScroll, 200);
+  const throttledCheckScroll = throttle(checkScroll, 200)
 
-  window.addEventListener("scroll", throttledCheckScroll);
-  fetchProducts();
+  window.addEventListener('scroll', throttledCheckScroll)
+  void fetchProducts()
 
   onCleanup(() => {
-    window.removeEventListener("scroll", throttledCheckScroll);
-  });
+    window.removeEventListener('scroll', throttledCheckScroll)
+  })
 
   const itemListElement = products().map((product, index) => ({
-    "@type": "ListItem",
+    '@type': 'ListItem',
     position: index + 1,
     item: {
-      "@id": product.url,
-      name: product.name,
-    },
-  }));
+      '@id': product.url,
+      name: product.name
+    }
+  }))
 
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: itemListElement,
-  };
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement
+  }
 
   return (
     <>
@@ -100,7 +105,7 @@ const Products: Component<iProps> = (props) => {
               <li class="flex flex-col gap-y-2">
                 <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
                   <a href={`/product/${product.slug}`}>
-                    <Show when={product.images != undefined}>
+                    <Show when={product.images !== undefined}>
                       <img
                         alt={`Image of ${product.name}`}
                         src={product.images[0].file.url}
@@ -135,12 +140,28 @@ const Products: Component<iProps> = (props) => {
             ))}
           </ul>
         </Show>
-        {isLoading() && <div>Loading more products...</div>}
+        {isLoading() && (
+          <div class="text-red-500">Loading more products...</div>
+        )}
         {products().length >= totalProducts() && (
           <div>You've reached the end of products...</div>
         )}
+        {products().length === 0 && (
+          <div data-testid="no-products">
+            No product found in this category!
+          </div>
+        )}
         {error() && (
-          <button data-testid="retry-fetch" onClick={fetchProducts}>
+          <button
+            data-testid="retry-fetch"
+            onClick={() => {
+              fetchProducts().catch((error) => {
+                // Handle any errors that occur during fetchProducts
+                setError(true)
+                setErrorMsg(error)
+              })
+            }}
+          >
             Retry
           </button>
         )}
@@ -151,7 +172,7 @@ const Products: Component<iProps> = (props) => {
         {JSON.stringify(structuredData)}
       </script>
     </>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products
