@@ -39,7 +39,7 @@ try {
     <Header collections={categories} client:load />
     <main
       id="sidebar-page"
-      class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
+      class="relative w-full lg:min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
     >
       <div class="grid grid-cols-5">
         {
@@ -65,7 +65,7 @@ try {
               />
             )
           }
-          <slot />
+          <!-- <slot /> -->
         </div>
       </div>
       <Cart cart={cart} />

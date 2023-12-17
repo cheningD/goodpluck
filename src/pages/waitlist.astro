@@ -1,5 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { initSwell } from "../lib/swell";
+
+const runtime = Astro.locals.runtime;
+const swell = initSwell(
+  runtime
+    ? runtime.env.PUBLIC_SWELL_STORE_ID
+    : import.meta.env.PUBLIC_SWELL_STORE_ID,
+  runtime
+    ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY
+    : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+);
+const categories = await swell.categories.list({
+  limit: 100,
+  page: 1,
+});
 
 const url = new URL(Astro.request.url);
 const zipcode = url.searchParams.get("zipcode");
@@ -14,9 +29,9 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout
-  title={`Waitlist page`}
-  description="Delivered farm fresh to you"
-  categories={[]}
+  title={`Waitlist`}
+  description="Delivery zones"
+  categories={categories.results}
 >
   <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
