@@ -1,6 +1,7 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { initSwell } from "../../lib/swell.ts";
+import Products from "@components/solid/Products";
+import { initSwell } from "../../lib/swell";
 
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
@@ -11,25 +12,24 @@ const swell = initSwell(
     ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY
     : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
-const { slug } = Astro.params;
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
 });
+const { slug } = Astro.params;
 
-const product = await swell.products.get(slug === undefined ? "" : slug);
-
-if (!product) return Astro.redirect("/404");
-
-const { name, description } = product;
+const currentCollection = categories.results.find(
+  (category) => category.slug === slug,
+);
+if (!currentCollection) return Astro.redirect("/404");
+const { name, description } = currentCollection;
 ---
 
 <Layout
   title={`${name}`}
   description="Delivered farm fresh to you"
   categories={categories.results}
+  currentCollection={currentCollection}
 >
-  <h1 class="text-5xl text-gray-800 p-4">
-    Product name: <span class="text-blue-500">{product.name}</span>
-  </h1>
+  <Products currentCategory={slug} client:only />
 </Layout>
