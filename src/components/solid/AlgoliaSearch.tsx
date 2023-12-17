@@ -1,63 +1,63 @@
-import { createSignal, createEffect, type Component } from "solid-js";
-import algoliasearch from "algoliasearch/lite";
-import { setIsSearchVisible } from "../../store";
+import { createSignal, createEffect, type Component } from 'solid-js'
+import algoliasearch from 'algoliasearch/lite'
+import { setIsSearchVisible } from '../../store'
 
 const searchClient = algoliasearch(
   import.meta.env.PUBLIC_ALGOLIA_APPLICATION_ID,
-  import.meta.env.PUBLIC_ALGOLIA_API_KEY,
-);
-const index = searchClient.initIndex(import.meta.env.PUBLIC_ALGOLIA_INDEX_NAME);
+  import.meta.env.PUBLIC_ALGOLIA_API_KEY
+)
+const index = searchClient.initIndex(import.meta.env.PUBLIC_ALGOLIA_INDEX_NAME)
 
 const AlgoliaSearch: Component = () => {
-  const [query, setQuery] = createSignal("");
-  const [hits, setHits] = createSignal<any>([]);
-  const [debouncedQuery, setDebouncedQuery] = createSignal(query());
-  const [, setIsLoading] = createSignal(false);
-  const [, setError] = createSignal(null);
-  const [isUserInteracted, setIsUserInteracted] = createSignal(false);
-  const [isDialogVisible, setIsDialogVisible] = createSignal(false);
+  const [query, setQuery] = createSignal('')
+  const [hits, setHits] = createSignal<any>([])
+  const [debouncedQuery, setDebouncedQuery] = createSignal(query())
+  const [, setIsLoading] = createSignal(false)
+  const [, setError] = createSignal(null)
+  const [isUserInteracted, setIsUserInteracted] = createSignal(false)
+  const [isDialogVisible, setIsDialogVisible] = createSignal(false)
   const hideSearch = (): void => {
-    setQuery("");
-    setIsUserInteracted(false);
-    setIsDialogVisible(false);
-    setIsSearchVisible(false);
-  };
+    setQuery('')
+    setIsUserInteracted(false)
+    setIsDialogVisible(false)
+    setIsSearchVisible(false)
+  }
 
   const performSearch = async (): Promise<void> => {
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
 
     try {
-      const { hits } = await index.search(query());
-      setHits(hits);
+      const { hits } = await index.search(query())
+      setHits(hits)
     } catch (err: any) {
-      setError(err);
+      setError(err)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   // Debounce logic
   createEffect(() => {
     const handler = setTimeout(() => {
       if (isUserInteracted()) {
-        setDebouncedQuery(query());
+        setDebouncedQuery(query())
       }
-    }, 300);
+    }, 300)
     return () => {
-      clearTimeout(handler);
-    };
-  });
+      clearTimeout(handler)
+    }
+  })
 
   // Search effect
   createEffect(() => {
     if (debouncedQuery()) {
-      void performSearch();
+      void performSearch()
     }
-  });
+  })
 
   const navIcon =
-    '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M448 64L64 240.14h200a8 8 0 0 1 8 8V448Z"/></svg>';
+    '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M448 64L64 240.14h200a8 8 0 0 1 8 8V448Z"/></svg>'
 
   return (
     <>
@@ -74,10 +74,10 @@ const AlgoliaSearch: Component = () => {
                 class="bg-opacity-50 opacity-100 transition-opacity duration-300 py-3 px-5 block w-10/12 lg:w-full border-gray-200 rounded-full text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                 value={query()}
                 onInput={(e) => {
-                  setIsDialogVisible(true);
-                  setIsUserInteracted(true);
-                  setQuery(e.currentTarget.value);
-                  void performSearch();
+                  setIsDialogVisible(true)
+                  setIsUserInteracted(true)
+                  setQuery(e.currentTarget.value)
+                  void performSearch()
                 }}
                 placeholder="What are you looking for Today?"
               />
@@ -98,10 +98,11 @@ const AlgoliaSearch: Component = () => {
             {isDialogVisible() && (
               <div class="absolute mt-14 inset-0 flex justify-center items-start w-full h-[70vh]  overflow-x-hidden overflow-y-auto">
                 <div class="bg-slate-200 p-6 shadow-md w-full mx-auto flex flex-col">
-                  {hits().length === 0 ? (
+                  {hits().length === 0
+                    ? (
                     <>
                       <p class="font-semibold text-orange-600">
-                        Sorry, we couldn't find{" "}
+                        Sorry, we couldn't find{' '}
                         <span class="font-medium text-black">{query()}</span>
                       </p>
                       <p class="font-semibold text-orange-600">
@@ -116,17 +117,18 @@ const AlgoliaSearch: Component = () => {
                         <li>Chat with a friendly customer service.</li>
                       </ul>
                     </>
-                  ) : (
+                      )
+                    : (
                     <ul class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                       <li class="text-yellow-500 hidden"></li>
                       {hits().map((hit: any) => (
                         <li
                           class="inline-flex items-center justify-between gap-x-2 py-3 px-4 text-sm font-medium odd:bg-gray-100 bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:odd:bg-slate-800 dark:bg-slate-900 dark:border-gray-700 dark:text-white"
-                          innerHTML={`<a class="flex w-full justify-between items-center" href="/product/${hit.Slug}"><div class="flex justify-between gap-x-1">${hit._highlightResult.Name.value}</div> ${navIcon}</a>`}
+                          innerHTML={`<a class="flex w-full justify-between items-center" href="/product/${hit.sku}"><div class="flex justify-between gap-x-1">${hit._highlightResult.name.value}</div> ${navIcon}</a>`}
                         ></li>
                       ))}
                     </ul>
-                  )}
+                      )}
                 </div>
               </div>
             )}
@@ -134,7 +136,7 @@ const AlgoliaSearch: Component = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AlgoliaSearch;
+export default AlgoliaSearch
