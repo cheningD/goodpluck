@@ -7,6 +7,9 @@ import Breadcrumb from "@components/solid/Breadcrumb";
 import ScrollSpy from "@components/solid/global/ScrollSpy";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
+import path from "path";
+import { fileURLToPath } from "url";
+import { parseZipCodes } from "../lib/parseZipCodes";
 
 /*interface Props{
   title: string;
@@ -16,6 +19,9 @@ import favicon from "@assets/img/favicon.png";
 }*/
 
 const { title, description, categories, currentCollection } = Astro.props;
+const __dirname = path.resolve(path.dirname(""));
+const csvFilePath: string = path.join(__dirname, "src/assets/gp-zip.csv");
+const zipCodes: string[] = parseZipCodes(csvFilePath);
 
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
 const postcode = Astro.cookies.get("user_postcode")?.value;
@@ -51,7 +57,7 @@ function getCurrentSubCategories() {
     <Header collections={categories} client:load />
     <main
       id="sidebar-page"
-      class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
+      class="relative w-full lg:min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
     >
       <div class="grid grid-cols-5">
         {
@@ -74,10 +80,10 @@ function getCurrentSubCategories() {
               />
             )
           }
-          <slot />
+          <!-- <slot /> -->
         </div>
       </div>
-      <Cart postcode={postcode} />
+      <Cart zipCodes={zipCodes} client:load />
     </main>
     <Footer client:load />
     <script>
