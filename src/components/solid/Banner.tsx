@@ -1,16 +1,20 @@
-import { useStore } from "@nanostores/solid";
-import { isCartOpen } from "../../store";
+import { useStore } from '@nanostores/solid'
+import { isCartOpen } from '../../store'
+import { type Component } from 'solid-js'
 
 interface BannerProps {
-  readonly isLoggedIn: boolean;
+  readonly isLoggedIn: boolean
 }
 
-export default function Banner({ isLoggedIn }: BannerProps) {
-  const $isCartOpen = useStore(isCartOpen);
+const Banner: Component<BannerProps> = ({ isLoggedIn }) => {
+  const $isCartOpen = useStore(isCartOpen)
 
   return (
     <>
-      <div class="w-full max-w-7xl mx-auto hidden lg:flex items-center justify-between bg-gray-800 px-4 py-1 md:px-4 md:py-2 text-center transition-all duration-300 dark:bg-white/[.05] dark:hover:bg-white/[.075]">
+      <div
+        data-testid="top-banner"
+        class="w-full max-w-7xl mx-auto hidden lg:flex items-center justify-between bg-gray-800 px-4 py-1 md:px-4 md:py-2 text-center transition-all duration-300 dark:bg-white/[.05] dark:hover:bg-white/[.075]"
+      >
         <div class="text-white flex items-center gap-x-10">
           <span class="hover:cursor-pointer hover:underline">About</span>
           <span class="hover:cursor-pointer hover:underline">Recipes</span>
@@ -32,18 +36,20 @@ export default function Banner({ isLoggedIn }: BannerProps) {
               />
             </svg>
             <button
+              data-testid="top-banner-zip"
               class="hover:cursor-pointer"
               data-hs-overlay-backdrop-container="#sidebar-page"
               data-hs-overlay="#sidebar-mini"
               aria-controls="sidebar-mini"
               aria-label="Toggle navigation"
-              onClick={() => isCartOpen.set(!$isCartOpen())}
+              onClick={() => { isCartOpen.set(!$isCartOpen()) }}
             >
               Please enter your zip
             </button>
           </div>
 
-          {isLoggedIn ? (
+          {isLoggedIn
+            ? (
             <div class="flex items-center text-white gap-x-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +70,8 @@ export default function Banner({ isLoggedIn }: BannerProps) {
               <div class="inline-block min-h-[1em] w-0.5 self-stretch mx-auto bg-neutral-500 opacity-100"></div>
               <a class="mx-auto hover:cursor-pointer hover:underline">Join</a>
             </div>
-          ) : (
+              )
+            : (
             <div class="flex items-center text-white gap-x-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -90,9 +97,11 @@ export default function Banner({ isLoggedIn }: BannerProps) {
                 Join
               </a>
             </div>
-          )}
+              )}
         </div>
       </div>
     </>
-  );
+  )
 }
+
+export default Banner
