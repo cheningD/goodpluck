@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/solid";
 import { isCartOpen } from "../../store";
-import type { Component } from "solid-js";
+import { type Component } from "solid-js";
 import { EditIcon } from "./Icons";
 
 interface BannerProps {

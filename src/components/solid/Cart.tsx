@@ -32,17 +32,14 @@ const Cart: Component<CartProps> = ({ zipCodes }) => {
     validateZipCode()
 
     if (!isValidZip()) {
-      alert('not a Valid Zip redirect..')
-      // window.location.href = "/waitlist";
-    } else {
-      // Show the cart
-      alert('is Valid Zip')
+      window.location.href = '/waitlist'
     }
   }
 
   return (
     <>
       <div
+        data-testid="basket-sidebar"
         id="sidebar-mini"
         data-hs-overlay-keyboard="true"
         class="relative md:absolute md:w-1/2 lg:w-1/3 min-h-[50vh] [--overlay-backdrop:null] hs-overlay hs-overlay-open:translate-x-0 translate-x-full  top-0 end-0 transition-all duration-300 transform h-full lg:max-w-sm z-[60] bg-white border-s dark:bg-gray-800 dark:border-gray-700 hidden"
@@ -57,6 +54,7 @@ const Cart: Component<CartProps> = ({ zipCodes }) => {
             when={!isValidZip()}
             fallback={
               <button
+                data-testid="basket-tab-orders"
                 type="button"
                 class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-slate-100 first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-2xl font-serif text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400"
                 id="bar-with-underline-item-3"
@@ -69,6 +67,7 @@ const Cart: Component<CartProps> = ({ zipCodes }) => {
             }
           >
             <button
+              data-testid="basket-tab-zip"
               type="button"
               class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-2xl font-serif text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400 active"
               id="bar-with-underline-item-1"
@@ -132,6 +131,7 @@ const Cart: Component<CartProps> = ({ zipCodes }) => {
                     name="zip"
                     value={zipCode()}
                     onInput={(e) => setZipCode(e.target.value)}
+                    data-testid="user-zip"
                   />
                   <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     Already have an account?
@@ -144,6 +144,7 @@ const Cart: Component<CartProps> = ({ zipCodes }) => {
                   </p>
                 </div>
                 <button
+                  data-testid="btn-verify-zip"
                   type="submit"
                   class="w-3/4 uppercase mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                 >
