@@ -58,14 +58,13 @@ try {
         >
           {
             currentCollection && (
-              // <h4>Bread</h4>
               <Breadcrumb
                 categories={categories}
                 collectionId={currentCollection.id}
               />
             )
           }
-          <!-- <slot /> -->
+          <slot />
         </div>
       </div>
       <Cart cart={cart} />
