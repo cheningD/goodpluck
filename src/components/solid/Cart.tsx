@@ -11,7 +11,7 @@ const Cart: Component<CartProps> = ({ zipCodes }) => {
   const validateZipCode = (): void => {
     const isValid: boolean = zipCodes.includes(zipCode())
     setIsValidZip(isValid)
-    if (isValidZip) {
+    if (isValidZip()) {
       localStorage.setItem('gp_zip', zipCode())
       document.cookie = `gp_zip=${zipCode()};max-age=31536000;path=/` // Expires in 1 year
     }
@@ -124,7 +124,7 @@ const Cart: Component<CartProps> = ({ zipCodes }) => {
                 </p>
                 <div class="flex flex-col gap-y-3">
                   <input
-                    type="text"
+                    type="number"
                     class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                     placeholder="Zip Code"
                     id="zip"

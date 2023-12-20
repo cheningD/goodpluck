@@ -1,27 +1,35 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import {initSwell} from "../../lib/swell.ts";
+import { initSwell } from "../../lib/swell.ts";
 
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
-  runtime ? runtime.env.PUBLIC_SWELL_STORE_ID : import.meta.env.PUBLIC_SWELL_STORE_ID,
-  runtime ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+  runtime
+    ? runtime.env.PUBLIC_SWELL_STORE_ID
+    : import.meta.env.PUBLIC_SWELL_STORE_ID,
+  runtime
+    ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY
+    : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
- const { slug } = Astro.params;
+const { slug } = Astro.params;
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
 });
 
- const product = await swell.products.get(slug === undefined ? '' : slug);
+const product = await swell.products.get(slug === undefined ? "" : slug);
 
 if (!product) return Astro.redirect("/404");
 
 const { name, description } = product;
 ---
 
-<Layout  title={`${name}`}
+<Layout
+  title={`${name}`}
   description="Delivered farm fresh to you"
-  categories={categories.results} >
-<h1 class="text-5xl text-gray-800 p-4">Product name: <span class="text-blue-500">{product.name}</span></h1>
+  categories={categories.results}
+>
+  <h1 class="text-5xl text-gray-800 p-4">
+    Product name: <span class="text-blue-500">{product.name}</span>
+  </h1>
 </Layout>

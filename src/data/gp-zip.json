@@ -1,0 +1,7842 @@
+[
+  {
+    "zip": 48080,
+    "city": "Saint Clair Shores",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48081,
+    "city": "Saint Clair Shores",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48082,
+    "city": "Saint Clair Shores",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48310,
+    "city": "Sterling Heights",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48312,
+    "city": "Sterling Heights",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48313,
+    "city": "Sterling Heights",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48314,
+    "city": "Sterling Heights",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48088,
+    "city": "Warren",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48089,
+    "city": "Warren",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48091,
+    "city": "Warren",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48092,
+    "city": "Warren",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48093,
+    "city": "Warren",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48397,
+    "city": "Warren",
+    "county": "Macomb",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48072,
+    "city": "Berkley",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48009,
+    "city": "Birmingham",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48017,
+    "city": "Clawson",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48220,
+    "city": "Ferndale",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48237,
+    "city": "Oak Park",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48067,
+    "city": "Royal Oak",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48073,
+    "city": "Royal Oak",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48033,
+    "city": "Southfield",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48034,
+    "city": "Southfield",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48075,
+    "city": "Southfield",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48076,
+    "city": "Southfield",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48083,
+    "city": "Troy",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48084,
+    "city": "Troy",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48085,
+    "city": "Troy",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48098,
+    "city": "Troy",
+    "county": "Oakland",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48201,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48202,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48204,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48205,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48206,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48207,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48208,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48209,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48210,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48211,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48213,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48214,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48215,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48216,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48217,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48219,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48221,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48223,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48224,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48226,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48227,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48228,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48233,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48234,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48235,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48238,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48243,
+    "city": "Detroit",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48230,
+    "city": "Grosse Pointe",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48236,
+    "city": "Grosse Pointe",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48212,
+    "city": "Hamtramck",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48225,
+    "city": "Harper Woods",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": 1
+  },
+  {
+    "zip": 48203,
+    "city": "Highland Park",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48218,
+    "city": "River Rouge",
+    "county": "Wayne",
+    "deliverable": "checked",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48705,
+    "city": "Barton City",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48721,
+    "city": "Black River",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48728,
+    "city": "Curran",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48737,
+    "city": "Glennie",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48738,
+    "city": "Greenbush",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48740,
+    "city": "Harrisville",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48742,
+    "city": "Lincoln",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48745,
+    "city": "Mikado",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48762,
+    "city": "Spruce",
+    "county": "Alcona",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49806,
+    "city": "Au Train",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49816,
+    "city": "Chatham",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49822,
+    "city": "Deerton",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49825,
+    "city": "Eben Junction",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49839,
+    "city": "Grand Marais",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49862,
+    "city": "Munising",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49826,
+    "city": "Rumely",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49884,
+    "city": "Shingleton",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49891,
+    "city": "Trenary",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49895,
+    "city": "Wetmore",
+    "county": "Alger",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49010,
+    "city": "Allegan",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49323,
+    "city": "Dorr",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49406,
+    "city": "Douglas",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49408,
+    "city": "Fennville",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49419,
+    "city": "Hamilton",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49328,
+    "city": "Hopkins",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49070,
+    "city": "Martin",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49335,
+    "city": "Moline",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49078,
+    "city": "Otsego",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49080,
+    "city": "Plainwell",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49450,
+    "city": "Pullman",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49453,
+    "city": "Saugatuck",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49344,
+    "city": "Shelbyville",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49348,
+    "city": "Wayland",
+    "county": "Allegan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49707,
+    "city": "Alpena",
+    "county": "Alpena",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49744,
+    "city": "Herron",
+    "county": "Alpena",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49747,
+    "city": "Hubbard Lake",
+    "county": "Alpena",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49753,
+    "city": "Lachine",
+    "county": "Alpena",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49766,
+    "city": "Ossineke",
+    "county": "Alpena",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49611,
+    "city": "Alba",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49612,
+    "city": "Alden",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49615,
+    "city": "Bellaire",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49622,
+    "city": "Central Lake",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49627,
+    "city": "Eastport",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49629,
+    "city": "Elk Rapids",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49729,
+    "city": "Ellsworth",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49648,
+    "city": "Kewadin",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49659,
+    "city": "Mancelona",
+    "county": "Antrim",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48703,
+    "city": "Au Gres",
+    "county": "Arenac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48749,
+    "city": "Omer",
+    "county": "Arenac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48658,
+    "city": "Standish",
+    "county": "Arenac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48659,
+    "city": "Sterling",
+    "county": "Arenac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48765,
+    "city": "Turner",
+    "county": "Arenac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48766,
+    "city": "Twining",
+    "county": "Arenac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49908,
+    "city": "Baraga",
+    "county": "Baraga",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49919,
+    "city": "Covington",
+    "county": "Baraga",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49946,
+    "city": "Lanse",
+    "county": "Baraga",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49962,
+    "city": "Skanee",
+    "county": "Baraga",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49970,
+    "city": "Watton",
+    "county": "Baraga",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49046,
+    "city": "Delton",
+    "county": "Barry",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49050,
+    "city": "Dowling",
+    "county": "Barry",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49325,
+    "city": "Freeport",
+    "county": "Barry",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49058,
+    "city": "Hastings",
+    "county": "Barry",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49060,
+    "city": "Hickory Corners",
+    "county": "Barry",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49333,
+    "city": "Middleville",
+    "county": "Barry",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49073,
+    "city": "Nashville",
+    "county": "Barry",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48897,
+    "city": "Woodland",
+    "county": "Barry",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48611,
+    "city": "Auburn",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48706,
+    "city": "Bay City",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48708,
+    "city": "Bay City",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48613,
+    "city": "Bentley",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48732,
+    "city": "Essexville",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48631,
+    "city": "Kawkawlin",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48634,
+    "city": "Linwood",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48747,
+    "city": "Munger",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48650,
+    "city": "Pinconning",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48710,
+    "city": "University Center",
+    "county": "Bay",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49616,
+    "city": "Benzonia",
+    "county": "Benzie",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49617,
+    "city": "Beulah",
+    "county": "Benzie",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49628,
+    "city": "Elberta",
+    "county": "Benzie",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49635,
+    "city": "Frankfort",
+    "county": "Benzie",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49640,
+    "city": "Honor",
+    "county": "Benzie",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49650,
+    "city": "Lake Ann",
+    "county": "Benzie",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49683,
+    "city": "Thompsonville",
+    "county": "Benzie",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49101,
+    "city": "Baroda",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49022,
+    "city": "Benton Harbor",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49102,
+    "city": "Berrien Center",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49103,
+    "city": "Berrien Springs",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49104,
+    "city": "Berrien Springs",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49106,
+    "city": "Bridgman",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49107,
+    "city": "Buchanan",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49038,
+    "city": "Coloma",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49111,
+    "city": "Eau Claire",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49113,
+    "city": "Galien",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49115,
+    "city": "Harbert",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49116,
+    "city": "Lakeside",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49117,
+    "city": "New Buffalo",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49119,
+    "city": "New Troy",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49120,
+    "city": "Niles",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49084,
+    "city": "Riverside",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49085,
+    "city": "Saint Joseph",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49125,
+    "city": "Sawyer",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49126,
+    "city": "Sodus",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49127,
+    "city": "Stevensville",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49128,
+    "city": "Three Oaks",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49129,
+    "city": "Union Pier",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49098,
+    "city": "Watervliet",
+    "county": "Berrien",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49028,
+    "city": "Bronson",
+    "county": "Branch",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49036,
+    "city": "Coldwater",
+    "county": "Branch",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49255,
+    "city": "Montgomery",
+    "county": "Branch",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49082,
+    "city": "Quincy",
+    "county": "Branch",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49089,
+    "city": "Sherwood",
+    "county": "Branch",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49094,
+    "city": "Union City",
+    "county": "Branch",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49224,
+    "city": "Albion",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49011,
+    "city": "Athens",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49014,
+    "city": "Battle Creek",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49015,
+    "city": "Battle Creek",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49017,
+    "city": "Battle Creek",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49029,
+    "city": "Burlington",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49033,
+    "city": "Ceresco",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49051,
+    "city": "East Leroy",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49245,
+    "city": "Homer",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49068,
+    "city": "Marshall",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49092,
+    "city": "Tekonsha",
+    "county": "Calhoun",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49031,
+    "city": "Cassopolis",
+    "county": "Cass",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49047,
+    "city": "Dowagiac",
+    "county": "Cass",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49112,
+    "city": "Edwardsburg",
+    "county": "Cass",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49061,
+    "city": "Jones",
+    "county": "Cass",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49067,
+    "city": "Marcellus",
+    "county": "Cass",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49130,
+    "city": "Union",
+    "county": "Cass",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49095,
+    "city": "Vandalia",
+    "county": "Cass",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49782,
+    "city": "Beaver Island",
+    "county": "Charlevoix",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49712,
+    "city": "Boyne City",
+    "county": "Charlevoix",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49713,
+    "city": "Boyne Falls",
+    "county": "Charlevoix",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49720,
+    "city": "Charlevoix",
+    "county": "Charlevoix",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49727,
+    "city": "East Jordan",
+    "county": "Charlevoix",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49796,
+    "city": "Walloon Lake",
+    "county": "Charlevoix",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49705,
+    "city": "Afton",
+    "county": "Cheboygan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49716,
+    "city": "Brutus",
+    "county": "Cheboygan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49717,
+    "city": "Burt Lake",
+    "county": "Cheboygan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49721,
+    "city": "Cheboygan",
+    "county": "Cheboygan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49749,
+    "city": "Indian River",
+    "county": "Cheboygan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49701,
+    "city": "Mackinaw City",
+    "county": "Cheboygan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49791,
+    "city": "Topinabee",
+    "county": "Cheboygan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49799,
+    "city": "Wolverine",
+    "county": "Cheboygan",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49710,
+    "city": "Barbeau",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49715,
+    "city": "Brimley",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49724,
+    "city": "Dafter",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49725,
+    "city": "De Tour Village",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49726,
+    "city": "Drummond Island",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49728,
+    "city": "Eckerman",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49736,
+    "city": "Goetzville",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49748,
+    "city": "Hulbert",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49788,
+    "city": "Kincheloe",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49752,
+    "city": "Kinross",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49768,
+    "city": "Paradise",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49774,
+    "city": "Pickford",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49780,
+    "city": "Rudyard",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49783,
+    "city": "Sault Sainte Marie",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49793,
+    "city": "Trout Lake",
+    "county": "Chippewa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48617,
+    "city": "Clare",
+    "county": "Clare",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48622,
+    "city": "Farwell",
+    "county": "Clare",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48625,
+    "city": "Harrison",
+    "county": "Clare",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48632,
+    "city": "Lake",
+    "county": "Clare",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48633,
+    "city": "Lake George",
+    "county": "Clare",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48808,
+    "city": "Bath",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48820,
+    "city": "Dewitt",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48822,
+    "city": "Eagle",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48831,
+    "city": "Elsie",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48835,
+    "city": "Fowler",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48853,
+    "city": "Maple Rapids",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48866,
+    "city": "Ovid",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48879,
+    "city": "Saint Johns",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48894,
+    "city": "Westphalia",
+    "county": "Clinton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49733,
+    "city": "Frederic",
+    "county": "Crawford",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49738,
+    "city": "Grayling",
+    "county": "Crawford",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49807,
+    "city": "Bark River",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49818,
+    "city": "Cornell",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49829,
+    "city": "Escanaba",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49835,
+    "city": "Garden",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49837,
+    "city": "Gladstone",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49864,
+    "city": "Nahma",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49872,
+    "city": "Perkins",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49878,
+    "city": "Rapid River",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49880,
+    "city": "Rock",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49894,
+    "city": "Wells",
+    "county": "Delta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49815,
+    "city": "Channing",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49831,
+    "city": "Felch",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49834,
+    "city": "Foster City",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49801,
+    "city": "Iron Mountain",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49802,
+    "city": "Kingsford",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49852,
+    "city": "Loretto",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49870,
+    "city": "Norway",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49876,
+    "city": "Quinnesec",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49877,
+    "city": "Ralph",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49881,
+    "city": "Sagola",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49892,
+    "city": "Vulcan",
+    "county": "Dickinson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49021,
+    "city": "Bellevue",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48813,
+    "city": "Charlotte",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48821,
+    "city": "Dimondale",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48827,
+    "city": "Eaton Rapids",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48837,
+    "city": "Grand Ledge",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48917,
+    "city": "Lansing",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48861,
+    "city": "Mulliken",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49076,
+    "city": "Olivet",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48876,
+    "city": "Potterville",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48890,
+    "city": "Sunfield",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49096,
+    "city": "Vermontville",
+    "county": "Eaton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49706,
+    "city": "Alanson",
+    "county": "Emmet",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49718,
+    "city": "Carp Lake",
+    "county": "Emmet",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49722,
+    "city": "Conway",
+    "county": "Emmet",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49740,
+    "city": "Harbor Springs",
+    "county": "Emmet",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49755,
+    "city": "Levering",
+    "county": "Emmet",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49764,
+    "city": "Oden",
+    "county": "Emmet",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49769,
+    "city": "Pellston",
+    "county": "Emmet",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49770,
+    "city": "Petoskey",
+    "county": "Emmet",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48411,
+    "city": "Atlas",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48509,
+    "city": "Burton",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48519,
+    "city": "Burton",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48529,
+    "city": "Burton",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48420,
+    "city": "Clio",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48423,
+    "city": "Davison",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48430,
+    "city": "Fenton",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48502,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48503,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48504,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48505,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48506,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48507,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48532,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48551,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48553,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48554,
+    "city": "Flint",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48433,
+    "city": "Flushing",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48436,
+    "city": "Gaines",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48437,
+    "city": "Genesee",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48438,
+    "city": "Goodrich",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48439,
+    "city": "Grand Blanc",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48449,
+    "city": "Lennon",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48451,
+    "city": "Linden",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48457,
+    "city": "Montrose",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48458,
+    "city": "Mount Morris",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48463,
+    "city": "Otisville",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48473,
+    "city": "Swartz Creek",
+    "county": "Genesee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48612,
+    "city": "Beaverton",
+    "county": "Gladwin",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48624,
+    "city": "Gladwin",
+    "county": "Gladwin",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48652,
+    "city": "Rhodes",
+    "county": "Gladwin",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49911,
+    "city": "Bessemer",
+    "county": "Gogebic",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49938,
+    "city": "Ironwood",
+    "county": "Gogebic",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49947,
+    "city": "Marenisco",
+    "county": "Gogebic",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49959,
+    "city": "Ramsay",
+    "county": "Gogebic",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49968,
+    "city": "Wakefield",
+    "county": "Gogebic",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49969,
+    "city": "Watersmeet",
+    "county": "Gogebic",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49633,
+    "city": "Fife Lake",
+    "county": "Grand Traverse",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49637,
+    "city": "Grawn",
+    "county": "Grand Traverse",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49643,
+    "city": "Interlochen",
+    "county": "Grand Traverse",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49649,
+    "city": "Kingsley",
+    "county": "Grand Traverse",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49666,
+    "city": "Mayfield",
+    "county": "Grand Traverse",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49684,
+    "city": "Traverse City",
+    "county": "Grand Traverse",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49686,
+    "city": "Traverse City",
+    "county": "Grand Traverse",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49690,
+    "city": "Williamsburg",
+    "county": "Grand Traverse",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48801,
+    "city": "Alma",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48806,
+    "city": "Ashley",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48807,
+    "city": "Bannister",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48615,
+    "city": "Breckenridge",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48832,
+    "city": "Elwell",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48847,
+    "city": "Ithaca",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48856,
+    "city": "Middleton",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48871,
+    "city": "Perrinton",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48874,
+    "city": "Pompeii",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48877,
+    "city": "Riverdale",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48880,
+    "city": "St. Louis",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48889,
+    "city": "Sumner",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48662,
+    "city": "Wheeler",
+    "county": "Gratiot",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49227,
+    "city": "Allen",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49232,
+    "city": "Camden",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49242,
+    "city": "Hillsdale",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49249,
+    "city": "Jerome",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49250,
+    "city": "Jonesville",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49252,
+    "city": "Litchfield",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49262,
+    "city": "North Adams",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49266,
+    "city": "Osseo",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49271,
+    "city": "Pittsford",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49274,
+    "city": "Reading",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49282,
+    "city": "Somerset Center",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49288,
+    "city": "Waldron",
+    "county": "Hillsdale",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49905,
+    "city": "Atlantic Mine",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49913,
+    "city": "Calumet",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49916,
+    "city": "Chassell",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49917,
+    "city": "Copper City",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49921,
+    "city": "Dodgeville",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49922,
+    "city": "Dollar Bay",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49930,
+    "city": "Hancock",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49931,
+    "city": "Houghton",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49934,
+    "city": "Hubbell",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49942,
+    "city": "Kearsarge",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49945,
+    "city": "Lake Linden",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49952,
+    "city": "Nisula",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49955,
+    "city": "Painesdale",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49958,
+    "city": "Pelkie",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49961,
+    "city": "Sidnaw",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49963,
+    "city": "South Range",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49965,
+    "city": "Toivola",
+    "county": "Houghton",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48413,
+    "city": "Bad Axe",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48720,
+    "city": "Bay Port",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48725,
+    "city": "Caseville",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48731,
+    "city": "Elkton",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48432,
+    "city": "Filion",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48441,
+    "city": "Harbor Beach",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48445,
+    "city": "Kinde",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48754,
+    "city": "Owendale",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48755,
+    "city": "Pigeon",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48467,
+    "city": "Port Austin",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48468,
+    "city": "Port Hope",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48470,
+    "city": "Ruth",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48759,
+    "city": "Sebewaing",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48475,
+    "city": "Ubly",
+    "county": "Huron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48819,
+    "city": "Dansville",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48823,
+    "city": "East Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48825,
+    "city": "East Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48840,
+    "city": "Haslett",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48842,
+    "city": "Holt",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48906,
+    "city": "Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48910,
+    "city": "Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48911,
+    "city": "Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48912,
+    "city": "Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48915,
+    "city": "Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48921,
+    "city": "Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48933,
+    "city": "Lansing",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49251,
+    "city": "Leslie",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48854,
+    "city": "Mason",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48864,
+    "city": "Okemos",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49264,
+    "city": "Onondaga",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49285,
+    "city": "Stockbridge",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48892,
+    "city": "Webberville",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48895,
+    "city": "Williamston",
+    "county": "Ingham",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48809,
+    "city": "Belding",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48815,
+    "city": "Clarksville",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48845,
+    "city": "Hubbardston",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48846,
+    "city": "Ionia",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48849,
+    "city": "Lake Odessa",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48851,
+    "city": "Lyons",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48860,
+    "city": "Muir",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48865,
+    "city": "Orleans",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48870,
+    "city": "Palo",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48873,
+    "city": "Pewamo",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48875,
+    "city": "Portland",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48881,
+    "city": "Saranac",
+    "county": "Ionia",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48730,
+    "city": "East Tawas",
+    "county": "Iosco",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48739,
+    "city": "Hale",
+    "county": "Iosco",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48743,
+    "city": "Long Lake",
+    "county": "Iosco",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48748,
+    "city": "National City",
+    "county": "Iosco",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48750,
+    "city": "Oscoda",
+    "county": "Iosco",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48763,
+    "city": "Tawas City",
+    "county": "Iosco",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48770,
+    "city": "Whittemore",
+    "county": "Iosco",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49902,
+    "city": "Alpha",
+    "county": "Iron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49903,
+    "city": "Amasa",
+    "county": "Iron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49915,
+    "city": "Caspian",
+    "county": "Iron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49920,
+    "city": "Crystal Falls",
+    "county": "Iron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49927,
+    "city": "Gaastra",
+    "county": "Iron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49935,
+    "city": "Iron River",
+    "county": "Iron",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49310,
+    "city": "Blanchard",
+    "county": "Isabella",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48858,
+    "city": "Mount Pleasant",
+    "county": "Isabella",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48878,
+    "city": "Rosebush",
+    "county": "Isabella",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48883,
+    "city": "Shepherd",
+    "county": "Isabella",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48893,
+    "city": "Weidman",
+    "county": "Isabella",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48896,
+    "city": "Winn",
+    "county": "Isabella",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49230,
+    "city": "Brooklyn",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49234,
+    "city": "Clarklake",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49237,
+    "city": "Concord",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49240,
+    "city": "Grass Lake",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49241,
+    "city": "Hanover",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49246,
+    "city": "Horton",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49201,
+    "city": "Jackson",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49202,
+    "city": "Jackson",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49203,
+    "city": "Jackson",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49254,
+    "city": "Michigan Center",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49259,
+    "city": "Munith",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49261,
+    "city": "Napoleon",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49263,
+    "city": "Norvell",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49269,
+    "city": "Parma",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49272,
+    "city": "Pleasant Lake",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49277,
+    "city": "Rives Junction",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49283,
+    "city": "Spring Arbor",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49284,
+    "city": "Springport",
+    "county": "Jackson",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49012,
+    "city": "Augusta",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49034,
+    "city": "Climax",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49052,
+    "city": "Fulton",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49053,
+    "city": "Galesburg",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49001,
+    "city": "Kalamazoo",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49004,
+    "city": "Kalamazoo",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49006,
+    "city": "Kalamazoo",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49007,
+    "city": "Kalamazoo",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49008,
+    "city": "Kalamazoo",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49009,
+    "city": "Kalamazoo",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49048,
+    "city": "Kalamazoo",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49074,
+    "city": "Nazareth",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49002,
+    "city": "Portage",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49024,
+    "city": "Portage",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49083,
+    "city": "Richland",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49087,
+    "city": "Schoolcraft",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49088,
+    "city": "Scotts",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49097,
+    "city": "Vicksburg",
+    "county": "Kalamazoo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49646,
+    "city": "Kalkaska",
+    "county": "Kalkaska",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49676,
+    "city": "Rapid City",
+    "county": "Kalkaska",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49680,
+    "city": "South Boardman",
+    "county": "Kalkaska",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49301,
+    "city": "Ada",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49302,
+    "city": "Alto",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49306,
+    "city": "Belmont",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49315,
+    "city": "Byron Center",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49316,
+    "city": "Caledonia",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49319,
+    "city": "Cedar Springs",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49321,
+    "city": "Comstock Park",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49503,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49504,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49505,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49506,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49507,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49508,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49509,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49512,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49525,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49544,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49546,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49548,
+    "city": "Grand Rapids",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49418,
+    "city": "Grandville",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49330,
+    "city": "Kent City",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49331,
+    "city": "Lowell",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49341,
+    "city": "Rockford",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49343,
+    "city": "Sand Lake",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49345,
+    "city": "Sparta",
+    "county": "Kent",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49901,
+    "city": "Ahmeek",
+    "county": "Keweenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49805,
+    "city": "Allouez",
+    "county": "Keweenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49918,
+    "city": "Copper Harbor",
+    "county": "Keweenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49950,
+    "city": "Mohawk",
+    "county": "Keweenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49304,
+    "city": "Baldwin",
+    "county": "Lake",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49402,
+    "city": "Branch",
+    "county": "Lake",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49623,
+    "city": "Chase",
+    "county": "Lake",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49642,
+    "city": "Idlewild",
+    "county": "Lake",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49644,
+    "city": "Irons",
+    "county": "Lake",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49656,
+    "city": "Luther",
+    "county": "Lake",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48003,
+    "city": "Almont",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48412,
+    "city": "Attica",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48727,
+    "city": "Clifford",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48421,
+    "city": "Columbiaville",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48428,
+    "city": "Dryden",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48440,
+    "city": "Hadley",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48444,
+    "city": "Imlay City",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48446,
+    "city": "Lapeer",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48455,
+    "city": "Metamora",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48461,
+    "city": "North Branch",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48464,
+    "city": "Otter Lake",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48760,
+    "city": "Silverwood",
+    "county": "Lapeer",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49621,
+    "city": "Cedar",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49630,
+    "city": "Empire",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49636,
+    "city": "Glen Arbor",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49653,
+    "city": "Lake Leelanau",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49654,
+    "city": "Leland",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49664,
+    "city": "Maple City",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49670,
+    "city": "Northport",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49674,
+    "city": "Omena",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49682,
+    "city": "Suttons Bay",
+    "county": "Leelanau",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49220,
+    "city": "Addison",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49221,
+    "city": "Adrian",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49228,
+    "city": "Blissfield",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49229,
+    "city": "Britton",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49233,
+    "city": "Cement City",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49235,
+    "city": "Clayton",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49236,
+    "city": "Clinton",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49238,
+    "city": "Deerfield",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49247,
+    "city": "Hudson",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49248,
+    "city": "Jasper",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49253,
+    "city": "Manitou Beach",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49256,
+    "city": "Morenci",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49265,
+    "city": "Onsted",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49268,
+    "city": "Palmyra",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49276,
+    "city": "Riga",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49279,
+    "city": "Sand Creek",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49286,
+    "city": "Tecumseh",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49287,
+    "city": "Tipton",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49289,
+    "city": "Weston",
+    "county": "Lenawee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48114,
+    "city": "Brighton",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48116,
+    "city": "Brighton",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48816,
+    "city": "Cohoctah",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48836,
+    "city": "Fowlerville",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48137,
+    "city": "Gregory",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48139,
+    "city": "Hamburg",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48353,
+    "city": "Hartland",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48843,
+    "city": "Howell",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48143,
+    "city": "Lakeland",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48169,
+    "city": "Pinckney",
+    "county": "Livingston",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49853,
+    "city": "Mc Millan",
+    "county": "Luce",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49868,
+    "city": "Newberry",
+    "county": "Luce",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49719,
+    "city": "Cedarville",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49820,
+    "city": "Curtis",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49827,
+    "city": "Engadine",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49838,
+    "city": "Gould City",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49745,
+    "city": "Hessel",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49757,
+    "city": "Mackinac Island",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49760,
+    "city": "Moran",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49762,
+    "city": "Naubinway",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49775,
+    "city": "Pointe Aux Pins",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49781,
+    "city": "Saint Ignace",
+    "county": "Mackinac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48005,
+    "city": "Armada",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48015,
+    "city": "Center Line",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48035,
+    "city": "Clinton Township",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48036,
+    "city": "Clinton Township",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48038,
+    "city": "Clinton Township",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48021,
+    "city": "Eastpointe",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48026,
+    "city": "Fraser",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48045,
+    "city": "Harrison Township",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48042,
+    "city": "Macomb",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48044,
+    "city": "Macomb",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48043,
+    "city": "Mount Clemens",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48047,
+    "city": "New Baltimore",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48051,
+    "city": "New Baltimore",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48048,
+    "city": "New Haven",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48050,
+    "city": "New Haven",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48096,
+    "city": "Ray",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48062,
+    "city": "Richmond",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48065,
+    "city": "Romeo",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48066,
+    "city": "Roseville",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48315,
+    "city": "Utica",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48316,
+    "city": "Utica",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48317,
+    "city": "Utica",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48094,
+    "city": "Washington",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48095,
+    "city": "Washington",
+    "county": "Macomb",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49613,
+    "city": "Arcadia",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49614,
+    "city": "Bear Lake",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49619,
+    "city": "Brethren",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49625,
+    "city": "Copemish",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49626,
+    "city": "Eastlake",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49634,
+    "city": "Filer City",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49645,
+    "city": "Kaleva",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49660,
+    "city": "Manistee",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49675,
+    "city": "Onekama",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49689,
+    "city": "Wellston",
+    "county": "Manistee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49819,
+    "city": "Arnold",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49808,
+    "city": "Big Bay",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49814,
+    "city": "Champion",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49841,
+    "city": "Gwinn",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49849,
+    "city": "Ishpeming",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49833,
+    "city": "Little Lake",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49855,
+    "city": "Marquette",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49861,
+    "city": "Michigamme",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49866,
+    "city": "Negaunee",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49871,
+    "city": "Palmer",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49879,
+    "city": "Republic",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49885,
+    "city": "Skandia",
+    "county": "Marquette",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49405,
+    "city": "Custer",
+    "county": "Mason",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49410,
+    "city": "Fountain",
+    "county": "Mason",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49411,
+    "city": "Free Soil",
+    "county": "Mason",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49431,
+    "city": "Ludington",
+    "county": "Mason",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49454,
+    "city": "Scottville",
+    "county": "Mason",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49458,
+    "city": "Walhalla",
+    "county": "Mason",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49305,
+    "city": "Barryton",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49307,
+    "city": "Big Rapids",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49320,
+    "city": "Chippewa Lake",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49332,
+    "city": "Mecosta",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49336,
+    "city": "Morley",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49338,
+    "city": "Paris",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49340,
+    "city": "Remus",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49342,
+    "city": "Rodney",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49346,
+    "city": "Stanwood",
+    "county": "Mecosta",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49812,
+    "city": "Carney",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49821,
+    "city": "Daggett",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49847,
+    "city": "Hermansville",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49848,
+    "city": "Ingalls",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49858,
+    "city": "Menominee",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49863,
+    "city": "Nadeau",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49873,
+    "city": "Perronville",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49874,
+    "city": "Powers",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49886,
+    "city": "Spalding",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49887,
+    "city": "Stephenson",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49893,
+    "city": "Wallace",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49896,
+    "city": "Wilson",
+    "county": "Menominee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48618,
+    "city": "Coleman",
+    "county": "Midland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48628,
+    "city": "Hope",
+    "county": "Midland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48640,
+    "city": "Midland",
+    "county": "Midland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48642,
+    "city": "Midland",
+    "county": "Midland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48667,
+    "city": "Midland",
+    "county": "Midland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48657,
+    "city": "Sanford",
+    "county": "Midland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49632,
+    "city": "Falmouth",
+    "county": "Missaukee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49651,
+    "city": "Lake City",
+    "county": "Missaukee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49657,
+    "city": "Mc Bain",
+    "county": "Missaukee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49667,
+    "city": "Merritt",
+    "county": "Missaukee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48117,
+    "city": "Carleton",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48131,
+    "city": "Dundee",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48133,
+    "city": "Erie",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48140,
+    "city": "Ida",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48145,
+    "city": "La Salle",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48144,
+    "city": "Lambertville",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48157,
+    "city": "Luna Pier",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48159,
+    "city": "Maybee",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48160,
+    "city": "Milan",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48161,
+    "city": "Monroe",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48162,
+    "city": "Monroe",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48166,
+    "city": "Newport",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49267,
+    "city": "Ottawa Lake",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49270,
+    "city": "Petersburg",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48177,
+    "city": "Samaria",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48179,
+    "city": "South Rockwood",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48182,
+    "city": "Temperance",
+    "county": "Monroe",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48811,
+    "city": "Carson City",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49322,
+    "city": "Coral",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48818,
+    "city": "Crystal",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48829,
+    "city": "Edmore",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48834,
+    "city": "Fenwick",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49326,
+    "city": "Gowen",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48838,
+    "city": "Greenville",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49329,
+    "city": "Howard City",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48850,
+    "city": "Lakeview",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48852,
+    "city": "Mcbrides",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49339,
+    "city": "Pierson",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48884,
+    "city": "Sheridan",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48885,
+    "city": "Sidney",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48886,
+    "city": "Six Lakes",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48888,
+    "city": "Stanton",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49347,
+    "city": "Trufant",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48891,
+    "city": "Vestaburg",
+    "county": "Montcalm",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49709,
+    "city": "Atlanta",
+    "county": "Montmorency",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49746,
+    "city": "Hillman",
+    "county": "Montmorency",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49756,
+    "city": "Lewiston",
+    "county": "Montmorency",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49303,
+    "city": "Bailey",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49318,
+    "city": "Casnovia",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49415,
+    "city": "Fruitport",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49425,
+    "city": "Holton",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49437,
+    "city": "Montague",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49440,
+    "city": "Muskegon",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49441,
+    "city": "Muskegon",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49442,
+    "city": "Muskegon",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49444,
+    "city": "Muskegon",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49445,
+    "city": "Muskegon",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49451,
+    "city": "Ravenna",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49457,
+    "city": "Twin Lake",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49461,
+    "city": "Whitehall",
+    "county": "Muskegon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49309,
+    "city": "Bitely",
+    "county": "Newaygo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49312,
+    "city": "Brohman",
+    "county": "Newaygo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49412,
+    "city": "Fremont",
+    "county": "Newaygo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49327,
+    "city": "Grant",
+    "county": "Newaygo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49337,
+    "city": "Newaygo",
+    "county": "Newaygo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49349,
+    "city": "White Cloud",
+    "county": "Newaygo",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48326,
+    "city": "Auburn Hills",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48301,
+    "city": "Bloomfield Hills",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48302,
+    "city": "Bloomfield Hills",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48304,
+    "city": "Bloomfield Hills",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48346,
+    "city": "Clarkston",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48348,
+    "city": "Clarkston",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48382,
+    "city": "Commerce Township",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48350,
+    "city": "Davisburg",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48331,
+    "city": "Farmington",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48334,
+    "city": "Farmington",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48335,
+    "city": "Farmington",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48336,
+    "city": "Farmington",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48025,
+    "city": "Franklin",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48030,
+    "city": "Hazel Park",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48356,
+    "city": "Highland",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48357,
+    "city": "Highland",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48442,
+    "city": "Holly",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48070,
+    "city": "Huntington Woods",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48320,
+    "city": "Keego Harbor",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48359,
+    "city": "Lake Orion",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48360,
+    "city": "Lake Orion",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48362,
+    "city": "Lake Orion",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48367,
+    "city": "Leonard",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48071,
+    "city": "Madison Heights",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48380,
+    "city": "Milford",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48381,
+    "city": "Milford",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48165,
+    "city": "New Hudson",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48374,
+    "city": "Novi",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48375,
+    "city": "Novi",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48377,
+    "city": "Novi",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48363,
+    "city": "Oakland",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48462,
+    "city": "Ortonville",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48370,
+    "city": "Oxford",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48371,
+    "city": "Oxford",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48069,
+    "city": "Pleasant Ridge",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48340,
+    "city": "Pontiac",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48341,
+    "city": "Pontiac",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48342,
+    "city": "Pontiac",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48306,
+    "city": "Rochester",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48307,
+    "city": "Rochester",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48309,
+    "city": "Rochester",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48178,
+    "city": "South Lyon",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48390,
+    "city": "Walled Lake",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48327,
+    "city": "Waterford",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48328,
+    "city": "Waterford",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48329,
+    "city": "Waterford",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48322,
+    "city": "West Bloomfield",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48323,
+    "city": "West Bloomfield",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48324,
+    "city": "West Bloomfield",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48383,
+    "city": "White Lake",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48386,
+    "city": "White Lake",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48393,
+    "city": "Wixom",
+    "county": "Oakland",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49420,
+    "city": "Hart",
+    "county": "Oceana",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49421,
+    "city": "Hesperia",
+    "county": "Oceana",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49436,
+    "city": "Mears",
+    "county": "Oceana",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49446,
+    "city": "New Era",
+    "county": "Oceana",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49449,
+    "city": "Pentwater",
+    "county": "Oceana",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49452,
+    "city": "Rothbury",
+    "county": "Oceana",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49455,
+    "city": "Shelby",
+    "county": "Oceana",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49459,
+    "city": "Walkerville",
+    "county": "Oceana",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48610,
+    "city": "Alger",
+    "county": "Ogemaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48635,
+    "city": "Lupton",
+    "county": "Ogemaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48756,
+    "city": "Prescott",
+    "county": "Ogemaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48654,
+    "city": "Rose City",
+    "county": "Ogemaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48761,
+    "city": "South Branch",
+    "county": "Ogemaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48661,
+    "city": "West Branch",
+    "county": "Ogemaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49910,
+    "city": "Bergland",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49912,
+    "city": "Bruce Crossing",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49925,
+    "city": "Ewen",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49929,
+    "city": "Greenland",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49948,
+    "city": "Mass City",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49953,
+    "city": "Ontonagon",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49960,
+    "city": "Rockland",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49967,
+    "city": "Trout Creek",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49971,
+    "city": "White Pine",
+    "county": "Ontonagon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49631,
+    "city": "Evart",
+    "county": "Osceola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49639,
+    "city": "Hersey",
+    "county": "Osceola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49655,
+    "city": "Leroy",
+    "county": "Osceola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49665,
+    "city": "Marion",
+    "county": "Osceola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49677,
+    "city": "Reed City",
+    "county": "Osceola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49679,
+    "city": "Sears",
+    "county": "Osceola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49688,
+    "city": "Tustin",
+    "county": "Osceola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48619,
+    "city": "Comins",
+    "county": "Oscoda",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48621,
+    "city": "Fairview",
+    "county": "Oscoda",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48636,
+    "city": "Luzerne",
+    "county": "Oscoda",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48647,
+    "city": "Mio",
+    "county": "Oscoda",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49730,
+    "city": "Elmira",
+    "county": "Otsego",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49735,
+    "city": "Gaylord",
+    "county": "Otsego",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49751,
+    "city": "Johannesburg",
+    "county": "Otsego",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49795,
+    "city": "Vanderbilt",
+    "county": "Otsego",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49401,
+    "city": "Allendale",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49403,
+    "city": "Conklin",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49404,
+    "city": "Coopersville",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49417,
+    "city": "Grand Haven",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49423,
+    "city": "Holland",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49424,
+    "city": "Holland",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49426,
+    "city": "Hudsonville",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49428,
+    "city": "Jenison",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49434,
+    "city": "Macatawa",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49435,
+    "city": "Marne",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49448,
+    "city": "Nunica",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49456,
+    "city": "Spring Lake",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49460,
+    "city": "West Olive",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49464,
+    "city": "Zeeland",
+    "county": "Ottawa",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49743,
+    "city": "Hawks",
+    "county": "Presque Isle",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49759,
+    "city": "Millersburg",
+    "county": "Presque Isle",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49765,
+    "city": "Onaway",
+    "county": "Presque Isle",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49776,
+    "city": "Posen",
+    "county": "Presque Isle",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49777,
+    "city": "Presque Isle",
+    "county": "Presque Isle",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49779,
+    "city": "Rogers City",
+    "county": "Presque Isle",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48627,
+    "city": "Higgins Lake",
+    "county": "Roscommon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48629,
+    "city": "Houghton Lake",
+    "county": "Roscommon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48630,
+    "city": "Houghton Lake Heights",
+    "county": "Roscommon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48651,
+    "city": "Prudenville",
+    "county": "Roscommon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48653,
+    "city": "Roscommon",
+    "county": "Roscommon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48656,
+    "city": "Saint Helen",
+    "county": "Roscommon",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48415,
+    "city": "Birch Run",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48614,
+    "city": "Brant",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48722,
+    "city": "Bridgeport",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48417,
+    "city": "Burt",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48724,
+    "city": "Carrollton",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48616,
+    "city": "Chesaning",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48734,
+    "city": "Frankenmuth",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48623,
+    "city": "Freeland",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48626,
+    "city": "Hemlock",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48637,
+    "city": "Merrill",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48649,
+    "city": "Oakley",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48601,
+    "city": "Saginaw",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48602,
+    "city": "Saginaw",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48603,
+    "city": "Saginaw",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48604,
+    "city": "Saginaw",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48607,
+    "city": "Saginaw",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48609,
+    "city": "Saginaw",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48655,
+    "city": "Saint Charles",
+    "county": "Saginaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48401,
+    "city": "Applegate",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48416,
+    "city": "Brown City",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48419,
+    "city": "Carsonville",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48422,
+    "city": "Croswell",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48426,
+    "city": "Decker",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48427,
+    "city": "Deckerville",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48434,
+    "city": "Forestville",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48450,
+    "city": "Lexington",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48453,
+    "city": "Marlette",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48454,
+    "city": "Melvin",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48456,
+    "city": "Minden City",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48465,
+    "city": "Palms",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48466,
+    "city": "Peck",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48469,
+    "city": "Port Sanilac",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48471,
+    "city": "Sandusky",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48472,
+    "city": "Snover",
+    "county": "Sanilac",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49817,
+    "city": "Cooks",
+    "county": "Schoolcraft",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49836,
+    "city": "Germfask",
+    "county": "Schoolcraft",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49840,
+    "city": "Gulliver",
+    "county": "Schoolcraft",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49854,
+    "city": "Manistique",
+    "county": "Schoolcraft",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49883,
+    "city": "Seney",
+    "county": "Schoolcraft",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48414,
+    "city": "Bancroft",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48418,
+    "city": "Byron",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48817,
+    "city": "Corunna",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48429,
+    "city": "Durand",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48841,
+    "city": "Henderson",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48848,
+    "city": "Laingsburg",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48857,
+    "city": "Morrice",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48460,
+    "city": "New Lothrop",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48867,
+    "city": "Owosso",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48872,
+    "city": "Perry",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48476,
+    "city": "Vernon",
+    "county": "Shiawassee",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48001,
+    "city": "Algonac",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48002,
+    "city": "Allenton",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48006,
+    "city": "Avoca",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48014,
+    "city": "Capac",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48064,
+    "city": "Casco",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48063,
+    "city": "Columbus",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48054,
+    "city": "East China",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48022,
+    "city": "Emmett",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48023,
+    "city": "Fair Haven",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48059,
+    "city": "Fort Gratiot",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48027,
+    "city": "Goodells",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48028,
+    "city": "Harsens Island",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48032,
+    "city": "Jeddo",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48039,
+    "city": "Marine City",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48040,
+    "city": "Marysville",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48041,
+    "city": "Memphis",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48049,
+    "city": "North Street",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48060,
+    "city": "Port Huron",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48079,
+    "city": "Saint Clair",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48074,
+    "city": "Smiths Creek",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48097,
+    "city": "Yale",
+    "county": "St. Clair",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49030,
+    "city": "Burr Oak",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49032,
+    "city": "Centreville",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49040,
+    "city": "Colon",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49042,
+    "city": "Constantine",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49066,
+    "city": "Leonidas",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49072,
+    "city": "Mendon",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49075,
+    "city": "Nottawa",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49091,
+    "city": "Sturgis",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49093,
+    "city": "Three Rivers",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49099,
+    "city": "White Pigeon",
+    "county": "St. Joseph",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48701,
+    "city": "Akron",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48723,
+    "city": "Caro",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48726,
+    "city": "Cass City",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48729,
+    "city": "Deford",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48733,
+    "city": "Fairgrove",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48435,
+    "city": "Fostoria",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48735,
+    "city": "Gagetown",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48741,
+    "city": "Kingston",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48744,
+    "city": "Mayville",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48746,
+    "city": "Millington",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48757,
+    "city": "Reese",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48767,
+    "city": "Unionville",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48768,
+    "city": "Vassar",
+    "county": "Tuscola",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49013,
+    "city": "Bangor",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49026,
+    "city": "Bloomingdale",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49027,
+    "city": "Breedsville",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49043,
+    "city": "Covert",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49045,
+    "city": "Decatur",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49055,
+    "city": "Gobles",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49056,
+    "city": "Grand Junction",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49057,
+    "city": "Hartford",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49064,
+    "city": "Lawrence",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49065,
+    "city": "Lawton",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49071,
+    "city": "Mattawan",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49079,
+    "city": "Paw Paw",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49090,
+    "city": "South Haven",
+    "county": "Van Buren",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48103,
+    "city": "Ann Arbor",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48104,
+    "city": "Ann Arbor",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48105,
+    "city": "Ann Arbor",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48108,
+    "city": "Ann Arbor",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48109,
+    "city": "Ann Arbor",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48118,
+    "city": "Chelsea",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48130,
+    "city": "Dexter",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48158,
+    "city": "Manchester",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48176,
+    "city": "Saline",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48189,
+    "city": "Whitmore Lake",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48190,
+    "city": "Whittaker",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48191,
+    "city": "Willis",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48197,
+    "city": "Ypsilanti",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48198,
+    "city": "Ypsilanti",
+    "county": "Washtenaw",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48101,
+    "city": "Allen Park",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48111,
+    "city": "Belleville",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48187,
+    "city": "Canton",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48188,
+    "city": "Canton",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48120,
+    "city": "Dearborn",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48124,
+    "city": "Dearborn",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48126,
+    "city": "Dearborn",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48128,
+    "city": "Dearborn",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48125,
+    "city": "Dearborn Heights",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48127,
+    "city": "Dearborn Heights",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48229,
+    "city": "Ecorse",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48134,
+    "city": "Flat Rock",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48135,
+    "city": "Garden City",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48138,
+    "city": "Grosse Ile",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48141,
+    "city": "Inkster",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48146,
+    "city": "Lincoln Park",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48150,
+    "city": "Livonia",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48152,
+    "city": "Livonia",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48154,
+    "city": "Livonia",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48122,
+    "city": "Melvindale",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48164,
+    "city": "New Boston",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48167,
+    "city": "Northville",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48170,
+    "city": "Plymouth",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48239,
+    "city": "Redford",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48240,
+    "city": "Redford",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48173,
+    "city": "Rockwood",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48174,
+    "city": "Romulus",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48242,
+    "city": "Romulus",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48195,
+    "city": "Southgate",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48180,
+    "city": "Taylor",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48183,
+    "city": "Trenton",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48184,
+    "city": "Wayne",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48185,
+    "city": "Westland",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48186,
+    "city": "Westland",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 48192,
+    "city": "Wyandotte",
+    "county": "Wayne",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49618,
+    "city": "Boon",
+    "county": "Wexford",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49620,
+    "city": "Buckley",
+    "county": "Wexford",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49601,
+    "city": "Cadillac",
+    "county": "Wexford",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49638,
+    "city": "Harrietta",
+    "county": "Wexford",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49663,
+    "city": "Manton",
+    "county": "Wexford",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  },
+  {
+    "zip": 49668,
+    "city": "Mesick",
+    "county": "Wexford",
+    "deliverable": "",
+    "confirmed deliverable": "",
+    "Pricing Zone": ""
+  }
+]

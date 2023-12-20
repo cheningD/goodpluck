@@ -7,21 +7,10 @@ import Breadcrumb from "@components/solid/Breadcrumb";
 import ScrollSpy from "@components/solid/global/ScrollSpy";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
-import path from "path";
-import { fileURLToPath } from "url";
-import { parseZipCodes } from "../lib/parseZipCodes";
-
-/*interface Props{
-  title: string;
-  description: string;
-  categories: any;
-  currentCollection: any;
-}*/
+import gpZip from "@src/data/gp-zip.json";
 
 const { title, description, categories, currentCollection } = Astro.props;
-const __dirname = path.resolve(path.dirname(""));
-const csvFilePath: string = path.join(__dirname, "src/assets/gp-zip.csv");
-const zipCodes: string[] = parseZipCodes(csvFilePath);
+const zipCodes: string[] = gpZip.map((item) => item.zip.toString());
 
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
 const postcode = Astro.cookies.get("user_postcode")?.value;
@@ -80,7 +69,7 @@ function getCurrentSubCategories() {
               />
             )
           }
-          <!-- <slot /> -->
+          <slot />
         </div>
       </div>
       <Cart zipCodes={zipCodes} client:load />
