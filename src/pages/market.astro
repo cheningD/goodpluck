@@ -1,74 +1,38 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
-import Breadcrumb from "@components/solid/Breadcrumb.tsx";
+import {initSwell} from "../lib/swell";
 import Products from "@components/solid/Products.tsx";
-import {initSwell} from "../../lib/swell";
 
 const runtime = Astro.locals.runtime;
 const swell = initSwell(
   runtime ? runtime.env.PUBLIC_SWELL_STORE_ID : import.meta.env.PUBLIC_SWELL_STORE_ID,
   runtime ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
-const { slug } = Astro.params;
-
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
 });
 
-const currentCollection = categories.results.find(
-  (category) => category.slug === slug,
-);
-if (!currentCollection) return Astro.redirect("/404");
-
-  const currentCategoryName =
-    currentCollection !== null ? currentCollection.name : "";
-
-  function getCurrentSubCategories() {
-    if (currentCollection == null) {
-      return [];
-    }
-    const subCategories = categories.results.filter(
-      (col) => col.parent_id == currentCollection.id,
-    );
-    if (subCategories) {
-      return subCategories;
-    }
-    return [];
-  }
-
-const { name, description } = currentCollection;
 ---
 
 <Layout
-  title={`${name} delivered farm fresh to you`}
-  description={description}
+  title={`Shopping page`}
+  description="Delivered farm fresh to you"
   categories={categories.results}
 >
-<Breadcrumb collections={categories.results} currentCollectionId={currentCollection.id}/>
       <div id="sidebar-page" class="relative w-full h-auto py-5">
         {/* Start Sidbar */}
         <div class="grid grid-cols-5">
           <div class="hidden md:flex flex-col items-start px-10">
             <h2 class="text-xl font-medium dark:text-white">
-              {currentCategoryName}
+              
             </h2>
             <ul class="sticky top-[114px]">
-              {getCurrentSubCategories().map(collection => (
-                  <li>
-                    <a
-                      href={`/market/${collection.slug}`}
-                      class="block py-0.5 text-sm font-medium leading-6 text-slate-700 hover:text-slate-900 focus:outline-none focus:text-blue-600 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
-                    >
-                      {collection.name}
-                    </a>
-                  </li>
-                    ))}
-            </ul>
-          </div>
 
+            </ul>
+              </div>
           <div class="col-span-5 md:col-span-4 px-4">
-            <Products currentCategory={currentCollection} client:only />
+            <Products currentCategory={null} client:only />
           </div>
         </div>
         {/* End Sidbar */}

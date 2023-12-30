@@ -1,5 +1,5 @@
 div[data-hs-overlay-backdrop-template] {
   position: absolute;
-  top: 160px;
+  top: 140px;
   z-index: 100;
 }
