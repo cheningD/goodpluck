@@ -1,25 +1,14 @@
----
-import Layout from "@layouts/MainLayout.astro";
-import Breadcrumb from "@components/solid/Breadcrumb.tsx";
+import { For, Component, createSignal } from "solid-js";
 import Products from "@components/solid/Products.tsx";
-import {initSwell} from "../../lib/swell";
 
-const runtime = Astro.locals.runtime;
-const swell = initSwell(
-  runtime ? runtime.env.PUBLIC_SWELL_STORE_ID : import.meta.env.PUBLIC_SWELL_STORE_ID,
-  runtime ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
-const { slug } = Astro.params;
+interface iProps {
+  collections: any;
+  products: any;
+  currentCollection: any;
+}
 
-const categories = await swell.categories.list({
-  limit: 100,
-  page: 1,
-});
-
-const currentCollection = categories.results.find(
-  (category) => category.slug === slug,
-);
-if (!currentCollection) return Astro.redirect("/404");
+const Category: Component<iProps> = (props) => {
+  const { collections, currentCollection, products, productsPage } = props;
 
   const currentCategoryName =
     currentCollection !== null ? currentCollection.name : "";
@@ -28,7 +17,7 @@ if (!currentCollection) return Astro.redirect("/404");
     if (currentCollection == null) {
       return [];
     }
-    const subCategories = categories.results.filter(
+    const subCategories = collections.filter(
       (col) => col.parent_id == currentCollection.id,
     );
     if (subCategories) {
@@ -37,24 +26,18 @@ if (!currentCollection) return Astro.redirect("/404");
     return [];
   }
 
-const { name, description } = currentCollection;
----
-
-<Layout
-  title={`${name} delivered farm fresh to you`}
-  description={description}
-  categories={categories.results}
->
-<Breadcrumb collections={categories.results} currentCollectionId={currentCollection.id}/>
+  return (
+    <>
       <div id="sidebar-page" class="relative w-full h-auto py-5">
         {/* Start Sidbar */}
         <div class="grid grid-cols-5">
-          <div class="hidden md:flex flex-col items-start px-10">
+          <div class="hidden  lg:flex flex-col items-start px-10">
             <h2 class="text-xl font-medium dark:text-white">
               {currentCategoryName}
             </h2>
             <ul class="sticky top-[114px]">
-              {getCurrentSubCategories().map(collection => (
+              <For each={getCurrentSubCategories()}>
+                {(collection, i) => (
                   <li>
                     <a
                       href={`/market/${collection.slug}`}
@@ -63,12 +46,13 @@ const { name, description } = currentCollection;
                       {collection.name}
                     </a>
                   </li>
-                    ))}
+                )}
+              </For>
             </ul>
           </div>
 
-          <div class="col-span-5 md:col-span-4 px-4">
-            <Products currentCategory={currentCollection} client:only />
+          <div class="col-span-5 lg:col-span-4 px-4">
+            <Products products={products} />
           </div>
         </div>
         {/* End Sidbar */}
@@ -154,4 +138,8 @@ const { name, description } = currentCollection;
           </div>
         </div>
       </div>
-</Layout>
+    </>
+  );
+};
+
+export default Category;

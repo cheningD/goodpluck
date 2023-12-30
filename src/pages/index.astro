@@ -1,24 +1,10 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import Products from "@components/solid/Products.tsx";
-import {initSwell} from "../lib/swell";
+import Layout from "../layouts/Layout.astro";
 
-const runtime = Astro.locals.runtime;
-const swell = initSwell(
-  runtime ? runtime.env.PUBLIC_SWELL_STORE_ID : import.meta.env.PUBLIC_SWELL_STORE_ID,
-  runtime ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
-const categories = await swell.categories.list({
-  limit: 100,
-  page: 1,
-});
-
+const encoded_message = Astro.url.searchParams.get("message")! || "";
+const message = decodeURIComponent(encoded_message);
 ---
 
-<Layout
-  title={`Shopping page`}
-  description="Delivered farm fresh to you"
-  categories={categories.results}
->
- <Products currentCategory={null} client:only />
+<Layout>
+  <p>{message}</p>
 </Layout>
