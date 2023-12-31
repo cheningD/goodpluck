@@ -2,7 +2,7 @@
 import Header from "@components/solid/global/Header.tsx";
 import Footer from "@components/solid/global/Footer";
 import { getCartFromSession } from "src/lib/swell/cart";
-import Cart from "@components/solid/Cart";
+import CartFlyout from "@components/solid/CartFlyout.tsx";
 import Banner from "@components/solid/Banner";
 import Breadcrumb from "@components/solid/Breadcrumb";
 import SidebarMenu from "@components/solid/global/SidebarMenu";
@@ -67,7 +67,7 @@ try {
           <slot />
         </div>
       </div>
-      <Cart cart={cart} />
+      <CartFlyout zipCodes={zipCodes} client:only />
     </main>
     <Footer client:load />
     <script>
