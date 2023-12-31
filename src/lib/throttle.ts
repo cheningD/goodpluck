@@ -1,18 +1,20 @@
-export function throttle(func, limit) {
-  let lastFunc;
-  let lastRan;
-  return function () {
-    const args = arguments;
-    const context = this;
+export function throttle(
+  func: (...args: any[]) => any,
+  limit: number,
+): (...args: any[]) => void {
+  let lastFunc: number;
+  let lastRan: number;
+
+  return function (this: any, ...args: any[]) {
     if (!lastRan) {
-      func.apply(context, args);
+      func.apply(this, args);
       lastRan = Date.now();
     } else {
       clearTimeout(lastFunc);
-      lastFunc = setTimeout(
-        function () {
+      lastFunc = window.setTimeout(
+        () => {
           if (Date.now() - lastRan >= limit) {
-            func.apply(context, args);
+            func.apply(this, args);
             lastRan = Date.now();
           }
         },

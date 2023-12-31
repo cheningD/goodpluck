@@ -241,13 +241,6 @@ test.describe("Goodpluck Sign-up Form", () => {
   const validEmail = "sandbox@stytch.com";
   const validZipcode = "48201";
 
-  test("should redirect to OTP verification page for valid inputs", async ({
-    page,
-  }) => {
-    // this can't be done using the stytch sandbox email because it's already registered, and
-    // will always redirect to the login-code page
-  });
-
   test("should validate when an email is not entered", async ({ page }) => {
     await page.fill("#zipcode", validZipcode);
     await page.click('button:text("Continue")');
