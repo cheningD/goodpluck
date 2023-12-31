@@ -21,5 +21,7 @@ module.exports = {
   },
   rules: {
     "@typescript-eslint/strict-boolean-expressions": "off", // disabled to run tests
+    "prettier/prettier": "error",
   },
+  plugins: ["prettier"],
 };
