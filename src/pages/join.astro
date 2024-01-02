@@ -139,7 +139,7 @@ import Layout from "@layouts/Layout.astro";
               const sessionCookie = swell.session.getCookie();
               localStorage.setItem("swell_session_token", sessionCookie);
               window.location.href =
-                "/create-account?email?" + encodeURIComponent(email);
+                "/create-account?email=" + encodeURIComponent(email);
             } else {
               displayError("An error occurred. Please try again later.");
             }

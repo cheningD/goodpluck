@@ -1,100 +1,36 @@
 ---
 import MapboxAutofill from "../components/solid/MapboxAutofill";
-import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
 
-const errors = { err: "" };
+const email = Astro.url.searchParams.get("email");
 
+// Environment variables and configurations
 const runtime = Astro.locals.runtime;
-const mapboxToken = runtime
-  ? runtime.env.MAPBOX_DEFAULT_PUBLIC_TOKEN
-  : import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
-const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
-  runtime?.env || import.meta.env;
+const env = runtime?.env || import.meta.env;
+const mapboxToken = env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 
-if (Astro.request.method === "POST") {
-  try {
-    const data = await Astro.request.formData();
-    const first_name = data.get("first_name")?.toString();
-    const last_name = data.get("last_name")?.toString();
-    const phone_number = data.get("phone_number");
-    const address = data.get("address address-search")?.toString();
-    const consent = data.get("consent");
-    const postcode = data.get("postcode")?.toString();
-
-    const name = { first_name, last_name };
-    const untrusted_metadata = { address, consent, phone_number };
-
-    if (!first_name || !last_name || !phone_number || !address || !consent) {
-      errors.err = "Please fill all the fields";
-    } else {
-      // handle Stytch API calls to get the user_id with the session token in order to authenticate the request.
-      const sessionToken = Astro.cookies.get("gp_session_token");
-
-      const stytchclient = getStytchClient(
-        STYTCH_PROJECT_ID,
-        STYTCH_PROJECT_SECRET,
-      );
-
-      const session = stytchclient.sessions.authenticate({
-        session_token: sessionToken?.value,
-      });
-      const sessionData = await session;
-      const userId = sessionData.user.user_id;
-
-      try {
-        await stytchclient.users.update({
-          user_id: userId,
-          name,
-          untrusted_metadata,
-        });
-
-        // Set the cookie with the user's zip code
-        Astro.cookies.set("user_postcode", postcode as string, {
-          httpOnly: true,
-          secure: true,
-          path: "/",
-          maxAge: 60 * 60 * 24 * 30, // 30 days
-        });
-
-        return Astro.redirect("/");
-      } catch (error) {
-        console.log(error);
-        errors.err = "An error occured, please try again";
-      }
-    }
-  } catch (error) {}
-}
-
-// Redirect unauthenticated users to the login page
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-const isUserLoggedIn = await isLoggedIn(
-  sessionToken as string,
-  STYTCH_PROJECT_ID,
-  STYTCH_PROJECT_SECRET,
-);
-
-if (!isUserLoggedIn) {
-  return Astro.redirect(
-    "/?message=" + encodeURIComponent("You are not logged in"),
-  );
+if (!email) {
+  console.error("Email not found");
+  return Astro.redirect("/?message=" + encodeURIComponent("Email not found"));
 }
 ---
 
 <Layout>
   <div>
     <h2 class="text-2xl font-bold text-gray-900 my-6 text-center">
-      Let's complete your informations
+      Let's complete your information
     </h2>
     <p class="text-center">
-      We need some informations to complete your account. Let's complete it
+      We need some information to complete your account. Let's complete it
       before you can make your first order!
     </p>
 
-    <p class="text-center text-red-500 mt-4">{errors.err}</p>
+    <p id="error-message" class="text-center text-red-500 mt-4"></p>
 
     <div class="flex flex-col mt-12 w-1/2 ml-10">
       <form method="POST">
+        <input type="hidden" name="email" value={email} />
+
         <label class="block text-sm font-medium text-gray-700 mb-2"
           >Your first name</label
         >
@@ -139,11 +75,11 @@ if (!isUserLoggedIn) {
         />
 
         <label class="block text-sm font-medium text-gray-700 mb-2"
-          >Your appartment</label
+          >Your apartment</label
         >
         <input
           type="text"
-          name="appartment"
+          name="apartment"
           autocomplete="address-line2"
           class="border rounded-md p-2 w-1/2 mb-4"
         />
@@ -181,23 +117,130 @@ if (!isUserLoggedIn) {
           class="border rounded-md p-2 w-1/2 mb-4"
         />
 
-        <label class="block text-sm font-medium text-gray-700 mb-2"
-          >I consent to receive order updates and other communications to the
-          provided phone number</label
-        >
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          I consent to receive order updates and other communications to the
+          provided phone number
+        </label>
         <input
           type="checkbox"
           name="consent"
           required
           class="border rounded-md p-2 w-1/2 mb-4"
         />
+
         <button
+          id="submit-button"
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
           type="submit">Submit</button
         >
       </form>
     </div>
   </div>
+
+  <script>
+    import { getSwellClient } from "../lib/swell";
+
+    interface FormData {
+      email: string;
+      firstName: string;
+      lastName: string;
+      phone: string;
+      consent: string;
+      address1: string;
+      city: string;
+      state: string;
+      postcode: string;
+      apartment?: string | undefined;
+    }
+
+    const swell = getSwellClient(
+      import.meta.env.PUBLIC_SWELL_STORE_ID,
+      import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+    );
+
+    const handleFormSubmit = async (event: Event): Promise<void> => {
+      event.preventDefault();
+
+      const submitButton = document.getElementById(
+        "submit-button",
+      ) as HTMLButtonElement;
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Processing...";
+      }
+
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
+
+      const data: FormData = {
+        email: formData.get("email") as string,
+        firstName: formData.get("first_name") as string,
+        lastName: formData.get("last_name") as string,
+        phone: formData.get("phone_number") as string,
+        consent: formData.get("consent") as string,
+        address1: formData.get("address address-search") as string,
+        city: formData.get("city") as string,
+        state: formData.get("state") as string,
+        postcode: formData.get("postcode") as string,
+        apartment: (formData.get("apartment") as string) || undefined,
+      };
+
+      if (
+        !data.firstName ||
+        !data.lastName ||
+        !data.phone ||
+        !data.address1 ||
+        !data.consent ||
+        !data.city ||
+        !data.state ||
+        !data.postcode
+      ) {
+        displayErrorMessage("Please fill all the fields");
+        return;
+      }
+
+      try {
+        await swell.account.update({
+          email: data.email,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          phone: data.phone,
+          email_optin: data.consent === "on",
+          shipping: {
+            address1: data.address1,
+            address2: data.apartment,
+            city: data.city,
+            state: data.state,
+            zip: data.postcode,
+          },
+          type: "individual",
+        });
+
+        window.location.href =
+          "/?message=" + encodeURIComponent("Onboarding completed");
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "An unknown error occurred";
+        displayErrorMessage(errorMessage);
+      }
+    };
+
+    const displayErrorMessage = (message: string): void => {
+      const errorMessageElement = document.getElementById("error-message");
+      if (errorMessageElement) {
+        errorMessageElement.textContent = message;
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector("form");
+      if (form) {
+        form.addEventListener("submit", handleFormSubmit);
+      } else {
+        console.error("Form not found");
+      }
+    });
+  </script>
 
   <MapboxAutofill client:only mapboxToken={mapboxToken} />
 </Layout>
