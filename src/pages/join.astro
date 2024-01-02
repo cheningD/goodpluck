@@ -1,82 +1,5 @@
 ---
-import { StytchError } from "stytch";
-import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
-import { confirmed_zipcodes } from "../lib/constants";
-
-const errors = { email: "" };
-let email;
-
-const runtime = Astro.locals.runtime;
-const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
-  runtime?.env || import.meta.env;
-
-if (Astro.request.method === "POST") {
-  try {
-    const data = await Astro.request.formData();
-    email = data.get("email")?.toString();
-    const zipcode = data.get("zipcode")?.toString();
-
-    if (!email) {
-      errors.email = "Email is required";
-    } else if (!zipcode) {
-      errors.email = "ZIP code is required";
-    } else if (zipcode && !confirmed_zipcodes.includes(zipcode)) {
-      return Astro.redirect(
-        `/waitlist?zipcode=${zipcode}&email=${encodeURIComponent(email)}`,
-      );
-    } else {
-      try {
-        const stytchclient = getStytchClient(
-          STYTCH_PROJECT_ID,
-          STYTCH_PROJECT_SECRET,
-        );
-
-        const response = await stytchclient.otps.email.loginOrCreate({
-          email,
-          expiration_minutes: 10,
-        });
-
-        console.log(response);
-
-        if (response.user_created) {
-          // New user created, proceed with signup
-          return Astro.redirect("/signup-code?method_id=" + response.email_id);
-        } else {
-          // User already exists, redirect to login-code with a message
-          return Astro.redirect(
-            "/login-code?method_id=" + response.email_id + "&user_exists=true",
-          );
-        }
-      } catch (error) {
-        console.log(error);
-        if (error instanceof StytchError) {
-          errors.email = error.message;
-        } else {
-          errors.email = "Something went wrong, please try again later";
-        }
-      }
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-  }
-}
-
-// Redirect authenticated users away from join page
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-const isUserLoggedIn = await isLoggedIn(
-  sessionToken as string,
-  STYTCH_PROJECT_ID,
-  STYTCH_PROJECT_SECRET,
-);
-
-if (isUserLoggedIn) {
-  return Astro.redirect(
-    "/?message=" + encodeURIComponent("You are already logged in"),
-  );
-}
 ---
 
 <Layout>
@@ -88,10 +11,10 @@ if (isUserLoggedIn) {
       <p class="mb-6">
         We first want to make sure we can deliver our great products to you.
       </p>
-      <form method="POST">
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-2"
-          >Your email</label
-        >
+      <form method="POST" id="signupForm">
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+          Email
+        </label>
         <input
           type="email"
           id="email"
@@ -99,13 +22,31 @@ if (isUserLoggedIn) {
           placeholder="kale@example.com"
           required
           class="border rounded-md p-2 w-full mb-4"
-          value={email}
         />
+
+        <!-- Password Field -->
+        <label
+          for="password"
+          class="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Password
+        </label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="tomato3-Mushrooms!"
+          required
+          class="border rounded-md p-2 w-full mb-4"
+        />
+
+        <!-- Zipcode Field -->
         <label
           for="zipcode"
           class="block text-sm font-medium text-gray-700 mb-2"
-          >Your ZIP code</label
         >
+          ZIP Code
+        </label>
         <input
           type="text"
           id="zipcode"
@@ -117,18 +58,97 @@ if (isUserLoggedIn) {
           title="Enter a 5-digit ZIP code or a 9-digit ZIP+4 code."
           maxlength="10"
         />
-        {errors.email && <p class="text-red-400">{errors.email}</p>}
+
+        <p class="text-red-400" id="error"></p>
+
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
-          >Continue</button
         >
+          Continue
+        </button>
       </form>
       <p class="mt-6 text-sm text-center text-gray-600">
         You already have an account? <a
           href="/login"
-          class="text-orange-500 hover:underline">Log in</a
+          class="text-orange-500 hover:underline"
         >
+          Log in
+        </a>
       </p>
     </div>
   </div>
+
+  <script>
+    import { getSwellClient } from "../lib/swell";
+    import { confirmed_zipcodes } from "../lib/constants";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("signupForm") as HTMLFormElement;
+      const errorElement = document.getElementById("error");
+
+      if (!form || !errorElement) {
+        return;
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        errorElement.textContent = "";
+
+        const formData = new FormData(form);
+
+        let email = formData.get("email") as string;
+        let password = formData.get("password") as string;
+        let zipcode = formData.get("zipcode") as string;
+
+        if (!email) {
+          displayError("Invalid email address.");
+          return;
+        }
+        if (!password) {
+          displayError("Password is required.");
+          return;
+        }
+        if (!zipcode || !confirmed_zipcodes.includes(zipcode)) {
+          window.location.href =
+            "/waitlist?zipcode=" +
+            zipcode +
+            "&email=" +
+            encodeURIComponent(email);
+        }
+
+        try {
+          const swell = getSwellClient(
+            import.meta.env.PUBLIC_SWELL_STORE_ID,
+            import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+          );
+          const createAccountResp = await swell.account.create({
+            email,
+            password,
+            type: "individual",
+          });
+
+          console.log("Create account: ", createAccountResp);
+
+          if (createAccountResp.id) {
+            const loginResp = await swell.account.login(email, password);
+
+            console.log("Login: ", loginResp);
+            const sessionCookie = swell.session.getCookie();
+            localStorage.setItem("swell_session_token", sessionCookie);
+            window.location.href =
+              "/create-account?email?" + encodeURIComponent(email);
+          }
+
+          // TODO: Login user in if account already exists
+        } catch (error) {
+          displayError("An error occurred. Please try again later.");
+          console.error(error);
+        }
+      });
+
+      const displayError = (message: string) => {
+        errorElement.textContent = message;
+      };
+    });
+  </script>
 </Layout>
