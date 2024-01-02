@@ -1,9 +1,9 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
-import { initSwell } from "../../lib/swell.ts";
+import { getSwellClient } from "../../lib/swell.ts";
 
 const runtime = Astro.locals.runtime;
-const swell = initSwell(
+const swell = getSwellClient(
   runtime
     ? runtime.env.PUBLIC_SWELL_STORE_ID
     : import.meta.env.PUBLIC_SWELL_STORE_ID,

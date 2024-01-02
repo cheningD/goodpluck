@@ -2,10 +2,10 @@
 import Layout from "@layouts/MainLayout.astro";
 import Breadcrumb from "@components/solid/Breadcrumb.tsx";
 import Products from "@components/solid/Products.tsx";
-import { initSwell } from "../../lib/swell";
+import { getSwellClient } from "../../lib/swell";
 
 const runtime = Astro.locals.runtime;
-const swell = initSwell(
+const swell = getSwellClient(
   runtime
     ? runtime.env.PUBLIC_SWELL_STORE_ID
     : import.meta.env.PUBLIC_SWELL_STORE_ID,
