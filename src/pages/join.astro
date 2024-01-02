@@ -82,6 +82,8 @@ import Layout from "@layouts/Layout.astro";
     import { getSwellClient } from "../lib/swell";
     import { confirmed_zipcodes } from "../lib/constants";
 
+    // TODO: redirect logged in users to the home page
+
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("signupForm") as HTMLFormElement;
       const errorElement = document.getElementById("error");
@@ -131,12 +133,16 @@ import Layout from "@layouts/Layout.astro";
 
           if (createAccountResp.id) {
             const loginResp = await swell.account.login(email, password);
-
             console.log("Login: ", loginResp);
-            const sessionCookie = swell.session.getCookie();
-            localStorage.setItem("swell_session_token", sessionCookie);
-            window.location.href =
-              "/create-account?email?" + encodeURIComponent(email);
+            const loggedInUser = await swell.account.get();
+            if (loggedInUser) {
+              const sessionCookie = swell.session.getCookie();
+              localStorage.setItem("swell_session_token", sessionCookie);
+              window.location.href =
+                "/create-account?email?" + encodeURIComponent(email);
+            } else {
+              displayError("An error occurred. Please try again later.");
+            }
           }
 
           // TODO: Login user in if account already exists
