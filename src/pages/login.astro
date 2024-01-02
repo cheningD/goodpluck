@@ -64,7 +64,23 @@ import Layout from "../layouts/Layout.astro";
 
   <script>
     import { getSwellClient } from "../lib/swell";
-    // TODO: redirect logged in users to the home page
+
+    const swell = getSwellClient(
+      import.meta.env.PUBLIC_SWELL_STORE_ID,
+      import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+    );
+
+    // TODO: Update to redirect before page loads
+    const checkLoginStatus = async () => {
+      const loggedInUser = await swell.account.get();
+
+      if (loggedInUser) {
+        window.location.href =
+          "/?message=" + encodeURIComponent("You are already logged in.");
+      }
+    };
+
+    checkLoginStatus();
 
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("loginForm") as HTMLFormElement;
@@ -84,17 +100,12 @@ import Layout from "../layouts/Layout.astro";
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
 
-        // Example validation - Add your own logic here
         if (!email || !password) {
           displayError("Email and password are required.");
           return;
         }
 
         try {
-          const swell = getSwellClient(
-            import.meta.env.PUBLIC_SWELL_STORE_ID,
-            import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-          );
           await swell.account.login(email, password);
           const loggedInUser = await swell.account.get();
 

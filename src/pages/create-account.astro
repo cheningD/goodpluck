@@ -140,6 +140,27 @@ if (!email) {
   <script>
     import { getSwellClient } from "../lib/swell";
 
+    const swell = getSwellClient(
+      import.meta.env.PUBLIC_SWELL_STORE_ID,
+      import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+    );
+
+    // TODO: Update to redirect before page loads
+    const checkOnboardingStatus = async () => {
+      const loggedInUser = await swell.account.get();
+
+      if (!loggedInUser) {
+        window.location.href =
+          "/?message=" + encodeURIComponent("You are not logged in.");
+      } else if ((loggedInUser.metadata as { onboarded?: boolean }).onboarded) {
+        window.location.href =
+          "/?message=" +
+          encodeURIComponent("You already completed your onboarding.");
+      }
+    };
+
+    checkOnboardingStatus();
+
     interface FormData {
       email: string;
       firstName: string;
@@ -152,11 +173,6 @@ if (!email) {
       postcode: string;
       apartment?: string | undefined;
     }
-
-    const swell = getSwellClient(
-      import.meta.env.PUBLIC_SWELL_STORE_ID,
-      import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-    );
 
     const handleFormSubmit = async (event: Event): Promise<void> => {
       event.preventDefault();
@@ -214,6 +230,9 @@ if (!email) {
             zip: data.postcode,
           },
           type: "individual",
+          metadata: {
+            onboarded: true,
+          },
         });
 
         window.location.href =

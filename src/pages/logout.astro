@@ -17,9 +17,6 @@ import Layout from "../layouts/Layout.astro";
 
       if (loggedInUser) {
         await swell.account.logout();
-        localStorage.removeItem("swell_session_token");
-        document.cookie =
-          "swell-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         message = "Successfully logged out";
       } else {
         message = "You are not logged in";
@@ -29,5 +26,10 @@ import Layout from "../layouts/Layout.astro";
     } catch (error) {
       console.error(error);
     }
+
+    // Delete the session token from storage and cookies after any swell account logout attempt
+    localStorage.removeItem("swell_session_token");
+    document.cookie =
+      "swell-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   </script>
 </Layout>

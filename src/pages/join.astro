@@ -82,7 +82,22 @@ import Layout from "@layouts/Layout.astro";
     import { getSwellClient } from "../lib/swell";
     import { confirmed_zipcodes } from "../lib/constants";
 
-    // TODO: redirect logged in users to the home page
+    const swell = getSwellClient(
+      import.meta.env.PUBLIC_SWELL_STORE_ID,
+      import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+    );
+
+    // TODO: Update to redirect before page loads
+    const checkLoginStatus = async () => {
+      const loggedInUser = await swell.account.get();
+
+      if (loggedInUser) {
+        window.location.href =
+          "/?message=" + encodeURIComponent("You are already logged in.");
+      }
+    };
+
+    checkLoginStatus();
 
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("signupForm") as HTMLFormElement;
@@ -119,10 +134,6 @@ import Layout from "@layouts/Layout.astro";
         }
 
         try {
-          const swell = getSwellClient(
-            import.meta.env.PUBLIC_SWELL_STORE_ID,
-            import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-          );
           const createAccountResp = await swell.account.create({
             email,
             password,
