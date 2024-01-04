@@ -1,35 +1,32 @@
----
-import Layout from "../layouts/Layout.astro";
----
+<html lang="en">
+  <body>
+    <script>
+      import { getSwellClient } from "../lib/swell";
 
-<Layout>
-  <script>
-    import { getSwellClient } from "../lib/swell";
+      try {
+        const swell = getSwellClient(
+          import.meta.env.PUBLIC_SWELL_STORE_ID,
+          import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+        );
 
-    try {
-      const swell = getSwellClient(
-        import.meta.env.PUBLIC_SWELL_STORE_ID,
-        import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-      );
+        const loggedInUser = await swell.account.get();
+        let message = "";
 
-      const loggedInUser = await swell.account.get();
-      let message = "";
+        if (loggedInUser) {
+          await swell.account.logout();
+          message = "Successfully logged out";
+        } else {
+          message = "You are not logged in";
+        }
 
-      if (loggedInUser) {
-        await swell.account.logout();
-        message = "Successfully logged out";
-      } else {
-        message = "You are not logged in";
+        window.location.href = "/?message=" + encodeURIComponent(message);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        // Delete the session token after any swell account logout attempt
+        document.cookie =
+          "swell-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       }
-
-      window.location.href = "/?message=" + encodeURIComponent(message);
-    } catch (error) {
-      console.error(error);
-    }
-
-    // Delete the session token from storage and cookies after any swell account logout attempt
-    localStorage.removeItem("swell_session_token");
-    document.cookie =
-      "swell-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  </script>
-</Layout>
+    </script>
+  </body>
+</html>
