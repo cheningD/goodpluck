@@ -2,16 +2,18 @@
 import MapboxAutofill from "../components/solid/MapboxAutofill";
 import Layout from "@layouts/Layout.astro";
 
-const email = Astro.url.searchParams.get("email");
-
 // Environment variables and configurations
 const runtime = Astro.locals.runtime;
 const env = runtime?.env || import.meta.env;
 const mapboxToken = env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 
-if (!email) {
-  console.error("Email not found");
-  return Astro.redirect("/?message=" + encodeURIComponent("Email not found"));
+// Redirect unauthenticated users away from create-account page
+const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value;
+
+if (!isLoggedIn) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are not logged in"),
+  );
 }
 ---
 
@@ -29,8 +31,6 @@ if (!email) {
 
     <div class="flex flex-col mt-12 w-1/2 ml-10">
       <form method="POST">
-        <input type="hidden" name="email" value={email} />
-
         <label class="block text-sm font-medium text-gray-700 mb-2"
           >Your first name</label
         >
@@ -137,129 +137,6 @@ if (!email) {
     </div>
   </div>
 
-  <script>
-    import { getSwellClient } from "../lib/swell";
-
-    const swell = getSwellClient(
-      import.meta.env.PUBLIC_SWELL_STORE_ID,
-      import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-    );
-
-    // TODO: Update to redirect before page loads
-    const checkOnboardingStatus = async () => {
-      const loggedInUser = await swell.account.get();
-
-      if (!loggedInUser) {
-        window.location.href =
-          "/?message=" + encodeURIComponent("You are not logged in.");
-      } else if ((loggedInUser.metadata as { onboarded?: boolean }).onboarded) {
-        window.location.href =
-          "/?message=" +
-          encodeURIComponent("You already completed your onboarding.");
-      }
-    };
-
-    checkOnboardingStatus();
-
-    interface FormData {
-      email: string;
-      firstName: string;
-      lastName: string;
-      phone: string;
-      consent: string;
-      address1: string;
-      city: string;
-      state: string;
-      postcode: string;
-      apartment?: string | undefined;
-    }
-
-    const handleFormSubmit = async (event: Event): Promise<void> => {
-      event.preventDefault();
-
-      const submitButton = document.getElementById(
-        "submit-button",
-      ) as HTMLButtonElement;
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = "Processing...";
-      }
-
-      const form = event.target as HTMLFormElement;
-      const formData = new FormData(form);
-
-      const data: FormData = {
-        email: formData.get("email") as string,
-        firstName: formData.get("first_name") as string,
-        lastName: formData.get("last_name") as string,
-        phone: formData.get("phone_number") as string,
-        consent: formData.get("consent") as string,
-        address1: formData.get("address address-search") as string,
-        city: formData.get("city") as string,
-        state: formData.get("state") as string,
-        postcode: formData.get("postcode") as string,
-        apartment: (formData.get("apartment") as string) || undefined,
-      };
-
-      if (
-        !data.firstName ||
-        !data.lastName ||
-        !data.phone ||
-        !data.address1 ||
-        !data.consent ||
-        !data.city ||
-        !data.state ||
-        !data.postcode
-      ) {
-        displayErrorMessage("Please fill all the fields");
-        return;
-      }
-
-      try {
-        await swell.account.update({
-          email: data.email,
-          first_name: data.firstName,
-          last_name: data.lastName,
-          phone: data.phone,
-          email_optin: data.consent === "on",
-          shipping: {
-            address1: data.address1,
-            address2: data.apartment,
-            city: data.city,
-            state: data.state,
-            zip: data.postcode,
-          },
-          type: "individual",
-          metadata: {
-            onboarded: true,
-          },
-        });
-
-        window.location.href =
-          "/?message=" + encodeURIComponent("Onboarding completed");
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "An unknown error occurred";
-        displayErrorMessage(errorMessage);
-      }
-    };
-
-    const displayErrorMessage = (message: string): void => {
-      const errorMessageElement = document.getElementById("error-message");
-      if (errorMessageElement) {
-        errorMessageElement.textContent = message;
-      }
-    };
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector("form");
-      if (form) {
-        form.addEventListener("submit", handleFormSubmit);
-      } else {
-        console.error("Form not found");
-      }
-    });
-  </script>
-
+  <script src="../scripts/create-account.ts"></script>
   <MapboxAutofill client:only mapboxToken={mapboxToken} />
 </Layout>
