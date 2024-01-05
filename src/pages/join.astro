@@ -1,5 +1,14 @@
 ---
 import Layout from "@layouts/Layout.astro";
+
+// Redirect authenticated users away from join page
+const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value;
+
+if (isLoggedIn) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are already logged in"),
+  );
+}
 ---
 
 <Layout>
@@ -12,6 +21,10 @@ import Layout from "@layouts/Layout.astro";
         We first want to make sure we can deliver our great products to you.
       </p>
       <form method="POST" id="signupForm">
+        <!-- Error Message -->
+        <p class="text-red-400" id="error"></p>
+
+        <!-- Email Field -->
         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
           Email
         </label>
@@ -59,8 +72,6 @@ import Layout from "@layouts/Layout.astro";
           maxlength="10"
         />
 
-        <p class="text-red-400" id="error"></p>
-
         <button
           class="bg-blue-500 text-white rounded-md p-2 w-full mb-2 hover:bg-blue-600"
         >
@@ -78,94 +89,5 @@ import Layout from "@layouts/Layout.astro";
     </div>
   </div>
 
-  <script>
-    import { getSwellClient } from "../lib/swell";
-    import { confirmed_zipcodes } from "../lib/constants";
-
-    const swell = getSwellClient(
-      import.meta.env.PUBLIC_SWELL_STORE_ID,
-      import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-    );
-
-    // TODO: Update to redirect before page loads
-    const checkLoginStatus = async () => {
-      const loggedInUser = await swell.account.get();
-
-      if (loggedInUser) {
-        window.location.href =
-          "/?message=" + encodeURIComponent("You are already logged in.");
-      }
-    };
-
-    checkLoginStatus();
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("signupForm") as HTMLFormElement;
-      const errorElement = document.getElementById("error");
-
-      if (!form || !errorElement) {
-        return;
-      }
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        errorElement.textContent = "";
-
-        const formData = new FormData(form);
-
-        let email = formData.get("email") as string;
-        let password = formData.get("password") as string;
-        let zipcode = formData.get("zipcode") as string;
-
-        if (!email) {
-          displayError("Invalid email address.");
-          return;
-        }
-        if (!password) {
-          displayError("Password is required.");
-          return;
-        }
-        if (!zipcode || !confirmed_zipcodes.includes(zipcode)) {
-          window.location.href =
-            "/waitlist?zipcode=" +
-            zipcode +
-            "&email=" +
-            encodeURIComponent(email);
-        }
-
-        try {
-          const createAccountResp = await swell.account.create({
-            email,
-            password,
-            type: "individual",
-          });
-
-          console.log("Create account: ", createAccountResp);
-
-          if (createAccountResp.id) {
-            const loginResp = await swell.account.login(email, password);
-            console.log("Login: ", loginResp);
-            const loggedInUser = await swell.account.get();
-            if (loggedInUser) {
-              const sessionCookie = swell.session.getCookie();
-              localStorage.setItem("swell_session_token", sessionCookie);
-              window.location.href =
-                "/create-account?email=" + encodeURIComponent(email);
-            } else {
-              displayError("An error occurred. Please try again later.");
-            }
-          }
-
-          // TODO: Login user in if account already exists
-        } catch (error) {
-          displayError("An error occurred. Please try again later.");
-          console.error(error);
-        }
-      });
-
-      const displayError = (message: string) => {
-        errorElement.textContent = message;
-      };
-    });
-  </script>
+  <script src="../scripts/join.ts"></script>
 </Layout>
