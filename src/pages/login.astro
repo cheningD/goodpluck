@@ -1,5 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+// Redirect authenticated users away from login page
+const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value;
+
+if (isLoggedIn) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are already logged in"),
+  );
+}
 ---
 
 <Layout>
@@ -62,79 +71,5 @@ import Layout from "../layouts/Layout.astro";
     </div>
   </div>
 
-  <script>
-    import { getSwellClient } from "../lib/swell";
-
-    const swell = getSwellClient(
-      import.meta.env.PUBLIC_SWELL_STORE_ID,
-      import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-    );
-
-    // TODO: Update to redirect before page loads
-    const checkLoginStatus = async () => {
-      const loggedInUser = await swell.account.get();
-
-      if (loggedInUser) {
-        window.location.href =
-          "/?message=" + encodeURIComponent("You are already logged in.");
-      }
-    };
-
-    checkLoginStatus();
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("loginForm") as HTMLFormElement;
-      const errorElement = document.getElementById("error");
-
-      if (!form || !errorElement) {
-        console.error("Missing form or error element.");
-        return;
-      }
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        errorElement.textContent = "";
-        errorElement.classList.add("hidden");
-
-        const formData = new FormData(form);
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-
-        if (!email || !password) {
-          displayError("Email and password are required.");
-          return;
-        }
-
-        try {
-          await swell.account.login(email, password);
-          const loggedInUser = await swell.account.get();
-
-          if (loggedInUser) {
-            // TODO: redirect users the create-account page if they don't have all the necessary info
-            const sessionCookie = swell.session.getCookie();
-            localStorage.setItem("swell_session_token", sessionCookie);
-            window.location.href =
-              "/?message=" + encodeURIComponent("You are now logged in.");
-          } else {
-            displayError("Invalid email or password.");
-            // TODO: account for "Email not found. Do you need to create an account?"
-          }
-        } catch (error) {
-          if (error instanceof Error) {
-            displayError(
-              "A network error or unexpected issue occurred, please try again later.",
-            );
-          } else {
-            displayError(`Unexpected error occurred, please try again later.`);
-          }
-          console.error(error);
-        }
-      });
-
-      const displayError = (message: string) => {
-        errorElement.textContent = message;
-        errorElement.classList.remove("hidden");
-      };
-    });
-  </script>
+  <script src="../scripts/login.ts"></script>
 </Layout>
