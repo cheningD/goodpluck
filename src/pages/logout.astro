@@ -1,32 +1,16 @@
-<html lang="en">
-  <body>
-    <script>
-      import { getSwellClient } from "../lib/swell";
+---
+let message = "";
 
-      try {
-        const swell = getSwellClient(
-          import.meta.env.PUBLIC_SWELL_STORE_ID,
-          import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-        );
+const isLoggedIn =
+  Astro.cookies.get("swell-session") && Astro.cookies.get("gp_session_token");
 
-        const loggedInUser = await swell.account.get();
-        let message = "";
+if (isLoggedIn) {
+  Astro.cookies.delete("swell-session");
+  Astro.cookies.delete("gp_session_token");
+  message = "Successfully logged out";
+} else {
+  message = "You are not logged in";
+}
 
-        if (loggedInUser) {
-          await swell.account.logout();
-          message = "Successfully logged out";
-        } else {
-          message = "You are not logged in";
-        }
-
-        window.location.href = "/?message=" + encodeURIComponent(message);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        // Delete the session token after any swell account logout attempt
-        document.cookie =
-          "swell-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      }
-    </script>
-  </body>
-</html>
+return Astro.redirect(`/?message=${encodeURIComponent(message)}`);
+---
