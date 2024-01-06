@@ -2,17 +2,8 @@
 import Layout from "@layouts/MainLayout.astro";
 import Breadcrumb from "@components/solid/Breadcrumb.tsx";
 import Products from "@components/solid/Products.tsx";
-import { initSwell } from "../../lib/swell";
+import { swell } from "../../lib/swell";
 
-const runtime = Astro.locals.runtime;
-const swell = initSwell(
-  runtime
-    ? runtime.env.PUBLIC_SWELL_STORE_ID
-    : import.meta.env.PUBLIC_SWELL_STORE_ID,
-  runtime
-    ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY
-    : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
 const { slug } = Astro.params;
 
 const categories = await swell.categories.list({
@@ -21,7 +12,7 @@ const categories = await swell.categories.list({
 });
 
 const currentCollection = categories.results.find(
-  (category) => category.slug === slug,
+  (category: any) => category.slug === slug,
 );
 if (!currentCollection) return Astro.redirect("/404");
 
@@ -33,7 +24,7 @@ function getCurrentSubCategories() {
     return [];
   }
   const subCategories = categories.results.filter(
-    (col) => col.parent_id == currentCollection.id,
+    (col: any) => col.parent_id == currentCollection.id,
   );
   if (subCategories) {
     return subCategories;
@@ -62,7 +53,7 @@ const { name, description } = currentCollection;
         </h2>
         <ul class="sticky top-[114px]">
           {
-            getCurrentSubCategories().map((collection) => (
+            getCurrentSubCategories().map((collection: any) => (
               <li>
                 <a
                   href={`/market/${collection.slug}`}

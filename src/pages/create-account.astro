@@ -5,12 +5,8 @@ import Layout from "@layouts/Layout.astro";
 
 const errors = { err: "" };
 
-const runtime = Astro.locals.runtime;
-const mapboxToken = runtime
-  ? runtime.env.MAPBOX_DEFAULT_PUBLIC_TOKEN
-  : import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
-const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
-  runtime?.env || import.meta.env;
+const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
+const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } = import.meta.env;
 
 if (Astro.request.method === "POST") {
   try {

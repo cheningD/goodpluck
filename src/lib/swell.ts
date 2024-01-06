@@ -1,10 +1,7 @@
-import swell from "swell-js";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const swell = require("swell-node").init(
+  import.meta.env.PUBLIC_SWELL_STORE_ID,
+  import.meta.env.SWELL_SECRET_KEY,
+);
 
-// Initialize Swell, Access the envirnoment variables from the runtime
-// https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-runtime
-function initSwell(storeId: string, publicKey: string) {
-  swell.init(storeId, publicKey);
-  return swell;
-}
-
-export { initSwell };
+export { swell };

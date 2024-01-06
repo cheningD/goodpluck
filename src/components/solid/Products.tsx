@@ -1,11 +1,6 @@
-import {
-  Show,
-  Component,
-  createSignal,
-  createEffect,
-  onCleanup,
-} from "solid-js";
-import { initSwell } from "../../lib/swell";
+import { type Component, Show, createSignal, onCleanup } from "solid-js";
+
+import { swell } from "../../lib/swell";
 import { throttle } from "../../lib/throttle";
 
 interface iProps {
@@ -13,18 +8,13 @@ interface iProps {
 }
 
 const Products: Component<iProps> = (props) => {
-  const swell = initSwell(
-    import.meta.env.PUBLIC_SWELL_STORE_ID,
-    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-  );
-
   const [products, setProducts] = createSignal([]);
   const [isLoading, setIsLoading] = createSignal(false);
   const [page, setPage] = createSignal(1);
-  const [totalProducts, setTotalProducts] = createSignal(122); // total number of products in Swell currently
+  const [totalProducts] = createSignal(122); // total number of products in Swell currently
   let isFetching = false; // flag to indicate if fetching is in progress
 
-  const fetchProducts = async () => {
+  const fetchProducts: () => Promise<void> = async () => {
     if (products().length >= totalProducts() || isFetching) {
       return;
     }
@@ -42,9 +32,9 @@ const Products: Component<iProps> = (props) => {
     setPage(page() + 1);
   };
 
-  const checkScroll = () => {
+  const checkScroll: () => Promise<void> = async () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      fetchProducts();
+      await fetchProducts();
     }
   };
 
@@ -52,7 +42,7 @@ const Products: Component<iProps> = (props) => {
   const throttledCheckScroll = throttle(checkScroll, 200);
 
   window.addEventListener("scroll", throttledCheckScroll);
-  fetchProducts();
+  await fetchProducts();
 
   onCleanup(() => {
     window.removeEventListener("scroll", throttledCheckScroll);
@@ -70,7 +60,7 @@ const Products: Component<iProps> = (props) => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: itemListElement,
+    itemListElement,
   };
 
   return (
@@ -82,7 +72,7 @@ const Products: Component<iProps> = (props) => {
             <li class="flex flex-col gap-y-2">
               <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
                 <a href={`/product/${product.slug}`}>
-                  <Show when={product.images != undefined}>
+                  <Show when={product.images !== undefined}>
                     <img
                       alt={`Image of ${product.name}`}
                       src={product.images[0].file.url}

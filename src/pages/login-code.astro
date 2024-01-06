@@ -6,9 +6,7 @@ import Layout from "../layouts/Layout.astro";
 
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
-const runtime = Astro.locals.runtime;
-const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
-  runtime?.env || import.meta.env;
+const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } = import.meta.env;
 
 // Extract method_id from the URL
 const url = new URL(Astro.request.url);
