@@ -39,7 +39,9 @@ test.describe('Products Page Tests', () => {
       .count()
 
     // Scroll to the bottom of the page
-    await page.evaluate(() => { window.scrollTo(0, document.body.scrollHeight) })
+    await page.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight)
+    })
 
     // Wait for potential lazy loading of items
     await page.waitForTimeout(5000)

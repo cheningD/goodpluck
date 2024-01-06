@@ -38,7 +38,9 @@ const Banner: Component<BannerProps> = ({ isLoggedIn }) => {
               data-hs-overlay="#sidebar-mini"
               aria-controls="sidebar-mini"
               aria-label="Toggle navigation"
-              onClick={() => { isCartOpen.set(!$isCartOpen()) }}
+              onClick={() => {
+                isCartOpen.set(!$isCartOpen())
+              }}
             >
               Please enter your zip
             </button>
