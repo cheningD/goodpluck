@@ -1,15 +1,5 @@
-import { getSwellClient } from "../lib/swell";
+import { login, setSessionCookie, type AccountMetadata } from "../lib/swell";
 import { type Account } from "swell-js";
-
-const swell = getSwellClient(
-  import.meta.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
-
-interface Metadata {
-  onboarded?: boolean;
-  [key: string]: any;
-}
 
 const handleFormSubmit = async (event: Event): Promise<void> => {
   event.preventDefault();
@@ -44,37 +34,16 @@ const handleFormSubmit = async (event: Event): Promise<void> => {
   }
 };
 
-const login = async (
-  email: string,
-  password: string,
-): Promise<Account | null> => {
-  try {
-    await swell.account.login(email, password);
-    console.log("Logged in", await swell.account.get());
-    return await swell.account.get();
-  } catch {
-    return null;
-  }
-};
-
 const handleSuccessfulLogin = (account: Account): void => {
   setSessionCookie();
 
-  const metadata = account.metadata as Metadata;
-  console.log(metadata);
+  const metadata = account.metadata as AccountMetadata;
   if (!metadata?.onboarded) {
-    window.location.href = "/create-account";
+    window.location.href = "/onboarding";
   } else {
     window.location.href =
       "/?message=" + encodeURIComponent("You are now logged in.");
   }
-};
-
-const setSessionCookie = (): void => {
-  const sessionCookie = swell.session.getCookie();
-  const expires = new Date();
-  expires.setDate(expires.getDate() + 7);
-  document.cookie = `gp_session_token=${sessionCookie};expires=${expires.toUTCString()};path=/;Secure;SameSite=Lax`;
 };
 
 const displayError = (

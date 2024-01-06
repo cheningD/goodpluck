@@ -1,16 +1,11 @@
-import { getSwellClient } from "../lib/swell";
+import {
+  login,
+  createAccount,
+  setSessionCookie,
+  type AccountMetadata,
+} from "../lib/swell";
 import { confirmed_zipcodes } from "../lib/constants";
 import { type Account } from "swell-js";
-
-const swell = getSwellClient(
-  import.meta.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
-
-interface Metadata {
-  onboarded?: boolean;
-  [key: string]: any;
-}
 
 const handleFormSubmit = async (event: Event): Promise<void> => {
   event.preventDefault();
@@ -43,10 +38,8 @@ const handleFormSubmit = async (event: Event): Promise<void> => {
   try {
     const account = await login(email, password);
     if (account) {
-      console.log("account", account);
       handleSuccessfulLogin(account);
     } else {
-      console.log("creating account");
       await createAccount(email, password);
       const newAccount = await login(email, password);
       if (newAccount) handleSuccessfulLogin(newAccount);
@@ -56,48 +49,17 @@ const handleFormSubmit = async (event: Event): Promise<void> => {
   }
 };
 
-const login = async (
-  email: string,
-  password: string,
-): Promise<Account | null> => {
-  try {
-    await swell.account.login(email, password);
-    const account = await swell.account.get();
-    return account;
-  } catch {
-    return null;
-  }
-};
-
-const createAccount = async (
-  email: string,
-  password: string,
-): Promise<void> => {
-  try {
-    await swell.account.create({ email, password, type: "individual" });
-  } catch (error) {
-    throw new Error("An error occurred while creating an account.");
-  }
-};
-
 const handleSuccessfulLogin = (account: Account): void => {
   setSessionCookie();
 
   // If the user has not completed onboarding, redirect to the onboarding page.
-  const metadata = account?.metadata as Metadata | undefined;
+  const metadata = account?.metadata as AccountMetadata | undefined;
   if (!metadata?.onboarded) {
-    window.location.href = "/create-account";
+    window.location.href = "/onboarding";
   } else {
     window.location.href =
       "/?message=" + encodeURIComponent("You are now logged in.");
   }
-};
-
-const setSessionCookie = (): void => {
-  const sessionCookie = swell.session.getCookie();
-  const expires = new Date();
-  expires.setDate(expires.getDate() + 7);
-  document.cookie = `gp_session_token=${sessionCookie};expires=${expires.toUTCString()};path=/;Secure;SameSite=Lax`;
 };
 
 const displayError = (message: string, errorElement: HTMLElement): void => {
