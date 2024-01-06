@@ -1,36 +1,12 @@
-import { getSwellClient } from "../lib/swell";
-import { type Account } from "swell-js";
-
-interface FormData {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  consent: string;
-  address1: string;
-  city: string;
-  state: string;
-  postcode: string;
-  apartment?: string;
-}
-
-interface Metadata {
-  onboarded?: boolean;
-  [key: string]: any;
-}
+import { getAccount, updateAccount, type AccountMetadata } from "../lib/swell";
 
 const handleFormSubmit = async (event: Event): Promise<void> => {
   event.preventDefault();
 
-  const swell = getSwellClient(
-    import.meta.env.PUBLIC_SWELL_STORE_ID,
-    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-  );
-
-  const account: Account | null = await swell.account.get();
+  const account = await getAccount();
 
   // Checks if the user has already completed onboarding
-  const metadata = account?.metadata as Metadata | undefined;
+  const metadata = account?.metadata as AccountMetadata | undefined;
   if (metadata?.onboarded) {
     window.location.href =
       "/?message=" +
@@ -40,7 +16,7 @@ const handleFormSubmit = async (event: Event): Promise<void> => {
 
   const form = event.target as HTMLFormElement;
   const formData = new FormData(form);
-  const data: FormData = {
+  const data = {
     email: account?.email as string,
     firstName: formData.get("first_name") as string,
     lastName: formData.get("last_name") as string,
@@ -70,7 +46,7 @@ const handleFormSubmit = async (event: Event): Promise<void> => {
   }
 
   try {
-    await swell.account.update({
+    await updateAccount({
       email: data.email,
       first_name: data.firstName,
       last_name: data.lastName,
