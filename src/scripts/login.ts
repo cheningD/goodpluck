@@ -21,9 +21,11 @@ const handleFormSubmit = async (event: Event): Promise<void> => {
 
   try {
     const account = await login(email, password);
+    console.log("account", account);
     if (account) {
       handleSuccessfulLogin(account);
     } else {
+      console.log("Invalid email or password.", errorElement);
       displayError("Invalid email or password.", errorElement);
     }
   } catch (error) {
@@ -51,6 +53,7 @@ const displayError = (
   errorElement: HTMLElement | null,
 ): void => {
   if (errorElement) {
+    errorElement.style.display = "block";
     errorElement.textContent = message;
   }
 };

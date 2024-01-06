@@ -21,17 +21,21 @@ const handleFormSubmit = async (event: Event): Promise<void> => {
   const password = formData.get("password") as string;
   const zipcode = formData.get("zipcode") as string;
 
-  if (!email) {
-    displayError("Invalid email address.", errorElement);
-    return;
-  }
-  if (!password) {
-    displayError("Password is required.", errorElement);
+  if (!email || !password) {
+    displayError("Email and password are required.", errorElement);
     return;
   }
   if (!zipcode || !confirmed_zipcodes.includes(zipcode)) {
     window.location.href =
       "/waitlist?zipcode=" + zipcode + "&email=" + encodeURIComponent(email);
+  }
+
+  // Passwords must be at least 8 characters long and contain at least one number.
+  if (password.length < 8 || !/\d/.test(password)) {
+    displayError(
+      "Passwords must be at least 8 characters long and contain at least one number.",
+      errorElement,
+    );
     return;
   }
 
@@ -63,7 +67,10 @@ const handleSuccessfulLogin = (account: Account): void => {
 };
 
 const displayError = (message: string, errorElement: HTMLElement): void => {
-  errorElement.textContent = message;
+  if (errorElement) {
+    errorElement.style.display = "block";
+    errorElement.textContent = message;
+  }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
