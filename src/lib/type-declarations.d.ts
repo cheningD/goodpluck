@@ -4,3 +4,8 @@ declare module "@motionone/solid" {
   // Add more exports as needed
   export { Motion, Presence };
 }
+
+declare module "swell-node" {
+  const init: any;
+  export { init };
+}

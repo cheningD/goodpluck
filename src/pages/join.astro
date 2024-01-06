@@ -7,9 +7,7 @@ import { confirmed_zipcodes } from "../lib/constants";
 const errors = { email: "" };
 let email;
 
-const runtime = Astro.locals.runtime;
-const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } =
-  runtime?.env || import.meta.env;
+const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } = import.meta.env;
 
 if (Astro.request.method === "POST") {
   try {

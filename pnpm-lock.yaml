@@ -35,6 +35,9 @@ dependencies:
   preline:
     specifier: ^2.0.2
     version: 2.0.2
+  sharp:
+    specifier: ^0.33.1
+    version: 0.33.1
   solid-js:
     specifier: ^1.8.3
     version: 1.8.3
@@ -44,9 +47,9 @@ dependencies:
   stytch:
     specifier: ^9.0.6
     version: 9.0.6
-  swell-js:
-    specifier: ^3.24.0
-    version: 3.24.0
+  swell-node:
+    specifier: ^5.6.0
+    version: 5.6.0
   tailwindcss:
     specifier: ^3.0.24
     version: 3.3.4
@@ -4031,6 +4034,7 @@ packages:
       function-bind: 1.1.2
       get-intrinsic: 1.2.2
       set-function-length: 1.1.1
+    dev: true
 
   /callsites@3.1.0:
     resolution:
@@ -4288,7 +4292,6 @@ packages:
       color-name: 1.1.4
       simple-swizzle: 0.2.2
     dev: false
-    optional: true
 
   /color-support@1.1.3:
     resolution:
@@ -4309,7 +4312,6 @@ packages:
       color-convert: 2.0.1
       color-string: 1.9.1
     dev: false
-    optional: true
 
   /colord@2.9.3:
     resolution:
@@ -4547,14 +4549,6 @@ packages:
       }
     dev: true
 
-  /deepmerge@4.3.1:
-    resolution:
-      {
-        integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==,
-      }
-    engines: { node: ">=0.10.0" }
-    dev: false
-
   /define-data-property@1.1.1:
     resolution:
       {
@@ -4565,6 +4559,7 @@ packages:
       get-intrinsic: 1.2.2
       gopd: 1.0.1
       has-property-descriptors: 1.0.1
+    dev: true
 
   /define-properties@1.2.1:
     resolution:
@@ -5412,13 +5407,6 @@ packages:
       }
     dev: false
 
-  /fast-case@1.7.0:
-    resolution:
-      {
-        integrity: sha512-kkLws9Nx9kkXjZ6ng6gaFWm+qssXAxSej37fpdur7V1U5R8/lp0rps5aGo/XkhNjWyr+agjRA5y91rw8ZRBviQ==,
-      }
-    dev: false
-
   /fast-deep-equal@3.1.3:
     resolution:
       {
@@ -5712,6 +5700,7 @@ packages:
       has-proto: 1.0.1
       has-symbols: 1.0.3
       hasown: 2.0.0
+    dev: true
 
   /get-stream@6.0.1:
     resolution:
@@ -5864,6 +5853,7 @@ packages:
       }
     dependencies:
       get-intrinsic: 1.2.2
+    dev: true
 
   /graceful-fs@4.2.11:
     resolution:
@@ -5929,6 +5919,7 @@ packages:
       }
     dependencies:
       get-intrinsic: 1.2.2
+    dev: true
 
   /has-proto@1.0.1:
     resolution:
@@ -5936,6 +5927,7 @@ packages:
         integrity: sha512-7qE+iP+O+bgF9clE5+UoBFzE65mlBiVj3tKCrlNQ0Ogwm0BjpT/gK4SlLYDMybDh5I3TCTKnPPa0oMG7JDYrhg==,
       }
     engines: { node: ">= 0.4" }
+    dev: true
 
   /has-symbols@1.0.3:
     resolution:
@@ -5943,6 +5935,7 @@ packages:
         integrity: sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==,
       }
     engines: { node: ">= 0.4" }
+    dev: true
 
   /has-tostringtag@1.0.0:
     resolution:
@@ -6307,7 +6300,6 @@ packages:
       }
     requiresBuild: true
     dev: false
-    optional: true
 
   /is-bigint@1.0.4:
     resolution:
@@ -7948,6 +7940,7 @@ packages:
       {
         integrity: sha512-5qoj1RUiKOMsCCNLV1CBiPYE10sziTsnmNxkAI/rZhiD63CF7IqdFGC/XzjWjpSgLf0LxXX3bDFIh0E18f6UhQ==,
       }
+    dev: true
 
   /object-keys@1.1.1:
     resolution:
@@ -8570,16 +8563,6 @@ packages:
       }
     engines: { node: ">=6" }
 
-  /qs@6.11.2:
-    resolution:
-      {
-        integrity: sha512-tDNIz22aBzCDxLtVH++VnTfzxlfeK5CbqohpSqpJgj1Wg/cQbStNAz3NuqCs5vV+pjBsK4x4pN9HlVh7rcYRiA==,
-      }
-    engines: { node: ">=0.6" }
-    dependencies:
-      side-channel: 1.0.4
-    dev: false
-
   /queue-microtask@1.2.3:
     resolution:
       {
@@ -9144,6 +9127,7 @@ packages:
       get-intrinsic: 1.2.2
       gopd: 1.0.1
       has-property-descriptors: 1.0.1
+    dev: true
 
   /set-function-name@2.0.1:
     resolution:
@@ -9189,7 +9173,6 @@ packages:
       "@img/sharp-win32-ia32": 0.33.1
       "@img/sharp-win32-x64": 0.33.1
     dev: false
-    optional: true
 
   /shebang-command@2.0.0:
     resolution:
@@ -9225,6 +9208,7 @@ packages:
       call-bind: 1.0.5
       get-intrinsic: 1.2.2
       object-inspect: 1.13.1
+    dev: true
 
   /signal-exit@3.0.7:
     resolution:
@@ -9248,7 +9232,6 @@ packages:
     dependencies:
       is-arrayish: 0.3.2
     dev: false
-    optional: true
 
   /sisteransi@1.0.5:
     resolution:
@@ -9743,16 +9726,12 @@ packages:
       }
     dev: false
 
-  /swell-js@3.24.0:
+  /swell-node@5.6.0:
     resolution:
       {
-        integrity: sha512-eJ7Izds3DnZXVxi+eclTg1iZuoHP62JCZigMqiCOBKRI8uDi6dr72kCjMDqfoDAB5z+tuV+1ibxLNbxUOvO0aQ==,
+        integrity: sha512-9Xsz/yHjO2XltsgVlCMEI7171naNNrHMAik6Hvz2nmpbGpn0mudtxAF1KRDMwDW+lO/9oMpCvqrtND07Vu3xBg==,
       }
     engines: { node: ">=14.19.1", npm: ">=8.17.0" }
-    dependencies:
-      deepmerge: 4.3.1
-      fast-case: 1.7.0
-      qs: 6.11.2
     dev: false
 
   /synckit@0.8.8:

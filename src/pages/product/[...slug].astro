@@ -1,16 +1,7 @@
 ---
 import Layout from "@layouts/MainLayout.astro";
-import { initSwell } from "../../lib/swell.ts";
+import { swell } from "../../lib/swell.ts";
 
-const runtime = Astro.locals.runtime;
-const swell = initSwell(
-  runtime
-    ? runtime.env.PUBLIC_SWELL_STORE_ID
-    : import.meta.env.PUBLIC_SWELL_STORE_ID,
-  runtime
-    ? runtime.env.PUBLIC_SWELL_PUBLIC_KEY
-    : import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
 const { slug } = Astro.params;
 
 const product = await swell.products.get(slug === undefined ? "" : slug);
