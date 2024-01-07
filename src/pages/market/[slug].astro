@@ -6,7 +6,10 @@ import { swell } from "../../lib/swell";
 
 const { slug } = Astro.params;
 
-const categories = await swell.categories.list({
+const categories = await swell.get("/categories", {
+  where: {
+    active: true,
+  },
   limit: 100,
   page: 1,
 });
