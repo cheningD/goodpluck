@@ -1,7 +1,7 @@
-import type { Component } from 'solid-js'
+import type { Component } from "solid-js";
 
 interface CartProps {
-  readonly postcode: string | undefined
+  readonly postcode: string | undefined;
 }
 
 const Cart: Component<CartProps> = ({ postcode }: CartProps) => {
@@ -49,10 +49,10 @@ const Cart: Component<CartProps> = ({ postcode }: CartProps) => {
           >
             <form class="p-4 flex flex-col h-full gap-y-10">
               <p class="text-gray-500 dark:text-gray-400">
-                Before we add items to your order, let's{' '}
+                Before we add items to your order, let's{" "}
                 <em class="font-semibold text-gray-800 dark:text-gray-200">
                   confirm
-                </em>{' '}
+                </em>{" "}
                 we deliver to your area.
               </p>
               <div class="flex flex-col gap-y-3">
@@ -91,7 +91,7 @@ const Cart: Component<CartProps> = ({ postcode }: CartProps) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;

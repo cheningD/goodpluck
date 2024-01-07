@@ -1,60 +1,60 @@
-import { Show, For, type Component } from 'solid-js'
+import { Show, For, type Component } from "solid-js";
 
 interface IProps {
-  categories: any
-  collectionId: any
+  categories: any;
+  collectionId: any;
 }
 
 const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
-  const checkCategory = categories.find((col) => col.id === collectionId)
+  const checkCategory = categories.find((col) => col.id === collectionId);
   let categoryId = checkCategory.parent_id
     ? collectionId
-    : categories.filter((col) => col.parent_id === collectionId)[0].id
+    : categories.filter((col) => col.parent_id === collectionId)[0].id;
 
   const categoryHasChild =
     categories.filter((col) => col.parent_id === checkCategory.id).length > 0
       ? categories.filter((col) => col.parent_id === checkCategory.id)[0]
-      : null
+      : null;
 
   if (categoryHasChild) {
-    categoryId = categoryHasChild.id
+    categoryId = categoryHasChild.id;
   }
 
-  const currentCategory = categories.find((col) => col.id === categoryId)
+  const currentCategory = categories.find((col) => col.id === categoryId);
   let parentCategory = categories.find(
-    (col) => col.id === currentCategory.parent_id
-  )
+    (col) => col.id === currentCategory.parent_id,
+  );
 
-  const breadcrumb = []
-  breadcrumb.push(currentCategory)
+  const breadcrumb = [];
+  breadcrumb.push(currentCategory);
 
   if (parentCategory?.parent_id) {
-    breadcrumb.unshift(parentCategory)
+    breadcrumb.unshift(parentCategory);
   }
 
-  let topLevelCategory = parentCategory || currentCategory
+  let topLevelCategory = parentCategory || currentCategory;
 
   while (parentCategory) {
-    topLevelCategory = parentCategory
+    topLevelCategory = parentCategory;
     parentCategory = categories.find(
-      (col) => col.id === parentCategory.parent_id
-    )
+      (col) => col.id === parentCategory.parent_id,
+    );
   }
 
-  const websiteDomain = import.meta.env.VITE_WEBSITE_DOMAIN
+  const websiteDomain = import.meta.env.VITE_WEBSITE_DOMAIN;
 
   const breadcrumbList = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
     itemListElement: breadcrumb.map((collection, index) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: index + 1,
       item: {
-        '@id': `${websiteDomain}/${collection.slug}`,
-        name: collection.name
-      }
-    }))
-  }
+        "@id": `${websiteDomain}/${collection.slug}`,
+        name: collection.name,
+      },
+    })),
+  };
 
   return (
     <div>
@@ -90,8 +90,8 @@ const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
               <li
                 class={
                   collection.id !== categoryId
-                    ? 'inline-flex items-center'
-                    : 'inline-flex items-center text-sm font-semibold text-gray-800 truncate dark:text-gray-200'
+                    ? "inline-flex items-center"
+                    : "inline-flex items-center text-sm font-semibold text-gray-800 truncate dark:text-gray-200"
                 }
               >
                 <Show when={i() > 0}>
@@ -111,18 +111,16 @@ const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
                   </svg>
                 </Show>
 
-                {collection.id !== categoryId
-                  ? (
+                {collection.id !== categoryId ? (
                   <a
                     class="flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
                     href={`/market/${collection.slug}`}
                   >
                     {collection.name}
                   </a>
-                    )
-                  : (
-                      collection.name
-                    )}
+                ) : (
+                  collection.name
+                )}
               </li>
             </>
           )}
@@ -134,7 +132,7 @@ const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
         {JSON.stringify(breadcrumbList)}
       </script>
     </div>
-  )
-}
+  );
+};
 
-export default Breadcrumb
+export default Breadcrumb;

@@ -1,21 +1,21 @@
-import { Show, For, type Component } from 'solid-js'
+import { Show, For, type Component } from "solid-js";
 
 interface IProps {
-  collections: any
+  collections: any;
 }
 
 const Sidebar: Component<IProps> = ({ collections }) => {
-  const categories = collections.filter((col: any) => col.parent_id === null)
+  const categories = collections.filter((col: any) => col.parent_id === null);
 
-  function getSubCategories (parentId: number): any {
+  function getSubCategories(parentId: number): any {
     const categories = collections.filter(
-      (col: any) => col.parent_id === parentId
-    )
+      (col: any) => col.parent_id === parentId,
+    );
 
     if (categories) {
-      return categories
+      return categories;
     }
-    return []
+    return [];
   }
 
   return (
@@ -73,7 +73,7 @@ const Sidebar: Component<IProps> = ({ collections }) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

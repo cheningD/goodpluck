@@ -1,45 +1,45 @@
-import { type Component, Show } from 'solid-js'
+import { type Component, Show } from "solid-js";
 
 interface IProps {
-  categorySlug: any
-  categories: any
+  categorySlug: any;
+  categories: any;
 }
 
 const ScrollSpy: Component<IProps> = ({ categorySlug, categories }) => {
-  const checkCategory = categories.find((col) => col.slug === categorySlug)
+  const checkCategory = categories.find((col) => col.slug === categorySlug);
   let collectionSlug = checkCategory.parent_id
     ? categorySlug
-    : categories.filter((col) => col.parent_id === checkCategory.id)[0].slug
+    : categories.filter((col) => col.parent_id === checkCategory.id)[0].slug;
   const categoryHasChild =
     categories.filter((col) => col.parent_id === checkCategory.id).length > 0
       ? categories.filter((col) => col.parent_id === checkCategory.id)[0]
-      : null
+      : null;
 
   if (categoryHasChild) {
-    collectionSlug = categoryHasChild.slug
+    collectionSlug = categoryHasChild.slug;
   }
 
   const currentCategory = categories.find(
-    (category) => category.slug === collectionSlug
-  )
+    (category) => category.slug === collectionSlug,
+  );
 
   let parentCategory = categories.find(
-    (col) => col.id === currentCategory.parent_id
-  )
+    (col) => col.id === currentCategory.parent_id,
+  );
 
-  let categoryParentsCount = 0
-  let topLevelCategory = parentCategory || currentCategory
+  let categoryParentsCount = 0;
+  let topLevelCategory = parentCategory || currentCategory;
 
   while (parentCategory) {
-    categoryParentsCount++
-    topLevelCategory = parentCategory
+    categoryParentsCount++;
+    topLevelCategory = parentCategory;
     parentCategory = categories.find(
-      (col) => col.id === parentCategory.parent_id
-    )
+      (col) => col.id === parentCategory.parent_id,
+    );
   }
 
   const getChildCategories = (parentCategoryId): [] =>
-    categories.filter((category) => category.parent_id === parentCategoryId)
+    categories.filter((category) => category.parent_id === parentCategoryId);
 
   return (
     <>
@@ -64,8 +64,8 @@ const ScrollSpy: Component<IProps> = ({ categorySlug, categories }) => {
                   class={
                     collection.slug === currentCategory.slug ||
                     collection.id === currentCategory.parent_id
-                      ? 'font-bold !text-teal-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none  dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active'
-                      : 'font-medium  !text-slate-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active'
+                      ? "font-bold !text-teal-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none  dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                      : "font-medium  !text-slate-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
                   }
                 >
                   {collection.name}
@@ -87,8 +87,8 @@ const ScrollSpy: Component<IProps> = ({ categorySlug, categories }) => {
                           href={`/market/${collection.slug}`}
                           class={
                             collection.slug === currentCategory.slug
-                              ? 'font-bold !text-teal-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active'
-                              : 'font-medium !text-slate-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active'
+                              ? "font-bold !text-teal-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                              : "font-medium !text-slate-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
                           }
                         >
                           {collection.name}
@@ -115,14 +115,14 @@ const ScrollSpy: Component<IProps> = ({ categorySlug, categories }) => {
                             href={`/market/${collection.slug}`}
                             class={
                               collection.slug === currentCategory.slug
-                                ? 'font-bold !text-teal-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active'
-                                : 'font-medium !text-slate-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active'
+                                ? "font-bold !text-teal-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
+                                : "font-medium !text-slate-700 block py-0.5 text-md leading-6 hover:text-slate-900 focus:outline-none dark:text-slate-400 dark:hover:text-slate-300 dark:focus:text-blue-500 hs-scrollspy-active:text-blue-600 dark:hs-scrollspy-active:text-blue-400 active"
                             }
                           >
                             {collection.name}
                           </a>
                         </li>
-                      )
+                      ),
                     )}
                   </ul>
                 </Show>
@@ -132,7 +132,7 @@ const ScrollSpy: Component<IProps> = ({ categorySlug, categories }) => {
         </Show>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ScrollSpy
+export default ScrollSpy;

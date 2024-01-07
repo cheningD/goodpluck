@@ -1,93 +1,93 @@
-import { Show, type Component, createSignal, onCleanup } from 'solid-js'
-import { initSwell } from '../../lib/swell'
-import { throttle } from '../../lib/throttle'
+import { Show, type Component, createSignal, onCleanup } from "solid-js";
+import { initSwell } from "../../lib/swell-js";
+import { throttle } from "../../lib/throttle";
 
 interface IProps {
-  currentCategory: string | undefined
+  currentCategory: string | undefined;
 }
 
 const Products: Component<IProps> = ({ currentCategory }) => {
   const swell = initSwell(
     import.meta.env.PUBLIC_SWELL_STORE_ID,
-    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY
-  )
+    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+  );
 
-  const [products, setProducts] = createSignal([])
-  const [isLoading, setIsLoading] = createSignal(false)
-  const [page, setPage] = createSignal(1)
-  const [totalProducts, setTotalProducts] = createSignal(0)
-  setTotalProducts(122) // total number of products in Swell currently
-  let isFetching = false // flag to indicate if fetching is in progress
-  const [error, setError] = createSignal(false)
-  const [errorMsg, setErrorMsg] = createSignal('')
+  const [products, setProducts] = createSignal([]);
+  const [isLoading, setIsLoading] = createSignal(false);
+  const [page, setPage] = createSignal(1);
+  const [totalProducts, setTotalProducts] = createSignal(0);
+  setTotalProducts(122); // total number of products in Swell currently
+  let isFetching = false; // flag to indicate if fetching is in progress
+  const [error, setError] = createSignal(false);
+  const [errorMsg, setErrorMsg] = createSignal("");
 
   const fetchProducts = async (): Promise<void> => {
     if (products().length >= totalProducts() || isFetching) {
-      return
+      return;
     }
 
-    isFetching = true
-    setError(false)
-    setErrorMsg('')
-    setIsLoading(true)
+    isFetching = true;
+    setError(false);
+    setErrorMsg("");
+    setIsLoading(true);
 
     try {
-      let newProducts = []
-      newProducts.results = []
-      if (currentCategory !== '') {
+      let newProducts = [];
+      newProducts.results = [];
+      if (currentCategory !== "") {
         newProducts = await swell.products.list({
           category: `${currentCategory}`, // Slug or ID
           limit: 10,
-          page: page()
-        })
+          page: page(),
+        });
       } else {
         newProducts = await swell.products.list({
           limit: 10,
-          page: page()
-        })
+          page: page(),
+        });
       }
 
-      setProducts([...products(), ...newProducts.results])
-      setPage(page() + 1)
+      setProducts([...products(), ...newProducts.results]);
+      setPage(page() + 1);
     } catch (err) {
-      setError(true)
-      setErrorMsg('Failed to load products. Try again later.')
+      setError(true);
+      setErrorMsg("Failed to load products. Try again later.");
     }
 
-    isFetching = false
-    setIsLoading(false)
-  }
+    isFetching = false;
+    setIsLoading(false);
+  };
 
   const checkScroll = async (): Promise<void> => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      await fetchProducts()
+      await fetchProducts();
     }
-  }
+  };
 
   // Throttle the scroll event to prevent rapid firing
-  const throttledCheckScroll = throttle(checkScroll, 200)
+  const throttledCheckScroll = throttle(checkScroll, 200);
 
-  window.addEventListener('scroll', throttledCheckScroll)
-  void fetchProducts()
+  window.addEventListener("scroll", throttledCheckScroll);
+  void fetchProducts();
 
   onCleanup(() => {
-    window.removeEventListener('scroll', throttledCheckScroll)
-  })
+    window.removeEventListener("scroll", throttledCheckScroll);
+  });
 
   const itemListElement = products().map((product, index) => ({
-    '@type': 'ListItem',
+    "@type": "ListItem",
     position: index + 1,
     item: {
-      '@id': product.url,
-      name: product.name
-    }
-  }))
+      "@id": product.url,
+      name: product.name,
+    },
+  }));
 
   const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    itemListElement
-  }
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement,
+  };
 
   return (
     <>
@@ -157,9 +157,9 @@ const Products: Component<IProps> = ({ currentCategory }) => {
             onClick={() => {
               fetchProducts().catch((error) => {
                 // Handle any errors that occur during fetchProducts
-                setError(true)
-                setErrorMsg(error)
-              })
+                setError(true);
+                setErrorMsg(error);
+              });
             }}
           >
             Retry
@@ -172,7 +172,7 @@ const Products: Component<IProps> = ({ currentCategory }) => {
         {JSON.stringify(structuredData)}
       </script>
     </>
-  )
-}
+  );
+};
 
-export default Products
+export default Products;

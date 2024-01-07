@@ -1,15 +1,15 @@
-import { Show, type Component } from 'solid-js'
-import logo from '@assets/logo.png'
-import Sidebar from '@components/solid/global/Sidebar.tsx'
-import AlgoliaSearch from '@components/solid/AlgoliaSearch'
-import { isSearchVisible, setIsSearchVisible } from '@src/store'
+import { Show, type Component } from "solid-js";
+import logo from "@assets/logo.png";
+import Sidebar from "@components/solid/global/Sidebar.tsx";
+import AlgoliaSearch from "@components/solid/AlgoliaSearch";
+import { isSearchVisible, setIsSearchVisible } from "@src/store";
 
 interface IProps {
-  collections: any
+  collections: any;
 }
 
 const Header: Component<IProps> = ({ collections }) => {
-  const toggleSearch = (): boolean => setIsSearchVisible(!isSearchVisible())
+  const toggleSearch = (): boolean => setIsSearchVisible(!isSearchVisible());
 
   return (
     <>
@@ -134,7 +134,7 @@ const Header: Component<IProps> = ({ collections }) => {
       </header>
       {/* <!-- ========== END HEADER ========== --> */}
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

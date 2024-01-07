@@ -1,13 +1,13 @@
-import { useStore } from '@nanostores/solid'
-import { isCartOpen } from '../../store'
-import type { Component } from 'solid-js'
+import { useStore } from "@nanostores/solid";
+import { isCartOpen } from "../../store";
+import type { Component } from "solid-js";
 
 interface BannerProps {
-  readonly isLoggedIn: boolean
+  readonly isLoggedIn: boolean;
 }
 
 const Banner: Component<BannerProps> = ({ isLoggedIn }) => {
-  const $isCartOpen = useStore(isCartOpen)
+  const $isCartOpen = useStore(isCartOpen);
 
   return (
     <>
@@ -39,15 +39,14 @@ const Banner: Component<BannerProps> = ({ isLoggedIn }) => {
               aria-controls="sidebar-mini"
               aria-label="Toggle navigation"
               onClick={() => {
-                isCartOpen.set(!$isCartOpen())
+                isCartOpen.set(!$isCartOpen());
               }}
             >
               Please enter your zip
             </button>
           </div>
 
-          {isLoggedIn
-            ? (
+          {isLoggedIn ? (
             <div class="flex items-center text-white gap-x-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -68,8 +67,7 @@ const Banner: Component<BannerProps> = ({ isLoggedIn }) => {
               <div class="inline-block min-h-[1em] w-0.5 self-stretch mx-auto bg-neutral-500 opacity-100"></div>
               <a class="mx-auto hover:cursor-pointer hover:underline">Join</a>
             </div>
-              )
-            : (
+          ) : (
             <div class="flex items-center text-white gap-x-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,11 +93,11 @@ const Banner: Component<BannerProps> = ({ isLoggedIn }) => {
                 Join
               </a>
             </div>
-              )}
+          )}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Banner
+export default Banner;
