@@ -14,7 +14,7 @@ const categories = await swell.categories.list({
 const { slug } = Astro.params;
 
 const currentCollection = categories.results.find(
-  (category) => category.slug === slug,
+  (category: any) => category.slug === slug,
 );
 if (!currentCollection) return Astro.redirect("/404");
 const { name, description } = currentCollection;
