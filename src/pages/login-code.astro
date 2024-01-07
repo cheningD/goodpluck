@@ -37,7 +37,7 @@ if (Astro.request.method === "POST") {
     const resp = await stytchclient.otps.authenticate({
       code,
       method_id,
-      SESSION_DURATION_MINUTES,
+      session_duration_minutes: SESSION_DURATION_MINUTES,
     });
 
     if (!resp.session_token) {
