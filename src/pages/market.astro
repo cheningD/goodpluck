@@ -3,7 +3,10 @@ import Layout from "@layouts/MainLayout.astro";
 import { swell } from "../lib/swell";
 import Products from "@components/solid/Products.tsx";
 
-const categories = await swell.categories.list({
+const categories = await swell.get("/categories", {
+  where: {
+    active: true,
+  },
   limit: 100,
   page: 1,
 });
