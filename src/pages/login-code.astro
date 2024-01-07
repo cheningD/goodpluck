@@ -1,6 +1,6 @@
 ---
 import { getStytchClient, isLoggedIn } from "../lib/stytch";
-import { session_duration_minutes } from "../lib/constants";
+import { SESSION_DURATION_MINUTES } from "../lib/constants";
 import { StytchError } from "stytch";
 import Layout from "../layouts/Layout.astro";
 
@@ -37,7 +37,7 @@ if (Astro.request.method === "POST") {
     const resp = await stytchclient.otps.authenticate({
       code,
       method_id,
-      session_duration_minutes,
+      SESSION_DURATION_MINUTES,
     });
 
     if (!resp.session_token) {
@@ -51,7 +51,7 @@ if (Astro.request.method === "POST") {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
-      expires: new Date(Date.now() + session_duration_minutes * 60 * 1000),
+      expires: new Date(Date.now() + SESSION_DURATION_MINUTES * 60 * 1000),
     });
 
     const message = encodeURIComponent("You are now logged in");

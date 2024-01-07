@@ -2,7 +2,7 @@
 import { StytchError } from "stytch";
 import { getStytchClient, isLoggedIn } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
-import { confirmed_zipcodes } from "../lib/constants";
+import { CONFIRMED_ZIPCODES } from "../lib/constants";
 
 const errors = { email: "" };
 let email;
@@ -19,7 +19,7 @@ if (Astro.request.method === "POST") {
       errors.email = "Email is required";
     } else if (!zipcode) {
       errors.email = "ZIP code is required";
-    } else if (zipcode && !confirmed_zipcodes.includes(zipcode)) {
+    } else if (zipcode && !CONFIRMED_ZIPCODES.includes(zipcode)) {
       return Astro.redirect(
         `/waitlist?zipcode=${zipcode}&email=${encodeURIComponent(email)}`,
       );
