@@ -10,10 +10,23 @@ if (Astro.request.method === "POST") {
     `https://airtable.com/appJVu70KyaMMofIb/shrs9WED21nlCwrrc?prefill_email=${email}&prefill_zip=${zipcode}`,
   );
 }
+
+const PK = process.env.PUBLIC_SWELL_PUBLIC_KEY;
+const PKI = import.meta.env.PUBLIC_SWELL_STORE_ID;
+const PKP = process.env.PUBLIC_SWELL_PUBLIC_KEY;
+const PKIP = import.meta.env.PUBLIC_SWELL_PUBLIC_KEY;
 ---
 
-<Layout>
+<Layout
+  title={`Shopping page`}
+  description="Delivered farm fresh to you"
+  categories={[]}
+>
   <div class="flex items-center justify-center h-screen bg-gray-100">
+    <div>PK: {PK}</div>
+    <div>PKI: {PKI}</div>
+    <div>PKP: {PKP}</div>
+    <div>PKIP: {PKIP}</div>
     <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
         Unfortunately, we don't deliver to {zipcode} yet!
