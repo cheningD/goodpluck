@@ -3,9 +3,9 @@ import Layout from "@layouts/Layout.astro";
 import { initSwell } from "../../lib/swell-js";
 
 const swell = initSwell(
-  import.meta.env.PUBLIC_SWELL_STORE_ID ?? process.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY ??
-    process.env.PUBLIC_SWELL_PUBLIC_KEY,
+  process.env.PUBLIC_SWELL_STORE_ID ?? import.meta.env.PUBLIC_SWELL_STORE_ID,
+  process.env.PUBLIC_SWELL_PUBLIC_KEY ??
+    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
 
 const { slug } = Astro.params;
