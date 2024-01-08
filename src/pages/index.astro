@@ -5,8 +5,9 @@ import { Picture } from "astro:assets";
 import farm1 from "@assets/pics/farm1.jpg";
 
 const swell = initSwell(
-  import.meta.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+  import.meta.env.PUBLIC_SWELL_STORE_ID ?? process.env.PUBLIC_SWELL_STORE_ID,
+  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY ??
+    process.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
 const categories = await swell.categories.list({
   limit: 100,
