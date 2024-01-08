@@ -1,35 +1,19 @@
-import * as stytch from "stytch";
+import * as stytchpkg from "stytch";
 
-let stytchClientInstance: stytch.Client | null = null; // Singleton
-
-export const getStytchClient = (projectID: string, projectSecret: string) => {
-  if (!stytchClientInstance) {
-    stytchClientInstance = new stytch.Client({
-      project_id: projectID,
-      secret: projectSecret,
-    });
-
-    // Stytch is currently broken in Cloudflare runtime so we use this patch
-    /* eslint-disable */
-    const cl = <any>stytchClientInstance;
-    /* eslint-enable */
-    cl.fetchConfig.cache = undefined;
-  }
-
-  return stytchClientInstance;
-};
+export const stytch = new stytchpkg.Client({
+  project_id: import.meta.env.STYTCH_PROJECT_ID,
+  secret: import.meta.env.STYTCH_PROJECT_SECRET,
+});
 
 export const isLoggedIn = async (
-  session_token: string,
-  projectID: string,
-  projectSecret: string,
-) => {
-  if (session_token) {
+  sessionToken: string,
+): Promise<stytchpkg.SessionsAuthenticateResponse | null> => {
+  if (sessionToken) {
     try {
-      const stytchclient = getStytchClient(projectID, projectSecret);
-      // Verify the session token with Stytch
-      await stytchclient.sessions.authenticate({ session_token });
-      return true; // Session is valid
+      const session = await stytch.sessions.authenticate({
+        session_token: sessionToken,
+      });
+      return session; // Session is valid
     } catch (e) {
       if (e instanceof Error) {
         console.error("Session token invalid:", e.message);
@@ -38,5 +22,5 @@ export const isLoggedIn = async (
       }
     }
   }
-  return false; // No valid session token found
+  return null; // No valid session token found
 };

@@ -1,12 +1,11 @@
 ---
 import MapboxAutofill from "../components/solid/MapboxAutofill";
-import { getStytchClient, isLoggedIn } from "../lib/stytch";
+import { isLoggedIn, stytch } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
 
 const errors = { err: "" };
 
 const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
-const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } = import.meta.env;
 
 if (Astro.request.method === "POST") {
   try {
@@ -25,21 +24,19 @@ if (Astro.request.method === "POST") {
       errors.err = "Please fill all the fields";
     } else {
       // handle Stytch API calls to get the user_id with the session token in order to authenticate the request.
-      const sessionToken = Astro.cookies.get("gp_session_token");
+      const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+      if (!sessionToken) {
+        throw new Error("No logged in session found");
+      }
 
-      const stytchclient = getStytchClient(
-        STYTCH_PROJECT_ID,
-        STYTCH_PROJECT_SECRET,
-      );
-
-      const session = stytchclient.sessions.authenticate({
-        session_token: sessionToken?.value,
-      });
-      const sessionData = await session;
-      const userId = sessionData.user.user_id;
+      const session = await isLoggedIn(sessionToken);
+      const userId = session?.user.user_id;
+      if (!userId) {
+        throw new Error("No logged in user found");
+      }
 
       try {
-        await stytchclient.users.update({
+        await stytch.users.update({
           user_id: userId,
           name,
           untrusted_metadata,
@@ -64,11 +61,7 @@ if (Astro.request.method === "POST") {
 
 // Redirect unauthenticated users to the login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-const isUserLoggedIn = await isLoggedIn(
-  sessionToken as string,
-  STYTCH_PROJECT_ID,
-  STYTCH_PROJECT_SECRET,
-);
+const isUserLoggedIn = sessionToken && !!(await isLoggedIn(sessionToken));
 
 if (!isUserLoggedIn) {
   return Astro.redirect(
