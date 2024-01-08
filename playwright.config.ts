@@ -29,7 +29,7 @@ export default defineConfig({
   webServer: process.env.CI
     ? undefined
     : {
-        command: "npm run preview",
+        command: "pnpm run preview",
         url: "http://127.0.0.1:3000/",
         timeout: 60 * 1000,
         reuseExistingServer: !process.env.CI,

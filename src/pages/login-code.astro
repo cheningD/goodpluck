@@ -1,12 +1,11 @@
 ---
-import { getStytchClient, isLoggedIn } from "../lib/stytch";
+import { stytch, isLoggedIn } from "../lib/stytch";
 import { SESSION_DURATION_MINUTES } from "../lib/constants";
 import { StytchError } from "stytch";
 import Layout from "../layouts/Layout.astro";
 
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
-const { STYTCH_PROJECT_ID, STYTCH_PROJECT_SECRET } = import.meta.env;
 
 // Extract method_id from the URL
 const url = new URL(Astro.request.url);
@@ -29,12 +28,8 @@ if (Astro.request.method === "POST") {
   }
 
   try {
-    const stytchclient = getStytchClient(
-      STYTCH_PROJECT_ID,
-      STYTCH_PROJECT_SECRET,
-    );
     // Make stytchclient API call to authenticate OTP
-    const resp = await stytchclient.otps.authenticate({
+    const resp = await stytch.otps.authenticate({
       code,
       method_id,
       session_duration_minutes: SESSION_DURATION_MINUTES,
@@ -74,11 +69,7 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from login page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-const isUserLoggedIn = await isLoggedIn(
-  sessionToken as string,
-  STYTCH_PROJECT_ID,
-  STYTCH_PROJECT_SECRET,
-);
+const isUserLoggedIn = sessionToken && !!(await isLoggedIn(sessionToken));
 
 if (isUserLoggedIn) {
   return Astro.redirect(
