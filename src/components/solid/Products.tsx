@@ -8,10 +8,10 @@ interface IProps {
 
 const Products: Component<IProps> = ({ currentCategory }) => {
   const swell = initSwell(
-    import.meta.env.PUBLIC_SWELL_STORE_ID,
-    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+    import.meta.env.PUBLIC_SWELL_STORE_ID ?? process.env.PUBLIC_SWELL_STORE_ID,
+    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY ??
+      process.env.PUBLIC_SWELL_PUBLIC_KEY,
   );
-
   const [products, setProducts] = createSignal([]);
   const [isLoading, setIsLoading] = createSignal(false);
   const [page, setPage] = createSignal(1);
