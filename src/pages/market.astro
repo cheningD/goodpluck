@@ -4,9 +4,8 @@ import Products from "@components/solid/Products";
 import { initSwell } from "../lib/swell-js";
 
 const swell = initSwell(
-  process.env.PUBLIC_SWELL_STORE_ID ?? import.meta.env.PUBLIC_SWELL_STORE_ID,
-  process.env.PUBLIC_SWELL_PUBLIC_KEY ??
-    import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+  import.meta.env.PUBLIC_SWELL_STORE_ID,
+  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
 
 const categories = await swell.categories.list({
