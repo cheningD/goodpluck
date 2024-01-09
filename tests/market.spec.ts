@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Products Page Tests", () => {
   test("should load products successfully", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/market");
     await expect(page.getByTestId("product-items")).toBeVisible();
   });
 
@@ -23,12 +23,12 @@ test.describe("Products Page Tests", () => {
         await route.fulfill({ json });
       },
     );
-    await page.goto("/");
+    await page.goto("/market");
     await expect(page.getByTestId("product-error")).toBeVisible();
   });
 
   test("should load more products on scroll", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/market");
 
     // Wait for potential lazy loading of items
     await page.waitForTimeout(5000);
@@ -75,7 +75,7 @@ test.describe("Products Page Tests", () => {
       },
     );
 
-    await page.goto("/");
+    await page.goto("/market");
     await expect(page.getByTestId("product-error")).toBeVisible();
 
     await page.unroute(

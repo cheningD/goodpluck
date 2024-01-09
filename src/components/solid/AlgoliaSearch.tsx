@@ -122,7 +122,7 @@ const AlgoliaSearch: Component = () => {
                       {hits().map((hit: any) => (
                         <li
                           class="inline-flex items-center justify-between gap-x-2 py-3 px-4 text-sm font-medium odd:bg-gray-100 bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:odd:bg-slate-800 dark:bg-slate-900 dark:border-gray-700 dark:text-white"
-                          innerHTML={`<a class="flex w-full justify-between items-center" href="/product/${hit.sku}"><div class="flex justify-between gap-x-1">${hit._highlightResult.name.value}</div> ${navIcon}</a>`}
+                          innerHTML={`<a class="flex w-full justify-between items-center" href="/product/${hit.Slug}"><div class="flex justify-between gap-x-1">${hit._highlightResult.Name.value}</div> ${navIcon}</a>`}
                         ></li>
                       ))}
                     </ul>

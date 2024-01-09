@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+const isDevelopment = typeof process.env.CI === "undefined";
 
 /**
  * Read environment variables from file.
@@ -17,11 +18,11 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Fail the build early on CI if you break too many tests. */
   maxFailures: process.env.CI ? 25 : undefined,
-  retries: 1,
-  timeout: 10000,
-  expect: {
-    timeout: 10000,
-  },
+  retries: isDevelopment ? 0 : 1,
+  // timeout: 10000,
+  // expect: {
+  //   timeout: 10000,
+  // },
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 2 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -29,8 +30,8 @@ export default defineConfig({
   webServer: process.env.CI
     ? undefined
     : {
-        command: "pnpm run preview",
-        url: "http://127.0.0.1:3000/",
+        command: "npm run preview",
+        url: "http://localhost:3000/",
         timeout: 60 * 1000,
         reuseExistingServer: !process.env.CI,
       },
