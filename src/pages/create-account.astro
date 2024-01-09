@@ -27,7 +27,7 @@ const account = await swell.get(`/accounts/${email}`);
 
 if (account) {
   return Astro.redirect(
-    "/?message=" + encodeURIComponent("You are now logged in!"),
+    "/?message=" + encodeURIComponent("Onboarding complete!"),
   );
 }
 
@@ -78,8 +78,8 @@ if (Astro.request.method === "POST") {
       );
     }
   } catch (error) {
-    // TODO: Handle errors gracefully
     console.log(error);
+    errors.err = "Something went wrong, please try again";
   }
 }
 ---
