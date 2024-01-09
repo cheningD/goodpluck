@@ -2,6 +2,7 @@
 import MapboxAutofill from "../components/solid/MapboxAutofill";
 import { isLoggedIn, stytch } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
+import { swell } from "src/lib/swell";
 
 const errors = { err: "" };
 
@@ -12,51 +13,65 @@ if (Astro.request.method === "POST") {
     const data = await Astro.request.formData();
     const first_name = data.get("first_name")?.toString();
     const last_name = data.get("last_name")?.toString();
-    const phone_number = data.get("phone_number");
-    const address = data.get("address address-search")?.toString();
+    const phone = data.get("phone_number")?.toString();
     const consent = data.get("consent");
+    const address1 = data.get("address address-search")?.toString();
+    const city = data.get("city")?.toString();
+    const state = data.get("state")?.toString();
     const postcode = data.get("postcode")?.toString();
+    const apartment = data.get("apartment")?.toString(); // Optional
 
-    const name = { first_name, last_name };
-    const untrusted_metadata = { address, consent, phone_number };
-
-    if (!first_name || !last_name || !phone_number || !address || !consent) {
+    if (
+      !first_name ||
+      !last_name ||
+      !phone ||
+      !address1 ||
+      !consent ||
+      !city ||
+      !state ||
+      !postcode
+    ) {
       errors.err = "Please fill all the fields";
     } else {
-      // handle Stytch API calls to get the user_id with the session token in order to authenticate the request.
       const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-      if (!sessionToken) {
-        throw new Error("No logged in session found");
-      }
 
-      const session = await isLoggedIn(sessionToken);
-      const userId = session?.user.user_id;
-      if (!userId) {
-        throw new Error("No logged in user found");
-      }
+      const session = await stytch.sessions.authenticate({
+        session_token: sessionToken as string,
+      });
+      const email = session.user.emails[0].email;
+      const userId = session.user.user_id;
 
-      try {
-        await stytch.users.update({
-          user_id: userId,
-          name,
-          untrusted_metadata,
-        });
+      // Create user account on Swell
+      await swell.post("/accounts", {
+        email,
+        first_name,
+        last_name,
+        shipping: {
+          address1,
+          address2: apartment,
+          city,
+          state,
+          zip: postcode,
+        },
+        phone: phone,
+        email_optin: consent === "on",
+        type: "individual",
+      });
 
-        // Set the cookie with the user's zip code
-        Astro.cookies.set("user_postcode", postcode as string, {
-          httpOnly: true,
-          secure: true,
-          path: "/",
-          maxAge: 60 * 60 * 24 * 30, // 30 days
-        });
+      // Link Swell account to Stytch account
+      await stytch.users.update({
+        user_id: userId,
+        trusted_metadata: { onboarding_completed: true },
+      });
 
-        return Astro.redirect("/");
-      } catch (error) {
-        console.log(error);
-        errors.err = "An error occured, please try again";
-      }
+      return Astro.redirect(
+        "/?message=" + encodeURIComponent("Onboarding complete!"),
+      );
     }
-  } catch (error) {}
+  } catch (error) {
+    // TODO: Handle errors gracefully
+    console.log(error);
+  }
 }
 
 // Redirect unauthenticated users to the login page
@@ -128,11 +143,11 @@ if (!isUserLoggedIn) {
         />
 
         <label class="block text-sm font-medium text-gray-700 mb-2"
-          >Your appartment</label
+          >Your apartment</label
         >
         <input
           type="text"
-          name="appartment"
+          name="apartment"
           autocomplete="address-line2"
           class="border rounded-md p-2 w-1/2 mb-4"
         />
