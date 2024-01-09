@@ -49,16 +49,7 @@ if (Astro.request.method === "POST") {
       expires: new Date(Date.now() + SESSION_DURATION_MINUTES * 60 * 1000),
     });
 
-    const session = await stytch.sessions.authenticate({
-      session_token: Astro.cookies.get("gp_session_token")?.value,
-    });
-
-    if (!session.user.trusted_metadata?.onboarding_completed) {
-      return Astro.redirect("/create-account");
-    }
-
-    const message = encodeURIComponent("You are now logged in");
-    return Astro.redirect(`/?message=${message}#basket`);
+    return Astro.redirect("/create-account");
   } catch (error) {
     console.error(error);
 
