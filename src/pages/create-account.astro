@@ -83,6 +83,34 @@ if (!isUserLoggedIn) {
     "/?message=" + encodeURIComponent("You are not logged in"),
   );
 }
+
+// Redirect users who already completed the onboarding
+const session = await stytch.sessions.authenticate({
+  session_token: Astro.cookies.get("gp_session_token")?.value,
+});
+
+if (session.user.trusted_metadata?.onboarding_completed) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are already onboarded!"),
+  );
+}
+
+// Redirect users who already have a Swell account
+const email = session.user.emails[0].email;
+const account = await swell.get(`/accounts/${email}`);
+
+if (account) {
+  // Link Swell account to Stytch account
+  const userId = session.user.user_id;
+  await stytch.users.update({
+    user_id: userId,
+    trusted_metadata: { onboarding_completed: true },
+  });
+
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are now logged in!"),
+  );
+}
 ---
 
 <Layout>
