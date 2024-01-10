@@ -6,7 +6,6 @@ _Description of the PR, including both current behavior and new behavior as a pa
 ---
 
 **PR Checklist: (Before requesting a review)**
-
 - [ ] Code builds with no errors `pnpm build`
 - [ ] Code runs as expected in staging envronment `pnpm preview`
 - [ ] New changes are covered by tests
@@ -22,3 +21,4 @@ _Description of the PR, including both current behavior and new behavior as a pa
 **Cleanup:**
 
 - [ ] I will close related issues post-merge (if applicable).
+
