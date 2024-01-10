@@ -63,7 +63,6 @@ test.describe("Login Form", () => {
 
     // Step 2: Attempt to navigate to the login page again
     await page.goto("/login");
-    await page.waitForTimeout(2000);
 
     // Step 3: Check if the user is redirected to the homepage
     const message = "You are already logged in";
@@ -81,7 +80,7 @@ test.describe("Validate Login Code", () => {
     await page.getByTestId("login-btn").click();
   });
 
-  test("should set goodpluck session cookie, and redirect to `/#basket` given valid code", async ({
+  test("should set goodpluck session cookie, and redirect to `/create-account` given valid code", async ({
     page,
     browserName,
   }) => {
@@ -92,10 +91,8 @@ test.describe("Validate Login Code", () => {
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
 
-    // Check if the user is redirected to the homepage
-    const message = "You are now logged in";
-    const encodedMessage = encodeURIComponent(message);
-    expect(page.url()).toContain(`/?message=${encodedMessage}#basket`);
+    // Check if the user is redirected to the create-account page
+    expect(page.url()).toContain("/create-account");
 
     // This is the default OTP code for the sandbox user
     const cookies = await page.context().cookies();
@@ -106,7 +103,7 @@ test.describe("Validate Login Code", () => {
 
     expect(sessionCookie?.value).toBe(
       "WJtR5BCy38Szd5AfoDpf0iqFKEt4EE5JhjlWUY7l3FtY",
-    ); // This is the default session token for the sandbox user
+    );
 
     expect(sessionCookie?.secure).toBeTruthy();
     expect(sessionCookie?.httpOnly).toBeTruthy();
@@ -184,7 +181,6 @@ test.describe("Logout", () => {
 
     // OTP Login with sandbox email
     await page.goto("/login");
-    await page.waitForTimeout(2000);
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
     await page.fill("#otp-input", "000000");
@@ -192,7 +188,6 @@ test.describe("Logout", () => {
 
     // Attempt to logout
     await page.goto("/logout");
-    await page.waitForTimeout(2000);
 
     // Check if the session cookie is deleted
     const cookies = await page.context().cookies();
@@ -216,7 +211,6 @@ test.describe("Logout", () => {
       "Safari wont let you set a cookie on localhost without https",
     );
     await page.goto("/logout");
-    await page.waitForTimeout(2000);
 
     // Check if the session cookie is not present
     const cookies = await page.context().cookies();
@@ -464,7 +458,6 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
 
     // OTP Login with sandbox email
     await page.goto("/login");
-    await page.waitForTimeout(2000);
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
     await page.fill("#otp-input", "000000");
@@ -475,5 +468,42 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
     await page.fill('input[name="first_name"]', "John");
     await page.click('button[type="submit"]');
     await expect(page).toHaveURL("/create-account");
+  });
+
+  test("should redirect to homepage if swell account is created successfully", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari wont let you set a cookie on localhost without https",
+    );
+    // OTP Login with sandbox email
+    await page.goto("/login");
+    await page.getByLabel("Email").fill("sandbox@stytch.com");
+    await page.getByTestId("login-btn").click();
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-login-code-btn"]');
+
+    const url = page.url();
+    if (url.includes(`/create-account`)) {
+      // Fill in create account form
+      await page.fill('input[name="first_name"]', "John");
+      await page.fill('input[name="last_name"]', "Doe");
+      await page.fill('input[name="phone_number"]', "1234567890");
+      await page.fill('input[name="address"]', "123 Main St");
+      await page.fill('input[name="city"]', "Detroit");
+      await page.fill('input[name="postcode"]', "48201");
+      await page.fill('input[name="state"]', "MI");
+      await page.click('input[name="consent"]');
+      await page.click('button[type="submit"]');
+
+      // Check if the user is redirected to the homepage
+      const message = "Onboarding complete!";
+      const encodedMessage = encodeURIComponent(message);
+      expect(page.url()).toContain(`/?message=${encodedMessage}#basket`);
+    } else {
+      expect(page.url()).toContain("/?message=Onboarding%20complete!#basket");
+    }
   });
 });
