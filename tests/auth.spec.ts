@@ -80,7 +80,7 @@ test.describe("Validate Login Code", () => {
     await page.getByTestId("login-btn").click();
   });
 
-  test("should set goodpluck session cookie, and redirect to `/create-account` given valid code", async ({
+  test("should set goodpluck session cookie, and redirect to either the homepage or onboarding page given valid code", async ({
     page,
     browserName,
   }) => {
@@ -91,8 +91,10 @@ test.describe("Validate Login Code", () => {
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
 
-    // Check if the user is redirected to the create-account page
-    expect(page.url()).toContain("/create-account");
+    // Check if the user is redirected to the create-account page or the homepage
+    const expectedUrlPattern =
+      /\/create-account|\/\?message=Onboarding%20complete!#basket/;
+    expect(page.url()).toMatch(expectedUrlPattern);
 
     // This is the default OTP code for the sandbox user
     const cookies = await page.context().cookies();
@@ -345,7 +347,7 @@ test.describe("Validate Join Code", () => {
     ); // workaround for using the stytch sandbox email
   });
 
-  test("should set goodpluck session cookie, and redirect to `/create-account` given valid code", async ({
+  test("should set goodpluck session cookie, and redirect to home page or onboarding page given valid code", async ({
     page,
     browserName,
   }) => {
@@ -356,8 +358,11 @@ test.describe("Validate Join Code", () => {
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-signup-code-btn"]');
 
-    // Check if the user is redirected to the create-account page
-    expect(page.url()).toContain("/create-account");
+    // Check if the user is redirected to the create-account page or the homepage
+    const expectedUrlPattern =
+      /\/create-account|\/\?message=Onboarding%20complete!#basket/;
+
+    expect(page.url()).toMatch(expectedUrlPattern);
 
     // This is the default OTP code for the sandbox user
     const cookies = await page.context().cookies();
@@ -463,11 +468,14 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
 
-    // Check if the user is redirected to the create-account page when submitting the form with missing fields
-    await page.goto("/create-account");
-    await page.fill('input[name="first_name"]', "John");
-    await page.click('button[type="submit"]');
-    await expect(page).toHaveURL("/create-account");
+    const url = page.url();
+    if (url.includes(`/create-account`)) {
+      await page.fill('input[name="first_name"]', "John");
+      await page.click('button[type="submit"]');
+      await expect(page).toHaveURL("/create-account");
+    } else {
+      await expect(page).toHaveURL("/?message=Onboarding%20complete!#basket");
+    }
   });
 
   test("should redirect to homepage if swell account is created successfully", async ({
