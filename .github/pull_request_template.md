@@ -1,30 +1,22 @@
-Issue Number: N/A
+### Pull Request Template
 
-## PR Checklist
+**Fixes <issue-number>:**
+_Description of the PR, including both current behavior and new behavior as a part of the description._
 
-Check if your PR fulfills the following requirements:
+---
 
-- [ ] I tested the changes have been added (for bug fixes / features)
-- [ ] The changes don't require build or preview.
-- [ ] I run `pnpm build` to have a bug free PR.
-- [ ] I run `pnpm preview` to make sure Cloudflare page runs without error.
+**PR Checklist: (Before requesting a review)**
+- [ ] Code builds with no errors `pnpm build`
+- [ ] Code runs as expected in staging envronment `pnpm preview`
+- [ ] New changes are covered by tests
+- [ ] Tests pass locally `pnpm run test:e2e`
+- [ ] Tests pass on github actions (automated)
 
-## What is the current behavior?
+**Screenshots (if applicable):**
 
-<!-- Describe the current behavior that you are modifying, or link to a relevant issue. -->
+**Additional Information:**
+- Any additional notes or comments.
 
-## What is the new behavior?
+**Cleanup:**
+- [ ] I will close related issues post-merge (if applicable).
 
-## Does this PR introduce a breaking change?
-
-<!-- In case this PR contains a breaking change, describe the impact and migration path below. (i.e mention the team members by the appropriate changes) -->
-
-- [ ] Yes
-- [ ] No
-
-### Screenshots:
-
-### _Cleanup_:
-
-- [ ] Closes N/A after merging N/A
-- [ ] Closes N/A after merging N/A
