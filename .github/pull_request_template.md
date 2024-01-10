@@ -15,10 +15,8 @@ _Description of the PR, including both current behavior and new behavior as a pa
 **Screenshots (if applicable):**
 
 **Additional Information:**
-
 - Any additional notes or comments.
 
 **Cleanup:**
-
 - [ ] I will close related issues post-merge (if applicable).
 
