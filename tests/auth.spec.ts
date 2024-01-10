@@ -484,6 +484,7 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
     await page.getByTestId("login-btn").click();
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
+    await page.waitForTimeout(1000);
 
     const url = page.url();
     if (url.includes(`/create-account`)) {
@@ -497,13 +498,11 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
       await page.fill('input[name="state"]', "MI");
       await page.click('input[name="consent"]');
       await page.click('button[type="submit"]');
-
-      // Check if the user is redirected to the homepage
-      const message = "Onboarding complete!";
-      const encodedMessage = encodeURIComponent(message);
-      expect(page.url()).toContain(`/?message=${encodedMessage}#basket`);
-    } else {
-      expect(page.url()).toContain("/?message=Onboarding%20complete!#basket");
     }
+
+    // Check if the user is redirected to the homepage
+    const message = "Onboarding complete!";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}#basket`);
   });
 });
