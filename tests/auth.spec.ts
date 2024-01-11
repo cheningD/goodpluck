@@ -11,6 +11,11 @@ test.describe("Login Form", () => {
   test("should redirect to OTP verification page upon entering a valid email", async ({
     page,
   }) => {
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
+
     await page.fill('input[type="email"]', "sandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
     await expect(
@@ -54,6 +59,11 @@ test.describe("Login Form", () => {
       browserName === "webkit" && isDevelopment,
       "Safari won't let you set a cookie on localhost without https in development environment",
     );
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
+
     // Step 1: Login with valid credentials
     await page.goto("/login");
     await page.fill('input[type="email"]', "sandbox@stytch.com");
@@ -73,6 +83,11 @@ test.describe("Login Form", () => {
 
 // Testing OTP Login
 test.describe("Validate Login Code", () => {
+  test.skip(
+    !isDevelopment,
+    "Skipping test in production environment due to sandbox@stytch.com restrictions",
+  );
+
   test.beforeEach(async ({ page }) => {
     // OTP Login with Valid Email
     await page.goto("/login");
@@ -180,6 +195,10 @@ test.describe("Logout", () => {
       browserName === "webkit" && isDevelopment,
       "Safari won't let you set a cookie on localhost without https in development environment",
     );
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
 
     // OTP Login with sandbox email
     await page.goto("/login");
@@ -266,6 +285,11 @@ test.describe("Goodpluck Sign-up Form", () => {
   });
 
   test("should validate when a zip code is not entered", async ({ page }) => {
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
+
     await page.fill("#email", validEmail);
     await page.click('button:text("Continue")');
 
@@ -280,6 +304,11 @@ test.describe("Goodpluck Sign-up Form", () => {
   });
 
   test("should throw an error for an unserviced zip code", async ({ page }) => {
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
+
     await page.fill("#email", validEmail);
     await page.fill("#zipcode", "99999");
     await page.click('button:text("Continue")');
@@ -309,6 +338,11 @@ test.describe("Goodpluck Sign-up Form", () => {
       browserName === "webkit" && isDevelopment,
       "Safari won't let you set a cookie on localhost without https in development environment",
     );
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
+
     // Step 1: Login with valid credentials
     await page.goto("/login");
     await page.fill('input[type="email"]', "sandbox@stytch.com");
@@ -328,6 +362,11 @@ test.describe("Goodpluck Sign-up Form", () => {
   test("should redirect to login-code page if user account already exists", async ({
     page,
   }) => {
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
+
     await page.fill("#email", validEmail);
     await page.fill("#zipcode", validZipcode);
     await page.click('button:text("Continue")');
@@ -461,6 +500,11 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
       "Safari won't let you set a cookie on localhost without https in development environment",
     );
 
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
+
     // OTP Login with sandbox email
     await page.goto("/login");
     await page.getByLabel("Email").fill("sandbox@stytch.com");
@@ -486,6 +530,11 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
       browserName === "webkit" && isDevelopment,
       "Safari wont let you set a cookie on localhost without https",
     );
+    test.skip(
+      !isDevelopment,
+      "Skipping test in production environment due to sandbox@stytch.com restrictions",
+    );
+
     // OTP Login with sandbox email
     await page.goto("/login");
     await page.getByLabel("Email").fill("sandbox@stytch.com");
