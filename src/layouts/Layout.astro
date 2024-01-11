@@ -6,7 +6,7 @@ import Menu from "../components/solid/Menu.tsx";
 import MobileNav from "../components/solid/MobileNav.tsx";
 
 const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
-const postcode = Astro.cookies.get("user_postcode")?.value;
+const postcode = Astro.cookies.get("gp_zip")?.value;
 ---
 
 <html lang="en">

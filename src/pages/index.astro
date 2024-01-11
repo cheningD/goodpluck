@@ -1,5 +1,29 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { stytch } from "src/lib/stytch";
+import { swell } from "src/lib/swell";
+import { SESSION_DURATION_MINUTES } from "src/lib/constants";
+
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const isLoggedIn = !!sessionToken;
+
+if (isLoggedIn && !Astro.cookies.get("gp_zip")?.value) {
+  const session = await stytch.sessions.authenticate({
+    session_token: sessionToken,
+  });
+
+  const email = session.user.emails[0].email;
+  const account = await swell.get(`/accounts/${email}`);
+  Astro.cookies.set("gp_zip", account.shipping.zip, {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    expires: new Date(
+      Date.now() + SESSION_DURATION_MINUTES * 60 * 1000, // 30 days
+    ),
+  });
+}
 
 const encoded_message = Astro.url.searchParams.get("message")! || "";
 const message = decodeURIComponent(encoded_message);
