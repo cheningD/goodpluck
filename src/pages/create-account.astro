@@ -1,4 +1,5 @@
 ---
+import { SESSION_DURATION_MINUTES } from "src/lib/constants";
 import MapboxAutofill from "../components/solid/MapboxAutofill";
 import { isLoggedIn, stytch } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
@@ -26,6 +27,16 @@ const email = session.user.emails[0].email;
 const account = await swell.get(`/accounts/${email}`);
 
 if (account) {
+  Astro.cookies.set("gp_zip", account.shipping.zip, {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    expires: new Date(
+      Date.now() + SESSION_DURATION_MINUTES * 60 * 1000, // 30 days
+    ),
+  });
+
   return Astro.redirect(
     "/?message=" + encodeURIComponent("Onboarding complete!") + "#basket",
   );
@@ -71,6 +82,16 @@ if (Astro.request.method === "POST") {
         phone: phone,
         email_optin: consent === "on",
         type: "individual",
+      });
+
+      Astro.cookies.set("gp_zip", account.shipping.zip, {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        expires: new Date(
+          Date.now() + SESSION_DURATION_MINUTES * 60 * 1000, // 30 days
+        ),
       });
 
       return Astro.redirect(

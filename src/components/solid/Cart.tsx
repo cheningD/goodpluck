@@ -1,14 +1,14 @@
 import { Motion, Presence } from "@motionone/solid";
 
-import { Show } from "solid-js";
+import { Show, type JSX } from "solid-js";
 import { isCartOpen } from "../../store.js";
 import { useStore } from "@nanostores/solid";
 
 interface CartProps {
-  readonly postcode: string | undefined;
+  readonly zip: string | undefined;
 }
 
-export default function Cart({ postcode }: CartProps) {
+export default function Cart({ zip }: CartProps): JSX.Element {
   const $isCartOpen = useStore(isCartOpen);
   return (
     <Presence exitBeforeEnter>
@@ -37,7 +37,7 @@ export default function Cart({ postcode }: CartProps) {
             <Show when={true}>
               <form>
                 <label for="zip">Enter ZIP Code:</label>
-                <input type="text" id="zip" name="zip" value={postcode} />
+                <input type="text" id="zip" name="zip" value={zip} />
                 <input type="submit" value="Submit" />
               </form>
             </Show>
