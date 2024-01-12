@@ -542,6 +542,7 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
     await page.waitForTimeout(1000);
+    const zip = "48201";
 
     const url = page.url();
     if (url.includes(`/create-account`)) {
@@ -551,7 +552,7 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
       await page.fill('input[name="phone_number"]', "1234567890");
       await page.fill('input[name="address"]', "123 Main St");
       await page.fill('input[name="city"]', "Detroit");
-      await page.fill('input[name="postcode"]', "48201");
+      await page.fill('input[name="postcode"]', zip);
       await page.fill('input[name="state"]', "MI");
       await page.click('input[name="consent"]');
       await page.click('button[type="submit"]');
@@ -561,5 +562,14 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
     const message = "Onboarding complete!";
     const encodedMessage = encodeURIComponent(message);
     expect(page.url()).toContain(`/?message=${encodedMessage}#basket`);
+
+    // User zip code should be set as a cookie
+    const cookies = await page.context().cookies();
+    const sessionCookie = cookies.find((cookie) => cookie.name === "gp_zip");
+    expect(sessionCookie).toBeDefined();
+    expect(sessionCookie?.value).toBe(zip);
+    expect(sessionCookie?.secure).toBeTruthy();
+    expect(sessionCookie?.httpOnly).toBeTruthy();
+    expect(sessionCookie?.sameSite).toBe("Lax");
   });
 });
