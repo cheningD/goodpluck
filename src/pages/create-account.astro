@@ -4,6 +4,7 @@ import MapboxAutofill from "../components/solid/MapboxAutofill";
 import { isLoggedIn, stytch } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
 import { swell } from "src/lib/swell";
+import calculateCartDates from "src/utils/cartDates";
 
 const errors = { err: "" };
 
@@ -54,6 +55,13 @@ if (Astro.request.method === "POST") {
     const state = data.get("state")?.toString();
     const postcode = data.get("postcode")?.toString();
     const apartment = data.get("apartment")?.toString(); // Optional
+    const shipping = {
+      address1,
+      address2: apartment,
+      city,
+      state,
+      zip: postcode,
+    };
 
     if (
       !first_name ||
@@ -68,30 +76,32 @@ if (Astro.request.method === "POST") {
       errors.err = "Please fill all the fields";
     } else {
       // Create user account on Swell
-      await swell.post("/accounts", {
+      const account = await swell.post("/accounts", {
         email: session.user.emails[0].email,
         first_name,
         last_name,
-        shipping: {
-          address1,
-          address2: apartment,
-          city,
-          state,
-          zip: postcode,
-        },
+        shipping,
         phone: phone,
         email_optin: consent === "on",
         type: "individual",
       });
 
-      Astro.cookies.set("gp_zip", account.shipping.zip, {
-        path: "/",
-        httpOnly: true,
-        secure: true,
-        sameSite: "lax",
-        expires: new Date(
-          Date.now() + SESSION_DURATION_MINUTES * 60 * 1000, // 30 days
-        ),
+      // Create cart on Swell
+      const {
+        orderingWindowStartDate,
+        orderingWindowEndDate,
+        orderChargeDate,
+        deliveryDate,
+      } = calculateCartDates();
+      await swell.post("/carts", {
+        account_id: account.id,
+        shipping,
+        currency: "USD",
+        active: true,
+        ordering_window_start_date: orderingWindowStartDate,
+        ordering_window_end_date: orderingWindowEndDate,
+        order_charge_date: orderChargeDate,
+        delivery_date: deliveryDate,
       });
 
       return Astro.redirect(
