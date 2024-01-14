@@ -1,59 +1,61 @@
-import { atom } from 'nanostores'
-import { persistentMap } from '@nanostores/persistent'
-import { type Basket } from '@composables/basketUtils'
+import { atom } from "nanostores";
+import { persistentMap } from "@nanostores/persistent";
+import { type Basket } from "@composables/basketUtils";
+import { createSignal } from "solid-js";
 
 interface Cart {
-  zipCode: string
-  isValidZip: boolean
-  deliverySlots: string[]
-  selectedSlot: string
-  orders: Basket[]
-  activeOrder: Basket | null
+  zipCode: string;
+  isValidZip: boolean;
+  deliverySlots: string[];
+  selectedSlot: string;
+  orders: Basket[];
+  activeOrder: Basket | null;
 }
 
 const initialCart: Cart = {
-  zipCode: '',
+  zipCode: "",
   isValidZip: false,
   deliverySlots: [],
-  selectedSlot: '',
+  selectedSlot: "",
   orders: [],
-  activeOrder: null
-}
+  activeOrder: null,
+};
 
-export const isCartOpen = atom(false)
-export const isMenuOpen = atom(false)
-export const basketStore = persistentMap<Cart>('gp_basket_', initialCart, {
-  encode (value) {
-    return JSON.stringify(value)
+export const [isSearchVisible, setIsSearchVisible] = createSignal(false);
+export const isCartOpen = atom(false);
+export const isMenuOpen = atom(false);
+export const basketStore = persistentMap<Cart>("gp_basket_", initialCart, {
+  encode(value) {
+    return JSON.stringify(value);
   },
-  decode (value) {
+  decode(value) {
     try {
-      return JSON.parse(value)
+      return JSON.parse(value);
     } catch (err) {
-      return value
+      return value;
     }
-  }
-})
+  },
+});
 
 export const updateZipCode = (newZipCode: string): void => {
-  basketStore.set({ ...basketStore.get(), zipCode: newZipCode })
-}
+  basketStore.set({ ...basketStore.get(), zipCode: newZipCode });
+};
 
 export const updateIsValidZip = (isValid: boolean): void => {
-  basketStore.set({ ...basketStore.get(), isValidZip: isValid })
-}
+  basketStore.set({ ...basketStore.get(), isValidZip: isValid });
+};
 
 export const updateSelectedSlot = (slot: string): void => {
-  basketStore.set({ ...basketStore.get(), selectedSlot: slot })
-}
+  basketStore.set({ ...basketStore.get(), selectedSlot: slot });
+};
 
 export const updateOrders = (newOrders: Basket[]): void => {
-  basketStore.set({ ...basketStore.get(), orders: newOrders })
-}
+  basketStore.set({ ...basketStore.get(), orders: newOrders });
+};
 
 export const updateActiveOrder = (newOrder: Basket): void => {
-  basketStore.set({ ...basketStore.get(), activeOrder: newOrder })
-}
+  basketStore.set({ ...basketStore.get(), activeOrder: newOrder });
+};
 
 // export const isZipCodeSet = computed(baskets, carts => {
 //   return carts && carts.length > 0

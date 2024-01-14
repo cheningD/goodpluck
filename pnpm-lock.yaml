@@ -22,7 +22,10 @@ dependencies:
     version: 6.1.4(astro@4.4.2)
   "@motionone/solid":
     specifier: ^10.16.4
-    version: 10.16.4(solid-js@1.8.15)
+    version: 10.16.4(solid-js@1.8.3)
+  "@nanostores/persistent":
+    specifier: ^0.9.1
+    version: 0.9.1(nanostores@0.9.4)
   "@nanostores/solid":
     specifier: ^0.4.2
     version: 0.4.2(nanostores@0.9.5)(solid-js@1.8.15)
@@ -39,16 +42,12 @@ dependencies:
     specifier: ^3.3.1
     version: 3.3.1
   nanostores:
-<<<<<<< HEAD
     specifier: ^0.9.5
     version: 0.9.5
-=======
-    specifier: ^0.9.4
-    version: 0.9.4
+
   papaparse:
     specifier: ^5.4.1
     version: 5.4.1
->>>>>>> bdc6f2f (Implement Zipcode Entry for Basket Access)
   preline:
     specifier: ^2.0.3
     version: 2.0.3
@@ -1718,7 +1717,19 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@nanostores/solid@0.4.2(nanostores@0.9.5)(solid-js@1.8.15):
+  /@nanostores/persistent@0.9.1(nanostores@0.9.4):
+    resolution:
+      {
+        integrity: sha512-ow57Hxm5VMaI5GHET/cVk8hX/iKMmbhcGrB9owfN8p8OHiiJgUlYxe1giacwlAALJXAh2t8bxXh42hHb64BCEA==,
+      }
+    engines: { node: ^16.0.0 || ^18.0.0 || >=20.0.0 }
+    peerDependencies:
+      nanostores: ^0.9.0
+    dependencies:
+      nanostores: 0.9.4
+    dev: false
+
+  /@nanostores/solid@0.4.2(nanostores@0.9.4)(solid-js@1.8.3):
     resolution:
       {
         integrity: sha512-8v32+C9KdRbnvP4x4Oiw/CtL1tZwbRxYfmFsPIY9PXevCgxSFnicG6VnLLtNAR7F0kl8Ec7OROHO34Ffv0KDzg==,
@@ -3610,6 +3621,7 @@ packages:
       color-name: 1.1.4
       simple-swizzle: 0.2.2
     dev: false
+    optional: true
 
   /color-support@1.1.3:
     resolution:
@@ -3630,6 +3642,7 @@ packages:
       color-convert: 2.0.1
       color-string: 1.9.1
     dev: false
+    optional: true
 
   /colord@2.9.3:
     resolution:
@@ -5702,6 +5715,7 @@ packages:
       }
     requiresBuild: true
     dev: false
+    optional: true
 
   /is-bigint@1.0.4:
     resolution:
@@ -7603,10 +7617,6 @@ packages:
     engines: { node: ">=6" }
     dev: false
 
-  /papaparse@5.4.1:
-    resolution: {integrity: sha512-HipMsgJkZu8br23pW15uvo6sib6wne/4woLZPlFf3rpDyMe9ywEXUsuD7+6K9PRkJlVT51j/sCOYDKGGS3ZJrw==}
-    dev: false
-
   /parent-module@1.0.1:
     resolution:
       {
@@ -8707,6 +8717,7 @@ packages:
       "@img/sharp-win32-ia32": 0.33.2
       "@img/sharp-win32-x64": 0.33.2
     dev: false
+    optional: true
 
   /shebang-command@2.0.0:
     resolution:
@@ -8802,6 +8813,7 @@ packages:
     dependencies:
       is-arrayish: 0.3.2
     dev: false
+    optional: true
 
   /sisteransi@1.0.5:
     resolution:
