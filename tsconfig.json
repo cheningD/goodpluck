@@ -8,7 +8,9 @@
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@layouts/*": ["src/layouts/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@src/*": ["src/*"]
     }
-  }
+  },
+  "exclude": ["dist"]
 }
