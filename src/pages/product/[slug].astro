@@ -1,24 +1,23 @@
 ---
-import Layout from "@layouts/MainLayout.astro";
+import Layout from "@layouts/Layout.astro";
 import { swell } from "../../lib/swell";
 
 const { slug } = Astro.params;
 
 const product = await swell.products.get(slug === undefined ? "" : slug);
 
+// if (!product) return Astro.redirect("/404");
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
 });
 
-if (!product) return Astro.redirect("/404");
-
 const { name, description } = product;
 ---
 
 <Layout
-  title={`${name} delivered farm fresh to you`}
-  description={description}
+  title={`${name}`}
+  description="Delivered farm fresh to you"
   categories={categories.results}
 >
   <h1 class="text-5xl text-gray-800 p-4">

@@ -1,28 +1,52 @@
-import { For } from "solid-js";
+import { Show, For, type Component } from "solid-js";
 
-const Breadcrumb = (props) => {
-  const { collections, currentCollectionId } = props;
+interface IProps {
+  categories: any;
+  collectionId: any;
+}
 
-  const findParentPath = (collectionId) => {
-    let path = [];
-    let current = collections.find((col) => col.id === collectionId);
+const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
+  const checkCategory = categories.find((col) => col.id === collectionId);
+  let categoryId = checkCategory.parent_id
+    ? collectionId
+    : categories.filter((col) => col.parent_id === collectionId)[0].id;
 
-    while (current) {
-      path.unshift(current);
-      current = collections.find((col) => col.id === current.parent_id);
-    }
+  const categoryHasChild =
+    categories.filter((col) => col.parent_id === checkCategory.id).length > 0
+      ? categories.filter((col) => col.parent_id === checkCategory.id)[0]
+      : null;
 
-    return path;
-  };
+  if (categoryHasChild) {
+    categoryId = categoryHasChild.id;
+  }
 
-  const parentPath = findParentPath(currentCollectionId);
+  const currentCategory = categories.find((col) => col.id === categoryId);
+  let parentCategory = categories.find(
+    (col) => col.id === currentCategory.parent_id,
+  );
+
+  const breadcrumb = [];
+  breadcrumb.push(currentCategory);
+
+  if (parentCategory?.parent_id) {
+    breadcrumb.unshift(parentCategory);
+  }
+
+  let topLevelCategory = parentCategory || currentCategory;
+
+  while (parentCategory) {
+    topLevelCategory = parentCategory;
+    parentCategory = categories.find(
+      (col) => col.id === parentCategory.parent_id,
+    );
+  }
 
   const websiteDomain = import.meta.env.VITE_WEBSITE_DOMAIN;
 
   const breadcrumbList = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: parentPath.map((collection, index) => ({
+    itemListElement: breadcrumb.map((collection, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
@@ -38,40 +62,56 @@ const Breadcrumb = (props) => {
         class="flex items-center whitespace-nowrap w-full max-w-7xl mx-auto p-4"
         aria-label="Breadcrumb"
       >
-        <li class="inline-flex items-center">
+        <li class="flex md:hidden">
           <a
             class="flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
-            href="/market"
+            href={`/market/${topLevelCategory.slug}`}
           >
-            Home
+            {topLevelCategory.name}
           </a>
+          <svg
+            class="flex-shrink-0 mx-2 overflow-visible h-4 w-4 text-gray-400 dark:text-neutral-600 dark:text-neutral-600"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m9 18 6-6-6-6" />
+          </svg>
         </li>
-        <For each={parentPath} fallback={<div>Loading...</div>}>
+        <For each={breadcrumb} fallback={<div>Error loading breadcrumb</div>}>
           {(collection, i) => (
             <>
               <li
                 class={
-                  collection.id !== currentCollectionId
+                  collection.id !== categoryId
                     ? "inline-flex items-center"
                     : "inline-flex items-center text-sm font-semibold text-gray-800 truncate dark:text-gray-200"
                 }
               >
-                <svg
-                  class="flex-shrink-0 mx-2 overflow-visible h-4 w-4 text-gray-400 dark:text-neutral-600 dark:text-neutral-600"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m9 18 6-6-6-6" />
-                </svg>
+                <Show when={i() > 0}>
+                  <svg
+                    class="flex-shrink-0 mx-2 overflow-visible h-4 w-4 text-gray-400 dark:text-neutral-600 dark:text-neutral-600"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </Show>
 
-                {collection.id !== currentCollectionId ? (
+                {collection.id !== categoryId ? (
                   <a
                     class="flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
                     href={`/market/${collection.slug}`}
