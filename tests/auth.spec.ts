@@ -4,10 +4,6 @@ const isDevelopment = typeof process.env.CI === "undefined";
 
 // Testing Login Form
 test.describe("Login Form", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/login");
-  });
-
   test("should redirect to OTP verification page upon entering a valid email", async ({
     page,
   }) => {
@@ -16,6 +12,7 @@ test.describe("Login Form", () => {
       "Skipping test in production environment due to sandbox@stytch.com restrictions",
     );
 
+    await page.goto("/login");
     await page.fill('input[type="email"]', "sandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
     await expect(
@@ -27,6 +24,7 @@ test.describe("Login Form", () => {
   test("should display an error for unregistered email entries", async ({
     page,
   }) => {
+    await page.goto("/login");
     await page.fill('input[type="email"]', "NOTsandbox@stytch.com");
     await page.click('button[data-testid="login-btn"]');
     await expect(
@@ -37,6 +35,7 @@ test.describe("Login Form", () => {
   test("should display a tooltip when an invalid email format is entered", async ({
     page,
   }) => {
+    await page.goto("/login");
     await page.fill('input[type="email"]', "invalid-email");
     await page.click('button[data-testid="login-btn"]');
 
@@ -379,6 +378,11 @@ test.describe("Goodpluck Sign-up Form", () => {
 
 // Testing OTP Join
 test.describe("Validate Join Code", () => {
+  test.skip(
+    !isDevelopment,
+    "Skipping test in production environment due to sandbox@stytch.com restrictions",
+  );
+
   test.beforeEach(async ({ page }) => {
     // OTP Join with Valid Email
     await page.goto(
@@ -541,7 +545,6 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
     await page.getByTestId("login-btn").click();
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
-    await page.waitForTimeout(1000);
 
     const url = page.url();
     if (url.includes(`/create-account`)) {
