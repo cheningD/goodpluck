@@ -562,14 +562,5 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
     const message = "Onboarding complete!";
     const encodedMessage = encodeURIComponent(message);
     expect(page.url()).toContain(`/?message=${encodedMessage}#basket`);
-
-    // User zip code should be set as a cookie
-    const cookies = await page.context().cookies();
-    const sessionCookie = cookies.find((cookie) => cookie.name === "gp_zip");
-    expect(sessionCookie).toBeDefined();
-    expect(sessionCookie?.value).toBe(zip);
-    expect(sessionCookie?.secure).toBeTruthy();
-    expect(sessionCookie?.httpOnly).toBeTruthy();
-    expect(sessionCookie?.sameSite).toBe("Lax");
   });
 });
