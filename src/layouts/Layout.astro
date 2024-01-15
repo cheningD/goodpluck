@@ -9,7 +9,13 @@ import { getCartFromSession } from "src/lib/swell/cart";
 // Retrieve session token and get user/cart data
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 const isLoggedIn = !!sessionToken;
-const cart = await getCartFromSession(sessionToken as string);
+let cart = null;
+
+try {
+  cart = await getCartFromSession(sessionToken as string);
+} catch (error) {
+  console.log(error);
+}
 ---
 
 <html lang="en">
