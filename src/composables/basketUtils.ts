@@ -1,13 +1,13 @@
-import { formatDate } from './timeUtils'
+import { formatDate } from "./timeUtils";
 
 const getDeliverySlots = (): string[] => {
-  const slots: string[] = []
-  const currentDate = new Date()
+  const slots: string[] = [];
+  const currentDate = new Date();
   const oneMonthLater = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 1,
-    currentDate.getDate()
-  )
+    currentDate.getDate(),
+  );
 
   for (
     let date = new Date(currentDate);
@@ -17,17 +17,17 @@ const getDeliverySlots = (): string[] => {
   ) {
     // Check if the day is Sunday(0) or Monday (1)
     if (date.getDay() === 0 || date.getDay() === 1) {
-      const slot = formatDate(date.toISOString()) // Format the date as Day, Month Num
-      slots.push(slot)
+      const slot = formatDate(date.toISOString()); // Format the date as Day, Month Num
+      slots.push(slot);
     }
   }
 
-  return slots
-}
+  return slots;
+};
 
 interface Basket {
-  items: []
-  deliveryDate: string
+  items: [];
+  deliveryDate: string;
 }
 
-export { getDeliverySlots, type Basket }
+export { getDeliverySlots, type Basket };

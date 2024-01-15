@@ -30,6 +30,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
   const $isCartOpen = useStore(isCartOpen);
   const [deliverySlots, setDeliverySlots] = createSignal<string[]>([]);
   const currentBasket = useStore(basketStore);
+  const [zipRequired, setZipRequired] = createSignal<boolean>(false);
 
   const [addBasketFromOrdersTab, setAddBasketFromOrdersTab] =
     createSignal<boolean>(false);
@@ -74,6 +75,11 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
 
   const handleSubmit = (e: Event): void => {
     e.preventDefault();
+    if (currentBasket().zipCode === "") {
+      setZipRequired(true);
+      return;
+    }
+
     validateZipCode();
 
     if (!currentBasket().isValidZip) {
@@ -94,8 +100,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
               <button
                 data-testid="basket-tab-zip"
                 type="button"
-                class="w-full hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-2xl font-serif text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400 active"
-                id="bar-with-underline-item-1"
+                class="bg-slate-300 w-full"
                 role="tab"
               >
                 Enter Zip
@@ -105,9 +110,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
             <button
               data-testid="basket-tab-orders"
               type="button"
-              class="w-full hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-slate-100 first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-2xl font-serif text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400"
-              id="bar-with-underline-item-3"
-              aria-controls="bar-with-underline-3"
+              class="bg-slate-300 w-full"
               role="tab"
             >
               <Show
@@ -122,7 +125,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
         <li classList={{ selected: tab() === 1 }} onClick={updateTab(1)}>
           <button
             type="button"
-            class="w-full hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-slate-100 first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-2xl font-serif text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400"
+            class="bg-slate-300 w-full"
             data-testid="basket-btn-orders"
             role="tab"
           >
@@ -216,7 +219,6 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
                     class="p-4 flex flex-col h-full gap-y-10"
                     onSubmit={handleSubmit}
                   >
-                    isValid: {currentBasket().isValidZip.toString()}
                     <p class="text-gray-500 dark:text-gray-400">
                       Before we add items to your order, let's{" "}
                       <em class="font-semibold text-gray-800 dark:text-gray-200">
@@ -226,6 +228,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
                     </p>
                     <div class="flex flex-col gap-y-3">
                       <input
+                        required
                         type="number"
                         class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                         placeholder="Zip Code"
@@ -246,6 +249,11 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
                           Sign In here
                         </a>
                       </p>
+                      {zipRequired() && (
+                        <span class="text-red-500 font-medium">
+                          Error: a zip code number required to continue!
+                        </span>
+                      )}
                     </div>
                     <button
                       data-testid="btn-verify-zip"
@@ -261,7 +269,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
             <Match when={tab() === 1}>
               <div class="flex flex-col content-center">
                 <Show
-                  when={addBasketFromOrdersTab()}
+                  when={!addBasketFromOrdersTab()}
                   fallback={
                     <>
                       <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
@@ -319,44 +327,51 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
                   }
                 >
                   <>
-                    <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
-                      {currentBasket().orders.map((basket: Basket) => (
-                        <>
-                          <li
-                            onClick={() => {
-                              updateSelectedSlot(
-                                formatDate(basket.deliveryDate, "en-US", {
-                                  weekday: "short",
-                                  month: "short",
-                                  day: "numeric",
-                                }),
-                              );
-                            }}
-                            class="px-3 py-4 cursor-pointer border-gray-300 border-b flex flex-col"
-                          >
-                            <span class="flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="w-6 h-6 rounded-full p-1 text-white bg-orange-800"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  fill="currentColor"
-                                  d="M15 13h1.5v2.82l2.44 1.41l-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"
-                                />
-                              </svg>
-                              <strong class="text-xl text-orange-800">
-                                Your Next Delivery
-                              </strong>
-                            </span>
-                            <h4 class="text-2xl font-bold">
-                              {basket.deliveryDate} (No items)
-                            </h4>
-                            <span>Delivery time: 10:00AM</span>
-                          </li>
-                        </>
-                      ))}
-                    </ul>
+                    <h3 class="text-3xl font-medium text-center ">
+                      No Basket added yet!
+                    </h3>
+                    {(currentBasket().orders.length > 0) &
+                    (
+                      <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
+                        {currentBasket().orders.map((basket: Basket) => (
+                          <>
+                            <li
+                              onClick={() => {
+                                updateSelectedSlot(
+                                  formatDate(basket.deliveryDate, "en-US", {
+                                    weekday: "short",
+                                    month: "short",
+                                    day: "numeric",
+                                  }),
+                                );
+                              }}
+                              class="px-3 py-4 cursor-pointer border-gray-300 border-b flex flex-col"
+                            >
+                              <span class="flex items-center">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="w-6 h-6 rounded-full p-1 text-white bg-orange-800"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M15 13h1.5v2.82l2.44 1.41l-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"
+                                  />
+                                </svg>
+                                <strong class="text-xl text-orange-800">
+                                  Your Next Delivery
+                                </strong>
+                              </span>
+                              <h4 class="text-2xl font-bold">
+                                {basket.deliveryDate} (No items)
+                              </h4>
+                              <span>Delivery time: 10:00AM</span>
+                            </li>
+                          </>
+                        ))}
+                      </ul>
+                    )}
+
                     <button
                       onClick={() => setAddBasketFromOrdersTab(true)}
                       data-testid="btn-verify-zip"

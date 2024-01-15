@@ -1,7 +1,7 @@
-import { Show, For, type Component } from 'solid-js'
+import { Show, For, type Component } from "solid-js";
 
 interface IProps {
-  collections: any
+  collections: any;
 }
 
 const Sidebar: Component<IProps> = ({ collections }) => {
@@ -21,15 +21,14 @@ const Sidebar: Component<IProps> = ({ collections }) => {
     );
 
     if (categories) {
-      return categories
+      return categories;
     }
-    return []
+    return [];
   }
 
   return (
     <>
       <div
-        id="navbar-collapse-with-animation"
         id="navbar-collapse-with-animation"
         class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow lg:flex lg:justify-center"
       >
@@ -82,7 +81,7 @@ const Sidebar: Component<IProps> = ({ collections }) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
