@@ -1,10 +1,9 @@
 ---
-import { SESSION_DURATION_MINUTES } from "src/lib/constants";
+import { getOrCreateCart, createCart } from "src/lib/swell/cart";
 import MapboxAutofill from "../components/solid/MapboxAutofill";
 import { isLoggedIn, stytch } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
 import { swell } from "src/lib/swell";
-import calculateCartDates from "src/utils/cartDates";
 
 const errors = { err: "" };
 
@@ -28,19 +27,15 @@ const email = session.user.emails[0].email;
 const account = await swell.get(`/accounts/${email}`);
 
 if (account) {
-  Astro.cookies.set("gp_zip", account.shipping.zip, {
-    path: "/",
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    expires: new Date(
-      Date.now() + SESSION_DURATION_MINUTES * 60 * 1000, // 30 days
-    ),
-  });
-
-  return Astro.redirect(
-    "/?message=" + encodeURIComponent("Onboarding complete!") + "#basket",
-  );
+  try {
+    // Create a cart for the user on Swell
+    await getOrCreateCart(account);
+    return Astro.redirect(
+      "/?message=" + encodeURIComponent("Onboarding complete!") + "#basket",
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 if (Astro.request.method === "POST") {
@@ -86,23 +81,8 @@ if (Astro.request.method === "POST") {
         type: "individual",
       });
 
-      // Create cart on Swell
-      const {
-        orderingWindowStartDate,
-        orderingWindowEndDate,
-        orderChargeDate,
-        deliveryDate,
-      } = calculateCartDates();
-      await swell.post("/carts", {
-        account_id: account.id,
-        shipping,
-        currency: "USD",
-        active: true,
-        ordering_window_start_date: orderingWindowStartDate,
-        ordering_window_end_date: orderingWindowEndDate,
-        order_charge_date: orderChargeDate,
-        delivery_date: deliveryDate,
-      });
+      // Create a cart for the user on Swell
+      await createCart(account);
 
       return Astro.redirect(
         "/?message=" + encodeURIComponent("Onboarding complete!") + "#basket",
