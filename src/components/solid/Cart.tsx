@@ -3,13 +3,15 @@ import { Motion, Presence } from "@motionone/solid";
 import { Show, type JSX } from "solid-js";
 import { isCartOpen } from "../../store.js";
 import { useStore } from "@nanostores/solid";
+import type { Cart as CartType } from "swell-js";
 
 interface CartProps {
-  readonly zip: string | undefined;
+  cart: CartType | null;
 }
 
-export default function Cart({ zip }: CartProps): JSX.Element {
+export default function Cart({ cart }: CartProps): JSX.Element {
   const $isCartOpen = useStore(isCartOpen);
+  const zip = cart?.shipping?.zip ?? "";
   return (
     <Presence exitBeforeEnter>
       <Show when={$isCartOpen()}>
