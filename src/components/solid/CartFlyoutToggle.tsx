@@ -8,8 +8,6 @@ const CartFlyoutToggle: Component = () => {
     <button
       data-testid="top-banner-zip"
       class="hover:cursor-pointer"
-      aria-controls="sidebar-mini"
-      aria-label="Toggle navigation"
       onClick={() => {
         isCartOpen.set(!$isCartOpen());
       }}

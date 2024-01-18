@@ -4,7 +4,7 @@ import { type Basket } from "@composables/basketUtils";
 import { createSignal } from "solid-js";
 
 interface Cart {
-  zipCode: string;
+  zip: string;
   isValidZip: boolean;
   deliverySlots: string[];
   selectedSlot: string;
@@ -13,7 +13,7 @@ interface Cart {
 }
 
 const initialCart: Cart = {
-  zipCode: "",
+  zip: "",
   isValidZip: false,
   deliverySlots: [],
   selectedSlot: "",
@@ -24,21 +24,21 @@ const initialCart: Cart = {
 export const [isSearchVisible, setIsSearchVisible] = createSignal(false);
 export const isCartOpen = atom(false);
 export const isMenuOpen = atom(false);
-export const basketStore = persistentMap<Cart>("gp_basket_", initialCart, {
+export const basketStore = persistentMap<Cart>("gp_", initialCart, {
   encode(value) {
-    return JSON.stringify(value);
+    return String(value);
   },
   decode(value) {
     try {
       return JSON.parse(value);
-    } catch (err) {
+    } catch (error) {
       return value;
     }
   },
 });
 
-export const updateZipCode = (newZipCode: string): void => {
-  basketStore.set({ ...basketStore.get(), zipCode: newZipCode });
+export const updateZip = (newZip: string): void => {
+  basketStore.set({ ...basketStore.get(), zip: newZip });
 };
 
 export const updateIsValidZip = (isValid: boolean): void => {
