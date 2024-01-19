@@ -45,7 +45,7 @@ const getCart = async (account: Account): Promise<GoodpluckCart | null> => {
 /**
  * Get the active cart for the account from the session token
  * @param sessionToken - the session token from Stytch
- * @returns Cart or null if it fails to retrieve the cart
+ * @returns CartType or null if it fails to retrieve the cart
  * @throws Error when it fails to retrieve the cart
  */
 const getCartFromSession = async (
@@ -88,7 +88,7 @@ const getCartFromSession = async (
 /**
  * Create a new cart for the account
  * @param account - the Swell account
- * @returns Cart or null if it fails to create the cart
+ * @returns CartType or null if it fails to create the cart
  * @throws Error when it fails to create the cart
  */
 const createCart = async (account: Account): Promise<GoodpluckCart | null> => {
@@ -116,7 +116,7 @@ const createCart = async (account: Account): Promise<GoodpluckCart | null> => {
 /**
  * Get the active cart for the account or create a new one if it doesn't exist
  * @param account - the Swell account
- * @returns Cart or null if it fails to retrieve or create the cart
+ * @returns CartType or null if it fails to retrieve or create the cart
  * @throws Error when it fails to retrieve or create the cart
  */
 const getOrCreateCart = async (

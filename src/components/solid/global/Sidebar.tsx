@@ -1,4 +1,4 @@
-import type { Category } from "@src/types/Swell";
+import type { Category as CategoryType } from "swell-js";
 import { Show, For, type Component } from "solid-js";
 
 interface IProps {
@@ -6,19 +6,13 @@ interface IProps {
 }
 
 const Sidebar: Component<IProps> = ({ collections }) => {
-  if (!collections) {
-    return null;
-  }
+  const categories = collections.filter(
+    (col: CategoryType) => col.parent_id === null,
+  );
 
-  const categories = collections.filter((col: any) => col.parent_id === null);
-
-  if (!categories) {
-    return null;
-  }
-
-  function getSubCategories(parentId: number): any {
+  function getSubCategories(parentId: string): CategoryType[] {
     const categories = collections.filter(
-      (col: any) => col.parent_id === parentId,
+      (col: CategoryType) => col.parent_id === parentId,
     );
 
     if (categories) {

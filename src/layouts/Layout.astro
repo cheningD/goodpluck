@@ -17,8 +17,9 @@ let cart = null;
 
 try {
   cart = await getCartFromSession(sessionToken as string);
+  console.log("Cart", cart);
 } catch (error) {
-  console.log(error);
+  console.log("Layout:error|", error);
 }
 ---
 
@@ -67,7 +68,7 @@ try {
           <slot />
         </div>
       </div>
-      <CartFlyout zipCodes={zipCodes} client:only />
+      <CartFlyout cart={cart} client:only />
     </main>
     <Footer client:load />
     <script>

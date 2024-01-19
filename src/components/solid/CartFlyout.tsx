@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/solid";
+import type { Cart as CartType } from "swell-js";
 import { type Component } from "solid-js";
 import {
   createEffect,
@@ -21,10 +22,10 @@ import {
 } from "@src/store";
 
 interface CartProps {
-  readonly zipCodes: string[];
+  cart: CartType | null;
 }
 
-const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
+const CartFlyout: Component<CartProps> = ({ cart }) => {
   const $isCartOpen = useStore(isCartOpen);
   const [deliverySlots, setDeliverySlots] = createSignal<string[]>([]);
   const currentBasket = useStore(basketStore);
@@ -65,6 +66,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
       document.cookie = `gp_zip=${currentBasket().zip};max-age=31536000;path=/`; // Expires in 1 year
     }
   };
+
   onMount(() => {
     console.log("currentBasket", currentBasket());
     setDeliverySlots(getDeliverySlots());
