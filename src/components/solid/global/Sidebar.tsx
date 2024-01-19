@@ -1,3 +1,4 @@
+import type { Category } from "@src/types/Swell";
 import { Show, For, type Component } from "solid-js";
 
 interface IProps {

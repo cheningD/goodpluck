@@ -1,15 +1,12 @@
+import { format } from "date-fns";
+
 const formatDate = (
   dateString: string,
+  formatString: string = "EEEE, MMMM d",
   locale: string = "en-US",
-  options?: Intl.DateTimeFormatOptions,
 ): string => {
   const date = new Date(dateString);
-  const defaultOptions: Intl.DateTimeFormatOptions = options ?? {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  };
-  return date.toLocaleDateString(locale, defaultOptions);
+  return format(date, formatString);
 };
 
 export { formatDate };

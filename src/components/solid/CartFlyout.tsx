@@ -17,8 +17,6 @@ import {
   updateIsValidZip,
   updateZip,
   updateOrders,
-  updateActiveOrder,
-  updateSelectedSlot,
   isCartOpen,
 } from "@src/store";
 
@@ -32,14 +30,15 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
   const currentBasket = useStore(basketStore);
   const [zipRequired, setZipRequired] = createSignal<boolean>(false);
 
-  const [addBasketFromOrdersTab, setAddBasketFromOrdersTab] =
-    createSignal<boolean>(false);
+  const [, setAddBasketFromOrdersTab] = createSignal<boolean>(false);
 
   const [tab, setTab] = createSignal(0);
   const [pending, start] = useTransition();
   const updateTab = (index: number) => (): void => {
     void start(() => setTab(index));
   };
+
+  const updateSelectedSlot = (): void => {};
 
   const addNewBasket = (): void => {
     if (currentBasket().selectedSlot === "") {
@@ -69,6 +68,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
   onMount(() => {
     console.log("currentBasket", currentBasket());
     setDeliverySlots(getDeliverySlots());
+    console.log("DeliverySlots", deliverySlots());
   });
 
   const handleSubmit = (e: Event): void => {
@@ -84,7 +84,6 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
       window.location.href = "/waitlist";
     }
   };
-  // classList={{ hidden: !$isCartOpen() }}
 
   return (
     <>
@@ -167,13 +166,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
                               <>
                                 <li
                                   onClick={() => {
-                                    updateSelectedSlot(
-                                      formatDate(slot, "en-US", {
-                                        weekday: "short",
-                                        month: "short",
-                                        day: "numeric",
-                                      }),
-                                    );
+                                    updateSelectedSlot();
                                   }}
                                   class="px-3 py-4 cursor-pointer border-gray-300 border-b flex items-center justify-between"
                                 >
@@ -271,7 +264,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
                 <Match when={tab() === 1}>
                   <div class="flex flex-col content-center">
                     <Show
-                      when={!addBasketFromOrdersTab()}
+                      when={currentBasket().selectedSlot !== ""}
                       fallback={
                         <>
                           <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
@@ -279,13 +272,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
                               <>
                                 <li
                                   onClick={() => {
-                                    updateSelectedSlot(
-                                      formatDate(slot, "en-US", {
-                                        weekday: "short",
-                                        month: "short",
-                                        day: "numeric",
-                                      }),
-                                    );
+                                    updateSelectedSlot();
                                   }}
                                   class="px-3 py-4 cursor-pointer border-gray-300 border-b flex items-center justify-between"
                                 >
@@ -339,13 +326,7 @@ const CartFlyout: Component<CartProps> = ({ zipCodes }) => {
                               <>
                                 <li
                                   onClick={() => {
-                                    updateSelectedSlot(
-                                      formatDate(basket.deliveryDate, "en-US", {
-                                        weekday: "short",
-                                        month: "short",
-                                        day: "numeric",
-                                      }),
-                                    );
+                                    updateSelectedSlot();
                                   }}
                                   class="px-3 py-4 cursor-pointer border-gray-300 border-b flex flex-col"
                                 >
