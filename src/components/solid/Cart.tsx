@@ -1,5 +1,6 @@
 import type { Cart as CartType } from "swell-js";
 import type { Component } from "solid-js";
+import type { Cart as CartType } from "swell-js";
 
 interface CartProps {
   cart: CartType | null;

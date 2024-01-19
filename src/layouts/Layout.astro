@@ -18,10 +18,10 @@ import Breadcrumb from "@components/solid/Breadcrumb";
 import ScrollSpy from "@components/solid/global/ScrollSpy";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
+import { getCartFromSession } from "src/lib/swell/cart";
 
 const { title, description, categories, currentCollection } = Astro.props;
 
-const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
 const postcode = Astro.cookies.get("user_postcode")?.value;
 
 let currentCollectionId = 0;
@@ -39,6 +39,17 @@ function getCurrentSubCategories() {
     return subCategories;
   }
   return [];
+}
+
+// Retrieve session token and get user/cart data
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const isLoggedIn = !!sessionToken;
+let cart = null;
+
+try {
+  cart = await getCartFromSession(sessionToken as string);
+} catch (error) {
+  console.log(error);
 }
 ---
 
