@@ -2,23 +2,12 @@
 import Header from "@components/solid/global/Header";
 import Footer from "@components/solid/global/Footer";
 import { getCartFromSession } from "src/lib/swell/cart";
-
-// Retrieve session token and get user/cart data
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-let cart = null;
-
-try {
-  cart = await getCartFromSession(sessionToken as string);
-} catch (error) {
-  console.log(error);
-}
 import Cart from "@components/solid/Cart";
 import Banner from "@components/solid/Banner";
 import Breadcrumb from "@components/solid/Breadcrumb";
 import ScrollSpy from "@components/solid/global/ScrollSpy";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
-import { getCartFromSession } from "src/lib/swell/cart";
 
 const { title, description, categories, currentCollection } = Astro.props;
 
