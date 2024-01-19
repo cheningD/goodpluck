@@ -1,6 +1,7 @@
 import { Show, type Component, createSignal, onCleanup } from "solid-js";
 import { initSwell } from "../../lib/swell-js";
 import { throttle } from "../../lib/throttle";
+import type { Product } from "swell-js";
 
 interface IProps {
   currentCategory: string | undefined;
@@ -11,7 +12,7 @@ const swell = initSwell(
 );
 
 const Products: Component<IProps> = ({ currentCategory }) => {
-  const [products, setProducts] = createSignal([]);
+  const [products, setProducts] = createSignal<Product[]>([]);
   const [isLoading, setIsLoading] = createSignal(false);
   const [page, setPage] = createSignal(1);
   const [totalProducts, setTotalProducts] = createSignal(0);
@@ -31,7 +32,7 @@ const Products: Component<IProps> = ({ currentCategory }) => {
     setIsLoading(true);
 
     try {
-      let newProducts = [];
+      let newProducts = { results: [] };
       newProducts.results = [];
       if (currentCategory !== "") {
         newProducts = await swell.products.list({
@@ -77,7 +78,7 @@ const Products: Component<IProps> = ({ currentCategory }) => {
     "@type": "ListItem",
     position: index + 1,
     item: {
-      "@id": product.url,
+      "@id": product.slug,
       name: product.name,
     },
   }));
@@ -124,13 +125,10 @@ const Products: Component<IProps> = ({ currentCategory }) => {
                     </button>
                   </a>
                 </div>
-                <h2
-                  class="text-xl font-serif"
-                  href={`/product/${product.slug}`}
-                >
+                <a class="text-xl font-serif" href={`/product/${product.slug}`}>
                   <span class="hidden">Product Name:</span>
                   {product.name}
-                </h2>
+                </a>
                 <div class="flex justify-between items-center">
                   <span class="text-xs text-gray-600">{product.kind}</span>
                   <span class="text-right font-semibold">${product.price}</span>
