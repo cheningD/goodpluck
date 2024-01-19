@@ -1,4 +1,5 @@
 ---
+import { getOrCreateCart, createCart } from "src/lib/swell/cart";
 import MapboxAutofill from "../components/solid/MapboxAutofill";
 import { isLoggedIn, stytch } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
@@ -26,9 +27,15 @@ const email = session.user.emails[0].email;
 const account = await swell.get(`/accounts/${email}`);
 
 if (account) {
-  return Astro.redirect(
-    "/?message=" + encodeURIComponent("Onboarding complete!") + "#basket",
-  );
+  try {
+    // Create a cart for the user on Swell
+    await getOrCreateCart(account);
+    return Astro.redirect(
+      "/?message=" + encodeURIComponent("Onboarding complete!") + "#basket",
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 if (Astro.request.method === "POST") {
@@ -43,6 +50,13 @@ if (Astro.request.method === "POST") {
     const state = data.get("state")?.toString();
     const postcode = data.get("postcode")?.toString();
     const apartment = data.get("apartment")?.toString(); // Optional
+    const shipping = {
+      address1,
+      address2: apartment,
+      city,
+      state,
+      zip: postcode,
+    };
 
     if (
       !first_name ||
@@ -57,21 +71,18 @@ if (Astro.request.method === "POST") {
       errors.err = "Please fill all the fields";
     } else {
       // Create user account on Swell
-      await swell.post("/accounts", {
+      const account = await swell.post("/accounts", {
         email: session.user.emails[0].email,
         first_name,
         last_name,
-        shipping: {
-          address1,
-          address2: apartment,
-          city,
-          state,
-          zip: postcode,
-        },
+        shipping,
         phone: phone,
         email_optin: consent === "on",
         type: "individual",
       });
+
+      // Create a cart for the user on Swell
+      await createCart(account);
 
       return Astro.redirect(
         "/?message=" + encodeURIComponent("Onboarding complete!") + "#basket",

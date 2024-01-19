@@ -1,10 +1,12 @@
+import type { Cart as CartType } from "swell-js";
 import type { Component } from "solid-js";
 
 interface CartProps {
-  readonly postcode: string | undefined;
+  cart: CartType | null;
 }
 
-const Cart: Component<CartProps> = ({ postcode }: CartProps) => {
+const Cart: Component<CartProps> = ({ cart }: CartProps) => {
+  const zip = cart?.shipping?.zip ?? "";
   return (
     <>
       <div
@@ -62,7 +64,7 @@ const Cart: Component<CartProps> = ({ postcode }: CartProps) => {
                   placeholder="Zip Code"
                   id="zip"
                   name="zip"
-                  value={postcode}
+                  value={zip}
                 />
                 <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                   Already have an account?

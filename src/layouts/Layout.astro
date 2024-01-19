@@ -1,6 +1,7 @@
 ---
 import Header from "@components/solid/global/Header";
 import Footer from "@components/solid/global/Footer";
+import { getCartFromSession } from "src/lib/swell/cart";
 import Cart from "@components/solid/Cart";
 import Banner from "@components/solid/Banner";
 import Breadcrumb from "@components/solid/Breadcrumb";
@@ -10,7 +11,6 @@ import favicon from "@assets/img/favicon.png";
 
 const { title, description, categories, currentCollection } = Astro.props;
 
-const isLoggedIn = !!Astro.cookies.get("gp_session_token")?.value; // a local check for quick UI updates
 const postcode = Astro.cookies.get("user_postcode")?.value;
 
 let currentCollectionId = 0;
@@ -28,6 +28,17 @@ function getCurrentSubCategories() {
     return subCategories;
   }
   return [];
+}
+
+// Retrieve session token and get user/cart data
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const isLoggedIn = !!sessionToken;
+let cart = null;
+
+try {
+  cart = await getCartFromSession(sessionToken as string);
+} catch (error) {
+  console.log(error);
 }
 ---
 
@@ -71,7 +82,7 @@ function getCurrentSubCategories() {
           <slot />
         </div>
       </div>
-      <Cart postcode={postcode} />
+      <Cart cart={cart} />
     </main>
     <Footer client:load />
     <script>

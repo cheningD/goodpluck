@@ -1,12 +1,18 @@
 import { Show, For, type Component } from "solid-js";
+import type { Category } from "swell-js";
 
 interface IProps {
-  categories: any;
-  collectionId: any;
+  categories: Category[];
+  collectionId: string;
 }
 
 const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
   const checkCategory = categories.find((col) => col.id === collectionId);
+
+  if (!checkCategory) {
+    return null;
+  }
+
   let categoryId = checkCategory.parent_id
     ? collectionId
     : categories.filter((col) => col.parent_id === collectionId)[0].id;
@@ -21,6 +27,11 @@ const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
   }
 
   const currentCategory = categories.find((col) => col.id === categoryId);
+
+  if (!currentCategory) {
+    return null;
+  }
+
   let parentCategory = categories.find(
     (col) => col.id === currentCategory.parent_id,
   );
@@ -32,12 +43,12 @@ const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
     breadcrumb.unshift(parentCategory);
   }
 
-  let topLevelCategory = parentCategory || currentCategory;
+  let topLevelCategory = parentCategory ?? currentCategory;
 
   while (parentCategory) {
     topLevelCategory = parentCategory;
     parentCategory = categories.find(
-      (col) => col.id === parentCategory.parent_id,
+      (col) => col.id === parentCategory?.parent_id,
     );
   }
 

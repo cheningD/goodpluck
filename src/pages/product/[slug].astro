@@ -1,11 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { initSwell } from "../../lib/swell-js";
-
-const swell = initSwell(
-  import.meta.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
+import { swell } from "../../lib/swell";
 
 const { slug } = Astro.params;
 
