@@ -4,6 +4,7 @@ import MapboxAutofill from "../components/solid/MapboxAutofill";
 import { isLoggedIn, stytch } from "../lib/stytch";
 import Layout from "@layouts/Layout.astro";
 import { swell } from "src/lib/swell";
+import MapboxConfirmation from "@components/solid/MapboxConfirmation";
 
 const errors = { err: "" };
 
@@ -218,4 +219,5 @@ if (Astro.request.method === "POST") {
   </div>
 
   <MapboxAutofill client:only mapboxToken={mapboxToken} />
+  <MapboxConfirmation client:only mapboxToken={mapboxToken} />
 </Layout>
