@@ -1,0 +1,182 @@
+---
+import { stytch } from "@src/lib/stytch";
+import Layout from "../layouts/Layout.astro";
+import { swell } from "src/lib/swell";
+import { getCartFromSession } from "@src/lib/swell/cart";
+
+// Retrieve session token
+const sessionToken = Astro.cookies.get("gp_session_token")?.value as string;
+const session = sessionToken
+  ? await stytch.sessions.authenticate({ session_token: sessionToken })
+  : null;
+const email = session?.user.emails[0].email;
+if (!session || !email || !(await swell.get(`/accounts/${email}`))) {
+  return Astro.redirect(
+    !session
+      ? "/?message=" + encodeURIComponent("You are not logged in")
+      : "/create-account",
+  );
+}
+
+// Generate months and years for expiration date
+const months = Array.from({ length: 12 }, (_, i) => ({
+  value: (i + 1).toString().padStart(2, "0"),
+  label: (i + 1).toString().padStart(2, "0"),
+}));
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 21 }, (_, i) => ({
+  value: currentYear + i,
+  label: currentYear + i,
+}));
+
+if (Astro.request.method === "POST") {
+  const data = await Astro.request.formData();
+  const token = data.get("token")?.toString();
+  const name = data.get("name")?.toString();
+  const account = await swell.get(`/accounts/${email}`);
+  const card = await swell.post(`/accounts:cards`, {
+    parent_id: account.id,
+    token,
+    billing: {
+      name,
+      ...account.shipping,
+    },
+  });
+
+  const updatedAccount = await swell.put(`/accounts/${email}`, {
+    billing: {
+      account_card_id: card.id,
+    },
+  });
+
+  const cart = await getCartFromSession(sessionToken);
+  if (cart) {
+    await swell.put(`/carts/${cart.id}`, {
+      billing: updatedAccount.billing,
+    });
+  }
+
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("Payment method added"),
+  );
+}
+---
+
+<Layout>
+  <form method="POST">
+    <!-- Name on card -->
+    <div class="input-group">
+      <label for="name" class="label">Name on card</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Name on card"
+        required
+        class="input"
+      />
+    </div>
+
+    <!-- Card number -->
+    <div class="input-group">
+      <label for="number" class="label">Card Number</label>
+      <input
+        type="text"
+        id="number"
+        name="number"
+        placeholder="Card Number"
+        required
+        pattern="[0-9]{16}"
+        maxlength="16"
+        minlength="16"
+        class="input"
+        title="Credit card number must be 16 digits"
+      />
+    </div>
+
+    <!-- Expiration date -->
+    <div class="flex justify-between mb-4">
+      <div class="input-group">
+        <label for="exp_month" class="label">Expiration Month</label>
+        <select id="exp_month" name="exp_month" required class="select">
+          {
+            months.map((month) => (
+              <option value={month.value}>{month.label}</option>
+            ))
+          }
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="exp_year" class="label">Expiration Year</label>
+        <select id="exp_year" name="exp_year" required class="select">
+          {
+            years.map((year) => (
+              <option value={year.value}>{year.label}</option>
+            ))
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- CVC -->
+    <div class="input-group">
+      <label for="cvc" class="label">CVC</label>
+      <input
+        type="text"
+        id="cvc"
+        name="cvc"
+        placeholder="CVC"
+        required
+        pattern="[0-9]{3}"
+        maxlength="3"
+        minlength="3"
+        class="input"
+        title="CVC must be 3 digits"
+      />
+    </div>
+
+    <input type="hidden" name="token" />
+
+    <!-- Submit button -->
+    <button type="submit" class="button">Add Payment</button>
+  </form>
+
+  <script>
+    import { initSwell } from "../lib/swell-js";
+
+    const form = document.querySelector("form");
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      try {
+        const swell = initSwell(
+          import.meta.env.PUBLIC_SWELL_STORE_ID,
+          import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+        );
+
+        const formData = new FormData(form);
+        const { number, exp_month, exp_year, cvc } = Object.fromEntries(
+          formData.entries(),
+        );
+
+        const response = await swell.card.createToken({
+          number,
+          exp_month,
+          exp_year,
+          cvc,
+        });
+
+        const tokenInput = form.querySelector(
+          "input[name=token]",
+        ) as HTMLInputElement;
+        if (tokenInput) {
+          tokenInput.value = response.token;
+        }
+
+        form.submit();
+      } catch (error) {
+        console.error("Error processing payment:", error);
+      }
+    });
+  </script>
+</Layout>
