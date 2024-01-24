@@ -51,7 +51,11 @@ try {
     <title>{title} - Goodpluck</title>
   </head>
   <body class="flex flex-col min-h-screen">
-    <Banner isLoggedIn={isLoggedIn} client:load />
+    <Banner
+      isZipDeliverable={!!cart?.shipping?.zip}
+      deliveryDate={cart?.date_delivery || null}
+      client:load
+    />
     <Header collections={categories} client:load />
     <main
       id="sidebar-page"
