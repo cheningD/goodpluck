@@ -1,5 +1,4 @@
 import { useStore } from "@nanostores/solid";
-import type { Cart as CartType } from "swell-js";
 import { type Component } from "solid-js";
 import {
   createEffect,
@@ -13,22 +12,17 @@ import {
 } from "solid-js";
 import { formatDate } from "@composables/timeUtils";
 import { getDeliverySlots, type Basket } from "@composables/basketUtils";
-import {
-  basketStore,
-  updateIsValidZip,
-  updateZip,
-  updateOrders,
-  isCartOpen,
-} from "@src/store";
+import { isCartOpen } from "@src/store";
+import { isZipCodeDeliverable } from "@utils/validations";
 
 interface CartProps {
-  cart: CartType | null;
+  basket: Basket | null;
+  hasValidZip: boolean;
 }
 
-const CartFlyout: Component<CartProps> = ({ cart }) => {
+const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
   const $isCartOpen = useStore(isCartOpen);
   const [deliverySlots, setDeliverySlots] = createSignal<string[]>([]);
-  const currentBasket = useStore(basketStore);
   const [zipRequired, setZipRequired] = createSignal<boolean>(false);
 
   const [, setAddBasketFromOrdersTab] = createSignal<boolean>(false);
@@ -42,17 +36,17 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
   const updateSelectedSlot = (): void => {};
 
   const addNewBasket = (): void => {
-    if (currentBasket().selectedSlot === "") {
-      alert("No delivery date selected!");
-      return;
-    }
-    updateActiveOrder({
-      items: [],
-      deliveryDate: currentBasket().selectedSlot,
-    });
-    const newOrders = currentBasket().orders;
-    newOrders.push({ items: [], deliveryDate: currentBasket().selectedSlot });
-    updateOrders(newOrders);
+    // if (currentBasket().selectedSlot === "") {
+    //   alert("No delivery date selected!");
+    //   return;
+    // }
+    // updateActiveOrder({
+    //   items: [],
+    //   deliveryDate: currentBasket().selectedSlot,
+    // });
+    // const newOrders = currentBasket().orders;
+    // newOrders.push({ items: [], deliveryDate: currentBasket().selectedSlot });
+    // updateOrders(newOrders);
   };
 
   createEffect(() => {
@@ -60,29 +54,30 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
   });
 
   const validateZipCode = (): void => {
-    const isValid: boolean = zipCodes.includes(currentBasket().zip);
-    updateIsValidZip(isValid);
-    if (currentBasket().isValidZip) {
-      document.cookie = `gp_zip=${currentBasket().zip};max-age=31536000;path=/`; // Expires in 1 year
-    }
+    const currentSessionZip =
+      basket?.shipping?.zip === undefined ? "" : basket?.shipping?.zip;
+    isZipCodeDeliverable(currentSessionZip);
   };
 
+  const updateZip = (newZip: string): void => {};
+
   onMount(() => {
-    console.log("currentBasket", currentBasket());
+    console.log("currentCart", basket);
     setDeliverySlots(getDeliverySlots());
-    console.log("DeliverySlots", deliverySlots());
   });
 
   const handleSubmit = (e: Event): void => {
     e.preventDefault();
-    if (currentBasket().zip === "") {
+    if (basket?.shipping?.zip === "") {
       setZipRequired(true);
       return;
     }
 
-    validateZipCode();
+    const currentSessionZip =
+      basket?.shipping?.zip === undefined ? "" : basket?.shipping?.zip;
+    isZipCodeDeliverable(currentSessionZip);
 
-    if (!currentBasket().isValidZip) {
+    if (!hasValidZip) {
       window.location.href = "/waitlist";
     }
   };
@@ -97,7 +92,7 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
           <ul class="grid grid-cols-2">
             <li onClick={updateTab(0)}>
               <Show
-                when={currentBasket().isValidZip}
+                when={hasValidZip}
                 fallback={
                   <button
                     data-testid="basket-tab-zip"
@@ -116,8 +111,8 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                   role="tab"
                 >
                   <Show
-                    when={currentBasket().selectedSlot === ""}
-                    fallback={currentBasket().selectedSlot}
+                    when={basket?.deliveryDate === null}
+                    fallback={<h4>{basket?.deliveryDate.toString()}</h4>}
                   >
                     <h4>Select Date</h4>
                   </Show>
@@ -141,10 +136,10 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                 <Match when={tab() === 0}>
                   <div class="max-h-[80vh] flex flex-col justify-center">
                     <Show
-                      when={!currentBasket().isValidZip}
+                      when={!hasValidZip}
                       fallback={
                         <Show
-                          when={currentBasket().activeOrder === null}
+                          when={basket?.items?.length === 0}
                           fallback={
                             <>
                               <h4 class="max-h-[70vh] min-h-[70vh] text-3xl text-center">
@@ -176,12 +171,8 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                                     <h4 class="text-2xl font-bold">{slot}</h4>
                                     <span>Delivery time: 10:00AM</span>
                                   </div>
-                                  {currentBasket().selectedSlot ===
-                                    formatDate(slot, "en-US", {
-                                      weekday: "short",
-                                      month: "short",
-                                      day: "numeric",
-                                    }) && (
+                                  {basket?.deliveryDate.toString() ===
+                                    formatDate(slot) && (
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       class="w-8 h-8 bg-orange-800 text-white rounded-full p-1"
@@ -230,7 +221,7 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                             placeholder="Zip Code"
                             id="zip"
                             name="zip"
-                            value={currentBasket().zip}
+                            value={basket?.shipping?.zip}
                             onInput={(e) => {
                               updateZip(e.target.value);
                             }}
@@ -266,7 +257,7 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                 <Match when={tab() === 1}>
                   <div class="flex flex-col content-center">
                     <Show
-                      when={currentBasket().selectedSlot !== ""}
+                      when={basket?.deliveryDate !== null}
                       fallback={
                         <>
                           <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
@@ -282,7 +273,7 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                                     <h4 class="text-2xl font-bold">{slot}</h4>
                                     <span>Delivery time: 10:00AM</span>
                                   </div>
-                                  {currentBasket().selectedSlot ===
+                                  {/* {currentBasket().selectedSlot ===
                                     formatDate(slot, "en-US", {
                                       weekday: "short",
                                       month: "short",
@@ -298,7 +289,7 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                                         d="M9 20c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2m8-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2M18 2.8l-1.4-1.4l-4.8 4.8l-2.6-2.6L7.8 5l4 4z"
                                       />
                                     </svg>
-                                  )}
+                                  )} */}
                                 </li>
                               </>
                             ))}
@@ -321,7 +312,7 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                         <h3 class="text-3xl font-medium text-center ">
                           No Basket added yet!
                         </h3>
-                        {(currentBasket().orders.length > 0) &
+                        {/* {(currentBasket().orders.length > 0) &
                         (
                           <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
                             {currentBasket().orders.map((basket: Basket) => (
@@ -355,7 +346,7 @@ const CartFlyout: Component<CartProps> = ({ cart }) => {
                               </>
                             ))}
                           </ul>
-                        )}
+                        )} */}
 
                         <button
                           onClick={() => setAddBasketFromOrdersTab(true)}

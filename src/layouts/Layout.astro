@@ -8,6 +8,7 @@ import Breadcrumb from "@components/solid/Breadcrumb";
 import SidebarMenu from "@components/solid/global/SidebarMenu";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
+import { isZipCodeDeliverable } from "@utils/validations";
 
 const { title, categories, currentCollection } = Astro.props;
 
@@ -68,7 +69,7 @@ try {
           <slot />
         </div>
       </div>
-      <CartFlyout cart={cart} client:only />
+      <CartFlyout basket={cart} hasValidZip={isValidZip} client:only />
     </main>
     <Footer client:load />
     <script>

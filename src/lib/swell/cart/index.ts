@@ -136,4 +136,66 @@ const getOrCreateCart = async (
   }
 };
 
-export { getOrCreateCart, getCart, createCart, getCartFromSession };
+/**
+ * Get the active cart for a guest user
+ * @returns CartType or null if it fails to retrieve or create the cart
+ * @throws Error when it fails to retrieve or create the cart
+ */
+const getOrCreateGuestCart = async (): Promise<Basket | null> => {
+  try {
+    const $swellCartId = useStore(swellCartId);
+
+    if ($swellCartId() !== undefined) {
+      const guestCart = await swell.get("/carts/{id}", {
+        id: $swellCartId(),
+      });
+      console.log("fetched cartId:", $swellCartId());
+      return guestCart;
+    } else {
+      const guestCart: Basket = await swell.post("/carts", {
+        ordering_window_start_date: orderingWindowStartDate,
+        ordering_window_end_date: orderingWindowEndDate,
+        order_charge_date: orderChargeDate,
+        delivery_date: deliveryDate,
+      });
+      console.log("created guest cartId:", guestCart.id);
+      swellCartId.set(guestCart.id);
+      return guestCart;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+/**
+ * Get the active cart for a guest user
+ * @param cart - the current Swell guest Cart
+ * @param zip - the new zip
+ * @returns CartType or null if it fails to retrieve or create the cart
+ * @throws Error when it fails to retrieve or create the cart
+ */
+const updateGuestCartZip = async (
+  cart: CartType,
+  newZip: string,
+): Promise<void> => {
+  try {
+    await swell.put(`/carts/${cart.id}`, {
+      id: cart.id,
+      shipping: {
+        zip: newZip,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export {
+  updateGuestCartZip,
+  getOrCreateCart,
+  getCart,
+  createCart,
+  getCartFromSession,
+  getOrCreateGuestCart,
+};

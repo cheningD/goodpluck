@@ -1,4 +1,5 @@
 import { formatDate } from "./timeUtils";
+import type { Cart as CartType } from "swell-js";
 
 const getDeliverySlots = (): string[] => {
   const slots: string[] = [];
@@ -25,9 +26,11 @@ const getDeliverySlots = (): string[] => {
   return slots;
 };
 
-interface Basket {
-  items: [];
-  deliveryDate: string;
+interface Basket extends CartType {
+  orderingWindowStartDate: Date;
+  orderingWindowEndDate: Date;
+  orderChargeDate: Date;
+  deliveryDate: Date;
 }
 
 export { getDeliverySlots, type Basket };
