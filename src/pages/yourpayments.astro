@@ -2,7 +2,10 @@
 import { stytch } from "@src/lib/stytch";
 import Layout from "../layouts/Layout.astro";
 import { swell } from "src/lib/swell";
+import type { Card } from "swell-js";
 import { getCartFromSession } from "@src/lib/swell/cart";
+
+const errors = { err: "" };
 
 // Retrieve session token
 const sessionToken = Astro.cookies.get("gp_session_token")?.value as string;
@@ -30,8 +33,7 @@ const years = Array.from({ length: 21 }, (_, i) => ({
 }));
 
 // Get current payment methods
-const cards = await swell.get(`/accounts/${email}/cards`);
-console.log(cards);
+const cards = (await swell.get(`/accounts/${email}/cards`)).results;
 
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
@@ -47,24 +49,29 @@ if (Astro.request.method === "POST") {
     },
   });
 
-  // Adds card to account as default payment method
-  const updatedAccount = await swell.put(`/accounts/${email}`, {
-    billing: {
-      account_card_id: card.id,
-    },
-  });
-
-  // Updates cart with new billing address and payment method
-  const cart = await getCartFromSession(sessionToken);
-  if (cart) {
-    await swell.put(`/carts/${cart.id}`, {
-      billing: updatedAccount.billing,
+  if (!cards.some((c: Card) => c.id === card.id)) {
+    // Adds card to account as default payment method
+    const updatedAccount = await swell.put(`/accounts/${email}`, {
+      billing: {
+        account_card_id: card.id,
+      },
     });
-  }
 
-  return Astro.redirect(
-    "/?message=" + encodeURIComponent("Payment method added"),
-  );
+    // Updates cart with new billing address and payment method
+    const cart = await getCartFromSession(sessionToken);
+    if (cart) {
+      await swell.put(`/carts/${cart.id}`, {
+        billing: updatedAccount.billing,
+      });
+    }
+
+    return Astro.redirect(
+      "/yourpayments?message=" + encodeURIComponent("Card added successfully"),
+    );
+  } else {
+    errors.err = "Card already exists";
+    console.error(errors.err);
+  }
 }
 ---
 
@@ -73,7 +80,9 @@ if (Astro.request.method === "POST") {
     <h2 class="text-2xl font-bold text-gray-900 my-4">Add a Payment Method</h2>
 
     <!-- Error message -->
-    <div class="text-red-500 mb-4 error-msg"></div>
+    <div class="text-red-500 mb-4 error-msg">
+      {errors.err}
+    </div>
 
     <form method="POST">
       <!-- Name on card -->
