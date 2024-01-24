@@ -29,6 +29,10 @@ const years = Array.from({ length: 21 }, (_, i) => ({
   label: currentYear + i,
 }));
 
+// Get current payment methods
+const cards = await swell.get(`/accounts/${email}/cards`);
+console.log(cards);
+
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
   const token = data.get("token")?.toString();
@@ -43,12 +47,14 @@ if (Astro.request.method === "POST") {
     },
   });
 
+  // Adds card to account as default payment method
   const updatedAccount = await swell.put(`/accounts/${email}`, {
     billing: {
       account_card_id: card.id,
     },
   });
 
+  // Updates cart with new billing address and payment method
   const cart = await getCartFromSession(sessionToken);
   if (cart) {
     await swell.put(`/carts/${cart.id}`, {
@@ -63,91 +69,131 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout>
-  <form method="POST">
-    <!-- Name on card -->
-    <div class="input-group">
-      <label for="name" class="label">Name on card</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        placeholder="Name on card"
-        required
-        class="input"
-      />
-    </div>
+  <div class="flex flex-col w-1/2">
+    <h2 class="text-2xl font-bold text-gray-900 my-4">Add a Payment Method</h2>
 
-    <!-- Card number -->
-    <div class="input-group">
-      <label for="number" class="label">Card Number</label>
-      <input
-        type="text"
-        id="number"
-        name="number"
-        placeholder="Card Number"
-        required
-        pattern="[0-9]{16}"
-        maxlength="16"
-        minlength="16"
-        class="input"
-        title="Credit card number must be 16 digits"
-      />
-    </div>
+    <!-- Error message -->
+    <div class="text-red-500 mb-4 error-msg"></div>
 
-    <!-- Expiration date -->
-    <div class="flex justify-between mb-4">
+    <form method="POST">
+      <!-- Name on card -->
       <div class="input-group">
-        <label for="exp_month" class="label">Expiration Month</label>
-        <select id="exp_month" name="exp_month" required class="select">
-          {
-            months.map((month) => (
-              <option value={month.value}>{month.label}</option>
-            ))
-          }
-        </select>
+        <label
+          for="name"
+          class="label block text-sm font-medium text-gray-700 mb-2"
+          >Name on card</label
+        >
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Bob the Tomato"
+          required
+          class="input border rounded-md p-2 w-1/2 mb-4"
+        />
       </div>
+
+      <!-- Card number -->
       <div class="input-group">
-        <label for="exp_year" class="label">Expiration Year</label>
-        <select id="exp_year" name="exp_year" required class="select">
-          {
-            years.map((year) => (
-              <option value={year.value}>{year.label}</option>
-            ))
-          }
-        </select>
+        <label
+          for="number"
+          class="label block text-sm font-medium text-gray-700 mb-2"
+          >Card Number</label
+        >
+        <input
+          type="text"
+          id="number"
+          name="number"
+          placeholder="4242424242424242"
+          required
+          pattern="[0-9]{16}"
+          maxlength="16"
+          minlength="15"
+          class="input border rounded-md p-2 w-1/2 mb-4"
+          title="Credit card number must be 16 digits"
+        />
       </div>
-    </div>
 
-    <!-- CVC -->
-    <div class="input-group">
-      <label for="cvc" class="label">CVC</label>
-      <input
-        type="text"
-        id="cvc"
-        name="cvc"
-        placeholder="CVC"
-        required
-        pattern="[0-9]{3}"
-        maxlength="3"
-        minlength="3"
-        class="input"
-        title="CVC must be 3 digits"
-      />
-    </div>
+      <!-- Expiration date -->
+      <div class="flex mb-4">
+        <div class="input-group">
+          <label
+            for="exp_month"
+            class="label block text-sm font-medium text-gray-700 mb-2 mr-4"
+            >Expiration Month</label
+          >
+          <select
+            id="exp_month"
+            name="exp_month"
+            required
+            class="select border rounded-md"
+          >
+            {
+              months.map((month) => (
+                <option value={month.value}>{month.label}</option>
+              ))
+            }
+          </select>
+        </div>
+        <div class="input-group">
+          <label
+            for="exp_year"
+            class="label block text-sm font-medium text-gray-700 mb-2"
+            >Expiration Year</label
+          >
+          <select
+            id="exp_year"
+            name="exp_year"
+            required
+            class="select border rounded-md"
+          >
+            {
+              years.map((year) => (
+                <option value={year.value}>{year.label}</option>
+              ))
+            }
+          </select>
+        </div>
+      </div>
 
-    <input type="hidden" name="token" />
+      <!-- CVC -->
+      <div class="input-group">
+        <label
+          for="cvc"
+          class="label block text-sm font-medium text-gray-700 mb-2">CVC</label
+        >
+        <input
+          type="text"
+          id="cvc"
+          name="cvc"
+          placeholder="123"
+          required
+          pattern="[0-9]{3}"
+          maxlength="3"
+          minlength="3"
+          class="input border rounded-md p-2 w-1/2 mb-4"
+          title="CVC must be 3 digits"
+        />
+      </div>
 
-    <!-- Submit button -->
-    <button type="submit" class="button">Add Payment</button>
-  </form>
+      <input type="hidden" name="token" />
+
+      <!-- Submit button -->
+      <button
+        class="bg-blue-500 text-white rounded-md p-2 w-full my-4 hover:bg-blue-600"
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
 
   <script>
     import { initSwell } from "../lib/swell-js";
 
     const form = document.querySelector("form");
-    form?.addEventListener("submit", async (e) => {
+    form?.addEventListener("submit", async (e: Event) => {
       e.preventDefault();
-
       try {
         const swell = initSwell(
           import.meta.env.PUBLIC_SWELL_STORE_ID,
@@ -175,7 +221,10 @@ if (Astro.request.method === "POST") {
 
         form.submit();
       } catch (error) {
-        console.error("Error processing payment:", error);
+        const errorDiv = document.querySelector(".error-msg");
+        if (errorDiv) {
+          errorDiv.textContent = error as string;
+        }
       }
     });
   </script>
