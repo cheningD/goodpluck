@@ -2,30 +2,29 @@
 import { stytch } from "@src/lib/stytch";
 import Layout from "../layouts/Layout.astro";
 import { swell } from "src/lib/swell";
-import type { Card } from "swell-js";
-import { getCartFromSession } from "@src/lib/swell/cart";
+import {
+  MONTHS,
+  YEARS,
+  getCardSummaries,
+  getCards,
+  updateBillingInfo,
+  type CardSummary,
+} from "@src/lib/swell/card";
 import MapboxAutofill from "@components/solid/MapboxAutofill";
 import MapboxConfirmation from "@components/solid/MapboxConfirmation";
 
-interface SafeCard {
-  id: string;
-  brand: string;
-  last4: string;
-  exp_month: number;
-  exp_year: number;
-  name: string;
-  isDefault?: boolean;
-}
-
 const errors = { err: "" };
+let message = "";
+const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 
-// Retrieve session token
+// Redirect away from page if necessary
 const sessionToken = Astro.cookies.get("gp_session_token")?.value as string;
 const session = sessionToken
   ? await stytch.sessions.authenticate({ session_token: sessionToken })
   : null;
 const email = session?.user.emails[0].email;
-if (!session || !email || !(await swell.get(`/accounts/${email}`))) {
+const account = await swell.get(`/accounts/${email}`);
+if (!session || !email || !account) {
   return Astro.redirect(
     !session
       ? "/?message=" + encodeURIComponent("You are not logged in")
@@ -33,114 +32,55 @@ if (!session || !email || !(await swell.get(`/accounts/${email}`))) {
   );
 }
 
-const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
-const cards = (await swell.get(`/accounts/${email}/cards`)).results;
-const account = await swell.get(`/accounts/${email}`);
-const defaultCard = cards.find(
-  (card: Card) => card.token === account?.billing?.card?.token,
-);
-const safeCards = cards.map((card: Card) => {
-  const safeCard: SafeCard = {
-    id: card.id as string,
-    brand: card.brand as string,
-    last4: card.last4 as string,
-    exp_month: card.exp_month as number,
-    exp_year: card.exp_year as number,
-    name: card.billing?.name as string,
-  };
-  if (defaultCard && card.token === defaultCard.token) {
-    safeCard.isDefault = true;
-  }
-  return safeCard;
-});
-
-// Generate months and years for expiration date
-const months = Array.from({ length: 12 }, (_, i) => ({
-  value: (i + 1).toString().padStart(2, "0"),
-  label: (i + 1).toString().padStart(2, "0"),
-}));
-const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 21 }, (_, i) => ({
-  value: currentYear + i,
-  label: currentYear + i,
-}));
+// Get cards and card summaries
+const cards = await getCards(email);
+const cardSummaries = getCardSummaries(cards, account);
 
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
   const cardId = data.get("card_id")?.toString();
 
+  // If cardId is present, update billing info
   if (cardId) {
-    // Sets card as default payment method
-    await swell.put(`/accounts/${email}`, {
+    await updateBillingInfo(email, sessionToken, cardId);
+    message = "Card set as default successfully";
+  } else {
+    const token = data.get("token")?.toString();
+    const name = data.get("name")?.toString();
+    const useShippingAddress =
+      data.get("same_as_shipping")?.toString() === "on";
+    const address1 = data.get("address address-search")?.toString();
+    const city = data.get("billing_city")?.toString();
+    const state = data.get("billing_state")?.toString();
+    const zip = data.get("billing_zip")?.toString();
+    const setAsDefaultMethod = data.get("default")?.toString() === "on";
+    const shipping = useShippingAddress
+      ? account.shipping
+      : {
+          address1,
+          city,
+          state,
+          zip,
+          phone: account.shipping.phone,
+          country: "US",
+        };
+
+    const card = await swell.post(`/accounts:cards`, {
+      parent_id: account.id,
+      token,
       billing: {
-        account_card_id: cardId,
+        name,
+        ...shipping,
       },
     });
 
-    // Updates cart with new billing address and payment method
-    const cart = await getCartFromSession(sessionToken as string);
-    if (cart) {
-      await swell.put(`/carts/${cart.id}`, {
-        billing: {
-          account_card_id: cardId,
-        },
-      });
-    }
-
-    return Astro.redirect(
-      "/yourpayments?message=" + encodeURIComponent("Default card updated"),
-    );
-  }
-
-  const token = data.get("token")?.toString();
-  const name = data.get("name")?.toString();
-  const useShippingAddress = data.get("same_as_shipping")?.toString() === "on";
-  const address1 = data.get("address address-search")?.toString();
-  const city = data.get("billing_city")?.toString();
-  const state = data.get("billing_state")?.toString();
-  const zip = data.get("billing_zip")?.toString();
-  const setAsDefaultMethod = data.get("default")?.toString() === "on";
-  const shipping = useShippingAddress
-    ? account.shipping
-    : {
-        address1,
-        city,
-        state,
-        zip,
-        phone: account.shipping.phone,
-        country: "US",
-      };
-
-  // Get current payment methods to check if card already exists
-  const card = await swell.post(`/accounts:cards`, {
-    parent_id: account.id,
-    token,
-    billing: {
-      name,
-      ...shipping,
-    },
-  });
-
-  if (setAsDefaultMethod) {
-    // Adds card to account as default payment method
-    const updatedAccount = await swell.put(`/accounts/${email}`, {
-      billing: {
-        account_card_id: card.id,
-      },
-    });
-
-    // Updates cart with new billing address and payment method
-    const cart = await getCartFromSession(sessionToken as string);
-    if (cart) {
-      await swell.put(`/carts/${cart.id}`, {
-        billing: updatedAccount.billing,
-      });
+    if (setAsDefaultMethod) {
+      await updateBillingInfo(email, sessionToken, card.id);
+      message = "Card added successfully and set as default";
     }
   }
 
-  return Astro.redirect(
-    "/yourpayments?message=" + encodeURIComponent("Card added successfully"),
-  );
+  return Astro.redirect("/yourpayments?message=" + encodeURIComponent(message));
 }
 ---
 
@@ -152,7 +92,7 @@ if (Astro.request.method === "POST") {
       <div class="cards-container">
         <!-- Iterating over cards array -->
         {
-          safeCards.map((card: SafeCard) => (
+          cardSummaries.map((card: CardSummary) => (
             <div class="card mb-4 p-4 border rounded-md">
               {card.isDefault && (
                 <p class="underline decoration-dotted text-xs font-medium text-gray-700 mb-2">
@@ -231,7 +171,7 @@ if (Astro.request.method === "POST") {
             maxlength="16"
             minlength="15"
             class="input border rounded-md p-2 w-1/2 mb-4"
-            title="Credit card number must be 16 digits"
+            title="Credit card number must be between 15 and 16 digits"
           />
         </div>
 
@@ -250,7 +190,7 @@ if (Astro.request.method === "POST") {
               class="select border rounded-md"
             >
               {
-                months.map((month) => (
+                MONTHS.map((month) => (
                   <option value={month.value}>{month.label}</option>
                 ))
               }
@@ -269,7 +209,7 @@ if (Astro.request.method === "POST") {
               class="select border rounded-md"
             >
               {
-                years.map((year) => (
+                YEARS.map((year) => (
                   <option value={year.value}>{year.label}</option>
                 ))
               }
@@ -294,7 +234,7 @@ if (Astro.request.method === "POST") {
             maxlength="4"
             minlength="3"
             class="input border rounded-md p-2 w-1/2 mb-4"
-            title="CVC must be 3 digits"
+            title="CVC must be between 3 and 4 digits"
           />
         </div>
 
@@ -404,68 +344,5 @@ if (Astro.request.method === "POST") {
   <MapboxAutofill client:only mapboxToken={mapboxToken} />
   <MapboxConfirmation client:only mapboxToken={mapboxToken} />
 
-  <script>
-    import { initSwell } from "../lib/swell-js";
-
-    const form = document.querySelector("#payment_form") as HTMLFormElement;
-    form?.addEventListener("submit", async (e: Event) => {
-      e.preventDefault();
-      try {
-        const swell = initSwell(
-          import.meta.env.PUBLIC_SWELL_STORE_ID,
-          import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-        );
-
-        const formData = new FormData(form);
-        const { number, exp_month, exp_year, cvc } = Object.fromEntries(
-          formData.entries(),
-        );
-
-        const response = await swell.card.createToken({
-          number,
-          exp_month,
-          exp_year,
-          cvc,
-        });
-
-        const tokenInput = form.querySelector(
-          "input[name=token]",
-        ) as HTMLInputElement;
-        if (tokenInput) {
-          tokenInput.value = response.token;
-        }
-
-        form.submit();
-      } catch (error) {
-        const errorDiv = document.querySelector(".error-msg");
-        if (errorDiv) {
-          errorDiv.textContent = error as string;
-        }
-      }
-    });
-
-    const toggleBillingAddress = (checkbox: HTMLInputElement) => {
-      const billingAddressFields = document.getElementById(
-        "billing_address_fields",
-      );
-      if (billingAddressFields) {
-        const displayStyle = checkbox.checked ? "none" : "block";
-        billingAddressFields.style.display = displayStyle;
-
-        const inputs = billingAddressFields.querySelectorAll("input");
-        inputs.forEach((input) => {
-          input.required = displayStyle === "block";
-        });
-      }
-    };
-
-    const checkbox = document.getElementById(
-      "same_as_shipping",
-    ) as HTMLInputElement;
-    checkbox?.addEventListener("click", () => {
-      toggleBillingAddress(checkbox);
-    });
-
-    toggleBillingAddress(checkbox);
-  </script>
+  <script src="../scripts/PaymentFormHandler.ts"></script>
 </Layout>
