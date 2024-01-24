@@ -4,6 +4,8 @@ import Layout from "../layouts/Layout.astro";
 import { swell } from "src/lib/swell";
 import type { Card } from "swell-js";
 import { getCartFromSession } from "@src/lib/swell/cart";
+import MapboxAutofill from "@components/solid/MapboxAutofill";
+import MapboxConfirmation from "@components/solid/MapboxConfirmation";
 
 const errors = { err: "" };
 
@@ -21,6 +23,8 @@ if (!session || !email || !(await swell.get(`/accounts/${email}`))) {
   );
 }
 
+const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
+
 // Generate months and years for expiration date
 const months = Array.from({ length: 12 }, (_, i) => ({
   value: (i + 1).toString().padStart(2, "0"),
@@ -32,20 +36,35 @@ const years = Array.from({ length: 21 }, (_, i) => ({
   label: currentYear + i,
 }));
 
-// Get current payment methods
-const cards = (await swell.get(`/accounts/${email}/cards`)).results;
-
 if (Astro.request.method === "POST") {
+  const account = await swell.get(`/accounts/${email}`);
   const data = await Astro.request.formData();
   const token = data.get("token")?.toString();
   const name = data.get("name")?.toString();
-  const account = await swell.get(`/accounts/${email}`);
+  const useShippingAddress = data.get("same_as_shipping")?.toString() === "on";
+  const address1 = data.get("address address-search")?.toString();
+  const city = data.get("billing_city")?.toString();
+  const state = data.get("billing_state")?.toString();
+  const zip = data.get("billing_zip")?.toString();
+  const shipping = useShippingAddress
+    ? account.shipping
+    : {
+        address1,
+        city,
+        state,
+        zip,
+        phone: account.shipping.phone,
+        country: "US",
+      };
+
+  // Get current payment methods to check if card already exists
+  const cards = (await swell.get(`/accounts/${email}/cards`)).results;
   const card = await swell.post(`/accounts:cards`, {
     parent_id: account.id,
     token,
     billing: {
       name,
-      ...account.shipping,
+      ...shipping,
     },
   });
 
@@ -115,7 +134,7 @@ if (Astro.request.method === "POST") {
           name="number"
           placeholder="4242424242424242"
           required
-          pattern="[0-9]{16}"
+          pattern="[0-9]{15,16}"
           maxlength="16"
           minlength="15"
           class="input border rounded-md p-2 w-1/2 mb-4"
@@ -177,14 +196,93 @@ if (Astro.request.method === "POST") {
           name="cvc"
           placeholder="123"
           required
-          pattern="[0-9]{3}"
-          maxlength="3"
+          pattern="[0-9]{3,4}"
+          maxlength="4"
           minlength="3"
           class="input border rounded-md p-2 w-1/2 mb-4"
           title="CVC must be 3 digits"
         />
       </div>
 
+      <!-- Checkbox for same as shipping address -->
+      <div class="input-group">
+        <input
+          type="checkbox"
+          id="same_as_shipping"
+          name="same_as_shipping"
+          checked
+          class="mr-2"
+          onclick="toggleBillingAddress(this)"
+        />
+        <label for="same_as_shipping" class="text-sm font-medium text-gray-700">
+          Billing address is the same as shipping address
+        </label>
+      </div>
+
+      <!-- Billing Address Fields -->
+      <div id="billing_address_fields" style="display: none;">
+        <div class="input-group">
+          <label
+            for="billing_street"
+            class="label block text-sm font-medium text-gray-700 mb-2"
+            >Street Address</label
+          >
+          <input
+            type="text"
+            id="billing_street"
+            name="address"
+            autocomplete="address-line1"
+            class="input border rounded-md p-2 w-1/2 mb-4"
+          />
+        </div>
+
+        <div class="input-group">
+          <label
+            for="billing_city"
+            class="label block text-sm font-medium text-gray-700 mb-2"
+            >City</label
+          >
+          <input
+            type="text"
+            id="billing_city"
+            name="billing_city"
+            autocomplete="address-level2"
+            class="input border rounded-md p-2 w-1/2 mb-4"
+          />
+        </div>
+
+        <div class="input-group">
+          <label
+            for="billing_state"
+            class="label block text-sm font-medium text-gray-700 mb-2"
+            >State</label
+          >
+          <input
+            type="text"
+            id="billing_state"
+            name="billing_state"
+            autocomplete="address-level1"
+            class="input border rounded-md p-2 w-1/2 mb-4"
+          />
+        </div>
+
+        <div class="input-group">
+          <label
+            for="billing_zip"
+            class="label block text-sm font-medium text-gray-700 mb-2"
+            >Zip Code</label
+          >
+          <input
+            type="text"
+            id="billing_zip"
+            name="billing_zip"
+            autocomplete="postal-code"
+            class="input border rounded-md p-2 w-1/2 mb-4"
+          />
+        </div>
+      </div>
+
+      <!-- Hidden Token -->
       <input type="hidden" name="token" />
 
       <!-- Submit button -->
@@ -196,6 +294,9 @@ if (Astro.request.method === "POST") {
       </button>
     </form>
   </div>
+
+  <MapboxAutofill client:only mapboxToken={mapboxToken} />
+  <MapboxConfirmation client:only mapboxToken={mapboxToken} />
 
   <script>
     import { initSwell } from "../lib/swell-js";
@@ -236,5 +337,29 @@ if (Astro.request.method === "POST") {
         }
       }
     });
+
+    const toggleBillingAddress = (checkbox: HTMLInputElement) => {
+      const billingAddressFields = document.getElementById(
+        "billing_address_fields",
+      );
+      if (billingAddressFields) {
+        const displayStyle = checkbox.checked ? "none" : "block";
+        billingAddressFields.style.display = displayStyle;
+
+        const inputs = billingAddressFields.querySelectorAll("input");
+        inputs.forEach((input) => {
+          input.required = displayStyle === "block";
+        });
+      }
+    };
+
+    const checkbox = document.getElementById(
+      "same_as_shipping",
+    ) as HTMLInputElement;
+    checkbox?.addEventListener("click", () => {
+      toggleBillingAddress(checkbox);
+    });
+
+    toggleBillingAddress(checkbox);
   </script>
 </Layout>
