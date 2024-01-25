@@ -1,7 +1,8 @@
 import { stytch } from "src/lib/stytch";
 import { swell } from "..";
 import calculateCartDates from "./dates";
-import type { Account, Cart } from "swell-js";
+import type { Account } from "swell-js";
+import type { GoodpluckCart } from "@src/lib/types";
 
 const {
   orderingWindowStartDate,
@@ -16,7 +17,7 @@ const {
  * @returns Cart or null if it fails to retrieve the cart
  * @throws Error when it fails to retrieve the cart
  */
-const getCart = async (account: Account): Promise<Cart | null> => {
+const getCart = async (account: Account): Promise<GoodpluckCart | null> => {
   try {
     const cart = await swell.get("/carts/", {
       where: {
@@ -49,7 +50,7 @@ const getCart = async (account: Account): Promise<Cart | null> => {
  */
 const getCartFromSession = async (
   sessionToken: string,
-): Promise<Cart | null> => {
+): Promise<GoodpluckCart | null> => {
   try {
     const session = await stytch.sessions.authenticate({
       session_token: sessionToken,
@@ -90,7 +91,7 @@ const getCartFromSession = async (
  * @returns Cart or null if it fails to create the cart
  * @throws Error when it fails to create the cart
  */
-const createCart = async (account: Account): Promise<Cart | null> => {
+const createCart = async (account: Account): Promise<GoodpluckCart | null> => {
   try {
     console.log("Creating a new cart for the account");
     const newCart = await swell.post("/carts", {
@@ -118,7 +119,9 @@ const createCart = async (account: Account): Promise<Cart | null> => {
  * @returns Cart or null if it fails to retrieve or create the cart
  * @throws Error when it fails to retrieve or create the cart
  */
-const getOrCreateCart = async (account: Account): Promise<Cart | null> => {
+const getOrCreateCart = async (
+  account: Account,
+): Promise<GoodpluckCart | null> => {
   try {
     const activeCart = await getCart(account);
     if (activeCart) {

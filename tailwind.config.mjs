@@ -11,6 +11,12 @@ export default {
       fontFamily: {
         sans: ["Arial", "sans-serif"],
       },
+      colors: {
+        "brand-black": "#000000",
+        "brand-red": "#f45c4d",
+        "brand-green": "#4d884a",
+        "brand-yellow": "#fbb72c",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms"), preline],
