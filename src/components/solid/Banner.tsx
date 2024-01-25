@@ -5,7 +5,7 @@ import { EditIcon } from "./Icons";
 
 interface BannerProps {
   isZipDeliverable: boolean;
-  deliveryDate: string;
+  deliveryDate: string | null;
 }
 
 const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {

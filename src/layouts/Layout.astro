@@ -9,30 +9,10 @@ import ScrollSpy from "@components/solid/global/ScrollSpy";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
 
-const { title, description, categories, currentCollection } = Astro.props;
-
-const postcode = Astro.cookies.get("user_postcode")?.value;
-
-let currentCollectionId = 0;
-const currentCategoryName =
-  currentCollection != null ? currentCollection.name : "";
-
-function getCurrentSubCategories() {
-  if (currentCollection == null) {
-    return [];
-  }
-  const subCategories = categories.filter(
-    (col: any) => col.parent_id == currentCollection.id,
-  );
-  if (subCategories) {
-    return subCategories;
-  }
-  return [];
-}
+const { title, categories, currentCollection } = Astro.props;
 
 // Retrieve session token and get user/cart data
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-const isLoggedIn = !!sessionToken;
 let cart = null;
 
 try {
