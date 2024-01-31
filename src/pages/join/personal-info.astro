@@ -9,15 +9,15 @@ import Layout from "../../layouts/Layout.astro";
         Create an account to place your orders!
       </h1>
       <h2 class="text-xl font-semibold mb-4">Personal Info</h2>
-      <form method="POST" class="max-w-xl mx-auto">
+      <form method="POST">
         <fieldset>
           <legend class="sr-only">Personal Information</legend>
           <div class="mb-4">
-            <div id="name-container" class="flex gap-4">
-              <div class="flex-1" id="first-name-container">
+            <div id="name-container" class="flex md:gap-4 flex-col md:flex-row">
+              <div class="flex-1 mb-6" id="first-name-container">
                 <label
                   for="first-name"
-                  class="block text-sm font-medium text-gray-700"
+                  class="block text-md font-medium text-gray-700 mb-1"
                   >First Name</label
                 >
                 <input
@@ -25,23 +25,24 @@ import Layout from "../../layouts/Layout.astro";
                   id="first-name"
                   name="first-name"
                   required
-                  class="mt-1 p-2 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
-                  aria-required="true"
-                  aria-invalid="false"
-                  aria-describedby="first-name-error"
+                  class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                  aria-describedby="first-name-error first-name-description"
+                  placeholder="Kale"
                 />
                 <span
                   id="first-name-error"
-                  class="error-message hidden text-sm text-red-600"
+                  class="error-message hidden text-sm text-rose-500"
                   >Please enter your first name</span
                 >
-                <span class="sr-only">Please enter your first name</span>
+                <span id="first-name-description" class="sr-only"
+                  >Enter your first name.</span
+                >
               </div>
 
-              <div class="flex-1" id="last-name-container">
+              <div class="flex-1 mb-6" id="last-name-container">
                 <label
                   for="last-name"
-                  class="block text-sm font-medium text-gray-700"
+                  class="block text-md font-medium text-gray-700 mb-1"
                   >Last Name</label
                 >
                 <input
@@ -49,24 +50,25 @@ import Layout from "../../layouts/Layout.astro";
                   id="last-name"
                   name="last-name"
                   required
-                  class="mt-1 p-2 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
-                  aria-required="true"
-                  aria-invalid="false"
-                  aria-describedby="last-name-error"
+                  class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                  aria-describedby="last-name-error last-name-description"
+                  placeholder="Greens"
                 />
                 <span
                   id="last-name-error"
-                  class="error-message hidden text-sm text-red-600"
+                  class="error-message hidden text-sm text-rose-500"
                   >Please enter your last name</span
                 >
-                <span class="sr-only">Please enter your last name</span>
+                <span id="last-name-description" class="sr-only"
+                  >Enter your last name.</span
+                >
               </div>
             </div>
 
-            <div id="email-container">
+            <div id="email-container" class="mb-6">
               <label
                 for="email"
-                class="block text-sm font-medium text-gray-700 mt-4"
+                class="block text-md font-medium text-gray-700 mb-1"
                 >Email Address</label
               >
               <input
@@ -74,23 +76,26 @@ import Layout from "../../layouts/Layout.astro";
                 id="email"
                 name="email"
                 required
-                class="mt-1 p-2 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
-                aria-required="true"
-                aria-invalid="false"
-                aria-describedby="email-error"
+                class="peer mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none invalid:[&:not(:placeholder-shown):not(:focus)]:border-rose-500"
+                aria-describedby="email-error email-description"
+                placeholder="KaleGreens@example.com"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               />
               <span
                 id="email-error"
-                class="error-message hidden text-sm text-red-600"
-                >Please enter a valid email address</span
+                class="error-message hidden text-sm text-rose-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
+                >Please enter a valid email address, e.g.,
+                KaleGreens@example.com.</span
               >
-              <span class="sr-only">Please enter a valid email address</span>
+              <span id="email-description" class="sr-only"
+                >Enter your email address.</span
+              >
             </div>
 
-            <div id="phone-container">
+            <div id="phone-container" class="mb-6">
               <label
                 for="phone"
-                class="block text-sm font-medium text-gray-700 mt-4"
+                class="block text-md font-medium text-gray-700 mb-1"
                 >Phone Number</label
               >
               <input
@@ -98,20 +103,23 @@ import Layout from "../../layouts/Layout.astro";
                 id="phone"
                 name="phone"
                 required
-                class="mt-1 p-2 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
-                aria-required="true"
-                aria-invalid="false"
-                aria-describedby="phone-error"
+                class="peer mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none invalid:[&:not(:placeholder-shown):not(:focus)]:border-rose-500"
+                aria-describedby="phone-error phone-description"
+                placeholder="555 555 1234"
+                maxlength="10"
+                pattern="[0-9]{10}"
               />
               <span
                 id="phone-error"
-                class="error-message hidden text-sm text-red-600"
-                >Please enter a valid phone number</span
+                class="error-message hidden text-sm text-rose-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
+                >Please enter a valid phone number, e.g., 555 555 1234.</span
               >
-              <span class="sr-only">Please enter a valid phone number</span>
+              <span id="phone-description" class="sr-only"
+                >Enter your phone number.</span
+              >
             </div>
 
-            <div id="comms-consent-container" class="flex items-center mt-4">
+            <div id="comms-consent-container" class="flex items-center mb-9">
               <input
                 id="comms-consent"
                 type="checkbox"
@@ -120,10 +128,10 @@ import Layout from "../../layouts/Layout.astro";
               />
               <label
                 for="comms-consent"
-                class="ml-2 block text-sm text-gray-900"
+                class="ml-2 block text-md text-gray-900"
               >
-                I consent to receive order updates and other communications to
-                the provided phone number.
+                I agree to receive order updates and other messages at the
+                provided phone number.
               </label>
               <span id="comms-consent-description" class="sr-only"
                 >Check this box if you agree to receive order updates and other
@@ -136,12 +144,12 @@ import Layout from "../../layouts/Layout.astro";
         <div class="flex justify-end" id="continue-btn-container">
           <button
             type="submit"
-            class="px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"
+            class="px-6 py-2 border border-transparent text-md font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"
             aria-label="Continue to next step"
           >
             Continue
             <span class="sr-only"
-              >Click to submit your details and proceed to the next step</span
+              >Click to submit your details and proceed to the next step.</span
             >
           </button>
         </div>
