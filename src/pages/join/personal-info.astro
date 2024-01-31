@@ -1,0 +1,151 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Create Account - Personal Info">
+  <div class="flex flex-col items-center">
+    <section class="bg-white p-10">
+      <h1 class="text-3xl font-bold mb-8 text-center max-w-md mx-auto">
+        Create an account to place your orders!
+      </h1>
+      <h2 class="text-xl font-semibold mb-4">Personal Info</h2>
+      <form method="POST" class="max-w-xl mx-auto">
+        <fieldset>
+          <legend class="sr-only">Personal Information</legend>
+          <div class="mb-4">
+            <div id="name-container" class="flex gap-4">
+              <div class="flex-1" id="first-name-container">
+                <label
+                  for="first-name"
+                  class="block text-sm font-medium text-gray-700"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  id="first-name"
+                  name="first-name"
+                  required
+                  class="mt-1 p-2 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                  aria-required="true"
+                  aria-invalid="false"
+                  aria-describedby="first-name-error"
+                />
+                <span
+                  id="first-name-error"
+                  class="error-message hidden text-sm text-red-600"
+                  >Please enter your first name</span
+                >
+                <span class="sr-only">Please enter your first name</span>
+              </div>
+
+              <div class="flex-1" id="last-name-container">
+                <label
+                  for="last-name"
+                  class="block text-sm font-medium text-gray-700"
+                  >Last Name</label
+                >
+                <input
+                  type="text"
+                  id="last-name"
+                  name="last-name"
+                  required
+                  class="mt-1 p-2 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                  aria-required="true"
+                  aria-invalid="false"
+                  aria-describedby="last-name-error"
+                />
+                <span
+                  id="last-name-error"
+                  class="error-message hidden text-sm text-red-600"
+                  >Please enter your last name</span
+                >
+                <span class="sr-only">Please enter your last name</span>
+              </div>
+            </div>
+
+            <div id="email-container">
+              <label
+                for="email"
+                class="block text-sm font-medium text-gray-700 mt-4"
+                >Email Address</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="mt-1 p-2 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                aria-required="true"
+                aria-invalid="false"
+                aria-describedby="email-error"
+              />
+              <span
+                id="email-error"
+                class="error-message hidden text-sm text-red-600"
+                >Please enter a valid email address</span
+              >
+              <span class="sr-only">Please enter a valid email address</span>
+            </div>
+
+            <div id="phone-container">
+              <label
+                for="phone"
+                class="block text-sm font-medium text-gray-700 mt-4"
+                >Phone Number</label
+              >
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                required
+                class="mt-1 p-2 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                aria-required="true"
+                aria-invalid="false"
+                aria-describedby="phone-error"
+              />
+              <span
+                id="phone-error"
+                class="error-message hidden text-sm text-red-600"
+                >Please enter a valid phone number</span
+              >
+              <span class="sr-only">Please enter a valid phone number</span>
+            </div>
+
+            <div id="comms-consent-container" class="flex items-center mt-4">
+              <input
+                id="comms-consent"
+                type="checkbox"
+                class="h-4 w-4 text-green-700 focus:ring-green-800 border border-zinc-400 rounded"
+                aria-describedby="comms-consent-description"
+              />
+              <label
+                for="comms-consent"
+                class="ml-2 block text-sm text-gray-900"
+              >
+                I consent to receive order updates and other communications to
+                the provided phone number.
+              </label>
+              <span id="comms-consent-description" class="sr-only"
+                >Check this box if you agree to receive order updates and other
+                communications to the provided phone number.</span
+              >
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="flex justify-end" id="continue-btn-container">
+          <button
+            type="submit"
+            class="px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"
+            aria-label="Continue to next step"
+          >
+            Continue
+            <span class="sr-only"
+              >Click to submit your details and proceed to the next step</span
+            >
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+</Layout>
