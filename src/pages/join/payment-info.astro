@@ -14,13 +14,12 @@ import Layout from "../../layouts/Layout.astro";
         aria-valuemin="0"
         aria-valuemax="100"
         aria-label="Progress: 66%"
-        class="w-full bg-gray-300 rounded-full h-1.5 my-8 dark:bg-gray-700"
+        class="w-full bg-gray-300 rounded-full h-1.5 my-8"
       >
-        <div class="bg-green-700 h-1.5 rounded-full dark:bg-blue-500 w-2/3">
-        </div>
+        <div class="bg-green-700 h-1.5 rounded-full w-2/3"></div>
         <div class="sr-only">Account Creation Form Progress: 66% complete</div>
       </div>
-      <form method="POST">
+      <form>
         <fieldset>
           <legend class="sr-only">Payment Information</legend>
           <div id="billing-section" class="mb-4">
@@ -35,8 +34,8 @@ import Layout from "../../layouts/Layout.astro";
                   checked="true"
                 />
                 <label
-                  for="same-as-delivery"
-                  class="ml-2 text-sm text-gray-500"
+                  for="same-address-checkbox"
+                  class="ml-2 text-sm text-gray-600"
                 >
                   Same as delivery address
                 </label>
@@ -54,14 +53,14 @@ import Layout from "../../layouts/Layout.astro";
                   <div id="first-name-container" class="mb-6 flex-1">
                     <label
                       for="first-name"
-                      class="block text-md font-medium text-gray-700 mb-1"
+                      class="block text-base font-medium text-gray-700 mb-1"
                     >
                       First Name
                     </label>
                     <input
                       id="first-name"
                       name="first-name"
-                      class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                      class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                       type="text"
                       aria-describedby="first-name-desc"
                       placeholder="Kale"
@@ -73,14 +72,14 @@ import Layout from "../../layouts/Layout.astro";
                   <div id="last-name-container" class="mb-6 flex-1">
                     <label
                       for="last-name"
-                      class="block text-md font-medium text-gray-700 mb-1"
+                      class="block text-base font-medium text-gray-700 mb-1"
                     >
                       Last Name
                     </label>
                     <input
                       id="last-name"
                       name="last-name"
-                      class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                      class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                       type="text"
                       aria-describedby="last-name-desc"
                       placeholder="Greens"
@@ -94,7 +93,7 @@ import Layout from "../../layouts/Layout.astro";
                   <div id="street-address-container" class="mb-6">
                     <label
                       for="address"
-                      class="block text-md font-medium text-gray-700 mb-1"
+                      class="block text-base font-medium text-gray-700 mb-1"
                       >Street Address</label
                     >
                     <input
@@ -102,7 +101,7 @@ import Layout from "../../layouts/Layout.astro";
                       id="address"
                       name="address"
                       autocomplete="address-line1"
-                      class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                      class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                       aria-describedby="address-description"
                     />
                     <span id="address-description" class="sr-only"
@@ -112,15 +111,16 @@ import Layout from "../../layouts/Layout.astro";
                   <div id="apartment-container" class="mb-6">
                     <label
                       for="apartment"
-                      class="block text-md font-medium text-gray-700 mb-1"
-                      >Apt. or Unit No.</label
-                    >
+                      class="block text-base font-medium text-gray-700 mb-1"
+                      >Apt. or Unit No.
+                      <em class="italic text-sm text-gray-500">Optional</em>
+                    </label>
                     <input
                       type="text"
                       id="apartment"
                       name="apartment"
                       autocomplete="address-line2"
-                      class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                      class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                       aria-describedby="apartment-description"
                     />
                     <span id="apartment-description" class="sr-only"
@@ -131,7 +131,7 @@ import Layout from "../../layouts/Layout.astro";
                   <div id="city-container" class="mb-6">
                     <label
                       for="city"
-                      class="block text-md font-medium text-gray-700 mb-1"
+                      class="block text-base font-medium text-gray-700 mb-1"
                       >City</label
                     >
                     <input
@@ -139,7 +139,7 @@ import Layout from "../../layouts/Layout.astro";
                       id="city"
                       name="city"
                       autocomplete="address-level2"
-                      class="peer mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                      class="peer mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                       aria-describedby="city-description"
                     />
                     <span id="city-description" class="sr-only"
@@ -153,7 +153,7 @@ import Layout from "../../layouts/Layout.astro";
                     <div id="state-container" class="flex-1 mb-6">
                       <label
                         for="state"
-                        class="block text-md font-medium text-gray-700 mb-1"
+                        class="block text-base font-medium text-gray-700 mb-1"
                         >State</label
                       >
                       <input
@@ -161,7 +161,7 @@ import Layout from "../../layouts/Layout.astro";
                         id="state"
                         name="state"
                         autocomplete="address-level1"
-                        class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                        class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                         aria-describedby="state-description"
                       />
                       <span id="state-description" class="sr-only"
@@ -172,7 +172,7 @@ import Layout from "../../layouts/Layout.astro";
                     <div id="zip-container" class="flex-1 mb-6">
                       <label
                         for="zip"
-                        class="block text-md font-medium text-gray-700 mb-1"
+                        class="block text-base font-medium text-gray-700 mb-1"
                         >ZIP code</label
                       >
                       <input
@@ -180,7 +180,7 @@ import Layout from "../../layouts/Layout.astro";
                         id="zip"
                         name="zip"
                         autocomplete="postal-code"
-                        class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                        class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                         aria-describedby="zip-description"
                       />
                       <span id="zip-description" class="sr-only"
@@ -193,8 +193,16 @@ import Layout from "../../layouts/Layout.astro";
             </div>
 
             <div id="payment-info-section" class="mb-8">
-              <h2 class="text-xl font-semibold">Payment Info</h2>
-              <div id="card-details-container"></div>
+              <h2 class="text-xl font-semibold mb-2">Payment Info</h2>
+              <div
+                id="card-details-container"
+                class="mb-1 text-base py-4 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+              >
+                <div id="card-element"></div>
+                <span id="card-element-desc" class="sr-only"
+                  >Please enter your card number, expiration date, and CVC.</span
+                >
+              </div>
             </div>
           </div>
         </fieldset>
@@ -202,7 +210,7 @@ import Layout from "../../layouts/Layout.astro";
         <div class="flex justify-end" id="submit-btn-container">
           <button
             type="submit"
-            class="px-6 py-2 border border-transparent text-md font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"
+            class="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"
             aria-label="Submit your details to complete the account creation process."
           >
             Submit
@@ -217,25 +225,51 @@ import Layout from "../../layouts/Layout.astro";
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    import { initSwell } from "../../lib/swell-js";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const swell = initSwell(
+        import.meta.env.PUBLIC_SWELL_STORE_ID,
+        import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+      );
+
+      // Initialize a guest cart
+      await swell.cart.setItems([]);
+
+      // Initialize payment elements
+      swell.payment.createElements({
+        card: {
+          elementId: "card-element",
+          options: {
+            style: {
+              base: {
+                fontSize: "16px",
+              },
+            },
+          },
+        },
+      });
+
+      // Setup for toggling billing address visibility
       const checkbox = document.getElementById(
         "same-address-checkbox",
       ) as HTMLInputElement;
       const billingContainer = document.getElementById(
         "billing-container",
       ) as HTMLElement;
+
       const toggleBillingContainerVisibility = () => {
-        billingContainer.style.display = checkbox.checked ? "none" : "block";
-      };
-      checkbox.addEventListener("change", () => {
-        const inputs = document.querySelectorAll(
-          '#billing-container input[type="text"]',
-        ) as NodeListOf<HTMLInputElement>;
-        inputs.forEach((input: HTMLInputElement) => {
-          input.required = !checkbox.checked;
+        const isVisible = checkbox.checked;
+        billingContainer.style.display = isVisible ? "none" : "block";
+        const inputs = billingContainer.querySelectorAll('input[type="text"]');
+        inputs.forEach((input) => {
+          const inputElement = input as HTMLInputElement;
+          inputElement.required = !isVisible;
         });
-        toggleBillingContainerVisibility();
-      });
+      };
+
+      // Event listener for the address checkbox
+      checkbox.addEventListener("change", toggleBillingContainerVisibility);
     });
   </script>
 </Layout>
