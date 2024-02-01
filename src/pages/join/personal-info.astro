@@ -14,16 +14,16 @@ import Layout from "../../layouts/Layout.astro";
         aria-valuemin="0"
         aria-valuemax="100"
         aria-label="Progress: 0%"
-        class="w-full bg-gray-300 rounded-full h-1.5 my-8 dark:bg-gray-700"
+        class="w-full bg-gray-300 rounded-full h-1.5 my-8"
       >
-        <div class="bg-green-700 h-1.5 rounded-full dark:bg-blue-500 w-0"></div>
+        <div class="bg-green-700 h-1.5 rounded-full w-0"></div>
         <div class="sr-only">Account Creation Form Progress: 0% complete</div>
       </div>
       <h2 class="text-xl font-semibold mb-4">Personal Info</h2>
-      <form method="POST">
+      <form>
         <fieldset>
           <legend class="sr-only">Personal Information</legend>
-          <div class="mb-4">
+          <div id="personal-info-section" class="mb-4">
             <div id="name-container" class="flex md:gap-4 flex-col md:flex-row">
               <div class="flex-1 mb-6" id="first-name-container">
                 <label
@@ -46,7 +46,7 @@ import Layout from "../../layouts/Layout.astro";
                   >Please enter your first name.</span
                 >
                 <span id="first-name-description" class="sr-only"
-                  >Enter your first name.</span
+                  >Please enter your first name.</span
                 >
               </div>
 
@@ -71,7 +71,7 @@ import Layout from "../../layouts/Layout.astro";
                   >Please enter your last name.</span
                 >
                 <span id="last-name-description" class="sr-only"
-                  >Enter your last name.</span
+                  >Please enter your last name.</span
                 >
               </div>
             </div>
@@ -99,7 +99,7 @@ import Layout from "../../layouts/Layout.astro";
                 KaleGreens@example.com.</span
               >
               <span id="email-description" class="sr-only"
-                >Enter your email address.</span
+                >Please enter your email address.</span
               >
             </div>
 
@@ -126,7 +126,7 @@ import Layout from "../../layouts/Layout.astro";
                 >Please enter a valid phone number, e.g., 555 555 1234.</span
               >
               <span id="phone-description" class="sr-only"
-                >Enter your phone number.</span
+                >Please enter your phone number.</span
               >
             </div>
 
