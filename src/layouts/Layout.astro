@@ -8,15 +8,11 @@ import Breadcrumb from "@components/solid/Breadcrumb";
 import SidebarMenu from "@components/solid/global/SidebarMenu";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
-import { isZipCodeDeliverable } from "@utils/validations";
 import { useStore } from "@nanostores/solid";
 import { swellCartId } from "@src/store";
-const $swellCartId = useStore(swellCartId);
 
 const { title, categories, currentCollection } = Astro.props;
 
-// Retrieve session token and get user/cart data
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 let cart = null;
 
 try {
@@ -39,7 +35,7 @@ try {
   <body class="flex flex-col min-h-screen">
     <Banner
       isZipDeliverable={!!cart?.shipping?.zip}
-      deliveryDate={cart?.deliveryDate || null}
+      deliveryDate={cart?.delivery_date || null}
       client:load
     />
     <Header collections={categories} client:load />
