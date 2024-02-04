@@ -1,4 +1,4 @@
-import { For, Show, type Component } from "solid-js";
+import { For, Show, createMemo, type Component } from "solid-js";
 import type { Category } from "swell-js";
 
 interface SidebarMenuProps {
@@ -6,35 +6,52 @@ interface SidebarMenuProps {
   categories: Category[];
 }
 
+interface EnhancedCategory extends Category {
+  isSelected: boolean;
+  subcategories: EnhancedCategory[];
+}
+
+const structureCategories = (
+  categories: Category[],
+  selectedSlug: string,
+): EnhancedCategory[] => {
+  const categoryMap: Record<string, EnhancedCategory> = categories.reduce(
+    (map, category) => ({
+      ...map,
+      [category.id as string]: {
+        ...category,
+        isSelected: category.slug === selectedSlug,
+        subcategories: [],
+      },
+    }),
+    {},
+  );
+
+  // Link subcategories to their parents
+  categories.forEach((category) => {
+    if (category.parent_id) {
+      const parent = categoryMap[category.parent_id];
+      const child = categoryMap[category.id as string];
+      parent.subcategories.push(child);
+      // If the parent is selected, select the first child
+      if (parent.isSelected && parent.subcategories.length === 1) {
+        child.isSelected = true;
+      }
+      if (child.isSelected) {
+        parent.isSelected = true;
+      }
+    }
+  });
+
+  return Object.values(categoryMap).filter((category) => !category.top_id);
+};
+
 const SidebarMenu: Component<SidebarMenuProps> = ({
   categorySlug,
   categories,
 }) => {
-  const selectedCategory = categories.find(
-    (category) => category.slug === categorySlug,
-  );
-
-  const firstChildOfSelectedParentId = categories.find(
-    (category) =>
-      selectedCategory && category.parent_id === selectedCategory.id,
-  )?.id;
-
-  // Check if the category is selected or if it's a subcategory of the selected category
-  const isSelectedOrSubcategory = (category: Category): boolean =>
-    !!selectedCategory &&
-    (category.id === selectedCategory.id ||
-      category.id === selectedCategory.parent_id ||
-      category.id === firstChildOfSelectedParentId);
-
-  const rootCategories = categories.filter(
-    (category) => category.top_id === null,
-  );
-
-  const subCategories = categories.filter(
-    (category) =>
-      selectedCategory &&
-      (category.parent_id === selectedCategory.id ||
-        category.parent_id === selectedCategory.parent_id),
+  const menuCategories = createMemo(() =>
+    structureCategories(categories, categorySlug),
   );
 
   return (
@@ -49,12 +66,12 @@ const SidebarMenu: Component<SidebarMenuProps> = ({
         </h2>
       </div>
       <ul class="sidebar-categories space-y-2 gap-5 w-48">
-        <For each={rootCategories}>
+        <For each={menuCategories()} fallback={<div>Loading...</div>}>
           {(category) => (
             <li class="py-4 !m-0 border-b border-[#00000007] last:border-b-0">
               <div
                 class={`text-[#838383] text-sm ${
-                  isSelectedOrSubcategory(category)
+                  category.isSelected
                     ? "border-l-2 border-[#EE5A44] pl-2 mb-4"
                     : ""
                 }`}
@@ -66,31 +83,25 @@ const SidebarMenu: Component<SidebarMenuProps> = ({
                   {category.name}
                 </a>
               </div>
-              <Show when={isSelectedOrSubcategory(category)}>
+              <Show when={category.subcategories.length && category.isSelected}>
                 <ul class="subcategories-list pl-4">
-                  <For
-                    each={subCategories.filter(
-                      (subCategory) => subCategory.parent_id === category.id,
-                    )}
-                  >
-                    {(subCategory) => (
+                  <For each={category.subcategories}>
+                    {(subcategory) => (
                       <li class="text-[#838383] py-3">
                         <div
                           class={`text-[#838383] text-sm ${
-                            isSelectedOrSubcategory(subCategory)
+                            subcategory.isSelected
                               ? "border-l-2 border-[#EE5A44] pl-2"
                               : ""
                           }`}
                         >
                           <a
-                            href={`/market/${subCategory.slug}`}
+                            href={`/market/${subcategory.slug}`}
                             class={`text-[#838383] text-sm ${
-                              isSelectedOrSubcategory(subCategory)
-                                ? "!text-[#403C3B]"
-                                : ""
+                              subcategory.isSelected ? "!text-[#403C3B]" : ""
                             }`}
                           >
-                            {subCategory.name}
+                            {subcategory.name}
                           </a>
                         </div>
                       </li>
