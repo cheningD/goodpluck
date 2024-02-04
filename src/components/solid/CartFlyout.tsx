@@ -1,6 +1,7 @@
 import { useStore } from "@nanostores/solid";
 import { type Component } from "solid-js";
 import {
+  For,
   createEffect,
   onMount,
   Show,
@@ -16,7 +17,9 @@ import {
   isBasketUpdated,
   isCartOpen,
   lastBasketItemAdded,
+  lastBasketItemRemoved,
   setIsBasketUpdated,
+  setLastBasketItemRemoved,
   swellCartDeliveryDate,
 } from "@src/store";
 import { isZipCodeDeliverable } from "@utils/validations";
@@ -49,24 +52,26 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
     basket?.delivery_date,
   );
 
-  const [, setAddBasketFromOrdersTab] = createSignal<boolean>(false);
-
   const [tab, setTab] = createSignal(0);
   const [pending, start] = useTransition();
   const updateTab = (index: number) => (): void => {
     void start(() => setTab(index));
   };
-  // const $swellCartId = useStore(swellCartId);
-  // const $lastBasketItemAdded = useStore(lastBasketItemAdded);
+  const [selectQuantity, setSelectedQuantity] = createSignal<number>(1);
 
   const basketId = basket?.id === undefined ? "" : basket?.id?.toString();
 
   createEffect(async () => {
     console.log("items changed", isBasketUpdated());
     if (isBasketUpdated()) {
-      const newProducts = activeBasketProducts();
+      let newProducts = activeBasketProducts();
       if (lastBasketItemAdded() !== null) {
         newProducts.push(lastBasketItemAdded() as Product);
+      }
+      if (lastBasketItemRemoved() !== null) {
+        newProducts = newProducts.filter(
+          (item) => item.id !== lastBasketItemRemoved().id,
+        );
       }
       setActiveBasketProducts(newProducts);
       setIsBasketUpdated(false);
@@ -148,6 +153,11 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
     setDeliverySlots(getDeliverySlots());
   });
 
+  const completeOrder = (e: Event): void => {
+    e.preventDefault();
+    window.location.href = "/join";
+  };
+
   const handleSubmit = async (e: Event): Promise<void> => {
     e.preventDefault();
     if (zip() === "") {
@@ -183,6 +193,32 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
     }
     // alert(`Update Swell Cart zip ${zip()}`);
   };
+
+  async function deleteFromCart(
+    event: MouseEvent,
+    product: Product,
+  ): Promise<void> {
+    event.preventDefault();
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "DELETEITEM",
+          itemId: product.id,
+        }),
+      });
+
+      if (response.ok) {
+        setLastBasketItemRemoved(product);
+        setIsBasketUpdated(true);
+        console.log("Item removed from Cart successfully:");
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  }
 
   return (
     <>
@@ -269,9 +305,39 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                         <span class="col-span-2 font-semibold">
                                           {product?.name}
                                         </span>
-                                        <span class="font-semibold">
-                                          ${product?.cost}
-                                        </span>
+                                        <div class="flex flex-col">
+                                          <span class="font-semibold">
+                                            ${product?.cost}
+                                          </span>
+                                          <select
+                                            value={selectQuantity()}
+                                            onInput={(e) =>
+                                              setSelectedQuantity(
+                                                parseInt(e.target.value),
+                                              )
+                                            }
+                                          >
+                                            <For
+                                              each={[...Array(20)].map(
+                                                (_, index) => index + 1,
+                                              )}
+                                            >
+                                              {(quantity) => (
+                                                <option value={quantity}>
+                                                  {quantity}
+                                                </option>
+                                              )}
+                                            </For>
+                                          </select>
+                                          <button
+                                            onClick={(e) => {
+                                              void deleteFromCart(e, product);
+                                            }}
+                                            class="text-green-700 underline"
+                                          >
+                                            Remove
+                                          </button>
+                                        </div>
                                       </li>
                                     ),
                                   )}
@@ -345,6 +411,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                               </Show> */}
 
                               <button
+                                onClick={completeOrder}
                                 data-testid="btn-create-order"
                                 type="button"
                                 class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
@@ -554,8 +621,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                         )} */}
 
                         <button
-                          onClick={() => setAddBasketFromOrdersTab(true)}
-                          data-testid="btn-verify-zip"
+                          data-testid="btn-add-order2"
                           type="button"
                           class="w-3/4 uppercase mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                         >

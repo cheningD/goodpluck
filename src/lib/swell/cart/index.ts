@@ -276,6 +276,41 @@ const getProduct = async (id: string): Promise<Product | null> => {
   }
 };
 
+/**
+ * Get the active cart for a guest user
+ * @param productId - the product id
+ * @returns GoodpluckCart or null if it fails to retrieve or create the cart
+ * @throws Error when it fails to retrieve or create the cart
+ */
+const removeProductFromGuestCart = async (productId: string): Promise<void> => {
+  try {
+    const $swellCartId = useStore(swellCartId);
+
+    const guestCart: GoodpluckCart = await swell.get("/carts/{id}", {
+      id: $swellCartId(),
+    });
+    console.log("Guest Cart", guestCart);
+
+    const products = [];
+    for (const item of guestCart?.items ?? []) {
+      if (item.product_id !== productId) {
+        products.push({
+          product_id: item.product_id,
+          quantity: item.quantity,
+        });
+      }
+    }
+
+    await swell.put(`/carts/{id}`, {
+      id: $swellCartId(),
+      items: products,
+    });
+    console.log("Product removed from Cart : backend", products);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export {
   getOrCreateCart,
   getCart,
@@ -286,4 +321,5 @@ export {
   updateGuestCartZip,
   addProductToGuestCart,
   getProduct,
+  removeProductFromGuestCart,
 };

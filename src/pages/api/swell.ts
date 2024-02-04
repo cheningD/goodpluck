@@ -1,6 +1,7 @@
 import {
   addProductToGuestCart,
   getProduct,
+  removeProductFromGuestCart,
   updateGuestCartDeliveryDate,
   updateGuestCartZip,
 } from "@src/lib/swell/cart";
@@ -12,6 +13,10 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     switch (data.method) {
+      case "DELETEITEM":
+        await removeProductFromGuestCart(data.itemId);
+        responseMessage = "Product removed from cart successfully";
+        break;
       case "ADDITEM":
         await addProductToGuestCart(data.cartId, data.itemId, 1);
         responseMessage = "Product added to cart successfully";
@@ -51,12 +56,11 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 export const GET: APIRoute = async ({ request }) => {
-  // process the URL into a more usable format
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
 
   let responseMessage = "";
-  console.log("Get", params);
+
   try {
     let model = null;
     switch (params.get("method")) {
@@ -78,6 +82,44 @@ export const GET: APIRoute = async ({ request }) => {
       JSON.stringify({
         message: responseMessage,
         data: model,
+      }),
+      { status: 200 },
+    );
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        message: "Error processing the request",
+        error,
+      }),
+      { status: 400 },
+    );
+  }
+};
+
+export const DELETE: APIRoute = async ({ request }) => {
+  const url = new URL(request.url);
+  const params = new URLSearchParams(url.search);
+
+  let responseMessage = "";
+
+  try {
+    switch (params.get("method")) {
+      case "DELETEITEM":
+        await removeProductFromGuestCart(params.get("itemId") ?? "");
+        responseMessage = "Product removed from cart successfully";
+        break;
+      default:
+        return new Response(
+          JSON.stringify({
+            message: "Invalid request method",
+          }),
+          { status: 400 },
+        );
+    }
+
+    return new Response(
+      JSON.stringify({
+        message: responseMessage,
       }),
       { status: 200 },
     );
