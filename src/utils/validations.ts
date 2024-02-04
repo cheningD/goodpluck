@@ -1,8 +1,11 @@
 import gpZip from "@src/data/gp-zip.json";
 
-const isZipCodeDeliverable = (zipCode: string): boolean => {
+const isZipCodeDeliverable = (zipCode: string | undefined): boolean => {
   const zipCodes: string[] = gpZip.map((item) => item.zip.toString());
-  return zipCodes.includes(zipCode);
+  if (zipCode !== undefined) {
+    return zipCodes.includes(zipCode);
+  }
+  return false;
 };
 
 export { isZipCodeDeliverable };

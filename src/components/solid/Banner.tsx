@@ -2,10 +2,11 @@ import { useStore } from "@nanostores/solid";
 import { isCartOpen } from "../../store";
 import { type Component } from "solid-js";
 import { EditIcon } from "./Icons";
+import { formatDate } from "@composables/timeUtils";
 
 interface BannerProps {
   isZipDeliverable: boolean;
-  deliveryDate: string | null;
+  deliveryDate: Date | null;
 }
 
 const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
@@ -16,7 +17,7 @@ const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
       return "Free Delivery to Detroit & Nearby.";
     }
     return deliveryDate
-      ? `Shopping for ${deliveryDate}`
+      ? `Shopping for ${formatDate(deliveryDate)}`
       : `Choose a delivery date`;
   };
 

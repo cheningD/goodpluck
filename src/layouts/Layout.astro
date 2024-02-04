@@ -1,7 +1,7 @@
 ---
 import Header from "@components/solid/global/Header.tsx";
 import Footer from "@components/solid/global/Footer";
-import { getCartFromSession } from "src/lib/swell/cart";
+import { getOrCreateGuestCart } from "src/lib/swell/cart";
 import CartFlyout from "@components/solid/CartFlyout.tsx";
 import Banner from "@components/solid/Banner";
 import Breadcrumb from "@components/solid/Breadcrumb";
@@ -9,6 +9,9 @@ import SidebarMenu from "@components/solid/global/SidebarMenu";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
 import { isZipCodeDeliverable } from "@utils/validations";
+import { useStore } from "@nanostores/solid";
+import { swellCartId } from "@src/store";
+const $swellCartId = useStore(swellCartId);
 
 const { title, categories, currentCollection } = Astro.props;
 
@@ -17,7 +20,8 @@ const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 let cart = null;
 
 try {
-  cart = await getCartFromSession(sessionToken as string);
+  cart = await getOrCreateGuestCart();
+  swellCartId.set(cart?.id);
   console.log("Cart", cart);
 } catch (error) {
   console.log("Layout:error|", error);
@@ -35,7 +39,7 @@ try {
   <body class="flex flex-col min-h-screen">
     <Banner
       isZipDeliverable={!!cart?.shipping?.zip}
-      deliveryDate={cart?.date_delivery || null}
+      deliveryDate={cart?.deliveryDate || null}
       client:load
     />
     <Header collections={categories} client:load />
@@ -69,7 +73,7 @@ try {
           <slot />
         </div>
       </div>
-      <CartFlyout basket={cart} hasValidZip={isValidZip} client:only />
+      <CartFlyout basket={cart} client:only />
     </main>
     <Footer client:load />
     <script>

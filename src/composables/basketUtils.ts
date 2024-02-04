@@ -1,25 +1,24 @@
-import { formatDate } from "./timeUtils";
 import type { Cart as CartType } from "swell-js";
 
-const getDeliverySlots = (): string[] => {
-  const slots: string[] = [];
+const getDeliverySlots = (): Date[] => {
+  const slots: Date[] = [];
   const currentDate = new Date();
-  const oneMonthLater = new Date(
+  const twoWeeksLater = new Date(
     currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    currentDate.getDate(),
+    currentDate.getMonth(),
+    currentDate.getDate() + 14,
   );
 
   for (
     let date = new Date(currentDate);
     // eslint-disable-next-line no-unmodified-loop-condition
-    date <= oneMonthLater;
+    date <= twoWeeksLater;
     date.setDate(date.getDate() + 1)
   ) {
-    // Check if the day is Sunday(0) or Monday (1)
-    if (date.getDay() === 0 || date.getDay() === 1) {
-      const slot = formatDate(date.toISOString()); // Format the date as Day, Month Num
-      slots.push(slot);
+    const dayOfWeek = date.getDay();
+
+    if (dayOfWeek === 0 || dayOfWeek === 1) {
+      slots.push(new Date(date));
     }
   }
 

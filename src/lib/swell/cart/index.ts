@@ -1,8 +1,11 @@
 import { stytch } from "src/lib/stytch";
 import { swell } from "..";
 import calculateCartDates from "./dates";
-import type { Account } from "swell-js";
+import type { Account, Product } from "swell-js";
 import type { GoodpluckCart } from "@src/lib/types";
+import { swellCartId } from "@src/store";
+import { useStore } from "@nanostores/solid";
+import type { CartItemSnake } from "node_modules/swell-js/types/cart/snake";
 
 const {
   orderingWindowStartDate,
@@ -138,10 +141,10 @@ const getOrCreateCart = async (
 
 /**
  * Get the active cart for a guest user
- * @returns CartType or null if it fails to retrieve or create the cart
+ * @returns GoodpluckCart or null if it fails to retrieve or create the cart
  * @throws Error when it fails to retrieve or create the cart
  */
-const getOrCreateGuestCart = async (): Promise<Basket | null> => {
+const getOrCreateGuestCart = async (): Promise<GoodpluckCart | null> => {
   try {
     const $swellCartId = useStore(swellCartId);
 
@@ -149,16 +152,12 @@ const getOrCreateGuestCart = async (): Promise<Basket | null> => {
       const guestCart = await swell.get("/carts/{id}", {
         id: $swellCartId(),
       });
-      console.log("fetched cartId:", $swellCartId());
+      swellCartId.set(guestCart.id);
+      console.log("fetched cartId backend:", $swellCartId());
       return guestCart;
     } else {
-      const guestCart: Basket = await swell.post("/carts", {
-        ordering_window_start_date: orderingWindowStartDate,
-        ordering_window_end_date: orderingWindowEndDate,
-        order_charge_date: orderChargeDate,
-        delivery_date: deliveryDate,
-      });
-      console.log("created guest cartId:", guestCart.id);
+      const guestCart: GoodpluckCart = await swell.post("/carts");
+      console.log("created guest cartId backend:", guestCart.id);
       swellCartId.set(guestCart.id);
       return guestCart;
     }
@@ -170,18 +169,39 @@ const getOrCreateGuestCart = async (): Promise<Basket | null> => {
 
 /**
  * Get the active cart for a guest user
- * @param cart - the current Swell guest Cart
+ * @param cartId - the current Swell guest Cart id
+ * @param deliveryDate - the new delivery date
+ * @returns GoodpluckCart or null if it fails to retrieve or create the cart
+ * @throws Error when it fails to retrieve or create the cart
+ */
+const updateGuestCartDeliveryDate = async (
+  cartId: string | undefined,
+  newDeliveryDate: string,
+): Promise<void> => {
+  try {
+    await swell.put(`/carts/${cartId}`, {
+      id: cartId,
+      delivery_date: newDeliveryDate,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * Get the active cart for a guest user
+ * @param cartId - the current Swell guest Cart id
  * @param zip - the new zip
- * @returns CartType or null if it fails to retrieve or create the cart
+ * @returns GoodpluckCart or null if it fails to retrieve or create the cart
  * @throws Error when it fails to retrieve or create the cart
  */
 const updateGuestCartZip = async (
-  cart: CartType,
+  cartId: string | undefined,
   newZip: string,
 ): Promise<void> => {
   try {
-    await swell.put(`/carts/${cart.id}`, {
-      id: cart.id,
+    await swell.put(`/carts/${cartId}`, {
+      id: cartId,
       shipping: {
         zip: newZip,
       },
@@ -191,11 +211,79 @@ const updateGuestCartZip = async (
   }
 };
 
+/**
+ * Get the active cart for a guest user
+ * @param cartId - the current Swell guest Cart id
+ * @param productId - the product id
+ * @returns GoodpluckCart or null if it fails to retrieve or create the cart
+ * @throws Error when it fails to retrieve or create the cart
+ */
+const addProductToGuestCart = async (
+  cartId: string | undefined,
+  productId: string,
+  quantity: number,
+): Promise<void> => {
+  try {
+    const $swellCartId = useStore(swellCartId);
+
+    const guestCart: GoodpluckCart = await swell.get("/carts/{id}", {
+      id: $swellCartId(),
+    });
+    console.log("Guest Cart", guestCart);
+
+    const products = [];
+    for (const item of guestCart?.items ?? []) {
+      products.push({
+        product_id: item.product_id,
+        quantity: item.quantity,
+      });
+    }
+    const newProduct: CartItemSnake = {
+      product_id: productId,
+      quantity,
+    };
+
+    products.push(newProduct);
+    await swell.put(`/carts/{id}`, {
+      id: $swellCartId(),
+      items: products,
+    });
+    console.log("Product added to Cart : backend", products);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * Get the active cart for the account
+ * @param id - the Swell product id
+ * @returns Product or null if it fails to retrieve the product
+ * @throws Error when it fails to retrieve the product
+ */
+const getProduct = async (id: string): Promise<Product | null> => {
+  try {
+    const product = await swell.get(`/products/${id}`, {});
+
+    if (product) {
+      return product;
+    } else {
+      console.log("No active product found");
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 export {
-  updateGuestCartZip,
   getOrCreateCart,
   getCart,
   createCart,
   getCartFromSession,
   getOrCreateGuestCart,
+  updateGuestCartDeliveryDate,
+  updateGuestCartZip,
+  addProductToGuestCart,
+  getProduct,
 };

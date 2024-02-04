@@ -11,19 +11,43 @@ import {
   useTransition,
 } from "solid-js";
 import { formatDate } from "@composables/timeUtils";
-import { getDeliverySlots, type Basket } from "@composables/basketUtils";
-import { isCartOpen } from "@src/store";
+import { getDeliverySlots } from "@composables/basketUtils";
+import {
+  isBasketUpdated,
+  isCartOpen,
+  lastBasketItemAdded,
+  setIsBasketUpdated,
+  swellCartDeliveryDate,
+} from "@src/store";
 import { isZipCodeDeliverable } from "@utils/validations";
-
+import type { GoodpluckCart } from "@src/lib/types";
+import type { Product } from "swell-js";
 interface CartProps {
-  basket: Basket | null;
-  hasValidZip: boolean;
+  basket: GoodpluckCart | null;
 }
 
-const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
+const CartFlyout: Component<CartProps> = ({ basket }) => {
+  const [activeBasket, setActiveBasket] = createSignal<GoodpluckCart | null>(
+    basket,
+    { equals: false },
+  );
+  const [activeBasketProducts, setActiveBasketProducts] = createSignal<
+    Product[]
+  >([], { equals: false });
   const $isCartOpen = useStore(isCartOpen);
-  const [deliverySlots, setDeliverySlots] = createSignal<string[]>([]);
+  const [deliverySlots, setDeliverySlots] = createSignal<Date[]>([]);
   const [zipRequired, setZipRequired] = createSignal<boolean>(false);
+  const [zip, setZip] = createSignal<string | undefined>("");
+  setZip(
+    activeBasket()?.shipping?.zip === undefined
+      ? ""
+      : activeBasket()?.shipping?.zip,
+  );
+  const [hasValidZip, setHasValidZip] = createSignal<boolean>(false);
+  setHasValidZip(zip() !== "");
+  const [deliveryDate, setDeliveryDate] = createSignal<Date | undefined>(
+    basket?.delivery_date,
+  );
 
   const [, setAddBasketFromOrdersTab] = createSignal<boolean>(false);
 
@@ -32,54 +56,132 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
   const updateTab = (index: number) => (): void => {
     void start(() => setTab(index));
   };
+  // const $swellCartId = useStore(swellCartId);
+  // const $lastBasketItemAdded = useStore(lastBasketItemAdded);
 
-  const updateSelectedSlot = (): void => {};
+  const basketId = basket?.id === undefined ? "" : basket?.id?.toString();
 
-  const addNewBasket = (): void => {
-    // if (currentBasket().selectedSlot === "") {
-    //   alert("No delivery date selected!");
-    //   return;
-    // }
-    // updateActiveOrder({
-    //   items: [],
-    //   deliveryDate: currentBasket().selectedSlot,
-    // });
-    // const newOrders = currentBasket().orders;
-    // newOrders.push({ items: [], deliveryDate: currentBasket().selectedSlot });
-    // updateOrders(newOrders);
+  createEffect(async () => {
+    console.log("items changed", isBasketUpdated());
+    if (isBasketUpdated()) {
+      const newProducts = activeBasketProducts();
+      if (lastBasketItemAdded() !== null) {
+        newProducts.push(lastBasketItemAdded() as Product);
+      }
+      setActiveBasketProducts(newProducts);
+      setIsBasketUpdated(false);
+    }
+  });
+
+  const createOrder = async (): Promise<void> => {
+    if (deliveryDate() === null) {
+      alert("No delivery date selected!");
+    }
+
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "DELIVERYDATE",
+          cartId: basketId,
+          deliveryDate: deliveryDate(),
+        }),
+      });
+
+      if (response.ok) {
+        const cartDeliveryDateUpdated: GoodpluckCart | null = activeBasket();
+        if (cartDeliveryDateUpdated !== null) {
+          cartDeliveryDateUpdated.delivery_date = deliveryDate();
+          console.log("New delivery Date:", cartDeliveryDateUpdated);
+          setActiveBasket(cartDeliveryDateUpdated);
+          console.log("setActiveBasket:", activeBasket());
+        }
+        swellCartDeliveryDate.set(deliveryDate()?.toISOString());
+        console.log("Order created successfully:");
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  };
+
+  const fetchProducts = async (): Promise<void> => {
+    if (activeBasket()?.items) {
+      const promises = activeBasket().items.map(async (item) => {
+        const params = {
+          method: "ITEM",
+          itemId: item.product_id ?? "",
+        };
+        const queryString = new URLSearchParams(params).toString();
+        const response = await fetch(`/api/swell?${queryString}`, {
+          method: "GET",
+        });
+
+        if (response.ok) {
+          const product: Product = await response.json();
+          console.log("products: fetchProducts", product.data);
+          return product.data;
+        } else {
+          console.error("Error fetching product:", response.status);
+          return null; // or handle the error in a way that makes sense for your app
+        }
+      });
+
+      const products = await Promise.all(promises);
+
+      setActiveBasketProducts((previousItems: Product[]) => [
+        ...previousItems,
+        ...(products.filter((product) => product !== null) as Product[]),
+      ]);
+    }
   };
 
   createEffect(() => {
     setDeliverySlots(getDeliverySlots());
   });
 
-  const validateZipCode = (): void => {
-    const currentSessionZip =
-      basket?.shipping?.zip === undefined ? "" : basket?.shipping?.zip;
-    isZipCodeDeliverable(currentSessionZip);
-  };
-
-  const updateZip = (newZip: string): void => {};
-
-  onMount(() => {
-    console.log("currentCart", basket);
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  onMount(async () => {
+    swellCartDeliveryDate.set(String(activeBasket()?.delivery_date));
+    await fetchProducts();
     setDeliverySlots(getDeliverySlots());
   });
 
-  const handleSubmit = (e: Event): void => {
+  const handleSubmit = async (e: Event): Promise<void> => {
     e.preventDefault();
-    if (basket?.shipping?.zip === "") {
+    if (zip() === "") {
       setZipRequired(true);
       return;
     }
 
-    const currentSessionZip =
-      basket?.shipping?.zip === undefined ? "" : basket?.shipping?.zip;
-    isZipCodeDeliverable(currentSessionZip);
-
-    if (!hasValidZip) {
+    if (!isZipCodeDeliverable(zip())) {
       window.location.href = "/waitlist";
+      return;
     }
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "ZIP",
+          cartId: basketId,
+          zip: zip(),
+        }),
+      });
+
+      if (response.ok) {
+        setHasValidZip(true);
+        console.log("setHasValidZip successfully:");
+        // return data;
+      } else {
+        // If not successful, handle the error
+        // console.error("Error fetching data:", response.status, data);
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+    // alert(`Update Swell Cart zip ${zip()}`);
   };
 
   return (
@@ -92,7 +194,7 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
           <ul class="grid grid-cols-2">
             <li onClick={updateTab(0)}>
               <Show
-                when={hasValidZip}
+                when={hasValidZip()}
                 fallback={
                   <button
                     data-testid="basket-tab-zip"
@@ -105,16 +207,19 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
                 }
               >
                 <button
-                  data-testid="basket-tab-orders"
+                  data-testid="active-order"
                   type="button"
                   class="bg-slate-300 w-full"
                   role="tab"
                 >
+                  {/* Select Date : {formatDate(activeBasket()?.delivery_date)} */}
                   <Show
-                    when={basket?.deliveryDate === null}
-                    fallback={<h4>{basket?.deliveryDate.toString()}</h4>}
+                    when={activeBasket()?.delivery_date === undefined}
+                    fallback={
+                      <h4>{formatDate(activeBasket()?.delivery_date)}</h4>
+                    }
                   >
-                    <h4>Select Date</h4>
+                    Select Date
                   </Show>
                 </button>
               </Show>
@@ -136,43 +241,140 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
                 <Match when={tab() === 0}>
                   <div class="max-h-[80vh] flex flex-col justify-center">
                     <Show
-                      when={!hasValidZip}
+                      when={!hasValidZip()}
                       fallback={
                         <Show
-                          when={basket?.items?.length === 0}
+                          when={activeBasket()?.delivery_date === undefined}
                           fallback={
                             <>
-                              <h4 class="max-h-[70vh] min-h-[70vh] text-3xl text-center">
+                              {/* <h4 class="max-h-[70vh] min-h-[70vh] text-3xl text-center">
                                 Add items to your basket.
-                              </h4>
+                              </h4> */}
+                              <Show when={!!activeBasket()}>
+                                <ul
+                                  data-testid="product-items"
+                                  class="flex flex-col gap-y-1 py-1"
+                                >
+                                  {activeBasketProducts().map(
+                                    (product: Product) => (
+                                      <li class="grid grid-cols-4 gap-y-2 gap-x-1 px-1">
+                                        <img
+                                          alt={`Image of ${product?.name}`}
+                                          src={product?.images[0]?.file?.url}
+                                          width="65"
+                                          height="50"
+                                          loading="lazy"
+                                          decoding="async"
+                                        />
+                                        <span class="col-span-2 font-semibold">
+                                          {product?.name}
+                                        </span>
+                                        <span class="font-semibold">
+                                          ${product?.cost}
+                                        </span>
+                                      </li>
+                                    ),
+                                  )}
+                                </ul>
+                              </Show>
+
+                              {/* <Show when={activeBasket()}>
+                                <ul
+                                  data-testid="product-items"
+                                  class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10 justify-center"
+                                >
+                                  {activeBasket()?.items.map(
+                                    (product: CartItemSnake) => {
+                                      return (
+                                        <li class="flex flex-col gap-y-2">
+                                          <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
+                                            <a
+                                              href={`/product/${product.slug}`}
+                                            >
+                                              <Show
+                                                when={
+                                                  product.images !== undefined
+                                                }
+                                              >
+                                                <img
+                                                  alt={`Image of ${product.name}`}
+                                                  src={
+                                                    product.images[0]?.file?.url
+                                                  }
+                                                  width="305"
+                                                  height="205"
+                                                  loading="lazy"
+                                                  decoding="async"
+                                                  class="absolute w-full h-full rounded-xl"
+                                                />
+                                              </Show>
+                                              <button
+                                                onClick={(e) => {
+                                                  void addToCart(e, product.id);
+                                                }}
+                                                aria-label="Add to Cart"
+                                                type="button"
+                                                class="absolute bottom-2 right-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-full border-2 border-gray-900 text-white bg-gray-800 shadow-sm hover:bg-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                              >
+                                                + Quick add
+                                              </button>
+                                            </a>
+                                          </div>
+                                          <a
+                                            class="text-xl font-serif"
+                                            href={`/product/${product.slug}`}
+                                          >
+                                            <span class="hidden">
+                                              Product Name:
+                                            </span>
+                                            {product.name}
+                                          </a>
+                                          <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">
+                                              {product.kind}
+                                            </span>
+                                            <span class="text-right font-semibold">
+                                              ${product.price}
+                                            </span>
+                                          </div>
+                                        </li>
+                                      );
+                                    },
+                                  )}
+                                </ul>
+                              </Show> */}
+
                               <button
-                                onClick={() => {
-                                  addNewBasket();
-                                }}
                                 data-testid="btn-create-order"
                                 type="button"
                                 class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                               >
-                                Start Shopping
+                                <Show
+                                  when={activeBasketProducts().length > 0}
+                                  fallback={"Start Shopping"}
+                                >
+                                  Complete order
+                                </Show>
                               </button>
                             </>
                           }
                         >
                           <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
-                            {deliverySlots().map((slot: string) => (
+                            {deliverySlots().map((slot: Date) => (
                               <>
                                 <li
                                   onClick={() => {
-                                    updateSelectedSlot();
+                                    setDeliveryDate(slot);
                                   }}
                                   class="px-3 py-4 cursor-pointer border-gray-300 border-b flex items-center justify-between"
                                 >
                                   <div class="">
-                                    <h4 class="text-2xl font-bold">{slot}</h4>
+                                    <h4 class="text-2xl font-bold">
+                                      {formatDate(slot)}
+                                    </h4>
                                     <span>Delivery time: 10:00AM</span>
                                   </div>
-                                  {basket?.deliveryDate.toString() ===
-                                    formatDate(slot) && (
+                                  {deliveryDate() === slot && (
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       class="w-8 h-8 bg-orange-800 text-white rounded-full p-1"
@@ -191,7 +393,7 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
 
                           <button
                             onClick={() => {
-                              addNewBasket();
+                              void createOrder();
                             }}
                             data-testid="btn-create-order"
                             type="submit"
@@ -204,7 +406,7 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
                     >
                       <form
                         class="p-4 flex flex-col h-full gap-y-10"
-                        onSubmit={handleSubmit}
+                        onSubmit={() => handleSubmit}
                       >
                         <p class="text-gray-500 dark:text-gray-400">
                           Before we add items to your order, let's{" "}
@@ -221,9 +423,9 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
                             placeholder="Zip Code"
                             id="zip"
                             name="zip"
-                            value={basket?.shipping?.zip}
+                            value={zip()}
                             onInput={(e) => {
-                              updateZip(e.target.value);
+                              setZip(e.target.value);
                             }}
                             data-testid="user-zip"
                           />
@@ -243,7 +445,7 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
                           )}
                         </div>
                         <button
-                          onClick={() => validateZipCode}
+                          onClick={() => handleSubmit}
                           data-testid="btn-verify-zip"
                           type="submit"
                           class="w-3/4 uppercase mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
@@ -257,20 +459,22 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
                 <Match when={tab() === 1}>
                   <div class="flex flex-col content-center">
                     <Show
-                      when={basket?.deliveryDate !== null}
+                      when={activeBasket()?.delivery_date !== null}
                       fallback={
                         <>
                           <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
-                            {deliverySlots().map((slot: string) => (
+                            {deliverySlots().map((slot: Date) => (
                               <>
                                 <li
                                   onClick={() => {
-                                    updateSelectedSlot();
+                                    setDeliveryDate(slot);
                                   }}
                                   class="px-3 py-4 cursor-pointer border-gray-300 border-b flex items-center justify-between"
                                 >
                                   <div class="">
-                                    <h4 class="text-2xl font-bold">{slot}</h4>
+                                    <h4 class="text-2xl font-bold">
+                                      {formatDate(slot)}
+                                    </h4>
                                     <span>Delivery time: 10:00AM</span>
                                   </div>
                                   {/* {currentBasket().selectedSlot ===
@@ -295,10 +499,10 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
                             ))}
                           </ul>
 
+                          {/* onClick={() => {
+                              void createOrder();
+                            }} */}
                           <button
-                            onClick={() => {
-                              addNewBasket();
-                            }}
                             data-testid="btn-create-order"
                             type="submit"
                             class="w-3/4 uppercase mt-2 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
@@ -339,7 +543,7 @@ const CartFlyout: Component<CartProps> = ({ basket, hasValidZip }) => {
                                     </strong>
                                   </span>
                                   <h4 class="text-2xl font-bold">
-                                    {basket.deliveryDate} (No items)
+                                    {basket.delivery_date} (No items)
                                   </h4>
                                   <span>Delivery time: 10:00AM</span>
                                 </li>

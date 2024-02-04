@@ -2,6 +2,14 @@ import { Show, type Component, createSignal, onCleanup } from "solid-js";
 import { initSwell } from "../../lib/swell-js";
 import { throttle } from "../../lib/throttle";
 import type { Product } from "swell-js";
+import {
+  isCartOpen,
+  setIsBasketUpdated,
+  setLastBasketItemAdded,
+  swellCartDeliveryDate,
+  swellCartId,
+} from "@src/store";
+import { useStore } from "@nanostores/solid";
 
 interface IProps {
   currentCategory: string | undefined;
@@ -20,7 +28,10 @@ const Products: Component<IProps> = ({ currentCategory }) => {
   let isFetching = false; // flag to indicate if fetching is in progress
   const [error, setError] = createSignal(false);
   const [errorMsg, setErrorMsg] = createSignal("");
+  const $swellCartDeliveryDate = useStore(swellCartDeliveryDate);
+  const $swellCartId = useStore(swellCartId);
 
+  console.log(" $swellCartId:", $swellCartId());
   const fetchProducts = async (): Promise<void> => {
     if (products().length >= totalProducts() || isFetching) {
       return;
@@ -89,6 +100,34 @@ const Products: Component<IProps> = ({ currentCategory }) => {
     itemListElement,
   };
 
+  async function addToCart(event: MouseEvent, product: Product): Promise<void> {
+    event.preventDefault();
+    if ($swellCartDeliveryDate() === undefined) {
+      isCartOpen.set(true);
+      return;
+    }
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "ADDITEM",
+          cartId: $swellCartId(),
+          itemId: product.id,
+        }),
+      });
+
+      if (response.ok) {
+        setLastBasketItemAdded(product);
+        setIsBasketUpdated(true);
+        console.log("Item added to Cart successfully:");
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  }
+
   return (
     <>
       <span class="text-4xl text-blue-600" data-testid="product-list">
@@ -101,14 +140,14 @@ const Products: Component<IProps> = ({ currentCategory }) => {
             data-testid="product-items"
             class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10 justify-center"
           >
-            {products().map((product: any) => (
+            {products().map((product: Product) => (
               <li class="flex flex-col gap-y-2">
                 <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
                   <a href={`/product/${product.slug}`}>
                     <Show when={product.images !== undefined}>
                       <img
                         alt={`Image of ${product.name}`}
-                        src={product.images[0].file.url}
+                        src={product.images[0]?.file?.url}
                         width="305"
                         height="205"
                         loading="lazy"
@@ -117,6 +156,9 @@ const Products: Component<IProps> = ({ currentCategory }) => {
                       />
                     </Show>
                     <button
+                      onClick={(e) => {
+                        void addToCart(e, product);
+                      }}
                       aria-label="Add to Cart"
                       type="button"
                       class="absolute bottom-2 right-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-full border-2 border-gray-900 text-white bg-gray-800 shadow-sm hover:bg-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"

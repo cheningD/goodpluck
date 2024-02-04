@@ -1,12 +1,8 @@
 import { format } from "date-fns";
 
-const formatDate = (
-  dateString: string,
-  formatString: string = "EEEE, MMMM d",
-  locale: string = "en-US",
-): string => {
-  const date = new Date(dateString);
-  return format(date, formatString);
+const formatDate = (date: Date | undefined): string => {
+  if (date === undefined) return "undefined";
+  return format(date, "EEEE, MMMM d");
 };
 
 export { formatDate };
