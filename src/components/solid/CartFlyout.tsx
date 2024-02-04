@@ -406,7 +406,8 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                     >
                       <form
                         class="p-4 flex flex-col h-full gap-y-10"
-                        onSubmit={() => handleSubmit}
+                        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                        onSubmit={handleSubmit}
                       >
                         <p class="text-gray-500 dark:text-gray-400">
                           Before we add items to your order, let's{" "}
