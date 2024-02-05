@@ -168,10 +168,9 @@ const getOrCreateGuestCart = async (): Promise<GoodpluckCart | null> => {
 };
 
 /**
- * Get the active cart for a guest user
+ * Update delivery date the active cart for a guest user
  * @param cartId - the current Swell guest Cart id
  * @param deliveryDate - the new delivery date
- * @returns GoodpluckCart or null if it fails to retrieve or create the cart
  * @throws Error when it fails to retrieve or create the cart
  */
 const updateGuestCartDeliveryDate = async (
@@ -189,10 +188,9 @@ const updateGuestCartDeliveryDate = async (
 };
 
 /**
- * Get the active cart for a guest user
+ * Update the zip of the active cart for a guest user
  * @param cartId - the current Swell guest Cart id
  * @param zip - the new zip
- * @returns GoodpluckCart or null if it fails to retrieve or create the cart
  * @throws Error when it fails to retrieve or create the cart
  */
 const updateGuestCartZip = async (
@@ -212,10 +210,9 @@ const updateGuestCartZip = async (
 };
 
 /**
- * Get the active cart for a guest user
+ * Add product to the active cart for a guest user
  * @param cartId - the current Swell guest Cart id
  * @param productId - the product id
- * @returns GoodpluckCart or null if it fails to retrieve or create the cart
  * @throws Error when it fails to retrieve or create the cart
  */
 const addProductToGuestCart = async (
@@ -255,9 +252,8 @@ const addProductToGuestCart = async (
 };
 
 /**
- * Get the active cart for the account
+ * Get the product model
  * @param id - the Swell product id
- * @returns Product or null if it fails to retrieve the product
  * @throws Error when it fails to retrieve the product
  */
 const getProduct = async (id: string): Promise<Product | null> => {
@@ -277,9 +273,8 @@ const getProduct = async (id: string): Promise<Product | null> => {
 };
 
 /**
- * Get the active cart for a guest user
+ * Remove product from the active cart for a guest user
  * @param productId - the product id
- * @returns GoodpluckCart or null if it fails to retrieve or create the cart
  * @throws Error when it fails to retrieve or create the cart
  */
 const removeProductFromGuestCart = async (productId: string): Promise<void> => {
