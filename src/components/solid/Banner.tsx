@@ -1,23 +1,25 @@
 import { useStore } from "@nanostores/solid";
-import { isCartOpen } from "../../store";
+import { isCartOpen, swellCartDeliveryDate } from "../../store";
 import { type Component } from "solid-js";
 import { EditIcon } from "./Icons";
 import { formatDate } from "@composables/timeUtils";
 
 interface BannerProps {
   isZipDeliverable: boolean;
-  deliveryDate: Date | null;
 }
 
-const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
+const Banner: Component<BannerProps> = ({ isZipDeliverable }) => {
   const $isCartOpen = useStore(isCartOpen);
+  const $swellCartDeliveryDate = useStore(swellCartDeliveryDate);
 
   const displayMessage = (): string => {
     if (!isZipDeliverable) {
       return "Free Delivery to Detroit & Nearby.";
     }
-    return deliveryDate
-      ? `Shopping for ${formatDate(deliveryDate)}`
+    return $swellCartDeliveryDate()
+      ? `Shopping for ${formatDate(
+          new Date($swellCartDeliveryDate() as string),
+        )}`
       : `Choose a delivery date`;
   };
 

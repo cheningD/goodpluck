@@ -32,11 +32,7 @@ try {
     <title>{title} - Goodpluck</title>
   </head>
   <body class="flex flex-col min-h-screen">
-    <Banner
-      isZipDeliverable={!!cart?.shipping?.zip}
-      deliveryDate={cart?.delivery_date || null}
-      client:load
-    />
+    <Banner isZipDeliverable={!!cart?.shipping?.zip} client:only />
     <Header collections={categories} client:load />
     <main
       id="sidebar-page"

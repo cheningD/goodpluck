@@ -58,6 +58,8 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
     void start(() => setTab(index));
   };
   const [selectQuantity, setSelectedQuantity] = createSignal<number>(1);
+  const [openRescheduleDeliveryDialog, setOpenRescheduleDeliveryDialog] =
+    createSignal<boolean>(false);
 
   const basketId = basket?.id === undefined ? "" : basket?.id?.toString();
 
@@ -233,14 +235,23 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                 <button
                   data-testid="active-order"
                   type="button"
-                  class="bg-slate-300 w-full"
+                  class="bg-slate-300 w-full flex flex-col"
                   role="tab"
                 >
-                  {/* Select Date : {formatDate(activeBasket()?.delivery_date)} */}
                   <Show
                     when={activeBasket()?.delivery_date === undefined}
                     fallback={
-                      <h4>{formatDate(activeBasket()?.delivery_date)}</h4>
+                      <>
+                        <h4>{formatDate(activeBasket()?.delivery_date)}</h4>
+                        <a
+                          onClick={() => {
+                            setOpenRescheduleDeliveryDialog(true);
+                          }}
+                          class="underline text-green-700 text-center"
+                        >
+                          Reschedule
+                        </a>
+                      </>
                     }
                   >
                     Select Date
@@ -275,142 +286,145 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                 Add items to your basket.
                               </h4> */}
                               <Show when={!!activeBasket()}>
-                                <ul
-                                  data-testid="product-items"
-                                  class="flex flex-col gap-y-1 py-1"
-                                >
-                                  {activeBasketProducts().map(
-                                    (product: Product) => (
-                                      <li class="grid grid-cols-4 gap-y-2 gap-x-1 px-1">
-                                        <img
-                                          alt={`Image of ${product?.name}`}
-                                          src={product?.images[0]?.file?.url}
-                                          width="65"
-                                          height="50"
-                                          loading="lazy"
-                                          decoding="async"
-                                        />
-                                        <span class="col-span-2 font-semibold">
-                                          {product?.name}
-                                        </span>
-                                        <div class="flex flex-col">
-                                          <span class="font-semibold">
-                                            ${product?.cost}
-                                          </span>
-                                          <select
-                                            value={selectQuantity()}
-                                            onInput={(e) =>
-                                              setSelectedQuantity(
-                                                parseInt(e.target.value),
-                                              )
-                                            }
-                                          >
-                                            <For
-                                              each={[...Array(20)].map(
-                                                (_, index) => index + 1,
-                                              )}
-                                            >
-                                              {(quantity) => (
-                                                <option value={quantity}>
-                                                  {quantity}
-                                                </option>
-                                              )}
-                                            </For>
-                                          </select>
-                                          <button
-                                            onClick={(e) => {
-                                              void deleteFromCart(e, product);
-                                            }}
-                                            class="text-green-700 underline"
-                                          >
-                                            Remove
-                                          </button>
-                                        </div>
-                                      </li>
-                                    ),
-                                  )}
-                                </ul>
-                              </Show>
-
-                              {/* <Show when={activeBasket()}>
-                                <ul
-                                  data-testid="product-items"
-                                  class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10 justify-center"
-                                >
-                                  {activeBasket()?.items.map(
-                                    (product: CartItemSnake) => {
-                                      return (
-                                        <li class="flex flex-col gap-y-2">
-                                          <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
-                                            <a
-                                              href={`/product/${product.slug}`}
-                                            >
-                                              <Show
-                                                when={
-                                                  product.images !== undefined
+                                <Show
+                                  when={openRescheduleDeliveryDialog()}
+                                  fallback={
+                                    <ul
+                                      data-testid="product-items"
+                                      class="flex flex-col gap-y-1 py-1"
+                                    >
+                                      {activeBasketProducts().map(
+                                        (product: Product) => (
+                                          <li class="grid grid-cols-4 gap-y-2 gap-x-1 px-1">
+                                            <img
+                                              alt={`Image of ${product?.name}`}
+                                              src={
+                                                product?.images[0]?.file?.url
+                                              }
+                                              width="65"
+                                              height="50"
+                                              loading="lazy"
+                                              decoding="async"
+                                            />
+                                            <span class="col-span-2 font-semibold">
+                                              {product?.name}
+                                            </span>
+                                            <div class="flex flex-col">
+                                              <span class="font-semibold">
+                                                ${product?.cost}
+                                              </span>
+                                              <select
+                                                value={selectQuantity()}
+                                                onInput={(e) =>
+                                                  setSelectedQuantity(
+                                                    parseInt(e.target.value),
+                                                  )
                                                 }
                                               >
-                                                <img
-                                                  alt={`Image of ${product.name}`}
-                                                  src={
-                                                    product.images[0]?.file?.url
-                                                  }
-                                                  width="305"
-                                                  height="205"
-                                                  loading="lazy"
-                                                  decoding="async"
-                                                  class="absolute w-full h-full rounded-xl"
-                                                />
-                                              </Show>
+                                                <For
+                                                  each={[...Array(20)].map(
+                                                    (_, index) => index + 1,
+                                                  )}
+                                                >
+                                                  {(quantity) => (
+                                                    <option value={quantity}>
+                                                      {quantity}
+                                                    </option>
+                                                  )}
+                                                </For>
+                                              </select>
                                               <button
                                                 onClick={(e) => {
-                                                  void addToCart(e, product.id);
+                                                  void deleteFromCart(
+                                                    e,
+                                                    product,
+                                                  );
                                                 }}
-                                                aria-label="Add to Cart"
-                                                type="button"
-                                                class="absolute bottom-2 right-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-full border-2 border-gray-900 text-white bg-gray-800 shadow-sm hover:bg-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                                class="text-green-700 underline"
                                               >
-                                                + Quick add
+                                                Remove
                                               </button>
-                                            </a>
-                                          </div>
-                                          <a
-                                            class="text-xl font-serif"
-                                            href={`/product/${product.slug}`}
-                                          >
-                                            <span class="hidden">
-                                              Product Name:
-                                            </span>
-                                            {product.name}
-                                          </a>
-                                          <div class="flex justify-between items-center">
-                                            <span class="text-xs text-gray-600">
-                                              {product.kind}
-                                            </span>
-                                            <span class="text-right font-semibold">
-                                              ${product.price}
-                                            </span>
-                                          </div>
-                                        </li>
-                                      );
-                                    },
-                                  )}
-                                </ul>
-                              </Show> */}
-
-                              <button
-                                onClick={completeOrder}
-                                data-testid="btn-create-order"
-                                type="button"
-                                class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                              >
-                                <Show
-                                  when={activeBasketProducts().length > 0}
-                                  fallback={"Start Shopping"}
+                                            </div>
+                                          </li>
+                                        ),
+                                      )}
+                                    </ul>
+                                  }
                                 >
-                                  Complete order
+                                  <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
+                                    {deliverySlots().map((slot: Date) => (
+                                      <>
+                                        <li
+                                          onClick={() => {
+                                            setDeliveryDate(slot);
+                                          }}
+                                          class="px-3 py-4 cursor-pointer border-gray-300 border-b flex items-center justify-between"
+                                        >
+                                          <div class="">
+                                            <h4 class="text-2xl font-bold">
+                                              {formatDate(slot)}
+                                            </h4>
+                                            <span>Delivery time: 10:00AM</span>
+                                          </div>
+                                          {deliveryDate() === slot && (
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              class="w-8 h-8 bg-orange-800 text-white rounded-full p-1"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                fill="currentColor"
+                                                d="M9 20c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2m8-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2M18 2.8l-1.4-1.4l-4.8 4.8l-2.6-2.6L7.8 5l4 4z"
+                                              />
+                                            </svg>
+                                          )}
+                                        </li>
+                                      </>
+                                    ))}
+                                  </ul>
                                 </Show>
-                              </button>
+                              </Show>
+                              <Show
+                                when={openRescheduleDeliveryDialog()}
+                                fallback={
+                                  <button
+                                    onClick={completeOrder}
+                                    data-testid="btn-create-order"
+                                    type="button"
+                                    class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                  >
+                                    <Show
+                                      when={activeBasketProducts().length > 0}
+                                      fallback={"Start Shopping"}
+                                    >
+                                      Complete order
+                                    </Show>
+                                  </button>
+                                }
+                              >
+                                <div class="flex gap-x-1">
+                                  <button
+                                    onClick={() => {
+                                      setOpenRescheduleDeliveryDialog(false);
+                                    }}
+                                    data-testid="btn-cancel-reschedule"
+                                    type="button"
+                                    class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      void createOrder();
+                                    }}
+                                    data-testid="btn-reschedule-order"
+                                    type="button"
+                                    class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                  >
+                                    Update
+                                  </button>
+                                </div>
+                              </Show>
                             </>
                           }
                         >
@@ -572,42 +586,6 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                         <h3 class="text-3xl font-medium text-center ">
                           No Basket added yet!
                         </h3>
-                        {/* {(currentBasket().orders.length > 0) &
-                        (
-                          <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
-                            {currentBasket().orders.map((basket: Basket) => (
-                              <>
-                                <li
-                                  onClick={() => {
-                                    updateSelectedSlot();
-                                  }}
-                                  class="px-3 py-4 cursor-pointer border-gray-300 border-b flex flex-col"
-                                >
-                                  <span class="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      class="w-6 h-6 rounded-full p-1 text-white bg-orange-800"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        fill="currentColor"
-                                        d="M15 13h1.5v2.82l2.44 1.41l-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"
-                                      />
-                                    </svg>
-                                    <strong class="text-xl text-orange-800">
-                                      Your Next Delivery
-                                    </strong>
-                                  </span>
-                                  <h4 class="text-2xl font-bold">
-                                    {basket.delivery_date} (No items)
-                                  </h4>
-                                  <span>Delivery time: 10:00AM</span>
-                                </li>
-                              </>
-                            ))}
-                          </ul>
-                        )} */}
-
                         <button
                           data-testid="btn-add-order2"
                           type="button"
