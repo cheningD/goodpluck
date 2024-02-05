@@ -51,7 +51,6 @@ test.describe("Products Page Tests", () => {
       .locator("li")
       .count();
 
-    console.log(`finalItems: ${finalItems} initialItems: ${initialItems}`);
     expect(finalItems).toBeGreaterThan(initialItems);
   });
 

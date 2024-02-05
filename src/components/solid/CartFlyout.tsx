@@ -62,7 +62,6 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
   const basketId = basket?.id === undefined ? "" : basket?.id?.toString();
 
   createEffect(async () => {
-    console.log("items changed", isBasketUpdated());
     if (isBasketUpdated()) {
       let newProducts = activeBasketProducts();
       if (lastBasketItemAdded() !== null) {
@@ -97,12 +96,9 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
         const cartDeliveryDateUpdated: GoodpluckCart | null = activeBasket();
         if (cartDeliveryDateUpdated !== null) {
           cartDeliveryDateUpdated.delivery_date = deliveryDate();
-          console.log("New delivery Date:", cartDeliveryDateUpdated);
           setActiveBasket(cartDeliveryDateUpdated);
-          console.log("setActiveBasket:", activeBasket());
         }
         swellCartDeliveryDate.set(deliveryDate()?.toISOString());
-        console.log("Order created successfully:");
       } else {
         throw new Error(`Error: ${response.status}`);
       }
@@ -125,11 +121,9 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
         if (response.ok) {
           const product: Product = await response.json();
-          console.log("products: fetchProducts", product.data);
           return product.data;
         } else {
-          console.error("Error fetching product:", response.status);
-          return null; // or handle the error in a way that makes sense for your app
+          return null;
         }
       });
 
@@ -181,17 +175,12 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
       if (response.ok) {
         setHasValidZip(true);
-        console.log("setHasValidZip successfully:");
-        // return data;
       } else {
-        // If not successful, handle the error
-        // console.error("Error fetching data:", response.status, data);
         throw new Error(`Error: ${response.status}`);
       }
     } catch (error) {
       console.error("An error occurred during the fetch:", error);
     }
-    // alert(`Update Swell Cart zip ${zip()}`);
   };
 
   async function deleteFromCart(
@@ -211,7 +200,6 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
       if (response.ok) {
         setLastBasketItemRemoved(product);
         setIsBasketUpdated(true);
-        console.log("Item removed from Cart successfully:");
       } else {
         throw new Error(`Error: ${response.status}`);
       }

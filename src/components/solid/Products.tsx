@@ -31,7 +31,6 @@ const Products: Component<IProps> = ({ currentCategory }) => {
   const $swellCartDeliveryDate = useStore(swellCartDeliveryDate);
   const $swellCartId = useStore(swellCartId);
 
-  console.log(" $swellCartId:", $swellCartId());
   const fetchProducts = async (): Promise<void> => {
     if (products().length >= totalProducts() || isFetching) {
       return;
@@ -119,7 +118,6 @@ const Products: Component<IProps> = ({ currentCategory }) => {
       if (response.ok) {
         setLastBasketItemAdded(product);
         setIsBasketUpdated(true);
-        console.log("Item added to Cart successfully:");
       } else {
         throw new Error(`Error: ${response.status}`);
       }

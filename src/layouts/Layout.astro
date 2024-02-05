@@ -18,7 +18,6 @@ let cart = null;
 try {
   cart = await getOrCreateGuestCart();
   swellCartId.set(cart?.id);
-  console.log("Cart", cart);
 } catch (error) {
   console.log("Layout:error|", error);
 }
