@@ -8,7 +8,7 @@ export default defineConfig({
   integrations: [solid(), tailwind()],
   output: "server",
   adapter: vercel(),
-    image: {
+  image: {
     service: squooshImageService(),
   },
 });

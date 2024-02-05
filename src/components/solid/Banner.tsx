@@ -26,9 +26,13 @@ const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
   };
 
   return (
-    <div class="flex items-center bg-brand-green text-white text-sm p-2">
+    <div
+      data-testid="top-banner"
+      class="flex items-center bg-brand-green text-white text-sm p-2"
+    >
       <span>{displayMessage()}</span>
       <button
+        data-testid="top-banner-zip"
         class="flex items-center underline hover:font-semibold hover:cursor-pointer px-2 gap-2"
         data-hs-overlay-backdrop-container="#sidebar-page"
         data-hs-overlay="#sidebar-mini"

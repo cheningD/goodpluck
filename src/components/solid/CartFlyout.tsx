@@ -222,7 +222,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
   return (
     <>
-      {$isCartOpen() && (
+      <Show when={$isCartOpen()}>
         <div
           data-testid="basket-sidebar"
           class="z-50 fixed right-0 bottom-0 h-[calc(100vh_-_40px)] bg-slate-100 w-1/4"
@@ -264,7 +264,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
               <button
                 type="button"
                 class="bg-slate-300 w-full"
-                data-testid="basket-btn-orders"
+                data-testid="basket-tab-orders"
                 role="tab"
               >
                 Orders
@@ -635,7 +635,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
             </Suspense>
           </div>
         </div>
-      )}
+      </Show>
     </>
   );
 };
