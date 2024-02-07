@@ -80,7 +80,7 @@ if (Astro.request.method === "POST") {
     }
   }
 
-  return Astro.redirect("/yourpayments?message=" + encodeURIComponent(message));
+  return Astro.redirect("/billing?message=" + encodeURIComponent(message));
 }
 ---
 
