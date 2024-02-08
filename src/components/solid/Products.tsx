@@ -219,7 +219,7 @@ const Products: Component<IProps> = ({ currentCategory }) => {
           <button
             data-testid="retry-fetch"
             onClick={() => {
-              fetchProducts().catch((error) => {
+              void fetchProducts().catch((error) => {
                 // Handle any errors that occur during fetchProducts
                 setError(true);
                 setErrorMsg(error);

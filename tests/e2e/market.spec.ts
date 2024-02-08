@@ -6,10 +6,13 @@ test.describe("Products Page Tests", () => {
     await expect(page.getByTestId("product-items")).toBeVisible();
   });
 
-  test("should handle API failure in Market page", async ({ page }) => {
+  test("should handle API failure in Market page", async ({
+    page,
+    baseURL,
+  }) => {
     // Intercept the API request and respond with an error
     await page.route(
-      "https://goodpluck.swell.store/api/products?limit=10&page=1",
+      `${baseURL}/api/swell?method=ITEMS&category=&page=1`,
       async (route) => {
         const json = [
           {
@@ -56,30 +59,27 @@ test.describe("Products Page Tests", () => {
 
   test("should handle retrying after a failed API call in Market page", async ({
     page,
+    baseURL,
   }) => {
+    const swellAPI = `${baseURL}/api/swell?method=ITEMS&category=&page=1`;
     // Intercept the API request and respond with an error
-    await page.route(
-      "https://goodpluck.swell.store/api/products?limit=10&page=1",
-      async (route) => {
-        const json = [
-          {
-            status: 500,
-            contentType: "application/json",
-            body: JSON.stringify({
-              message: "Internal Server Error",
-            }),
-          },
-        ];
-        await route.fulfill({ json });
-      },
-    );
+    await page.route(swellAPI, async (route) => {
+      const json = [
+        {
+          status: 500,
+          contentType: "application/json",
+          body: JSON.stringify({
+            message: "Internal Server Error",
+          }),
+        },
+      ];
+      await route.fulfill({ json });
+    });
 
     await page.goto("/market");
     await expect(page.getByTestId("product-error")).toBeVisible();
 
-    await page.unroute(
-      "https://goodpluck.swell.store/api/products?limit=10&page=1",
-    );
+    await page.unroute(swellAPI);
 
     // Click the retry button
     await page.getByTestId("retry-fetch").click();
