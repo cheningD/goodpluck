@@ -1,6 +1,7 @@
 import {
   addProductToGuestCart,
   getProduct,
+  getProducts,
   removeProductFromGuestCart,
   updateGuestCartDeliveryDate,
   updateGuestCartZip,
@@ -64,10 +65,16 @@ export const GET: APIRoute = async ({ request }) => {
   try {
     let model = null;
     switch (params.get("method")) {
+      case "ITEMS":
+        model = await getProducts(
+          params.get("category") as string,
+          parseInt(params.get("page") as string),
+        );
+        responseMessage = "Products list";
+        break;
       case "ITEM":
-        // const itemId = params.itemId ?? "";
         model = await getProduct(params.get("itemId") ?? "");
-        responseMessage = "Product added to cart successfully";
+        responseMessage = "Product info";
         break;
       default:
         return new Response(
@@ -82,44 +89,6 @@ export const GET: APIRoute = async ({ request }) => {
       JSON.stringify({
         message: responseMessage,
         data: model,
-      }),
-      { status: 200 },
-    );
-  } catch (error) {
-    return new Response(
-      JSON.stringify({
-        message: "Error processing the request",
-        error,
-      }),
-      { status: 400 },
-    );
-  }
-};
-
-export const DELETE: APIRoute = async ({ request }) => {
-  const url = new URL(request.url);
-  const params = new URLSearchParams(url.search);
-
-  let responseMessage = "";
-
-  try {
-    switch (params.get("method")) {
-      case "DELETEITEM":
-        await removeProductFromGuestCart(params.get("itemId") ?? "");
-        responseMessage = "Product removed from cart successfully";
-        break;
-      default:
-        return new Response(
-          JSON.stringify({
-            message: "Invalid request method",
-          }),
-          { status: 400 },
-        );
-    }
-
-    return new Response(
-      JSON.stringify({
-        message: responseMessage,
       }),
       { status: 200 },
     );

@@ -1,5 +1,10 @@
-import { Show, type Component, createSignal, onCleanup } from "solid-js";
-import { initSwell } from "../../lib/swell-js";
+import {
+  onMount,
+  Show,
+  type Component,
+  createSignal,
+  onCleanup,
+} from "solid-js";
 import { throttle } from "../../lib/throttle";
 import type { Product } from "swell-js";
 import {
@@ -10,17 +15,16 @@ import {
   swellCartId,
 } from "@src/store";
 import { useStore } from "@nanostores/solid";
+import type { GoodpluckProduct } from "@src/lib/types";
 
 interface IProps {
   currentCategory: string | undefined;
 }
-const swell = initSwell(
-  import.meta.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
 
 const Products: Component<IProps> = ({ currentCategory }) => {
-  const [products, setProducts] = createSignal<Product[]>([]);
+  const [products, setProducts] = createSignal<GoodpluckProduct[]>([], {
+    equals: false,
+  });
   const [isLoading, setIsLoading] = createSignal(false);
   const [page, setPage] = createSignal(1);
   const [totalProducts, setTotalProducts] = createSignal(0);
@@ -42,22 +46,41 @@ const Products: Component<IProps> = ({ currentCategory }) => {
     setIsLoading(true);
 
     try {
-      let newProducts = { results: [] };
-      newProducts.results = [];
+      let newProducts: GoodpluckProduct[] = [];
       if (currentCategory !== "") {
-        newProducts = await swell.products.list({
-          category: `${currentCategory}`, // Slug or ID
-          limit: 10,
+        const params = {
+          method: "ITEMS",
+          category: currentCategory,
           page: page(),
+        };
+        const queryString = new URLSearchParams(params).toString();
+        const response = await fetch(`/api/swell?${queryString}`, {
+          method: "GET",
         });
-      } else {
-        newProducts = await swell.products.list({
-          limit: 10,
-          page: page(),
-        });
-      }
 
-      setProducts([...products(), ...newProducts.results]);
+        if (response.ok) {
+          const resp = (await response.json()).data;
+          newProducts = resp;
+        }
+      } else {
+        const params = {
+          method: "ITEMS",
+          category: "",
+          page: page(),
+        };
+        const queryString = new URLSearchParams(params).toString();
+        const response = await fetch(`/api/swell?${queryString}`, {
+          method: "GET",
+        });
+
+        if (response.ok) {
+          const resp = (await response.json()).data;
+          newProducts = resp;
+        }
+      }
+      const allProducts = products().concat(newProducts);
+
+      setProducts([...allProducts]);
       setPage(page() + 1);
     } catch (err) {
       setError(true);
@@ -78,7 +101,11 @@ const Products: Component<IProps> = ({ currentCategory }) => {
   const throttledCheckScroll = throttle(checkScroll, 200);
 
   window.addEventListener("scroll", throttledCheckScroll);
-  void fetchProducts();
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  onMount(async () => {
+    void fetchProducts();
+  });
 
   onCleanup(() => {
     window.removeEventListener("scroll", throttledCheckScroll);
@@ -138,14 +165,14 @@ const Products: Component<IProps> = ({ currentCategory }) => {
             data-testid="product-items"
             class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10 justify-center"
           >
-            {products().map((product: Product) => (
+            {products().map((product: GoodpluckProduct) => (
               <li class="flex flex-col gap-y-2">
                 <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
                   <a href={`/product/${product.slug}`}>
-                    <Show when={product.images !== undefined}>
+                    <Show when={product?.images?.length > 0}>
                       <img
                         alt={`Image of ${product.name}`}
-                        src={product.images[0]?.file?.url}
+                        src={product?.images[0]?.file?.url}
                         width="305"
                         height="205"
                         loading="lazy"

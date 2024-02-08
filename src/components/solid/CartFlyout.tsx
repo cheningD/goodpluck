@@ -19,12 +19,13 @@ import {
   lastBasketItemAdded,
   lastBasketItemRemoved,
   setIsBasketUpdated,
+  setLastBasketItemAdded,
   setLastBasketItemRemoved,
   swellCartDeliveryDate,
 } from "@src/store";
 import { isZipCodeDeliverable } from "@utils/validations";
-import type { GoodpluckCart } from "@src/lib/types";
-import type { Product } from "swell-js";
+import type { GoodpluckCart, GoodpluckProduct } from "@src/lib/types";
+// import type { Product } from "swell-js";
 interface CartProps {
   basket: GoodpluckCart | null;
 }
@@ -35,7 +36,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
     { equals: false },
   );
   const [activeBasketProducts, setActiveBasketProducts] = createSignal<
-    Product[]
+    GoodpluckProduct[]
   >([], { equals: false });
   const $isCartOpen = useStore(isCartOpen);
   const [deliverySlots, setDeliverySlots] = createSignal<Date[]>([]);
@@ -63,21 +64,41 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
   const basketId = basket?.id === undefined ? "" : basket?.id?.toString();
 
-  createEffect(async () => {
-    if (isBasketUpdated()) {
-      let newProducts = activeBasketProducts();
-      if (lastBasketItemAdded() !== null) {
-        newProducts.push(lastBasketItemAdded() as Product);
-      }
-      if (lastBasketItemRemoved() !== null) {
-        newProducts = newProducts.filter(
-          (item) => item.id !== lastBasketItemRemoved().id,
-        );
-      }
-      setActiveBasketProducts(newProducts);
-      setIsBasketUpdated(false);
+  const completeOrder = (e: Event): void => {
+    e.preventDefault();
+    window.location.href = "/join";
+  };
+
+  const handleSubmit = async (e: Event): Promise<void> => {
+    e.preventDefault();
+    if (zip() === "") {
+      setZipRequired(true);
+      return;
     }
-  });
+
+    if (!isZipCodeDeliverable(zip())) {
+      window.location.href = "/waitlist";
+      return;
+    }
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "ZIP",
+          cartId: basketId,
+          zip: zip(),
+        }),
+      });
+
+      if (response.ok) {
+        setHasValidZip(true);
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  };
 
   const createOrder = async (): Promise<void> => {
     if (deliveryDate() === null) {
@@ -122,7 +143,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
         });
 
         if (response.ok) {
-          const product: Product = await response.json();
+          const product: GoodpluckProduct = await response.json();
           return product.data;
         } else {
           return null;
@@ -131,64 +152,19 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
       const products = await Promise.all(promises);
 
-      setActiveBasketProducts((previousItems: Product[]) => [
+      setActiveBasketProducts((previousItems: GoodpluckProduct[]) => [
         ...previousItems,
-        ...(products.filter((product) => product !== null) as Product[]),
+        ...(products.filter(
+          (product) => product !== null,
+        ) as GoodpluckProduct[]),
       ]);
     }
   };
 
-  createEffect(() => {
-    setDeliverySlots(getDeliverySlots());
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  onMount(async () => {
-    swellCartDeliveryDate.set(String(activeBasket()?.delivery_date));
-    await fetchProducts();
-    setDeliverySlots(getDeliverySlots());
-  });
-
-  const completeOrder = (e: Event): void => {
-    e.preventDefault();
-    window.location.href = "/join";
-  };
-
-  const handleSubmit = async (e: Event): Promise<void> => {
-    e.preventDefault();
-    if (zip() === "") {
-      setZipRequired(true);
-      return;
-    }
-
-    if (!isZipCodeDeliverable(zip())) {
-      window.location.href = "/waitlist";
-      return;
-    }
-    try {
-      const response = await fetch("/api/swell", {
-        method: "POST",
-        body: JSON.stringify({
-          method: "ZIP",
-          cartId: basketId,
-          zip: zip(),
-        }),
-      });
-
-      if (response.ok) {
-        setHasValidZip(true);
-      } else {
-        throw new Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("An error occurred during the fetch:", error);
-    }
-  };
-
-  async function deleteFromCart(
+  const deleteFromCart = async (
     event: MouseEvent,
-    product: Product,
-  ): Promise<void> {
+    product: GoodpluckProduct,
+  ): Promise<void> => {
     event.preventDefault();
     try {
       const response = await fetch("/api/swell", {
@@ -208,7 +184,39 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
     } catch (error) {
       console.error("An error occurred during the fetch:", error);
     }
-  }
+  };
+
+  createEffect(async () => {
+    if (isBasketUpdated()) {
+      let newProducts = activeBasketProducts();
+      if (lastBasketItemAdded() !== null) {
+        newProducts.push(lastBasketItemAdded() as GoodpluckProduct);
+        setLastBasketItemAdded(null);
+      }
+      if (lastBasketItemRemoved() !== null) {
+        newProducts = newProducts.filter(
+          (item) => item.id !== lastBasketItemRemoved().id,
+        );
+        setLastBasketItemRemoved(null);
+      }
+      console.log("isBasketUpdated: ", newProducts);
+      setActiveBasketProducts(newProducts);
+      setIsBasketUpdated(false);
+    }
+  });
+
+  createEffect(() => {
+    setDeliverySlots(getDeliverySlots());
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  onMount(async () => {
+    console.log("activeBasket products:", activeBasket());
+    swellCartDeliveryDate.set(String(activeBasket()?.delivery_date));
+    await fetchProducts();
+    console.log("Active Cart products:", activeBasketProducts());
+    setDeliverySlots(getDeliverySlots());
+  });
 
   return (
     <>
@@ -294,7 +302,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                       class="flex flex-col gap-y-1 py-1"
                                     >
                                       {activeBasketProducts().map(
-                                        (product: Product) => (
+                                        (product: GoodpluckProduct) => (
                                           <li class="grid grid-cols-4 gap-y-2 gap-x-1 px-1">
                                             <img
                                               alt={`Image of ${product?.name}`}
@@ -306,9 +314,14 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                               loading="lazy"
                                               decoding="async"
                                             />
-                                            <span class="col-span-2 font-semibold">
-                                              {product?.name}
-                                            </span>
+                                            <div class="col-span-2 flex flex-col">
+                                              <span class="font-semibold">
+                                                {product?.name}
+                                              </span>
+                                              <span class="text-slate-400">
+                                                {product?.vendor.first_name}
+                                              </span>
+                                            </div>
                                             <div class="flex flex-col">
                                               <span class="font-semibold">
                                                 ${product?.cost}

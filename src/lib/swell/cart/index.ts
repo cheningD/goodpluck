@@ -2,7 +2,7 @@ import { stytch } from "src/lib/stytch";
 import { swell } from "..";
 import calculateCartDates from "./dates";
 import type { Account, Product } from "swell-js";
-import type { GoodpluckCart } from "@src/lib/types";
+import type { GoodpluckCart, GoodpluckProduct } from "@src/lib/types";
 import { swellCartId } from "@src/store";
 import { useStore } from "@nanostores/solid";
 import type { CartItemSnake } from "node_modules/swell-js/types/cart/snake";
@@ -232,7 +232,7 @@ const addProductToGuestCart = async (
     for (const item of guestCart?.items ?? []) {
       products.push({
         product_id: item.product_id,
-        quantity: item.quantity,
+        quantity: 1,
       });
     }
     const newProduct: CartItemSnake = {
@@ -241,9 +241,11 @@ const addProductToGuestCart = async (
     };
 
     products.push(newProduct);
-    await swell.put(`/carts/{id}`, {
+    await swell.put("/carts/{id}", {
       id: $swellCartId(),
-      items: products,
+      items: {
+        $set: products,
+      },
     });
     console.log("Product added to Cart : backend", products);
   } catch (error) {
@@ -258,7 +260,17 @@ const addProductToGuestCart = async (
  */
 const getProduct = async (id: string): Promise<Product | null> => {
   try {
-    const product = await swell.get(`/products/${id}`, {});
+    const product = await swell.get(`/products/${id}`, {
+      id,
+      include: {
+        vendor: {
+          url: "/products/{id}/vendor", // note: this would be more efficient if you use the absolute vendor endpoint here instead of the nested path starting with /products/{id}
+          data: {
+            fields: "first_name",
+          },
+        },
+      },
+    });
 
     if (product) {
       return product;
@@ -284,25 +296,81 @@ const removeProductFromGuestCart = async (productId: string): Promise<void> => {
     const guestCart: GoodpluckCart = await swell.get("/carts/{id}", {
       id: $swellCartId(),
     });
-    console.log("Guest Cart", guestCart);
 
     const products = [];
     for (const item of guestCart?.items ?? []) {
       if (item.product_id !== productId) {
         products.push({
           product_id: item.product_id,
-          quantity: item.quantity,
+          quantity: 1,
         });
       }
     }
-
-    await swell.put(`/carts/{id}`, {
+    await swell.put("/carts/{id}", {
       id: $swellCartId(),
-      items: products,
+      items: {
+        $set: products,
+      },
     });
-    console.log("Product removed from Cart : backend", products);
+    console.log(
+      `Product removed from Cart id:  ${$swellCartId()}: backend`,
+      products,
+    );
   } catch (error) {
     console.error(error);
+  }
+};
+
+/**
+ * Get the product list
+ * @param categoryId - the categoryId id
+ * @param page - the page
+ * @throws Error when it fails to retrieve the products
+ */
+const getProducts = async (
+  categoryId: string,
+  page: number,
+): Promise<GoodpluckProduct[] | null> => {
+  try {
+    let products: GoodpluckProduct[] = [];
+    if (categoryId === "") {
+      products = await swell.get(`/products`, {
+        limit: 10,
+        page,
+        include: {
+          vendor: {
+            url: "/products/{id}/vendor", // note: this would be more efficient if you use the absolute vendor endpoint here instead of the nested path starting with /products/{id}
+            data: {
+              fields: "first_name",
+            },
+          },
+        },
+      });
+    } else {
+      products = await swell.get(`/products`, {
+        category: `${categoryId}`, // Slug or ID
+        limit: 10,
+        page,
+        include: {
+          vendor: {
+            url: "/products/{id}/vendor", // note: this would be more efficient if you use the absolute vendor endpoint here instead of the nested path starting with /products/{id}
+            data: {
+              fields: "first_name",
+            },
+          },
+        },
+      });
+    }
+
+    if (products) {
+      return products.results;
+    } else {
+      console.log("No active product found");
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 };
 
@@ -317,4 +385,5 @@ export {
   addProductToGuestCart,
   getProduct,
   removeProductFromGuestCart,
+  getProducts,
 };
