@@ -38,7 +38,7 @@
     "preline": "^2.0.2",
     "sharp": "^0.33.1",
     "solid-js": "^1.8.3",
-    "stylelint": "^15.11.0",
+    "stylelint": "^16.2.1",
     "stytch": "^9.0.6",
     "swell-js": "^4.0.0",
     "swell-node": "^5.6.0",
@@ -59,6 +59,7 @@
     "lint-staged": "^15.1.0",
     "prettier": "^3.1.1",
     "prettier-plugin-astro": "^0.12.2",
+    "stylelint-config-standard": "^36.0.0",
     "typescript": "^5.2.2"
   }
 }
