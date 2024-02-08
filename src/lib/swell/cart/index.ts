@@ -332,7 +332,7 @@ const getProducts = async (
   page: number,
 ): Promise<GoodpluckProduct[] | null> => {
   try {
-    let products: GoodpluckProduct[] = [];
+    let products = [];
     if (categoryId === "") {
       products = await swell.get(`/products`, {
         limit: 10,
@@ -363,7 +363,7 @@ const getProducts = async (
     }
 
     if (products) {
-      return products.results;
+      return products.results as GoodpluckProduct[];
     } else {
       console.log("No active product found");
       return null;

@@ -25,7 +25,7 @@ import {
 } from "@src/store";
 import { isZipCodeDeliverable } from "@utils/validations";
 import type { GoodpluckCart, GoodpluckProduct } from "@src/lib/types";
-// import type { Product } from "swell-js";
+
 interface CartProps {
   basket: GoodpluckCart | null;
 }
