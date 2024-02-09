@@ -131,34 +131,35 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
   };
 
   const fetchProducts = async (): Promise<void> => {
-    if (activeBasket()?.items) {
-      const promises = activeBasket().items.map(async (item) => {
-        const params = {
-          method: "ITEM",
-          itemId: item.product_id ?? "",
-        };
-        const queryString = new URLSearchParams(params).toString();
-        const response = await fetch(`/api/swell?${queryString}`, {
-          method: "GET",
-        });
+    const items = activeBasket()?.items;
+    if (!items) {
+      return;
+    }
 
-        if (response.ok) {
-          const product: GoodpluckProduct = await response.json();
-          return product.data;
-        } else {
-          return null;
-        }
+    const promises = items.map(async (item) => {
+      const params = {
+        method: "ITEM",
+        itemId: item.product_id ?? "",
+      };
+      const queryString = new URLSearchParams(params).toString();
+      const response = await fetch(`/api/swell?${queryString}`, {
+        method: "GET",
       });
 
-      const products = await Promise.all(promises);
+      if (response.ok) {
+        const product = await response.json();
+        return product.data as GoodpluckProduct;
+      } else {
+        return null;
+      }
+    });
 
-      setActiveBasketProducts((previousItems: GoodpluckProduct[]) => [
-        ...previousItems,
-        ...(products.filter(
-          (product) => product !== null,
-        ) as GoodpluckProduct[]),
-      ]);
-    }
+    const products = await Promise.all(promises);
+
+    setActiveBasketProducts((previousItems: GoodpluckProduct[]) => [
+      ...previousItems,
+      ...(products.filter((product) => product !== null) as GoodpluckProduct[]),
+    ]);
   };
 
   const deleteFromCart = async (
@@ -195,11 +196,10 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
       }
       if (lastBasketItemRemoved() !== null) {
         newProducts = newProducts.filter(
-          (item) => item.id !== lastBasketItemRemoved().id,
+          (item) => item.id !== lastBasketItemRemoved()?.id,
         );
         setLastBasketItemRemoved(null);
       }
-      console.log("isBasketUpdated: ", newProducts);
       setActiveBasketProducts(newProducts);
       setIsBasketUpdated(false);
     }
@@ -211,10 +211,8 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   onMount(async () => {
-    console.log("activeBasket products:", activeBasket());
     swellCartDeliveryDate.set(String(activeBasket()?.delivery_date));
     await fetchProducts();
-    console.log("Active Cart products:", activeBasketProducts());
     setDeliverySlots(getDeliverySlots());
   });
 
@@ -290,9 +288,6 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                           when={activeBasket()?.delivery_date === undefined}
                           fallback={
                             <>
-                              {/* <h4 class="max-h-[70vh] min-h-[70vh] text-3xl text-center">
-                                Add items to your basket.
-                              </h4> */}
                               <Show when={!!activeBasket()}>
                                 <Show
                                   when={openRescheduleDeliveryDialog()}
@@ -307,7 +302,10 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                             <img
                                               alt={`Image of ${product?.name}`}
                                               src={
-                                                product?.images[0]?.file?.url
+                                                product?.images
+                                                  ? product?.images[0]?.file
+                                                      ?.url
+                                                  : ""
                                               }
                                               width="65"
                                               height="50"
@@ -560,31 +558,10 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                     </h4>
                                     <span>Delivery time: 10:00AM</span>
                                   </div>
-                                  {/* {currentBasket().selectedSlot ===
-                                    formatDate(slot, "en-US", {
-                                      weekday: "short",
-                                      month: "short",
-                                      day: "numeric",
-                                    }) && (
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      class="w-8 h-8 bg-orange-800 text-white rounded-full p-1"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        fill="currentColor"
-                                        d="M9 20c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2m8-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2M18 2.8l-1.4-1.4l-4.8 4.8l-2.6-2.6L7.8 5l4 4z"
-                                      />
-                                    </svg>
-                                  )} */}
                                 </li>
                               </>
                             ))}
                           </ul>
-
-                          {/* onClick={() => {
-                              void createOrder();
-                            }} */}
                           <button
                             data-testid="btn-create-order"
                             type="submit"

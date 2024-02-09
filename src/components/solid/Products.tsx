@@ -48,12 +48,15 @@ const Products: Component<IProps> = ({ currentCategory }) => {
     try {
       let newProducts: GoodpluckProduct[] = [];
       if (currentCategory !== "") {
-        const params = {
-          method: "ITEMS",
-          category: currentCategory,
-          page: page(),
-        };
-        const queryString = new URLSearchParams(params).toString();
+        const params = [
+          ["method", "ITEMS"],
+          ["category", currentCategory],
+          ["page", page()],
+        ];
+
+        const queryString = new URLSearchParams(
+          params as string[][],
+        ).toString();
         const response = await fetch(`/api/swell?${queryString}`, {
           method: "GET",
         });
@@ -63,12 +66,14 @@ const Products: Component<IProps> = ({ currentCategory }) => {
           newProducts = resp;
         }
       } else {
-        const params = {
-          method: "ITEMS",
-          category: "",
-          page: page(),
-        };
-        const queryString = new URLSearchParams(params).toString();
+        const params = [
+          ["method", "ITEMS"],
+          ["category", ""],
+          ["page", page()],
+        ];
+        const queryString = new URLSearchParams(
+          params as string[][],
+        ).toString();
         const response = await fetch(`/api/swell?${queryString}`, {
           method: "GET",
         });
@@ -169,10 +174,14 @@ const Products: Component<IProps> = ({ currentCategory }) => {
               <li class="flex flex-col gap-y-2">
                 <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
                   <a href={`/product/${product.slug}`}>
-                    <Show when={product?.images?.length > 0}>
+                    <Show when={product?.images && product?.images?.length > 0}>
                       <img
                         alt={`Image of ${product.name}`}
-                        src={product?.images[0]?.file?.url}
+                        src={
+                          product?.images?.[0]?.file
+                            ? product?.images[0]?.file?.url
+                            : ""
+                        }
                         width="305"
                         height="205"
                         loading="lazy"
@@ -197,7 +206,9 @@ const Products: Component<IProps> = ({ currentCategory }) => {
                   {product.name}
                 </a>
                 <div class="flex justify-between items-center">
-                  <span class="text-xs text-gray-600">{product.kind}</span>
+                  <span class="text-xs text-gray-600">
+                    {product.vendor.first_name}
+                  </span>
                   <span class="text-right font-semibold">${product.price}</span>
                 </div>
               </li>
