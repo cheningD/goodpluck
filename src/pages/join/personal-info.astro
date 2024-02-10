@@ -1,5 +1,41 @@
 ---
+import { stytch } from "@src/lib/stytch";
 import Layout from "../../layouts/Layout.astro";
+import { StytchError } from "stytch";
+import { swell } from "src/lib/swell";
+import { createCart, getOrCreateCart } from "@src/lib/swell/cart";
+
+const errors = { err: "" };
+
+if (Astro.request.method === "POST") {
+  const data = await Astro.request.formData();
+  const phone = data.get("phone")?.toString();
+  const firstName = data.get("first-name")?.toString();
+  const lastName = data.get("last-name")?.toString();
+  const consent = data.get("comms-consent") === "on";
+
+  if (!phone || !firstName || !lastName) {
+    errors.err = "Please fill out all fields";
+  } else {
+    try {
+      const account = await swell.post("/accounts", {
+        first_name: firstName,
+        last_name: lastName,
+        phone,
+        email_optin: consent,
+        type: "individual",
+      });
+      await createCart(account);
+      return Astro.redirect("/join/delivery-address");
+    } catch (error) {
+      console.log(error);
+      errors.err =
+        error instanceof StytchError
+          ? error.message
+          : "Something went wrong, please try again later";
+    }
+  }
+}
 ---
 
 <Layout title="Create an Account - Personal Info">
@@ -20,86 +56,58 @@ import Layout from "../../layouts/Layout.astro";
         <div class="sr-only">Account Creation Form Progress: 0% complete</div>
       </div>
       <h2 class="text-xl font-semibold mb-4">Personal Info</h2>
-      <form>
+      <form method="POST">
         <fieldset>
           <legend class="sr-only">Personal Information</legend>
+          {errors.err && <p class="text-rose-400 mb-4">{errors.err}</p>}
           <div id="personal-info-section" class="mb-4">
-            <div id="name-container" class="flex md:gap-4 flex-col md:flex-row">
-              <div class="flex-1 mb-6" id="first-name-container">
-                <label
-                  for="first-name"
-                  class="block text-md font-medium text-gray-700 mb-1"
-                  >First Name</label
-                >
-                <input
-                  type="text"
-                  id="first-name"
-                  name="first-name"
-                  required
-                  class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
-                  aria-describedby="first-name-error first-name-description"
-                  placeholder="Kale"
-                />
-                <span
-                  id="first-name-error"
-                  class="error-message hidden text-sm text-rose-500"
-                  >Please enter your first name.</span
-                >
-                <span id="first-name-description" class="sr-only"
-                  >Please enter your first name.</span
-                >
-              </div>
-
-              <div class="flex-1 mb-6" id="last-name-container">
-                <label
-                  for="last-name"
-                  class="block text-md font-medium text-gray-700 mb-1"
-                  >Last Name</label
-                >
-                <input
-                  type="text"
-                  id="last-name"
-                  name="last-name"
-                  required
-                  class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
-                  aria-describedby="last-name-error last-name-description"
-                  placeholder="Greens"
-                />
-                <span
-                  id="last-name-error"
-                  class="error-message hidden text-sm text-rose-500"
-                  >Please enter your last name.</span
-                >
-                <span id="last-name-description" class="sr-only"
-                  >Please enter your last name.</span
-                >
-              </div>
-            </div>
-
-            <div id="email-container" class="mb-6">
+            <div id="first-name-container" class="mb-6">
               <label
-                for="email"
+                for="first-name"
                 class="block text-md font-medium text-gray-700 mb-1"
-                >Email Address</label
+                >First Name</label
               >
               <input
-                type="email"
-                id="email"
-                name="email"
+                type="text"
+                id="first-name"
+                name="first-name"
                 required
-                class="peer mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none invalid:[&:not(:placeholder-shown):not(:focus)]:border-rose-500"
-                aria-describedby="email-error email-description"
-                placeholder="KaleGreens@example.com"
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                aria-describedby="first-name-error first-name-description"
+                placeholder="Kale"
               />
               <span
-                id="email-error"
-                class="error-message hidden text-sm text-rose-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
-                >Please enter a valid email address, e.g.,
-                KaleGreens@example.com.</span
+                id="first-name-error"
+                class="error-message hidden text-sm text-rose-500"
+                >Please enter your first name.</span
               >
-              <span id="email-description" class="sr-only"
-                >Please enter your email address.</span
+              <span id="first-name-description" class="sr-only"
+                >Please enter your first name.</span
+              >
+            </div>
+
+            <div id="last-name-container" class="mb-6">
+              <label
+                for="last-name"
+                class="block text-md font-medium text-gray-700 mb-1"
+                >Last Name</label
+              >
+              <input
+                type="text"
+                id="last-name"
+                name="last-name"
+                required
+                class="mb-1 text-md py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                aria-describedby="last-name-error last-name-description"
+                placeholder="Greens"
+              />
+              <span
+                id="last-name-error"
+                class="error-message hidden text-sm text-rose-500"
+                >Please enter your last name.</span
+              >
+              <span id="last-name-description" class="sr-only"
+                >Please enter your last name.</span
               >
             </div>
 
