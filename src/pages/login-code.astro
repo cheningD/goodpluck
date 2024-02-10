@@ -49,7 +49,7 @@ if (Astro.request.method === "POST") {
       expires: new Date(Date.now() + SESSION_DURATION_MINUTES * 60 * 1000),
     });
 
-    return Astro.redirect("/create-account");
+    return Astro.redirect("/join/personal-info");
   } catch (error) {
     console.error(error);
 
