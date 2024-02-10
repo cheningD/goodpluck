@@ -28,7 +28,7 @@ if (!session || !email || !account) {
   return Astro.redirect(
     !session
       ? "/?message=" + encodeURIComponent("You are not logged in")
-      : "/create-account",
+      : "/join/personal-info",
   );
 }
 

@@ -7,6 +7,39 @@ import { createCart, getOrCreateCart } from "@src/lib/swell/cart";
 
 const errors = { err: "" };
 
+// Redirect unauthenticated users to the login page
+const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const session = sessionToken
+  ? await stytch.sessions.authenticate({
+      session_token: sessionToken,
+    })
+  : null;
+
+if (!session) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are not logged in"),
+  );
+}
+
+// Redirect users who already have a Swell account
+const email = session.user.emails[0].email;
+const account = await swell.get(`/accounts/${email}`);
+
+if (account) {
+  await getOrCreateCart(account);
+
+  if (!account.shipping || !account.billing) {
+    return Astro.redirect(
+      !account.shipping ? "/join/delivery-address" : "/join/payment-info",
+    );
+  }
+
+  // Onboarding complete
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("Onboarding complete!"),
+  );
+}
+
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
   const phone = data.get("phone")?.toString();
@@ -19,6 +52,7 @@ if (Astro.request.method === "POST") {
   } else {
     try {
       const account = await swell.post("/accounts", {
+        email,
         first_name: firstName,
         last_name: lastName,
         phone,
