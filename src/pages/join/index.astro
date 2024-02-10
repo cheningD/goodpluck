@@ -1,8 +1,8 @@
 ---
 import { StytchError } from "stytch";
-import { stytch, isLoggedIn } from "../lib/stytch";
-import Layout from "@layouts/Layout.astro";
-import { CONFIRMED_ZIPCODES } from "../lib/constants";
+import { stytch, isLoggedIn } from "../../lib/stytch";
+import Layout from "../../layouts/Layout.astro";
+import { CONFIRMED_ZIPCODES } from "../../lib/constants";
 
 const errors = { email: "" };
 let email;
@@ -32,7 +32,7 @@ if (Astro.request.method === "POST") {
 
         if (response.user_created) {
           // New user created, proceed with signup
-          return Astro.redirect("/signup-code?method_id=" + response.email_id);
+          return Astro.redirect("/join/code?method_id=" + response.email_id);
         } else {
           // User already exists, redirect to login-code with a message
           return Astro.redirect(
