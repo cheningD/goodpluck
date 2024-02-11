@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["AventaVariable", "sans-serif"],
+        sans: ["AventaSemiBold", "sans-serif"],
       },
       colors: {
         "brand-black": "#000000",
