@@ -10,7 +10,7 @@ import MapboxConfirmation from "@components/solid/MapboxConfirmation";
 const errors = { err: "" };
 const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 
-// Redirect unauthenticated users to the login page
+// Redirect unauthenticated users to homepage
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 const session = sessionToken
   ? await stytch.sessions.authenticate({
