@@ -105,9 +105,8 @@ test.describe("Validate Login Code", () => {
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
 
-    // Check if the user is redirected to the create-account page or the homepage
-    const expectedUrlPattern =
-      /\/create-account|\/\?message=Onboarding%20complete!#basket/;
+    // Check if the user is redirected to the join/personal-info page or the homepage
+    const expectedUrlPattern = /\/join|\/personal-info/;
     expect(page.url()).toMatch(expectedUrlPattern);
 
     // This is the default OTP code for the sandbox user
@@ -247,7 +246,7 @@ test.describe("Logout", () => {
 });
 
 // Testing Join Form
-test.describe("Goodpluck Sign-up Form", () => {
+test.describe("Join - Stytch Account Creation", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/join");
   });
@@ -377,7 +376,7 @@ test.describe("Goodpluck Sign-up Form", () => {
 });
 
 // Testing OTP Join
-test.describe("Validate Join Code", () => {
+test.describe("Join - Validate OTP Code", () => {
   test.skip(
     !isDevelopment,
     "Skipping test in production environment due to sandbox@stytch.com restrictions",
@@ -386,7 +385,7 @@ test.describe("Validate Join Code", () => {
   test.beforeEach(async ({ page }) => {
     // OTP Join with Valid Email
     await page.goto(
-      "/signup-code?method_id=email-test-23873e89-d4ed-4e92-b3b9-e5c7198fa286",
+      "/join/code/?method_id=email-test-23873e89-d4ed-4e92-b3b9-e5c7198fa286",
     ); // workaround for using the stytch sandbox email
   });
 
@@ -399,11 +398,10 @@ test.describe("Validate Join Code", () => {
       "Safari wont let you set a cookie on localhost without https",
     );
     await page.fill("#otp-input", "000000");
-    await page.click('button[id="submit-signup-code-btn"]');
+    await page.click('button[id="submit-join-code-btn"]');
 
     // Check if the user is redirected to the create-account page or the homepage
-    const expectedUrlPattern =
-      /\/create-account|\/\?message=Onboarding%20complete!#basket/;
+    const expectedUrlPattern = /\/join|\/personal-info/;
 
     expect(page.url()).toMatch(expectedUrlPattern);
 
@@ -427,7 +425,7 @@ test.describe("Validate Join Code", () => {
     page,
   }) => {
     await page.fill("#otp-input", "900900"); // invalid code
-    await page.click('button[id="submit-signup-code-btn"]');
+    await page.click('button[id="submit-join-code-btn"]');
     await expect(
       page.locator(
         "text=Oops, wrong passcode. Try again or request a new one!",
@@ -441,7 +439,7 @@ test.describe("Validate Join Code", () => {
     expect(sessionCookie).toBeUndefined();
   });
 
-  test("should redirect users to the homepage if they are already logged in and attempt to visit the signup-code page", async ({
+  test("should redirect users to the homepage if they are already logged in and attempt to visit the join/code page", async ({
     page,
     browserName,
   }) => {
@@ -451,10 +449,10 @@ test.describe("Validate Join Code", () => {
     );
     // Step 1: Join with valid credentials
     await page.fill("#otp-input", "000000");
-    await page.click('button[id="submit-signup-code-btn"]');
+    await page.click('button[id="submit-join-code-btn"]');
 
-    // Step 2: Attempt to navigate to the signup-code page again
-    await page.goto("/signup-code");
+    // Step 2: Attempt to navigate to the join/code page again
+    await page.goto("/join/code");
 
     // Step 3: Check if the user is redirected to the homepage
     const message = "You are already logged in";
@@ -465,7 +463,7 @@ test.describe("Validate Join Code", () => {
   test("should show an error when user leaves OTP input blank", async ({
     page,
   }) => {
-    await page.click('button[id="submit-signup-code-btn"]');
+    await page.click('button[id="submit-join-code-btn"]');
 
     // Check if the code input is in an invalid state
     const inputIsFocused = await page.evaluate(() => {
@@ -479,64 +477,49 @@ test.describe("Validate Join Code", () => {
   test("should show an error for OTP less than 6 digits", async ({ page }) => {
     const invalidCode = "12345";
     await page.fill("#otp-input", invalidCode);
-    await page.click('button[id="submit-signup-code-btn"]');
+    await page.click('button[id="submit-join-code-btn"]');
     await expect(
       page.locator(`text=Code is not valid: ${invalidCode}`),
     ).toBeVisible();
   });
 });
 
-// Testing Create Account
-test.describe("Detailed Sign-Up (Create Account)", () => {
-  test("should redirect to login page if user is unauthenticated", async ({
+// Testing Join Personal Info Form
+test.describe("Join - Personal Information Form", () => {
+  test.skip(
+    !isDevelopment,
+    "Skipping test in production environment due to sandbox@stytch.com restrictions",
+  );
+
+  test("should redirect unauthenticated users to the homepage", async ({
     page,
   }) => {
-    await page.goto("/create-account");
-    expect(page.url()).toContain("/?message=You%20are%20not%20logged%20in");
+    await page.goto("/join/personal-info");
+    const message = "You are not logged in";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
   });
 
-  test("should not submit form if required fields are missing", async ({
+  test("should redirect users who have already completed the onboarding process", async ({
     page,
-    browserName,
   }) => {
-    test.skip(
-      browserName === "webkit" && isDevelopment,
-      "Safari won't let you set a cookie on localhost without https in development environment",
-    );
-
-    test.skip(
-      !isDevelopment,
-      "Skipping test in production environment due to sandbox@stytch.com restrictions",
-    );
-
-    // OTP Login with sandbox email
     await page.goto("/login");
     await page.getByLabel("Email").fill("sandbox@stytch.com");
     await page.getByTestId("login-btn").click();
     await page.fill("#otp-input", "000000");
     await page.click('button[id="submit-login-code-btn"]');
 
-    const url = page.url();
-    if (url.includes(`/create-account`)) {
-      await page.fill('input[name="first_name"]', "John");
-      await page.click('button[type="submit"]');
-      await expect(page).toHaveURL("/create-account");
-    } else {
-      await expect(page).toHaveURL("/?message=Onboarding%20complete!#basket");
-    }
+    await page.goto("/join/personal-info");
+    expect(page.url()).not.toEqual("/join/personal-info");
   });
 
-  test("should redirect to homepage if swell account is created successfully", async ({
+  test("should redirect to `join/payment-info` if swell account is created successfully", async ({
     page,
     browserName,
   }) => {
     test.skip(
       browserName === "webkit" && isDevelopment,
       "Safari wont let you set a cookie on localhost without https",
-    );
-    test.skip(
-      !isDevelopment,
-      "Skipping test in production environment due to sandbox@stytch.com restrictions",
     );
 
     // OTP Login with sandbox email
@@ -549,7 +532,7 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
     const zip = "48201";
 
     const url = page.url();
-    if (url.includes(`/create-account`)) {
+    if (url.includes("/join/personal-info")) {
       // Fill in create account form
       await page.fill('input[name="first_name"]', "John");
       await page.fill('input[name="last_name"]', "Doe");
@@ -560,11 +543,33 @@ test.describe("Detailed Sign-Up (Create Account)", () => {
       await page.fill('input[name="state"]', "MI");
       await page.click('input[name="consent"]');
       await page.click('button[type="submit"]');
-    }
 
-    // Check if the user is redirected to the homepage
-    const message = "Onboarding complete!";
-    const encodedMessage = encodeURIComponent(message);
-    expect(page.url()).toContain(`/?message=${encodedMessage}#basket`);
+      // Check if the user is redirected to the `/join/payment-info` page
+      expect(page.url()).toContain("/join/payment-info");
+    }
+  });
+
+  test("should not submit form if required fields are missing", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari won't let you set a cookie on localhost without https in development environment",
+    );
+
+    // OTP Login with sandbox email
+    await page.goto("/login");
+    await page.getByLabel("Email").fill("sandbox@stytch.com");
+    await page.getByTestId("login-btn").click();
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-login-code-btn"]');
+
+    const url = page.url();
+    if (url.includes("/join/personal-info")) {
+      await page.fill('input[name="first_name"]', "John");
+      await page.click('button[type="submit"]');
+      await expect(page).toHaveURL("/join/personal-info");
+    }
   });
 });
