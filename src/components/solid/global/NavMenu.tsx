@@ -7,7 +7,7 @@ const NavMenu: Component<NavProps> = ({ collections }) => {
   return (
     <nav class="hidden lg:flex">
       <ul class="flex space-x-4">
-        <For each={collections.filter((c) => c.parent_id === null)}>
+        <For each={collections?.filter((c) => c.parent_id === null)}>
           {(item, index) => (
             <div>
               <li class="relative group">
