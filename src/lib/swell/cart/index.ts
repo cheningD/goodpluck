@@ -147,7 +147,7 @@ const getOrCreateCart = async (
 const getOrCreateGuestCart = async (): Promise<GoodpluckCart | null> => {
   try {
     const $swellCartId = useStore(swellCartId);
-
+    console.log("swellCartId:backend", $swellCartId());
     if ($swellCartId() !== undefined) {
       const guestCart = await swell.get("/carts/{id}", {
         id: $swellCartId(),

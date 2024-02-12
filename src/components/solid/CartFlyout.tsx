@@ -61,6 +61,8 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
   const [selectQuantity, setSelectedQuantity] = createSignal<number>(1);
   const [openRescheduleDeliveryDialog, setOpenRescheduleDeliveryDialog] =
     createSignal<boolean>(false);
+  const [deliveryDateRequired, setDeliveryDateRequired] =
+    createSignal<boolean>(false);
 
   const basketId = basket?.id === undefined ? "" : basket?.id?.toString();
 
@@ -101,8 +103,9 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
   };
 
   const createOrder = async (): Promise<void> => {
-    if (deliveryDate() === null) {
-      alert("No delivery date selected!");
+    if (!deliveryDate()) {
+      setDeliveryDateRequired(true);
+      return;
     }
 
     try {
@@ -239,7 +242,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                 }
               >
                 <button
-                  data-testid="active-order"
+                  data-testid="basket-tab-1"
                   type="button"
                   class="bg-slate-300 w-full flex flex-col"
                   role="tab"
@@ -269,7 +272,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
               <button
                 type="button"
                 class="bg-slate-300 w-full"
-                data-testid="basket-tab-orders"
+                data-testid="basket-tab-2"
                 role="tab"
               >
                 Orders
@@ -443,6 +446,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                             {deliverySlots().map((slot: Date) => (
                               <>
                                 <li
+                                  data-testid="delivery-date-selector"
                                   onClick={() => {
                                     setDeliveryDate(slot);
                                   }}
@@ -481,6 +485,13 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                           >
                             Create order
                           </button>
+                          <span
+                            data-testid="delivery-date-error"
+                            class="text-red-700 font-semibold"
+                          >
+                            {deliveryDateRequired() &&
+                              "Delivery date should be selected to continue"}
+                          </span>
                         </Show>
                       }
                     >

@@ -26,14 +26,14 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 2 : 8,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  reporter: [["html", { open: "never" }]],
   webServer: process.env.CI
     ? []
     : {
         command: "npm run preview",
         url: "http://localhost:3000/",
         timeout: 60 * 1000,
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: false, // !process.env.CI,
       },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

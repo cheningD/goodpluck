@@ -6,6 +6,7 @@ import {
   updateGuestCartDeliveryDate,
   updateGuestCartZip,
 } from "@src/lib/swell/cart";
+import { swellCartId } from "@src/store";
 import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
@@ -101,4 +102,14 @@ export const GET: APIRoute = async ({ request }) => {
       { status: 400 },
     );
   }
+};
+
+export const DELETE: APIRoute = async ({ request }) => {
+  swellCartId.set(undefined);
+  return new Response(
+    JSON.stringify({
+      message: "Invalid request method",
+    }),
+    { status: 400 },
+  );
 };

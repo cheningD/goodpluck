@@ -32,7 +32,7 @@ try {
     <title>{title} - Goodpluck</title>
   </head>
   <body class="flex flex-col min-h-screen">
-    <Banner isZipDeliverable={!!cart?.shipping?.zip} client:only />
+    <Banner isZipDeliverable={!!cart?.shipping?.zip} client:load />
     <Header collections={categories} client:load />
     <main
       id="sidebar-page"
@@ -61,7 +61,7 @@ try {
           <slot />
         </div>
       </div>
-      <CartFlyout basket={cart} client:only />
+      <CartFlyout basket={cart} client:load />
     </main>
     <Footer client:load />
     <script>

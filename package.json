@@ -43,13 +43,9 @@
     "solid-js": "^1.8.15",
     "stylelint": "^16.2.1",
     "stytch": "^9.1.0",
-    "swell-js": "^4.0.3",
+    "swell-js": "^4.0.4",
     "swell-node": "^5.6.0",
-<<<<<<< HEAD
     "tailwindcss": "^3.4.1"
-=======
-    "tailwindcss": "^3.0.24"
->>>>>>> 97aaae1 (Add Swell Category type and use date-fns)
   },
   "devDependencies": {
     "@playwright/test": "^1.41.2",
