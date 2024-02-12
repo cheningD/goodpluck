@@ -6,8 +6,17 @@ div[data-hs-overlay-backdrop-template] {
 
 /* Register your custom font family and tell the browser where to find it. */
 @font-face {
-  font-family: AventaVariable;
-  src: url("/fonts/AventaVariable.woff2") format("woff2");
+  font-family: Aventa;
+  src: url("/fonts/Aventa-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Register your custom font family and tell the browser where to find it. */
+@font-face {
+  font-family: AventaSemiBold;
+  src: url("/fonts/Aventa-SemiBold.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
