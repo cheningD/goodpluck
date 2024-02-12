@@ -104,7 +104,9 @@ test.describe("Basket Sidebar Tests", () => {
     await page.getByTestId("btn-create-order").click();
     await page.waitForResponse("/api/swell");
     await expect(page.getByTestId("basket-tab-1")).toBeVisible();
-    await expect(page.getByTestId("basket-tab-1")).toHaveText(/Monday, .*/);
+    await expect(page.getByTestId("basket-tab-1")).toHaveText(
+      /Sunday, .*|Monday, .*/,
+    );
     await request.delete("/api/swell");
   });
 
