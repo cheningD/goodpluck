@@ -53,7 +53,7 @@ const CategoryItem = ({
 }): JSX.Element => (
   <li class="py-5 !m-0 border-b border-brand-off-white last:border-b-0 font-bold">
     <div
-      class={`text-brand-gray text-sm ${
+      class={`text-custom-gray text-sm ${
         category.isSelected ? "border-l-2 border-brand-red pl-2 mb-4" : ""
       }`}
     >
@@ -87,7 +87,7 @@ const SubcategoryList = ({
             <a
               href={`/market/${subcategory.slug}`}
               class={`text-sm ${
-                subcategory.isSelected ? "text-brand-black" : "text-brand-gray"
+                subcategory.isSelected ? "text-brand-black" : "text-custom-gray"
               }`}
             >
               {subcategory.name}
@@ -113,7 +113,7 @@ const SidebarMenu: Component<SidebarMenuProps> = ({
       aria-labelledby="sidebar-heading"
       data-testid="desktop-sidebar"
     >
-      <div id="sidebar-heading" class="pb-5 border-b border-brand-silver w-48">
+      <div id="sidebar-heading" class="pb-5 border-b border-custom-silver w-48">
         <h2 class="text-brand-black uppercase text-sm font-bold leading-tight tracking-wide">
           Browse by Category
         </h2>
