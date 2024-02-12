@@ -5,7 +5,7 @@ import { stytch } from "@src/lib/stytch";
 import { swell } from "@src/lib/swell";
 import { updateBillingInfo } from "@src/lib/swell/card";
 import MapboxAutofill from "@components/solid/MapboxAutofill";
-import MapboxConfirmation from "@components/solid/MapboxConfirmation";
+import Spinner from "@components/solid/Spinner";
 
 const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 
@@ -28,8 +28,8 @@ const email = session?.user.emails[0].email as string;
 const account = await swell.get(`/accounts/${email}`);
 
 if (!account) {
-  return Astro.redirect("/join/payment-info");
-} else if (account.billing) {
+  return Astro.redirect("/join/personal-info");
+} else if (account.billing && Object.keys(account.billing).length !== 0) {
   return Astro.redirect(
     "/?message=" + encodeURIComponent("Onboarding complete!"),
   );
@@ -46,11 +46,11 @@ if (Astro.request.method === "POST") {
   const billing = useShippingAddress
     ? account.shipping
     : {
-        address1: data.get("address"),
+        address1: data.get("address address-search"),
+        address2: data.get("apartment"),
         city: data.get("city"),
         state: data.get("state"),
         zip: data.get("zip"),
-        phone: account.shipping.phone,
         country: "US",
       };
 
@@ -92,6 +92,12 @@ if (Astro.request.method === "POST") {
       <form method="POST" id="payment-info-form">
         <fieldset aria-describedby="billing-info-desc">
           <legend class="sr-only">Payment Information</legend>
+          <p
+            id="error-msg"
+            hidden
+            class="mb-6 text-sm font-medium text-rose-600 bg-red-50 p-4 rounded border border-rose-500"
+          >
+          </p>
           <div id="billing-address-section" class="mb-8">
             <legend class="text-xl font-semibold mb-2">Billing Address</legend>
             <p
@@ -290,22 +296,26 @@ if (Astro.request.method === "POST") {
               id="card-details-container"
               class="mb-1 text-base py-4 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
             >
-              <div id="card-element" aria-labelledby="card-info"></div>
+              <div id="card-element" aria-labelledby="card-info">
+                <Spinner />
+              </div>
               <span id="card-info" class="sr-only"
                 >Card details input field.</span
               >
             </div>
-            <p id="error-msg" class="text-rose-400 mb-4"></p>
           </div>
         </fieldset>
 
         <div class="flex justify-end" id="submit-btn-container">
           <button
+            id="submit-btn"
             type="submit"
-            class="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"
+            class="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:outline-none disabled:cursor-wait disabled:bg-green-700"
             aria-describedby="submit-btn-desc"
+            disabled
           >
-            Submit
+            <span id="submit-btn-text">Submit</span>
+            <Spinner isHidden={true} />
           </button>
           <span id="submit-btn-desc" class="sr-only">
             Click to submit your details and complete the account creation
@@ -318,7 +328,6 @@ if (Astro.request.method === "POST") {
   </div>
 
   <MapboxAutofill client:only mapboxToken={mapboxToken} />
-  <MapboxConfirmation client:only mapboxToken={mapboxToken} />
 
   <script src="../../scripts/PaymentFormHandler.ts"></script>
 </Layout>

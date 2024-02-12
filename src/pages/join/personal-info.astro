@@ -30,7 +30,7 @@ const account = await swell.get(`/accounts/${email}`);
 
 if (account) {
   await getOrCreateCart(account);
-  return !account.billing
+  return !account.billing || Object.keys(account.billing).length === 0
     ? Astro.redirect("/join/payment-info")
     : Astro.redirect("/?message=" + encodeURIComponent("Onboarding complete!"));
 }
