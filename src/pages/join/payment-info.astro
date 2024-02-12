@@ -1,14 +1,69 @@
 ---
 import { getCartFromSession } from "@src/lib/swell/cart";
 import Layout from "../../layouts/Layout.astro";
+import { stytch } from "@src/lib/stytch";
+import { swell } from "@src/lib/swell";
+import { updateBillingInfo } from "@src/lib/swell/card";
+import MapboxAutofill from "@components/solid/MapboxAutofill";
+import MapboxConfirmation from "@components/solid/MapboxConfirmation";
 
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
+const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
+
+// Redirect if not logged in
+const sessionToken = Astro.cookies.get("gp_session_token")?.value as string;
+const session = sessionToken
+  ? await stytch.sessions.authenticate({
+      session_token: sessionToken,
+    })
+  : null;
+
+if (!session) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("You are not logged in"),
+  );
+}
+
+// Redirect if account isn't created yet or billing info is already set
+const email = session?.user.emails[0].email as string;
+const account = await swell.get(`/accounts/${email}`);
+
+if (!account) {
+  return Astro.redirect("/join/payment-info");
+} else if (account.billing) {
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("Onboarding complete!"),
+  );
+}
+
+// Needed to recover the cart on the client side
 const cart = await getCartFromSession(sessionToken as string);
 const checkoutId = cart?.checkout_id;
 
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
-  console.log(data);
+  const token = data.get("token");
+  const useShippingAddress = data.get("same-address") === "on";
+  const billing = useShippingAddress
+    ? account.shipping
+    : {
+        address1: data.get("address"),
+        city: data.get("city"),
+        state: data.get("state"),
+        zip: data.get("zip"),
+        phone: account.shipping.phone,
+        country: "US",
+      };
+
+  const card = await swell.post(`/accounts:cards`, {
+    parent_id: account.id,
+    token,
+    billing,
+  });
+
+  await updateBillingInfo(email, sessionToken, card.id);
+  return Astro.redirect(
+    "/?message=" + encodeURIComponent("Onboarding complete!"),
+  );
 }
 ---
 
@@ -50,6 +105,7 @@ if (Astro.request.method === "POST") {
                 id="same-address-checkbox"
                 class="text-green-700 focus:ring-green-800 border border-zinc-400 rounded mt-0.5 cursor-pointer"
                 type="checkbox"
+                name="same-address"
                 checked="true"
                 aria-checked="true"
                 aria-describedby="same-as-delivery-desc"
@@ -239,6 +295,7 @@ if (Astro.request.method === "POST") {
                 >Card details input field.</span
               >
             </div>
+            <p id="error-msg" class="text-rose-400 mb-4"></p>
           </div>
         </fieldset>
 
@@ -260,54 +317,8 @@ if (Astro.request.method === "POST") {
     <div data-checkout-id={checkoutId}></div>
   </div>
 
-  <script>
-    import { initSwell } from "../../lib/swell-js";
+  <MapboxAutofill client:only mapboxToken={mapboxToken} />
+  <MapboxConfirmation client:only mapboxToken={mapboxToken} />
 
-    document.addEventListener("DOMContentLoaded", async () => {
-      const swell = initSwell(
-        import.meta.env.PUBLIC_SWELL_STORE_ID,
-        import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-      );
-
-      // Set up Stripe card element
-      const checkoutIdElement = document.querySelector("[data-checkout-id]");
-      await swell.cart.recover(
-        checkoutIdElement?.getAttribute("data-checkout-id"),
-      );
-      swell.payment.createElements({
-        card: {
-          elementId: "card-element",
-          options: {
-            style: {
-              base: {
-                fontSize: "16px",
-              },
-            },
-            hidePostalCode: true,
-          },
-        },
-      });
-
-      // Setup for toggling billing address visibility
-      const checkbox = document.getElementById(
-        "same-address-checkbox",
-      ) as HTMLInputElement;
-      const billingContainer = document.getElementById(
-        "billing-container",
-      ) as HTMLElement;
-
-      const toggleBillingContainerVisibility = () => {
-        const isVisible = checkbox.checked;
-        billingContainer.style.display = isVisible ? "none" : "block";
-        const inputs = billingContainer.querySelectorAll('input[type="text"]');
-        inputs.forEach((input) => {
-          const inputElement = input as HTMLInputElement;
-          inputElement.required = !isVisible;
-        });
-      };
-
-      // Event listener for the address checkbox
-      checkbox.addEventListener("change", toggleBillingContainerVisibility);
-    });
-  </script>
+  <script src="../../scripts/PaymentFormHandler.ts"></script>
 </Layout>
