@@ -573,3 +573,125 @@ test.describe("Join - Personal Information Form", () => {
     }
   });
 });
+
+// Testing Join Payment Info Form
+test.describe("Join - Payment Information Form", () => {
+  test.skip(
+    !isDevelopment,
+    "Skipping test in production environment due to sandbox@stytch.com restrictions",
+  );
+
+  test("should redirect unauthenticated users to the homepage", async ({
+    page,
+  }) => {
+    await page.goto("/join/payment-info");
+    const message = "You are not logged in";
+    const encodedMessage = encodeURIComponent(message);
+    expect(page.url()).toContain(`/?message=${encodedMessage}`);
+  });
+
+  test("should redirect users who have already completed the onboarding process", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari wont let you set a cookie on localhost without https",
+    );
+
+    await page.goto("/login");
+    await page.getByLabel("Email").fill("sandbox@stytch.com");
+    await page.getByTestId("login-btn").click();
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-login-code-btn"]');
+
+    await page.goto("/join/payment-info");
+    expect(page.url()).not.toEqual("/join/payment-info");
+  });
+
+  test("should show an error for empty required fields", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari wont let you set a cookie on localhost without https",
+    );
+
+    // OTP Login with sandbox email
+    await page.goto("/login");
+    await page.getByLabel("Email").fill("sandbox@stytch.com");
+    await page.getByTestId("login-btn").click();
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-login-code-btn"]');
+    await page.waitForTimeout(1000);
+    const url = page.url();
+
+    if (url.includes("/join/payment-info")) {
+      await page.click('button[type="submit"]');
+      await expect(
+        page.locator("text=Please fill out all required fields."),
+      ).toBeVisible();
+    }
+  });
+
+  test("should show billing address inputs when the checkbox is checked", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari wont let you set a cookie on localhost without https",
+    );
+
+    // OTP Login with sandbox email
+    await page.goto("/login");
+    await page.getByLabel("Email").fill("sandbox@stytch.com");
+    await page.getByTestId("login-btn").click();
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-login-code-btn"]');
+    await page.waitForTimeout(1000);
+    const url = page.url();
+
+    if (url.includes("/join/payment-info")) {
+      await page.click('input[name="same-address"]');
+      await expect(page.locator('input[name="billing_address"]')).toBeVisible();
+    } else {
+      const message = "Onboarding complete!";
+      expect(page.url()).toContain(`/?message=${encodeURIComponent(message)}`);
+    }
+  });
+
+  test("should redirect to the homepage on successful form submission", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && isDevelopment,
+      "Safari wont let you set a cookie on localhost without https",
+    );
+
+    // OTP Login with sandbox email
+    await page.goto("/login");
+    await page.getByLabel("Email").fill("sandbox@stytch.com");
+    await page.getByTestId("login-btn").click();
+    await page.fill("#otp-input", "000000");
+    await page.click('button[id="submit-login-code-btn"]');
+    await page.waitForTimeout(1000);
+    const url = page.url();
+
+    if (url.includes("/join/payment-info")) {
+      const stripeFrame = page.frameLocator("iframe").first();
+      await stripeFrame
+        .locator('[placeholder="Card number"]')
+        .fill("4242424242424242");
+      await stripeFrame.locator('[placeholder="MM / YY"]').fill("04/30");
+      await stripeFrame.locator('[placeholder="CVC"]').fill("242");
+      await page.click('button[type="submit"]');
+      await page.waitForTimeout(10000);
+    }
+
+    const message = "Onboarding complete!";
+    expect(page.url()).toContain(`/?message=${encodeURIComponent(message)}`);
+  });
+});
