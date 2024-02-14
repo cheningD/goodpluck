@@ -253,6 +253,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                       <>
                         <h4>{formatDate(activeBasket()?.delivery_date)}</h4>
                         <a
+                          data-testid="reschedule-delivery-link"
                           onClick={() => {
                             setOpenRescheduleDeliveryDialog(true);
                           }}
@@ -296,7 +297,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                   when={openRescheduleDeliveryDialog()}
                                   fallback={
                                     <ul
-                                      data-testid="product-items"
+                                      data-testid="basket-items"
                                       class="flex flex-col gap-y-1 py-1"
                                     >
                                       {activeBasketProducts().map(
@@ -365,7 +366,10 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                     </ul>
                                   }
                                 >
-                                  <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
+                                  <ul
+                                    data-testid="reschedule-delivery-dialog"
+                                    class="max-h-[70vh] min-h-[70vh] overflow-y-auto"
+                                  >
                                     {deliverySlots().map((slot: Date) => (
                                       <>
                                         <li

@@ -133,8 +133,8 @@ const Products: Component<IProps> = ({ currentCategory }) => {
 
   async function addToCart(event: MouseEvent, product: Product): Promise<void> {
     event.preventDefault();
+    isCartOpen.set(true);
     if ($swellCartDeliveryDate() === undefined) {
-      isCartOpen.set(true);
       return;
     }
     try {
@@ -190,6 +190,7 @@ const Products: Component<IProps> = ({ currentCategory }) => {
                       />
                     </Show>
                     <button
+                      data-testid="add-to-cart-btn"
                       onClick={(e) => {
                         void addToCart(e, product);
                       }}
