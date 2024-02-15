@@ -17,7 +17,7 @@ const Header: Component<HeaderProps> = ({ collections }) => {
       <SideMenu collections={collections} />
       <div class="flex gap-10 shrink-0">
         {/* Logo */}
-        <a href="/">
+        <a data-testid="go-home-link" href="/">
           <img
             src={wordmark.src}
             alt="Goodpluck Logo"

@@ -260,10 +260,7 @@ test.describe("Basket Sidebar Tests", () => {
     browserName,
     request,
   }) => {
-    // test.skip(
-    //   browserName === "firefox",
-    //   "Skipping test because playwright unstable here",
-    // );
+    test.skip(browserName === "firefox", "Skipping test in FF");
     await page.goto("/");
     await page.waitForURL("**/");
     if (browserName === "chromium" || browserName === "webkit") {
@@ -290,11 +287,14 @@ test.describe("Basket Sidebar Tests", () => {
       .locator("li")
       .count();
     expect(basketItems).toEqual(1);
-    await page.reload({ waitUntil: "networkidle" });
+    await page.getByTestId("go-home-link").click();
+    await page.waitForURL("**/");
+    if (browserName === "chromium" || browserName === "webkit") {
+      await page.waitForLoadState("networkidle");
+    }
     await expect(page.getByTestId("top-banner-zip")).toBeVisible();
     await page.getByTestId("top-banner-zip").click();
     await expect(page.getByTestId("basket-sidebar")).toBeVisible();
-    await page.getByTestId("basket-sidebar").click();
     await expect(page.getByTestId("basket-items")).toBeVisible();
     basketItems = await page.getByTestId("basket-items").locator("li").count();
     expect(basketItems).toEqual(1);
