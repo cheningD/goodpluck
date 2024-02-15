@@ -1,13 +1,13 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Products from "@components/solid/Products.tsx";
 import { initSwell } from "../lib/swell-js";
+import { Picture } from "astro:assets";
+import farm1 from "@assets/pics/farm1.jpg";
 
 const swell = initSwell(
   import.meta.env.PUBLIC_SWELL_STORE_ID,
   import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
-
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
@@ -19,5 +19,506 @@ const categories = await swell.categories.list({
   description="Delivered farm fresh to you"
   categories={categories.results}
 >
-  <Products currentCategory={""} client:only />
+  <div class="relative w-11/12 h-[500px] mx-auto my-10 sm:my-14">
+    <Picture
+      src={farm1}
+      alt="A Local Farm"
+      class="w-full h-full object-cover rounded"
+    />
+    <div
+      class="absolute inset-0 sm:top-8 sm:right-8 sm:left-8 sm:bottom-8 sm:w-96 bg-opacity-90 sm:bg-opacity-100 bg-white p-4 sm:p-8 rounded flex flex-col text-center sm:text-start items-center sm:items-start justify-center"
+    >
+      <div class="text-3xl font-bold mb-6">
+        <p class="mb-1">Just Plucked,</p>
+        <p class="mb-1">Local Produce</p>
+        <p class="mb-1">On Your Doorstep</p>
+      </div>
+
+      <p class="mb-10 max-w-sm">
+        We gather the freshest produce from local and sustainable farms each
+        week.
+      </p>
+      <a
+        href="/market"
+        class="block w-fit relative px-6 py-4 mb-8 bg-brand-yellow border-2 border-black rounded shadow-md hover:bg-yellow-400 focus:shadow-sm focus:top-[1px] focus:left-[1px] transition ease-in duration-50"
+        >Bring the farms to me!
+      </a>
+      <div class="text-sm">
+        Serving Detroit and surrounding <a
+          href="#faq"
+          class="underline underline-offset-1 hover:font-semibold">areas</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Items-->
+  <div class="max-w-[85rem] px-8 py-16 mx-auto">
+    <!-- Title -->
+    <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
+      <h2 class="text-2xl font-bold md:text-4xl md:leading-tight">
+        [Features]
+      </h2>
+      <p class="mt-1 text-gray-600 dark:text-gray-400"></p>
+    </div>
+    <!-- End Title -->
+  </div>
+
+  <!-- Featured Items-->
+  <div class="max-w-[85rem] px-4 py-16 mx-auto bg-green-500">
+    <!-- Title -->
+    <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
+      <h2 class="text-2xl text-white font-bold md:text-4xl md:leading-tight">
+        What's good today?
+      </h2>
+      <p class="mt-1 text-white">our local market changes with the season</p>
+    </div>
+    <!-- End Title -->
+  </div>
+
+  <!-- Explainer-->
+  <div class="max-w-[85rem] px-4 py-16 mx-auto">
+    <!-- Title -->
+    <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
+      <h2 class="text-2xl font-bold md:text-4xl md:leading-tight">
+        How it works...
+      </h2>
+      <p class="mt-1 text-gray-600 dark:text-gray-400">
+        connecting farms to you, sustainably
+      </p>
+    </div>
+    <!-- End Title -->
+  </div>
+
+  <!-- Testimonials -->
+  <div class="relative max-w-[85rem] px-4 py-16 mx-auto bg-yellow-100">
+    <!-- Blockquote -->
+    <blockquote class="text-center lg:mx-auto lg:w-3/5">
+      <div class="mt-6 lg:mt-10">
+        <p
+          class="relative text-xl sm:text-2xl md:text-3xl md:leading-normal font-medium text-black"
+        >
+          <svg
+            class="absolute top-0 start-0 transform -translate-x-8 -translate-y-8 size-16 text-yellow-200 sm:h-24 sm:w-24 dark:text-gray-700"
+            width="16"
+            height="13"
+            viewBox="0 0 16 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M7.18079 9.25611C7.18079 10.0101 6.93759 10.6211 6.45119 11.0891C5.96479 11.5311 5.35039 11.7521 4.60799 11.7521C3.71199 11.7521 2.96958 11.4531 2.38078 10.8551C1.81758 10.2571 1.53598 9.39911 1.53598 8.28111C1.53598 7.08511 1.86878 5.91511 2.53438 4.77111C3.22559 3.60111 4.18559 2.67811 5.41439 2.00211L6.29759 3.36711C5.63199 3.83511 5.09439 4.35511 4.68479 4.92711C4.30079 5.49911 4.04479 6.16211 3.91679 6.91611C4.14719 6.81211 4.41599 6.76011 4.72319 6.76011C5.43999 6.76011 6.02879 6.99411 6.48959 7.46211C6.95039 7.93011 7.18079 8.52811 7.18079 9.25611ZM14.2464 9.25611C14.2464 10.0101 14.0032 10.6211 13.5168 11.0891C13.0304 11.5311 12.416 11.7521 11.6736 11.7521C10.7776 11.7521 10.0352 11.4531 9.44639 10.8551C8.88319 10.2571 8.60159 9.39911 8.60159 8.28111C8.60159 7.08511 8.93439 5.91511 9.59999 4.77111C10.2912 3.60111 11.2512 2.67811 12.48 2.00211L13.3632 3.36711C12.6976 3.83511 12.16 4.35511 11.7504 4.92711C11.3664 5.49911 11.1104 6.16211 10.9824 6.91611C11.2128 6.81211 11.4816 6.76011 11.7888 6.76011C12.5056 6.76011 13.0944 6.99411 13.5552 7.46211C14.016 7.93011 14.2464 8.52811 14.2464 9.25611Z"
+              fill="currentColor"></path>
+          </svg>
+          <span class="relative z-10"
+            >Everything I have tried so far has been delicious and delightfully
+            fresh. It is also amazing how much longer this local produce stays
+            fresh [...] both bunches were vastly prettier and tastier than
+            anything in a grocery store</span
+          >
+        </p>
+      </div>
+
+      <footer class="mt-6">
+        <div class="font-semibold">Sarah</div>
+        <div class="text-sm">New Center, Detroit</div>
+      </footer>
+    </blockquote>
+    <!-- End Blockquote -->
+  </div>
+  <!-- End Testimonials -->
+
+  <!-- FAQ -->
+  <div class="max-w-[85rem] px-4 py-16 mx-auto">
+    <!-- Title -->
+    <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
+      <h2
+        id="faq"
+        class="text-2xl font-bold md:text-4xl md:leading-tight dark:text-white"
+      >
+        In case you where wondering...
+      </h2>
+      <p class="mt-1 text-gray-600 dark:text-gray-400">we have answers</p>
+    </div>
+    <!-- End Title -->
+
+    <div class="max-w-2xl mx-auto">
+      <!-- Accordion -->
+      <div class="hs-accordion-group">
+        <div
+          class="hs-accordion hs-accordion-active:bg-gray-100 rounded-xl p-6 dark:hs-accordion-active:bg-white/[.05] active"
+          id="hs-basic-with-title-and-arrow-stretched-heading-one"
+        >
+          <button
+            class="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            aria-controls="hs-basic-with-title-and-arrow-stretched-collapse-one"
+          >
+            What areas do you serve?
+            <svg
+              class="hs-accordion-active:hidden block flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg
+            >
+            <svg
+              class="hs-accordion-active:block hidden flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg
+            >
+          </button>
+          <div
+            id="hs-basic-with-title-and-arrow-stretched-collapse-one"
+            class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="hs-basic-with-title-and-arrow-stretched-heading-one"
+          >
+            <p class="text-gray-800 dark:text-gray-200">
+              <p class="mb-4">
+                We currently dserve: Berkley, Birmingham, Clawson, Detroit,
+                Ferndale, Grosse Pointe, Hamtramck, Harper Woods, Highland Park,
+                Oak Park, River Rouge, Royal Oak, Saint Clair Shores,
+                Southfield, Sterling Heights, Troy, & Warren.
+              </p>
+              <p class="mb-4">
+                We expand to nearby areas when we have 20 or so people asking us
+                to.
+              </p>
+              <p>
+                Please <a
+                  class="underline underline-offset-1 font-semibold text-brand-green"
+                  href="https://airtable.com/appJVu70KyaMMofIb/shrs9WED21nlCwrrc"
+                  target="_blank">Let us know</a
+                > if you's like to see us in your neighborhood!
+              </p>
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="hs-accordion hs-accordion-active:bg-gray-100 rounded-xl p-6 dark:hs-accordion-active:bg-white/[.05]"
+          id="hs-basic-with-title-and-arrow-stretched-heading-two"
+        >
+          <button
+            class="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            aria-controls="hs-basic-with-title-and-arrow-stretched-collapse-two"
+          >
+            Can I cancel at anytime?
+            <svg
+              class="hs-accordion-active:hidden block flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg
+            >
+            <svg
+              class="hs-accordion-active:block hidden flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg
+            >
+          </button>
+          <div
+            id="hs-basic-with-title-and-arrow-stretched-collapse-two"
+            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="hs-basic-with-title-and-arrow-stretched-heading-two"
+          >
+            <p class="text-gray-800 dark:text-gray-200">
+              Yes, you can cancel anytime no questions are asked while you
+              cancel but we would highly appreciate if you will give us some
+              feedback.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="hs-accordion hs-accordion-active:bg-gray-100 rounded-xl p-6 dark:hs-accordion-active:bg-white/[.05]"
+          id="hs-basic-with-title-and-arrow-stretched-heading-three"
+        >
+          <button
+            class="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            aria-controls="hs-basic-with-title-and-arrow-stretched-collapse-three"
+          >
+            How does Preline's pricing work?
+            <svg
+              class="hs-accordion-active:hidden block flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg
+            >
+            <svg
+              class="hs-accordion-active:block hidden flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg
+            >
+          </button>
+          <div
+            id="hs-basic-with-title-and-arrow-stretched-collapse-three"
+            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="hs-basic-with-title-and-arrow-stretched-heading-three"
+          >
+            <p class="text-gray-800 dark:text-gray-200">
+              Our subscriptions are tiered. Understanding the task at hand and
+              ironing out the wrinkles is key.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="hs-accordion hs-accordion-active:bg-gray-100 rounded-xl p-6 dark:hs-accordion-active:bg-white/[.05]"
+          id="hs-basic-with-title-and-arrow-stretched-heading-four"
+        >
+          <button
+            class="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            aria-controls="hs-basic-with-title-and-arrow-stretched-collapse-four"
+          >
+            How secure is Preline?
+            <svg
+              class="hs-accordion-active:hidden block flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg
+            >
+            <svg
+              class="hs-accordion-active:block hidden flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg
+            >
+          </button>
+          <div
+            id="hs-basic-with-title-and-arrow-stretched-collapse-four"
+            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="hs-basic-with-title-and-arrow-stretched-heading-four"
+          >
+            <p class="text-gray-800 dark:text-gray-200">
+              Protecting the data you trust to Preline is our first priority.
+              This part is really crucial in keeping the project in line to
+              completion.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="hs-accordion hs-accordion-active:bg-gray-100 rounded-xl p-6 dark:hs-accordion-active:bg-white/[.05]"
+          id="hs-basic-with-title-and-arrow-stretched-heading-five"
+        >
+          <button
+            class="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            aria-controls="hs-basic-with-title-and-arrow-stretched-collapse-five"
+          >
+            How do I get access to a theme I purchased?
+            <svg
+              class="hs-accordion-active:hidden block flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg
+            >
+            <svg
+              class="hs-accordion-active:block hidden flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg
+            >
+          </button>
+          <div
+            id="hs-basic-with-title-and-arrow-stretched-collapse-five"
+            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="hs-basic-with-title-and-arrow-stretched-heading-five"
+          >
+            <p class="text-gray-800 dark:text-gray-200">
+              If you lose the link for a theme you purchased, don't panic! We've
+              got you covered. You can login to your account, tap your avatar in
+              the upper right corner, and tap Purchases. If you didn't create a
+              login or can't remember the information, you can use our handy
+              Redownload page, just remember to use the same email you
+              originally made your purchases with.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="hs-accordion hs-accordion-active:bg-gray-100 rounded-xl p-6 dark:hs-accordion-active:bg-white/[.05]"
+          id="hs-basic-with-title-and-arrow-stretched-heading-six"
+        >
+          <button
+            class="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            aria-controls="hs-basic-with-title-and-arrow-stretched-collapse-six"
+          >
+            Upgrade License Type
+            <svg
+              class="hs-accordion-active:hidden block flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg
+            >
+            <svg
+              class="hs-accordion-active:block hidden flex-shrink-0 size-5 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg
+            >
+          </button>
+          <div
+            id="hs-basic-with-title-and-arrow-stretched-collapse-six"
+            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="hs-basic-with-title-and-arrow-stretched-heading-six"
+          >
+            <p class="text-gray-800 dark:text-gray-200">
+              There may be times when you need to upgrade your license from the
+              original type you purchased and we have a solution that ensures
+              you can apply your original purchase cost to the new license
+              purchase.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- End Accordion -->
+    </div>
+  </div>
+  <!-- End FAQ -->
+
+  <!-- Title -->
+  <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14 my-16">
+    <h2 class="text-2xl font-bold md:text-4xl md:leading-tight">
+      Watch us grow
+    </h2>
+    <p class="mt-1 text-gray-600 dark:text-gray-400">
+      <a href="https://www.instagram.com/goodpluckgrows" target="_blank"
+        >@goodpluckgrows on Instagram</a
+      >
+    </p>
+  </div>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 my-16">
+    <div class="space-y-2">
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
+        alt="Image Description"
+      />
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1668906093328-99601a1aa584?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=986&q=80"
+        alt="Image Description"
+      />
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1567016526105-22da7c13161a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+        alt="Image Description"
+      />
+    </div>
+    <div class="space-y-2">
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1668584054131-d5721c515211?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80"
+        alt="Image Description"
+      />
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1664574654529-b60630f33fdb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+        alt="Image Description"
+      />
+    </div>
+    <div class="space-y-2">
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
+        alt="Image Description"
+      />
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1586232702178-f044c5f4d4b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1035&q=80"
+        alt="Image Description"
+      />
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1542125387-c71274d94f0a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
+        alt="Image Description"
+      />
+    </div>
+    <div class="space-y-2">
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1668869713519-9bcbb0da7171?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80"
+        alt="Image Description"
+      />
+      <img
+        class="w-full h-auto object-cover"
+        src="https://images.unsplash.com/photo-1668584054035-f5ba7d426401?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3465&q=80"
+        alt="Image Description"
+      />
+    </div>
+  </div>
 </Layout>
