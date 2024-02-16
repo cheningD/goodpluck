@@ -5,7 +5,7 @@ import { getCartFromSession } from "src/lib/swell/cart";
 import Cart from "@components/solid/Cart";
 import Banner from "@components/solid/Banner";
 import Breadcrumb from "@components/solid/Breadcrumb";
-import ScrollSpy from "@components/solid/global/ScrollSpy";
+import SidebarMenu from "@components/solid/global/SidebarMenu";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
 
@@ -44,9 +44,9 @@ try {
       <div class="grid grid-cols-5">
         {
           currentCollection && (
-            <ScrollSpy
-              categorySlug={currentCollection.slug}
+            <SidebarMenu
               categories={categories}
+              categorySlug={currentCollection.slug}
               client:only
             />
           )
