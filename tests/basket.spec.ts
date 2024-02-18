@@ -340,4 +340,133 @@ test.describe("Basket Sidebar Tests", () => {
     await page.waitForURL("**/join");
     await request.delete("/api/swell");
   });
+
+  test(`Adding product twice should show 2 in quantity on basket.`, async ({
+    page,
+    browserName,
+    request,
+  }) => {
+    await page.goto("/");
+    await page.waitForURL("**/");
+    if (browserName === "chromium" || browserName === "webkit") {
+      await page.waitForLoadState("networkidle");
+    }
+    await expect(page.getByTestId("top-banner")).toBeVisible();
+    await page.getByTestId("top-banner-zip").click();
+    await expect(page.getByTestId("basket-sidebar")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-zip")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-zip")).toHaveText("Enter Zip");
+    await page.getByTestId("user-zip").fill("48210");
+    await page.getByTestId("btn-verify-zip").click();
+    await expect(page.getByTestId("basket-tab-1")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-1")).toHaveText("Select Date");
+    await page.getByTestId("delivery-date-selector").first().click();
+    await page.getByTestId("btn-create-order").click();
+    await page.waitForResponse("/api/swell");
+    await expect(page.getByTestId("product-items")).toBeVisible();
+    await page.getByTestId("add-to-cart-btn").first().click();
+    await page.waitForResponse("/api/swell");
+    await page.getByTestId("add-to-cart-btn").first().click();
+    await page.waitForResponse("/api/swell");
+    await expect(page.getByTestId("basket-items")).toBeVisible();
+    await page.waitForTimeout(5000);
+    const basketItems = await page
+      .getByTestId("basket-items")
+      .locator("li")
+      .count();
+    expect(basketItems).toEqual(1);
+    await expect(page.getByTestId("basket-item-quantity").first()).toHaveValue(
+      "2",
+    );
+    await request.delete("/api/swell");
+  });
+
+  test(`Updating product quantity from basket item should modify the cart correctly.`, async ({
+    page,
+    browserName,
+    request,
+  }) => {
+    await page.goto("/");
+    await page.waitForURL("**/");
+    if (browserName === "chromium" || browserName === "webkit") {
+      await page.waitForLoadState("networkidle");
+    }
+    await expect(page.getByTestId("top-banner")).toBeVisible();
+    await page.getByTestId("top-banner-zip").click();
+    await expect(page.getByTestId("basket-sidebar")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-zip")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-zip")).toHaveText("Enter Zip");
+    await page.getByTestId("user-zip").fill("48210");
+    await page.getByTestId("btn-verify-zip").click();
+    await expect(page.getByTestId("basket-tab-1")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-1")).toHaveText("Select Date");
+    await page.getByTestId("delivery-date-selector").first().click();
+    await page.getByTestId("btn-create-order").click();
+    await page.waitForResponse("/api/swell");
+    await expect(page.getByTestId("product-items")).toBeVisible();
+    await page.getByTestId("add-to-cart-btn").first().click();
+    await page.waitForResponse("/api/swell");
+    await page.waitForTimeout(5000);
+    const basketItems = await page
+      .getByTestId("basket-items")
+      .locator("li")
+      .count();
+    expect(basketItems).toEqual(1);
+    await page.getByTestId("basket-item-quantity").selectOption("10");
+    await page.getByTestId("go-home-link").click(); // reload page to make sure quantity persist
+    await page.waitForURL("**/");
+    if (browserName === "chromium" || browserName === "webkit") {
+      await page.waitForLoadState("networkidle");
+    }
+    await expect(page.getByTestId("top-banner-zip")).toBeVisible();
+    await page.getByTestId("top-banner-zip").click();
+    await expect(page.getByTestId("basket-sidebar")).toBeVisible();
+    await expect(page.getByTestId("basket-items")).toBeVisible();
+    await page.waitForTimeout(5000);
+    await expect(page.getByTestId("basket-item-quantity").first()).toHaveValue(
+      "10",
+    );
+    await request.delete("/api/swell");
+  });
+
+  test(`Removing product from basket should modify the cart correctly.`, async ({
+    page,
+    browserName,
+    request,
+  }) => {
+    await page.goto("/");
+    await page.waitForURL("**/");
+    if (browserName === "chromium" || browserName === "webkit") {
+      await page.waitForLoadState("networkidle");
+    }
+    await expect(page.getByTestId("top-banner")).toBeVisible();
+    await page.getByTestId("top-banner-zip").click();
+    await expect(page.getByTestId("basket-sidebar")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-zip")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-zip")).toHaveText("Enter Zip");
+    await page.getByTestId("user-zip").fill("48210");
+    await page.getByTestId("btn-verify-zip").click();
+    await expect(page.getByTestId("basket-tab-1")).toBeVisible();
+    await expect(page.getByTestId("basket-tab-1")).toHaveText("Select Date");
+    await page.getByTestId("delivery-date-selector").first().click();
+    await page.getByTestId("btn-create-order").click();
+    await page.waitForResponse("/api/swell");
+    await expect(page.getByTestId("product-items")).toBeVisible();
+    await page.getByTestId("add-to-cart-btn").first().click();
+    await page.waitForResponse("/api/swell");
+    await page.getByTestId("add-to-cart-btn").nth(1).click();
+    await page.waitForResponse("/api/swell");
+    await expect(page.getByTestId("basket-items")).toBeVisible();
+    await page.waitForTimeout(5000);
+    let basketItems = await page
+      .getByTestId("basket-items")
+      .locator("li")
+      .count();
+    expect(basketItems).toEqual(2);
+    await page.getByTestId("remove-basket-item-link").first().click();
+    await page.waitForTimeout(5000);
+    basketItems = await page.getByTestId("basket-items").locator("li").count();
+    expect(basketItems).toEqual(1);
+    await request.delete("/api/swell");
+  });
 });

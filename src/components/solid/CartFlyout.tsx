@@ -331,6 +331,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                                   ${product?.price}
                                                 </span>
                                                 <select
+                                                  data-testid="basket-item-quantity"
                                                   value={product?.quantity}
                                                   // eslint-disable-next-line @typescript-eslint/no-misused-promises
                                                   onInput={async (e: Event) => {
@@ -361,6 +362,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                                   </For>
                                                 </select>
                                                 <button
+                                                  data-testid="remove-basket-item-link"
                                                   onClick={(e) => {
                                                     void deleteFromCart(
                                                       e,
