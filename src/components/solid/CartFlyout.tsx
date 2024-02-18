@@ -16,15 +16,11 @@ import { getDeliverySlots } from "@composables/basketUtils";
 import {
   isBasketUpdated,
   isCartOpen,
-  lastBasketItemAdded,
-  lastBasketItemRemoved,
   setIsBasketUpdated,
-  setLastBasketItemAdded,
-  setLastBasketItemRemoved,
   swellCartDeliveryDate,
 } from "@src/store";
 import { isZipCodeDeliverable } from "@utils/validations";
-import type { GoodpluckCart, GoodpluckProduct } from "@src/lib/types";
+import type { GoodpluckCart, GoodpluckCartItem } from "@src/lib/types";
 
 interface CartProps {
   basket: GoodpluckCart | null;
@@ -36,7 +32,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
     { equals: false },
   );
   const [activeBasketProducts, setActiveBasketProducts] = createSignal<
-    GoodpluckProduct[]
+    GoodpluckCartItem[]
   >([], { equals: false });
   const $isCartOpen = useStore(isCartOpen);
   const [deliverySlots, setDeliverySlots] = createSignal<Date[]>([]);
@@ -58,7 +54,6 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
   const updateTab = (index: number) => (): void => {
     void start(() => setTab(index));
   };
-  const [selectQuantity, setSelectedQuantity] = createSignal<number>(1);
   const [openRescheduleDeliveryDialog, setOpenRescheduleDeliveryDialog] =
     createSignal<boolean>(false);
   const [deliveryDateRequired, setDeliveryDateRequired] =
@@ -119,6 +114,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
       });
 
       if (response.ok) {
+        setOpenRescheduleDeliveryDialog(false);
         const cartDeliveryDateUpdated: GoodpluckCart | null = activeBasket();
         if (cartDeliveryDateUpdated !== null) {
           cartDeliveryDateUpdated.delivery_date = deliveryDate();
@@ -134,40 +130,26 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
   };
 
   const fetchProducts = async (): Promise<void> => {
-    const items = activeBasket()?.items;
-    if (!items) {
-      return;
-    }
-
-    const promises = items.map(async (item) => {
-      const params = {
-        method: "ITEM",
-        itemId: item.product_id ?? "",
-      };
-      const queryString = new URLSearchParams(params).toString();
-      const response = await fetch(`/api/swell?${queryString}`, {
-        method: "GET",
-      });
-
-      if (response.ok) {
-        const product = await response.json();
-        return product.data as GoodpluckProduct;
-      } else {
-        return null;
-      }
+    const params = {
+      method: "CART",
+    };
+    const queryString = new URLSearchParams(params).toString();
+    const response = await fetch(`/api/swell?${queryString}`, {
+      method: "GET",
     });
 
-    const products = await Promise.all(promises);
-
-    setActiveBasketProducts((previousItems: GoodpluckProduct[]) => [
-      ...previousItems,
-      ...(products.filter((product) => product !== null) as GoodpluckProduct[]),
-    ]);
+    if (response.ok) {
+      const resp = await response.json();
+      const cart = resp.data as GoodpluckCart;
+      const items = cart.items as GoodpluckCartItem[];
+      // console.log("items: cart", items);
+      setActiveBasketProducts(items);
+    }
   };
 
   const deleteFromCart = async (
     event: MouseEvent,
-    product: GoodpluckProduct,
+    product: GoodpluckCartItem,
   ): Promise<void> => {
     event.preventDefault();
     try {
@@ -175,12 +157,36 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
         method: "POST",
         body: JSON.stringify({
           method: "DELETEITEM",
-          itemId: product.id,
+          itemId: product.product_id,
         }),
       });
 
       if (response.ok) {
-        setLastBasketItemRemoved(product);
+        setIsBasketUpdated(true);
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  };
+
+  const updateCartItem = async (
+    productId: string | undefined,
+    quantity: number,
+  ): Promise<void> => {
+    try {
+      console.log("updateCartItem");
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "UPDATEITEM",
+          itemId: productId,
+          itemQuantity: quantity,
+        }),
+      });
+
+      if (response.ok) {
         setIsBasketUpdated(true);
       } else {
         throw new Error(`Error: ${response.status}`);
@@ -192,18 +198,8 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
   createEffect(async () => {
     if (isBasketUpdated()) {
-      let newProducts = activeBasketProducts();
-      if (lastBasketItemAdded() !== null) {
-        newProducts.push(lastBasketItemAdded() as GoodpluckProduct);
-        setLastBasketItemAdded(null);
-      }
-      if (lastBasketItemRemoved() !== null) {
-        newProducts = newProducts.filter(
-          (item) => item.id !== lastBasketItemRemoved()?.id,
-        );
-        setLastBasketItemRemoved(null);
-      }
-      setActiveBasketProducts(newProducts);
+      // console.log("createEffect activeBasketProducts()", activeBasketProducts());
+      await fetchProducts();
       setIsBasketUpdated(false);
     }
   });
@@ -214,8 +210,10 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   onMount(async () => {
+    console.log("activeBasket:", activeBasket());
     swellCartDeliveryDate.set(String(activeBasket()?.delivery_date));
     await fetchProducts();
+    console.log("products", activeBasketProducts());
     setDeliverySlots(getDeliverySlots());
   });
 
@@ -298,71 +296,86 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                   fallback={
                                     <ul
                                       data-testid="basket-items"
-                                      class="flex flex-col gap-y-1 py-1"
+                                      class="flex flex-col gap-y-1 py-1 overflow-y-auto"
                                     >
-                                      {activeBasketProducts().map(
-                                        (product: GoodpluckProduct) => (
-                                          <li class="grid grid-cols-4 gap-y-2 gap-x-1 px-1">
-                                            <img
-                                              alt={`Image of ${product?.name}`}
-                                              src={
-                                                product?.images
-                                                  ? product?.images[0]?.file
-                                                      ?.url
-                                                  : ""
-                                              }
-                                              width="65"
-                                              height="50"
-                                              loading="lazy"
-                                              decoding="async"
-                                            />
-                                            <div class="col-span-2 flex flex-col">
-                                              <span class="font-semibold">
-                                                {product?.name}
-                                              </span>
-                                              <span class="text-slate-400">
-                                                {product?.vendor.first_name}
-                                              </span>
-                                            </div>
-                                            <div class="flex flex-col">
-                                              <span class="font-semibold">
-                                                ${product?.cost}
-                                              </span>
-                                              <select
-                                                value={selectQuantity()}
-                                                onInput={(e) =>
-                                                  setSelectedQuantity(
-                                                    parseInt(e.target.value),
-                                                  )
+                                      <Show when={activeBasketProducts()}>
+                                        {activeBasketProducts().map(
+                                          (product: GoodpluckCartItem) => (
+                                            <li class="grid grid-cols-4 gap-y-2 gap-x-1 px-1">
+                                              <img
+                                                alt={`Image of ${product?.product_name}`}
+                                                src={
+                                                  product?.product?.images
+                                                    ? product?.product
+                                                        ?.images[0]?.file?.url
+                                                    : ""
                                                 }
-                                              >
-                                                <For
-                                                  each={[...Array(20)].map(
-                                                    (_, index) => index + 1,
-                                                  )}
+                                                width="65"
+                                                height="50"
+                                                loading="lazy"
+                                                decoding="async"
+                                              />
+                                              <div class="col-span-2 flex flex-col">
+                                                <span class="font-semibold">
+                                                  {product?.product_name}
+                                                </span>
+                                                <span class="text-slate-400">
+                                                  {
+                                                    product?.product?.vendor
+                                                      .first_name
+                                                  }
+                                                </span>
+                                              </div>
+                                              <div class="flex flex-col">
+                                                <span class="font-semibold">
+                                                  ${product?.price}
+                                                </span>
+                                                <select
+                                                  value={product?.quantity}
+                                                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                                                  onInput={async (e: Event) => {
+                                                    const inputValue = (
+                                                      e.target as HTMLInputElement
+                                                    ).value;
+                                                    if (
+                                                      inputValue !== null &&
+                                                      inputValue !== undefined
+                                                    ) {
+                                                      await updateCartItem(
+                                                        product.product_id,
+                                                        parseInt(inputValue),
+                                                      );
+                                                    }
+                                                  }}
                                                 >
-                                                  {(quantity) => (
-                                                    <option value={quantity}>
-                                                      {quantity}
-                                                    </option>
-                                                  )}
-                                                </For>
-                                              </select>
-                                              <button
-                                                onClick={(e) => {
-                                                  void deleteFromCart(
-                                                    e,
-                                                    product,
-                                                  );
-                                                }}
-                                                class="text-green-700 underline"
-                                              >
-                                                Remove
-                                              </button>
-                                            </div>
-                                          </li>
-                                        ),
-                                      )}
+                                                  <For
+                                                    each={[...Array(20)].map(
+                                                      (_, index) => index + 1,
+                                                    )}
+                                                  >
+                                                    {(quantity) => (
+                                                      <option value={quantity}>
+                                                        {quantity}
+                                                      </option>
+                                                    )}
+                                                  </For>
+                                                </select>
+                                                <button
+                                                  onClick={(e) => {
+                                                    void deleteFromCart(
+                                                      e,
+                                                      product,
+                                                    );
+                                                  }}
+                                                  class="text-green-700 underline"
+                                                >
+                                                  Remove
+                                                </button>
+                                              </div>
+                                            </li>
+                                          ),
+                                        )}
+                                      </Show>
                                     </ul>
                                   }
                                 >
@@ -412,7 +425,10 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
                                     class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                                   >
                                     <Show
-                                      when={activeBasketProducts().length > 0}
+                                      when={
+                                        activeBasketProducts() &&
+                                        activeBasketProducts().length > 0
+                                      }
                                       fallback={"Start Shopping"}
                                     >
                                       Complete order

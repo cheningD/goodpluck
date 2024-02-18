@@ -151,9 +151,20 @@ const getOrCreateGuestCart = async (): Promise<GoodpluckCart | null> => {
     if ($swellCartId() !== undefined) {
       const guestCart = await swell.get("/carts/{id}", {
         id: $swellCartId(),
+        expand: ["items.product.vendor"],
+        // include: {
+        //   items: {
+        //     url: "/carts/{id}",
+        //     // url: "/products/{id}/vendor",
+        //     data: {
+        //       fields: "items.product",
+        //     },
+        //   },
+        // },
       });
       swellCartId.set(guestCart.id);
       console.log("fetched cartId backend:", $swellCartId());
+      console.log("fetched cart backend:", guestCart);
       return guestCart;
     } else {
       const guestCart: GoodpluckCart = await swell.post("/carts");
@@ -216,7 +227,6 @@ const updateGuestCartZip = async (
  * @throws Error when it fails to retrieve or create the cart
  */
 const addProductToGuestCart = async (
-  cartId: string | undefined,
   productId: string,
   quantity: number,
 ): Promise<void> => {
@@ -227,20 +237,44 @@ const addProductToGuestCart = async (
       id: $swellCartId(),
     });
     console.log("Guest Cart", guestCart);
-
     const products = [];
-    for (const item of guestCart?.items ?? []) {
-      products.push({
-        product_id: item.product_id,
+    const existingItemIndex = guestCart?.items?.findIndex(
+      (item) => item.product_id === productId,
+    );
+    if (guestCart?.items) {
+      if (existingItemIndex !== -1) {
+        for (const item of guestCart?.items) {
+          const oldQuantity = item.quantity ? item.quantity : 1;
+          const newQuantity = (item.quantity ? item.quantity : 1) + 1;
+          const newProduct: CartItemSnake = {
+            product_id: item.product_id,
+            quantity: item.product_id === productId ? newQuantity : oldQuantity,
+          };
+          products.push(newProduct);
+        }
+      } else {
+        for (const item of guestCart?.items) {
+          const oldQuantity = item.quantity ? item.quantity : 1;
+          const newProduct: CartItemSnake = {
+            product_id: item.product_id,
+            quantity: oldQuantity,
+          };
+          products.push(newProduct);
+        }
+        const newProduct: CartItemSnake = {
+          product_id: productId,
+          quantity: 1,
+        };
+        products.push(newProduct);
+      }
+    } else {
+      const newProduct: CartItemSnake = {
+        product_id: productId,
         quantity: 1,
-      });
+      };
+      products.push(newProduct);
     }
-    const newProduct: CartItemSnake = {
-      product_id: productId,
-      quantity,
-    };
 
-    products.push(newProduct);
     await swell.put("/carts/{id}", {
       id: $swellCartId(),
       items: {
@@ -264,7 +298,7 @@ const getProduct = async (id: string): Promise<Product | null> => {
       id,
       include: {
         vendor: {
-          url: "/products/{id}/vendor", // note: this would be more efficient if you use the absolute vendor endpoint here instead of the nested path starting with /products/{id}
+          url: "/products/{id}/vendor",
           data: {
             fields: "first_name",
           },
@@ -273,6 +307,7 @@ const getProduct = async (id: string): Promise<Product | null> => {
     });
 
     if (product) {
+      console.log("getProduct:", product);
       return product;
     } else {
       console.log("No active product found");
@@ -299,13 +334,16 @@ const removeProductFromGuestCart = async (productId: string): Promise<void> => {
 
     const products = [];
     for (const item of guestCart?.items ?? []) {
+      console.log("product item", item.product_id?.toString());
+      console.log("product id:", productId);
       if (item.product_id !== productId) {
         products.push({
           product_id: item.product_id,
-          quantity: 1,
+          quantity: item.quantity ? item.quantity : 1,
         });
       }
     }
+
     await swell.put("/carts/{id}", {
       id: $swellCartId(),
       items: {
@@ -339,7 +377,7 @@ const getProducts = async (
         page,
         include: {
           vendor: {
-            url: "/products/{id}/vendor", // note: this would be more efficient if you use the absolute vendor endpoint here instead of the nested path starting with /products/{id}
+            url: "/products/{id}/vendor",
             data: {
               fields: "first_name",
             },
@@ -353,7 +391,7 @@ const getProducts = async (
         page,
         include: {
           vendor: {
-            url: "/products/{id}/vendor", // note: this would be more efficient if you use the absolute vendor endpoint here instead of the nested path starting with /products/{id}
+            url: "/products/{id}/vendor",
             data: {
               fields: "first_name",
             },
@@ -374,6 +412,50 @@ const getProducts = async (
   }
 };
 
+/**
+ * Update product quantity on the active cart for a guest user
+ * @param productId - the product id
+ * @param quantity - the product quantity
+ * @throws Error when it fails to retrieve or create the cart
+ */
+const updateProductGuestCart = async (
+  productId: string,
+  quantity: number,
+): Promise<void> => {
+  try {
+    const $swellCartId = useStore(swellCartId);
+
+    const guestCart: GoodpluckCart = await swell.get("/carts/{id}", {
+      id: $swellCartId(),
+    });
+
+    const products = guestCart?.items;
+    const updatedItemIndex = guestCart?.items?.findIndex(
+      (item) => item.product_id === productId,
+    );
+    if (updatedItemIndex === undefined || products === undefined) {
+      return;
+    }
+
+    console.log(`updatedItemIndex:${updatedItemIndex}`);
+    if (updatedItemIndex !== -1) {
+      products[updatedItemIndex].quantity = quantity;
+      await swell.put("/carts/{id}", {
+        id: $swellCartId(),
+        items: {
+          $set: products,
+        },
+      });
+      console.log(
+        `Product updated on Cart id:  ${$swellCartId()}: backend`,
+        products,
+      );
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export {
   getOrCreateCart,
   getCart,
@@ -386,4 +468,5 @@ export {
   getProduct,
   removeProductFromGuestCart,
   getProducts,
+  updateProductGuestCart,
 };

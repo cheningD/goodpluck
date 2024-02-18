@@ -1,4 +1,6 @@
-import { defineConfig, squooshImageService } from "astro/config";
+import { defineConfig, 
+  passthroughImageService
+ } from "astro/config";
 import solid from "@astrojs/solid-js";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
@@ -9,6 +11,6 @@ export default defineConfig({
   output: "server",
   adapter: vercel(),
   image: {
-    service: squooshImageService(),
+    service: passthroughImageService(),
   },
 });

@@ -6,11 +6,9 @@ import {
   onCleanup,
 } from "solid-js";
 import { throttle } from "../../lib/throttle";
-import type { Product } from "swell-js";
 import {
   isCartOpen,
   setIsBasketUpdated,
-  setLastBasketItemAdded,
   swellCartDeliveryDate,
   swellCartId,
 } from "@src/store";
@@ -131,7 +129,10 @@ const Products: Component<IProps> = ({ currentCategory }) => {
     itemListElement,
   };
 
-  async function addToCart(event: MouseEvent, product: Product): Promise<void> {
+  async function addToCart(
+    event: MouseEvent,
+    productId: string | undefined,
+  ): Promise<void> {
     event.preventDefault();
     isCartOpen.set(true);
     if ($swellCartDeliveryDate() === undefined) {
@@ -143,12 +144,11 @@ const Products: Component<IProps> = ({ currentCategory }) => {
         body: JSON.stringify({
           method: "ADDITEM",
           cartId: $swellCartId(),
-          itemId: product.id,
+          itemId: productId,
         }),
       });
 
       if (response.ok) {
-        setLastBasketItemAdded(product);
         setIsBasketUpdated(true);
       } else {
         throw new Error(`Error: ${response.status}`);
@@ -192,7 +192,7 @@ const Products: Component<IProps> = ({ currentCategory }) => {
                     <button
                       data-testid="add-to-cart-btn"
                       onClick={(e) => {
-                        void addToCart(e, product);
+                        void addToCart(e, product.id);
                       }}
                       aria-label="Add to Cart"
                       type="button"

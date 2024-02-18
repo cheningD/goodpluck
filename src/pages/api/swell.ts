@@ -1,10 +1,12 @@
 import {
   addProductToGuestCart,
+  getOrCreateGuestCart,
   getProduct,
   getProducts,
   removeProductFromGuestCart,
   updateGuestCartDeliveryDate,
   updateGuestCartZip,
+  updateProductGuestCart,
 } from "@src/lib/swell/cart";
 import { swellCartId } from "@src/store";
 import type { APIRoute } from "astro";
@@ -17,10 +19,14 @@ export const POST: APIRoute = async ({ request }) => {
     switch (data.method) {
       case "DELETEITEM":
         await removeProductFromGuestCart(data.itemId);
-        responseMessage = "Product removed from cart successfully";
+        responseMessage = "Product deleted from cart successfully";
+        break;
+      case "UPDATEITEM":
+        await updateProductGuestCart(data.itemId, data.itemQuantity);
+        responseMessage = "Product updated on cart successfully";
         break;
       case "ADDITEM":
-        await addProductToGuestCart(data.cartId, data.itemId, 1);
+        await addProductToGuestCart(data.itemId, 1);
         responseMessage = "Product added to cart successfully";
         break;
       case "DELIVERYDATE":
@@ -66,6 +72,10 @@ export const GET: APIRoute = async ({ request }) => {
   try {
     let model = null;
     switch (params.get("method")) {
+      case "CART":
+        model = await getOrCreateGuestCart();
+        responseMessage = "Guest cart";
+        break;
       case "ITEMS":
         model = await getProducts(
           params.get("category") as string,
