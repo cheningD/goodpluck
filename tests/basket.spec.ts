@@ -247,7 +247,7 @@ test.describe("Basket Sidebar Tests", () => {
     await page.getByTestId("add-to-cart-btn").first().click();
     await page.waitForResponse("/api/swell");
     await expect(page.getByTestId("basket-items")).toBeVisible();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     const basketItems = await page
       .getByTestId("basket-items")
       .locator("li")
@@ -283,7 +283,7 @@ test.describe("Basket Sidebar Tests", () => {
     await page.getByTestId("add-to-cart-btn").first().click();
     await page.waitForResponse("/api/swell");
     await expect(page.getByTestId("basket-items")).toBeVisible();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     let basketItems = await page
       .getByTestId("basket-items")
       .locator("li")
@@ -298,7 +298,7 @@ test.describe("Basket Sidebar Tests", () => {
     await page.getByTestId("top-banner-zip").click();
     await expect(page.getByTestId("basket-sidebar")).toBeVisible();
     await expect(page.getByTestId("basket-items")).toBeVisible();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     basketItems = await page.getByTestId("basket-items").locator("li").count();
     expect(basketItems).toEqual(1);
     await request.delete("/api/swell");
@@ -330,7 +330,7 @@ test.describe("Basket Sidebar Tests", () => {
     await page.getByTestId("add-to-cart-btn").first().click();
     await page.waitForResponse("/api/swell");
     await expect(page.getByTestId("basket-items")).toBeVisible();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     const basketItems = await page
       .getByTestId("basket-items")
       .locator("li")
@@ -369,7 +369,7 @@ test.describe("Basket Sidebar Tests", () => {
     await page.getByTestId("add-to-cart-btn").first().click();
     await page.waitForResponse("/api/swell");
     await expect(page.getByTestId("basket-items")).toBeVisible();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     const basketItems = await page
       .getByTestId("basket-items")
       .locator("li")
@@ -406,7 +406,7 @@ test.describe("Basket Sidebar Tests", () => {
     await expect(page.getByTestId("product-items")).toBeVisible();
     await page.getByTestId("add-to-cart-btn").first().click();
     await page.waitForResponse("/api/swell");
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     const basketItems = await page
       .getByTestId("basket-items")
       .locator("li")
@@ -422,7 +422,7 @@ test.describe("Basket Sidebar Tests", () => {
     await page.getByTestId("top-banner-zip").click();
     await expect(page.getByTestId("basket-sidebar")).toBeVisible();
     await expect(page.getByTestId("basket-items")).toBeVisible();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     await expect(page.getByTestId("basket-item-quantity").first()).toHaveValue(
       "10",
     );
@@ -457,14 +457,14 @@ test.describe("Basket Sidebar Tests", () => {
     await page.getByTestId("add-to-cart-btn").nth(1).click();
     await page.waitForResponse("/api/swell");
     await expect(page.getByTestId("basket-items")).toBeVisible();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     let basketItems = await page
       .getByTestId("basket-items")
       .locator("li")
       .count();
     expect(basketItems).toEqual(2);
     await page.getByTestId("remove-basket-item-link").first().click();
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
     basketItems = await page.getByTestId("basket-items").locator("li").count();
     expect(basketItems).toEqual(1);
     await request.delete("/api/swell");

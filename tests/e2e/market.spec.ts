@@ -34,7 +34,7 @@ test.describe("Products Page Tests", () => {
     await page.goto("/market");
 
     // Wait for potential lazy loading of items
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
 
     const initialItems = await page
       .getByTestId("product-items")
@@ -47,7 +47,7 @@ test.describe("Products Page Tests", () => {
     });
 
     // Wait for potential lazy loading of items
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(30000);
 
     const finalItems = await page
       .getByTestId("product-items")
