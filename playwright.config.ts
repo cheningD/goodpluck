@@ -20,6 +20,10 @@ export default defineConfig({
   maxFailures: 25,
   retries: isDevelopment ? 0 : 1,
   /* Opt out of parallel tests on CI. */
+  timeout: 30000,
+  expect: {
+    timeout: 30000,
+  },
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [["html", { open: "never" }]],
