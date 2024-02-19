@@ -142,7 +142,6 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
       const resp = await response.json();
       const cart = resp.data as GoodpluckCart;
       const items = cart.items as GoodpluckCartItem[];
-      // console.log("items: cart", items);
       setActiveBasketProducts(items);
     }
   };
@@ -176,7 +175,6 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
     quantity: number,
   ): Promise<void> => {
     try {
-      console.log("updateCartItem");
       const response = await fetch("/api/swell", {
         method: "POST",
         body: JSON.stringify({
@@ -198,7 +196,6 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
   createEffect(async () => {
     if (isBasketUpdated()) {
-      // console.log("createEffect activeBasketProducts()", activeBasketProducts());
       await fetchProducts();
       setIsBasketUpdated(false);
     }
@@ -210,10 +207,8 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   onMount(async () => {
-    console.log("activeBasket:", activeBasket());
     swellCartDeliveryDate.set(String(activeBasket()?.delivery_date));
     await fetchProducts();
-    console.log("products", activeBasketProducts());
     setDeliverySlots(getDeliverySlots());
   });
 
