@@ -18,6 +18,7 @@ export default {
         "brand-off-white": "#faf2ea",
         "custom-gray": "#8c8d8d",
         "custom-silver": "#d9d9d9",
+        "brand-cream": "#f6f5ed",
         green: {
           50: "#edf3ed",
           100: "#dbe7db",
