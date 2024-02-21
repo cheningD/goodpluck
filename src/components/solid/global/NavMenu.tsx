@@ -7,8 +7,8 @@ const NavMenu: Component<NavProps> = ({ collections }) => {
   return (
     <nav class="hidden lg:flex">
       <ul class="flex space-x-4">
-        <For each={collections?.filter((c) => c.parent_id === null)}>
-          {(item, index) => (
+        <For each={collections?.filter((c: any) => c.parent_id === null)}>
+          {(item) => (
             <div>
               <li class="relative group">
                 <a
@@ -20,7 +20,9 @@ const NavMenu: Component<NavProps> = ({ collections }) => {
                 <div class="absolute left-0 w-72 hidden group-hover:block ">
                   <ul class="bg-white shadow-md mt-7">
                     <For
-                      each={collections.filter((d) => d.parent_id === item.id)}
+                      each={collections.filter(
+                        (d: any) => d.parent_id === item.id,
+                      )}
                     >
                       {(subCollection) => (
                         <li class="px-4 py-2 hover:bg-gray-100">
