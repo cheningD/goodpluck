@@ -1,14 +1,250 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { swell } from "../../lib/swell";
+import type { Product } from "swell-js";
+import Breadcrumbs from "@components/solid/Breadcrumbs";
 
 const { slug } = Astro.params;
 
-const product = await swell.products.get(slug === undefined ? "" : slug);
+const product: Product = await swell.get(`/products/${slug}`);
+
+if (!product) {
+  return Astro.redirect("/404");
+}
+
+const categories = (
+  await swell.get("/categories", {
+    limit: 100,
+    page: 1,
+  })
+).results;
+
+const { name: productName, category_index } = product;
+const cost = product.cost?.toFixed(2);
+const productImage = product.images?.[0]?.file?.url ?? "";
+const currentCollection = await swell.get("/categories/{id}", {
+  id: category_index?.id?.at(1),
+});
+
+const weightOptions = product.options?.find(
+  (option) => option.name === "Weight",
+)?.values;
+
+// just an example of how you might use this for a product
+const productInfo = [
+  {
+    title: "Rich in Vitamin C",
+    content:
+      "Mandarins are a good source of vitamin C, which is essential for a healthy immune system. Vitamin C also acts as an antioxidant.",
+  },
+  {
+    title: "Dietary Fiber",
+    content:
+      "Fiber helps prevent constipation, promotes regular bowel movements, and can contribute to a feeling of fullness, potentially aiding in weight management.",
+  },
+  {
+    title: "Antioxidant Properties",
+    content:
+      "Mandarins contain various antioxidants, such as flavonoids and carotenoids, which can help neutralize harmful free radicals in the body.",
+  },
+];
+
+// @ts-expect-error - not sure why Swell's Product type doesn't include vendor_id
+const vendorId = product?.vendor_id;
+const vendor = await swell.get(`/accounts/${vendorId}`);
+const vendorImage = vendor.thumbnail[0]?.file?.url;
+const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove with a home on it. Once they moved on to the ranch, they started to get ideas about packing and selling their own fruit without going through a large commercial packing house. This gave them the flexibility to grow some of the unique varieties that weren't readily available in produce departments. From this idea, Ripe to You was born. Ripe to You was started by building a small packing facility on the ranch and by packing the Christensens' own fruit. Eric & Kim were excited to pack the different varieties and deliver them to their first customers. Being small allowed them to pick the fruit when it was at its best, and to pick and pack small amounts to meet their customer's needs.`;
 ---
 
-<Layout title={`${product.name}`}>
-  <h1 class="text-5xl text-gray-800 p-4">
-    Product name: <span class="text-blue-500">{product.name}</span>
-  </h1>
+<Layout
+  title={`${productName}`}
+  description="Delivered farm fresh to you"
+  categories={categories}
+>
+  <div id="product-details-container" class="p-8 flex flex-col items-center">
+    <!-- Breadcrumbs -->
+    <nav id="navigation-breadcrumbs" class="mb-6">
+      {
+        currentCollection && (
+          <Breadcrumbs
+            categories={categories}
+            collectionId={currentCollection.id}
+            product={product}
+          />
+        )
+      }
+    </nav>
+
+    <!-- Product Title -->
+    <div
+      id="product-title"
+      class="font-extrabold text-brand-green text-5xl mb-12"
+    >
+      {productName}
+    </div>
+
+    <!-- Product Facts -->
+    <div
+      id="product-facts"
+      class="flex flex-col md:flex-row align-middle mb-12"
+    >
+      {
+        productInfo.map(({ title, content }) => (
+          <div class="py-12 px-4 md:py-4 md:px-12 text-center border-b md:border-r md:border-b-0 border-brand-yellow product-info-card last:border-none">
+            <h2 class="font-bold text-2xl mb-3 text-brand-black">{title}</h2>
+            <p class="text-base font-light text-custom-gray">{content}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Product Image -->
+    <div id="product-visuals" class="w-full mb-12">
+      <img
+        alt={`Image of ${productName}`}
+        src={productImage}
+        loading="lazy"
+        decoding="async"
+        class="object-cover w-full h-[400px] rounded-md"
+      />
+    </div>
+
+    <!-- Cart Actions -->
+    <div
+      id="product-action-section"
+      class="mb-24 w-full grid lg:grid-cols-2 grid-cols-1 gap-0 border border-brand-yellow"
+    >
+      <div
+        id="selection-options"
+        class="flex items-center justify-between p-6 border-brand-yellow border-b lg:border-r lg:border-b-0"
+      >
+        <span class="text-2xl font-bold">Options</span>
+        <div
+          class="grid md:grid-cols-3 grid-cols-1 gap-3 justify-center items-center"
+        >
+          {
+            weightOptions?.map((weight) => (
+              <div class="flex items-center justify-center">
+                <input
+                  type="radio"
+                  id={`option-${weight.id}`}
+                  name="productOption"
+                  value={weight.id}
+                  class="hidden peer"
+                  required
+                />
+                <label
+                  for={`option-${weight.id}`}
+                  class="inline-flex items-center justify-center w-32 h-4 p-5 bg-brand-cream text-lg text-brand-black cursor-pointer peer-checked:bg-brand-green peer-checked:text-white"
+                >
+                  <div class="font-semibold">{weight.name}</div>
+                </label>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div
+        id="cart-interaction"
+        class="p-6 flex md:flex-row flex-col items-center justify-evenly"
+      >
+        <div
+          id="quantity-modifier"
+          class="flex items-center mb-4 md:mr-4 md:mb-0"
+        >
+          <button class="px-3 py-2 text-lg">-</button>
+          <span class="px-4 text-lg">5</span>
+          <button class="px-3 py-2 text-lg">+</button>
+        </div>
+        <div id="add-to-cart-area" class="flex items-center">
+          <button
+            class="flex items-center justify-center w-full h-12 py-4 px-8 text-lg text-white bg-brand-red"
+          >
+            <span>Add to cart</span>
+            <span class="mx-4">&#9679;</span>
+            <span>${cost}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div id="additional-info" class="w-full mb-12">
+      <div class="flex justify-center">
+        <nav class="flex space-x-4" aria-label="Tabs" role="tablist">
+          <button
+            type="button"
+            class="hs-tab-active:font-semibold rounded-t-sm hs-tab-active:bg-brand-green hs-tab-active:text-white py-4 px-8 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-brand-black bg-brand-cream focus:outline-none disabled:opacity-50 disabled:pointer-events-none active"
+            id="producer-item"
+            data-hs-tab="#producer"
+            aria-controls="producer"
+            role="tab"
+          >
+            Producer
+          </button>
+          <button
+            type="button"
+            class="hs-tab-active:font-semibold rounded-t-sm hs-tab-active:bg-brand-green hs-tab-active:text-white py-4 px-8 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-brand-black bg-brand-cream focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
+            id="storage-tips-item"
+            data-hs-tab="#storage-tips"
+            aria-controls="storage-tips"
+            role="tab"
+          >
+            Storage Tips
+          </button>
+        </nav>
+      </div>
+
+      <div class="border border-custom-silver rounded-md p-12">
+        <div
+          id="producer"
+          role="tabpanel"
+          aria-labelledby="producer-item"
+          class="flex md:flex-row flex-col"
+        >
+          <img
+            alt={`Image of ${productName}`}
+            src={vendorImage || productImage}
+            loading="lazy"
+            decoding="async"
+            class="object-cover rounded-sm mb-8 md:mb-0 md:mr-8"
+          />
+          <div class="ml-4 flex flex-col justify-between leading-normal">
+            <h3 class="text-4xl font-bold mb-6 text-brand-green">
+              {vendor.name}
+            </h3>
+            <p class="text-custom-gray">
+              {vendorStory}
+            </p>
+          </div>
+        </div>
+        <div
+          id="storage-tips"
+          class="hidden"
+          role="tabpanel"
+          aria-labelledby="storage-tips-item"
+        >
+          <p class="text-custom-gray">
+            Store mandarins at room temperature for up to 1 week. For longer
+            storage, refrigerate in a plastic bag for up to 2 weeks. Mandarins
+            can be stored in the refrigerator for up to 2 weeks. If you have a
+            lot of mandarins, you can freeze them for up to 6 months. To freeze
+            mandarins, peel and separate the segments, then place them in a
+            single layer on a baking sheet and freeze until solid. Once frozen,
+            transfer the segments to a resealable plastic bag and store in the
+            freezer.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const firstOption = document.querySelector(
+      'input[type="radio"]',
+    ) as HTMLInputElement;
+    if (firstOption) {
+      firstOption.checked = true;
+    }
+  </script>
 </Layout>
