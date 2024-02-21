@@ -8,7 +8,6 @@ export default getViteConfig({
     // globals: true,
     dir: "./tests/unit",
     environment: "jsdom",
-    // setupFiles: ["./tests/unit/vitest-setup.ts"],
     setupFiles: ["node_modules/@testing-library/jest-dom/vitest"],
   },
 });
