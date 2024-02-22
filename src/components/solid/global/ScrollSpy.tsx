@@ -15,7 +15,7 @@ const ScrollSpy: Component<IProps> = ({ categorySlug, categories }) => {
 
   let collectionSlug = checkCategory.parent_id
     ? categorySlug
-    : categories.filter((col) => col.parent_id === checkCategory.id)[0].slug;
+    : categories.filter((col) => col.parent_id === checkCategory.id)[0]?.slug;
   const categoryHasChild =
     categories.filter((col) => col.parent_id === checkCategory.id).length > 0
       ? categories.filter((col) => col.parent_id === checkCategory.id)[0]

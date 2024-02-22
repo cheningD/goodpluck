@@ -32,6 +32,9 @@ const structureCategories = (
     if (category.parent_id) {
       const parent = categoryMap[category.parent_id];
       const child = categoryMap[category.id as string];
+      if (!parent || !child) {
+        return;
+      }
       parent.subcategories.push(child);
       // If the parent is selected, select the first child
       if (parent.isSelected && parent.subcategories.length === 1) {

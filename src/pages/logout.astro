@@ -1,6 +1,6 @@
 ---
 import { stytch } from "../lib/stytch";
-
+//@ts-expect-error https://github.com/withastro/language-tools/issues/476
 let message = "";
 const session_token = Astro.cookies.get("gp_session_token")?.value;
 

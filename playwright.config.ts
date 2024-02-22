@@ -17,18 +17,18 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Fail the build early on CI if you break too many tests. */
-  maxFailures: process.env.CI ? 25 : undefined,
+  maxFailures: 25,
   retries: isDevelopment ? 0 : 1,
   // timeout: 10000,
   // expect: {
   //   timeout: 10000,
   // },
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 2 : undefined,
+  workers: process.env.CI ? 2 : 8,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: "html",
   webServer: process.env.CI
-    ? undefined
+    ? []
     : {
         command: "npm run preview",
         url: "http://localhost:3000/",
