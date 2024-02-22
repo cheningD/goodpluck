@@ -18,6 +18,7 @@ if (Astro.request.method === "POST") {
   }
 
   try {
+    //@ts-expect-error
     const resp = await stytch.otps.email.send({
       email,
       expiration_minutes: 10,

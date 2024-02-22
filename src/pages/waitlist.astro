@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 
 const url = new URL(Astro.request.url);
 const zipcode = url.searchParams.get("zipcode");
+//@ts-expect-error https://github.com/withastro/language-tools/issues/476
 const email = url.searchParams.get("email");
 
 if (Astro.request.method === "POST") {

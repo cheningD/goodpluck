@@ -15,7 +15,7 @@ const Breadcrumb: Component<IProps> = ({ categories, collectionId }) => {
 
   let categoryId = checkCategory.parent_id
     ? collectionId
-    : categories.filter((col) => col.parent_id === collectionId)[0].id;
+    : categories.filter((col) => col.parent_id === collectionId)[0]?.id;
 
   const categoryHasChild =
     categories.filter((col) => col.parent_id === checkCategory.id).length > 0
