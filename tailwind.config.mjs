@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import preline from "preline/plugin.js";
 
 export default {
   content: [
@@ -58,6 +57,6 @@ export default {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms"), preline],
+  plugins: [require("@tailwindcss/forms")],
   darkMode: "false",
 };
