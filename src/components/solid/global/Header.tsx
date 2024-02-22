@@ -5,12 +5,19 @@ import wordmark from "@assets/img/wordmark.svg";
 import NavMenu from "@components/solid/global/NavMenu";
 import SideMenu from "@components/solid/global/SideMenu";
 import { type Component } from "solid-js";
+import { $isCartOpen } from "../../../store";
+import { useStore } from "@nanostores/solid";
 
 interface HeaderProps {
   collections: any;
 }
 
 const Header: Component<HeaderProps> = ({ collections }) => {
+  const isCartOpen = useStore($isCartOpen);
+  const handleButtonClick = (): void => {
+    $isCartOpen.set(!isCartOpen());
+  };
+
   return (
     <header class="sticky top-0 z-50 flex justify-between items-center h-20 px-4 lg:px-12 bg-white">
       {/* Menu */}
@@ -50,6 +57,7 @@ const Header: Component<HeaderProps> = ({ collections }) => {
         />
         {/* Basket */}
         <button
+          onClick={handleButtonClick}
           style={{ "background-image": `url(${basket.src})` }}
           class="w-7 h-7 shrink-0  bg-cover bg-no-repeat relative overflow-hidden"
         />

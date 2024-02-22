@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/solid";
-import { isCartOpen } from "../../store";
+import { $isCartOpen } from "../../store";
 import type { Component } from "solid-js";
 import { EditIcon } from "./Icons";
 
@@ -9,7 +9,7 @@ interface BannerProps {
 }
 
 const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
-  const $isCartOpen = useStore(isCartOpen);
+  const isCartOpen = useStore($isCartOpen);
 
   const displayMessage = (): string => {
     if (!isZipDeliverable) {
@@ -21,7 +21,7 @@ const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
   };
 
   const handleButtonClick = (): void => {
-    isCartOpen.set(!$isCartOpen());
+    $isCartOpen.set(!isCartOpen());
   };
 
   return (
@@ -29,10 +29,6 @@ const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
       <span>{displayMessage()}</span>
       <button
         class="flex items-center underline hover:font-semibold hover:cursor-pointer px-2 gap-2"
-        data-hs-overlay-backdrop-container="#sidebar-page"
-        data-hs-overlay="#sidebar-mini"
-        aria-controls="sidebar-mini"
-        aria-label="Toggle navigation"
         onClick={handleButtonClick}
       >
         {isZipDeliverable ? "Edit" : "Check your zip"}

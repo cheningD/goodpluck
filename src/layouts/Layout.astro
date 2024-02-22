@@ -2,7 +2,7 @@
 import Header from "@components/solid/global/Header";
 import Footer from "@components/solid/global/Footer";
 import { getCartFromSession } from "src/lib/swell/cart";
-import Cart from "@components/solid/Cart";
+import CartFlyout from "@components/solid/CartFlyout";
 import Banner from "@components/solid/Banner";
 import Breadcrumb from "@components/solid/Breadcrumb";
 import SidebarMenu from "@components/solid/global/SidebarMenu";
@@ -37,6 +37,7 @@ try {
       client:load
     />
     <Header collections={categories} client:load />
+    <CartFlyout client:load />
     <main
       id="sidebar-page"
       class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
@@ -68,11 +69,7 @@ try {
           <slot />
         </div>
       </div>
-      <Cart cart={cart} />
     </main>
     <Footer client:load />
-    <script>
-      import "preline/dist/preline.js";
-    </script>
   </body>
 </html>
