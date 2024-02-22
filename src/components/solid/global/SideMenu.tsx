@@ -58,7 +58,7 @@ const SideMenu: Component<NavProps> = ({ collections }) => {
             </div>
             {/* Nav Menu */}
             <For each={collections.filter((c) => c.parent_id === null)}>
-              {(item, index) => (
+              {(item) => (
                 <>
                   <Show when={expandedId() === null}>
                     <li
