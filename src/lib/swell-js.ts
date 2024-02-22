@@ -1,6 +1,6 @@
-import * as swell from "swell-js";
+import swell from "swell-js";
 
-function initSwell(storeId: string, publicKey: any): any {
+function initSwell(storeId: string, publicKey: string): any {
   swell.init(storeId, publicKey);
   return swell;
 }
