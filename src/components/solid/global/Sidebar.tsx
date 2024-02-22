@@ -34,7 +34,7 @@ const Sidebar: Component<IProps> = ({ collections }) => {
       >
         <div class="flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-gray-200 lg:flex-row lg:items-center lg:justify-end lg:gap-x-7 lg:mt-0 lg:ps-7 lg:divide-y-0 lg:divide-solid dark:divide-gray-700">
           <For each={categories}>
-            {(collection, i) => (
+            {(collection) => (
               <Show
                 when={getSubCategories(collection.id).length === 0}
                 fallback={
@@ -59,7 +59,7 @@ const Sidebar: Component<IProps> = ({ collections }) => {
 
                     <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 md:w-80 hidden z-10 bg-white md:shadow-2xl rounded-lg py-2 md:p-2 dark:bg-gray-800 dark:divide-gray-700 before:absolute top-full before:-top-5 before:start-0 before:w-full before:h-5">
                       <For each={getSubCategories(collection.id)}>
-                        {(subCollection, i) => (
+                        {(subCollection) => (
                           <a
                             class="inline-flex gap-x-5 w-full p-4 text-gray-600 rounded-lg hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                             href={`/market/${subCollection.slug}`}

@@ -18,7 +18,7 @@ const currentCollection = categories.results.find(
   (category: any) => category.slug === slug,
 );
 if (!currentCollection) return Astro.redirect("/404");
-const { name, description } = currentCollection;
+const { name } = currentCollection;
 ---
 
 <Layout

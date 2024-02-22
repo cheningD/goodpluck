@@ -28,6 +28,7 @@
     "@astrojs/check": "^0.3.4",
     "@astrojs/solid-js": "^3.0.3",
     "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/ts-plugin": "^1.5.3",
     "@astrojs/vercel": "^6.1.4",
     "@motionone/solid": "^10.16.4",
     "@nanostores/solid": "^0.4.2",
