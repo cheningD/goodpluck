@@ -3,6 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import { swell } from "../../lib/swell";
 import type { Product } from "swell-js";
 import Breadcrumbs from "@components/solid/Breadcrumbs";
+import ProductCartActions from "@components/solid/ProductCartActions";
+import type { WeightOption } from "@src/lib/types";
 
 const { slug } = Astro.params;
 
@@ -61,8 +63,10 @@ const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove
   description="Delivered farm fresh to you"
   categories={categories}
 >
-  <div id="product-details-container" class="p-8 flex flex-col items-center">
-    <!-- Breadcrumbs -->
+  <article
+    id="product-details-container"
+    class="p-8 flex flex-col items-center"
+  >
     <nav id="navigation-breadcrumbs" class="mb-6">
       {
         currentCollection && (
@@ -70,21 +74,20 @@ const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove
             categories={categories}
             collectionId={currentCollection.id}
             product={product}
+            client:load
           />
         )
       }
     </nav>
 
-    <!-- Product Title -->
-    <div
+    <h1
       id="product-title"
       class="font-extrabold text-brand-green text-5xl mb-12"
     >
       {productName}
-    </div>
+    </h1>
 
-    <!-- Product Facts -->
-    <div
+    <section
       id="product-facts"
       class="flex flex-col md:flex-row align-middle mb-12"
     >
@@ -96,10 +99,9 @@ const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove
           </div>
         ))
       }
-    </div>
+    </section>
 
-    <!-- Product Image -->
-    <div id="product-visuals" class="w-full mb-12">
+    <figure id="product-visuals" class="w-full mb-12">
       <img
         alt={`Image of ${productName}`}
         src={productImage}
@@ -107,69 +109,15 @@ const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove
         decoding="async"
         class="object-cover w-full h-[400px] rounded-md"
       />
-    </div>
+    </figure>
 
-    <!-- Cart Actions -->
-    <div
-      id="product-action-section"
-      class="mb-24 w-full grid lg:grid-cols-2 grid-cols-1 gap-0 border border-brand-yellow"
-    >
-      <div
-        id="selection-options"
-        class="flex items-center justify-between p-6 border-brand-yellow border-b lg:border-r lg:border-b-0"
-      >
-        <span class="text-2xl font-bold">Options</span>
-        <div
-          class="grid md:grid-cols-3 grid-cols-1 gap-3 justify-center items-center"
-        >
-          {
-            weightOptions?.map((weight) => (
-              <div class="flex items-center justify-center">
-                <input
-                  type="radio"
-                  id={`option-${weight.id}`}
-                  name="productOption"
-                  value={weight.id}
-                  class="hidden peer"
-                  required
-                />
-                <label
-                  for={`option-${weight.id}`}
-                  class="inline-flex items-center justify-center w-32 h-4 p-5 bg-brand-cream text-lg text-brand-black cursor-pointer peer-checked:bg-brand-green peer-checked:text-white"
-                >
-                  <div class="font-semibold">{weight.name}</div>
-                </label>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-      <div
-        id="cart-interaction"
-        class="p-6 flex md:flex-row flex-col items-center justify-evenly"
-      >
-        <div
-          id="quantity-modifier"
-          class="flex items-center mb-4 md:mr-4 md:mb-0"
-        >
-          <button class="px-3 py-2 text-lg">-</button>
-          <span class="px-4 text-lg">5</span>
-          <button class="px-3 py-2 text-lg">+</button>
-        </div>
-        <div id="add-to-cart-area" class="flex items-center">
-          <button
-            class="flex items-center justify-center w-full h-12 py-4 px-8 text-lg text-white bg-brand-red"
-          >
-            <span>Add to cart</span>
-            <span class="mx-4">&#9679;</span>
-            <span>${cost}</span>
-          </button>
-        </div>
-      </div>
-    </div>
+    <ProductCartActions
+      options={weightOptions as WeightOption[]}
+      cost={cost}
+      client:visible
+    />
 
-    <!-- Additional Info -->
-    <div id="additional-info" class="w-full mb-12">
+    <section id="additional-info" class="w-full mb-12">
       <div class="flex justify-center">
         <nav class="flex space-x-4" aria-label="Tabs" role="tablist">
           <button
@@ -200,14 +148,14 @@ const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove
           id="producer"
           role="tabpanel"
           aria-labelledby="producer-item"
-          class="flex md:flex-row flex-col"
+          class="flex lg:flex-row flex-col"
         >
           <img
             alt={`Image of ${productName}`}
             src={vendorImage || productImage}
             loading="lazy"
             decoding="async"
-            class="object-cover rounded-sm mb-8 md:mb-0 md:mr-8"
+            class="object-cover rounded-sm mb-8 lg:mb-0 lg:mr-8"
           />
           <div class="ml-4 flex flex-col justify-between leading-normal">
             <h3 class="text-4xl font-bold mb-6 text-brand-green">
@@ -236,8 +184,8 @@ const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove
           </p>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+  </article>
 
   <script>
     const firstOption = document.querySelector(
