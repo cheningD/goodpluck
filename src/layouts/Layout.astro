@@ -1,7 +1,6 @@
 ---
 import Header from "@components/solid/global/Header";
 import Footer from "@components/solid/global/Footer";
-import { getCartFromSession } from "src/lib/swell/cart";
 import CartFlyout from "@components/solid/CartFlyout";
 import Banner from "@components/solid/Banner";
 import Breadcrumb from "@components/solid/Breadcrumb";
@@ -9,17 +8,10 @@ import SidebarMenu from "@components/solid/global/SidebarMenu";
 import "@assets/styles/global.css";
 import favicon from "@assets/img/favicon.png";
 
-const { title, categories, currentCollection } = Astro.props;
+import { getCategories } from "../lib/swell";
 
-// Retrieve session token and get user/cart data
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-let cart = null;
-
-try {
-  cart = await getCartFromSession(sessionToken as string);
-} catch (error) {
-  console.log(error);
-}
+const categories = await getCategories();
+const { title, currentCollection } = Astro.props;
 ---
 
 <html lang="en">
@@ -31,11 +23,7 @@ try {
     <title>{title} - Goodpluck</title>
   </head>
   <body class="flex flex-col min-h-screen">
-    <Banner
-      isZipDeliverable={!!cart?.shipping?.zip}
-      deliveryDate={cart?.date_delivery || null}
-      client:load
-    />
+    <Banner client:load />
     <Header collections={categories} client:load />
     <CartFlyout client:load />
     <main

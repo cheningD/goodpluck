@@ -1,24 +1,10 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { initSwell } from "../lib/swell-js";
 import { Picture } from "astro:assets";
 import farm1 from "@assets/pics/farm1.jpg";
-
-const swell = initSwell(
-  import.meta.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
-const categories = await swell.categories.list({
-  limit: 100,
-  page: 1,
-});
 ---
 
-<Layout
-  title={`Shopping page`}
-  description="Delivered farm fresh to you"
-  categories={categories.results}
->
+<Layout title="Goodpluck">
   <div class="relative w-11/12 h-[500px] mx-auto my-10 sm:my-14">
     <Picture
       src={farm1}

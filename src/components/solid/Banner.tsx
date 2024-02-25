@@ -1,22 +1,19 @@
 import { useStore } from "@nanostores/solid";
-import { $isCartOpen } from "../../store";
+import { $isCartOpen, $zip, $cart } from "../../lib/store";
 import type { Component } from "solid-js";
 import { EditIcon } from "./Icons";
 
-interface BannerProps {
-  isZipDeliverable: boolean;
-  deliveryDate: string | null;
-}
-
-const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
+const Banner: Component = () => {
   const isCartOpen = useStore($isCartOpen);
+  const zip = useStore($zip);
+  const cart = useStore($cart);
 
   const displayMessage = (): string => {
-    if (!isZipDeliverable) {
+    if (!zip()) {
       return "Free Delivery to Detroit & Nearby.";
     }
-    return deliveryDate
-      ? `Shopping for ${deliveryDate}`
+    return cart()?.date_delivery
+      ? `Shopping for ${cart()?.date_delivery}`
       : `Choose a delivery date`;
   };
 
@@ -31,7 +28,7 @@ const Banner: Component<BannerProps> = ({ isZipDeliverable, deliveryDate }) => {
         class="flex items-center underline hover:font-semibold hover:cursor-pointer px-2 gap-2"
         onClick={handleButtonClick}
       >
-        {isZipDeliverable ? "Edit" : "Check your zip"}
+        {zip() ? "Edit" : "Check your zip"}
         {EditIcon}
       </button>
     </div>

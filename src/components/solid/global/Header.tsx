@@ -5,7 +5,7 @@ import wordmark from "@assets/img/wordmark.svg";
 import NavMenu from "@components/solid/global/NavMenu";
 import SideMenu from "@components/solid/global/SideMenu";
 import { type Component } from "solid-js";
-import { $isCartOpen } from "../../../store";
+import { $isCartOpen } from "@src/lib/store";
 import { useStore } from "@nanostores/solid";
 
 interface HeaderProps {
