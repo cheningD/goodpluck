@@ -1,7 +1,16 @@
 import { atom } from "nanostores";
+import { persistentAtom } from "@nanostores/persistent";
 import { createSignal } from "solid-js";
 
-export const $isCartOpen = atom(false);
-export const isMenuOpen = atom(false);
-
 export const [isSearchVisible, setIsSearchVisible] = createSignal(false);
+export const [isBasketUpdated, setIsBasketUpdated] = createSignal(false);
+export const isCartOpen = atom(false);
+export const isMenuOpen = atom(false);
+export const swellCartId = persistentAtom<string | undefined>(
+  "guest_cart_id",
+  undefined,
+);
+export const swellCartDeliveryDate = persistentAtom<string | undefined>(
+  "guest_cart_delivery_date",
+  undefined,
+);

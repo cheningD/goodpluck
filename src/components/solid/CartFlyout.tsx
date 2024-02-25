@@ -1,38 +1,622 @@
-import { Show, type Component } from "solid-js";
-import { $isCartOpen } from "../../store";
 import { useStore } from "@nanostores/solid";
-import { Motion, Presence } from "solid-motionone";
+import { type Component } from "solid-js";
+import {
+  For,
+  createEffect,
+  onMount,
+  Show,
+  createSignal,
+  Suspense,
+  Switch,
+  Match,
+  useTransition,
+} from "solid-js";
+import { formatDate } from "@src/utils/time";
+import { getDeliverySlots } from "@src/utils/basket";
+import {
+  isBasketUpdated,
+  isCartOpen,
+  setIsBasketUpdated,
+  swellCartDeliveryDate,
+} from "@src/store";
+import { isZipCodeDeliverable } from "@src/utils/zipcode";
+import type { GoodpluckCart, GoodpluckCartItem } from "@src/lib/types";
 
-const CartFlyout: Component = () => {
-  const isCartOpen = useStore($isCartOpen);
+interface CartProps {
+  basket: GoodpluckCart | null;
+}
+
+const CartFlyout: Component<CartProps> = ({ basket }) => {
+  const [activeBasket, setActiveBasket] = createSignal<GoodpluckCart | null>(
+    basket,
+    { equals: false },
+  );
+  const [activeBasketProducts, setActiveBasketProducts] = createSignal<
+    GoodpluckCartItem[]
+  >([], { equals: false });
+  const $isCartOpen = useStore(isCartOpen);
+  const [deliverySlots, setDeliverySlots] = createSignal<Date[]>([]);
+  const [zipRequired, setZipRequired] = createSignal<boolean>(false);
+  const [zip, setZip] = createSignal<string | undefined>("");
+  setZip(
+    activeBasket()?.shipping?.zip === undefined
+      ? ""
+      : activeBasket()?.shipping?.zip,
+  );
+  const [hasValidZip, setHasValidZip] = createSignal<boolean>(false);
+  setHasValidZip(zip() !== "");
+  const [deliveryDate, setDeliveryDate] = createSignal<Date | undefined>(
+    basket?.delivery_date,
+  );
+
+  const [tab, setTab] = createSignal(0);
+  const [pending, start] = useTransition();
+  const updateTab = (index: number) => (): void => {
+    void start(() => setTab(index));
+  };
+  const [openRescheduleDeliveryDialog, setOpenRescheduleDeliveryDialog] =
+    createSignal<boolean>(false);
+  const [deliveryDateRequired, setDeliveryDateRequired] =
+    createSignal<boolean>(false);
+
+  const basketId = basket?.id === undefined ? "" : basket?.id?.toString();
+
+  const completeOrder = (e: Event): void => {
+    e.preventDefault();
+    window.location.href = "/join";
+  };
+
+  const handleSubmit = async (e: Event): Promise<void> => {
+    e.preventDefault();
+    if (zip() === "") {
+      setZipRequired(true);
+      return;
+    }
+
+    if (!isZipCodeDeliverable(zip())) {
+      window.location.href = "/waitlist";
+      return;
+    }
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "ZIP",
+          cartId: basketId,
+          zip: zip(),
+        }),
+      });
+
+      if (response.ok) {
+        setHasValidZip(true);
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  };
+
+  const createOrder = async (): Promise<void> => {
+    if (!deliveryDate()) {
+      setDeliveryDateRequired(true);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "DELIVERYDATE",
+          cartId: basketId,
+          deliveryDate: deliveryDate(),
+        }),
+      });
+
+      if (response.ok) {
+        setOpenRescheduleDeliveryDialog(false);
+        const cartDeliveryDateUpdated: GoodpluckCart | null = activeBasket();
+        if (cartDeliveryDateUpdated !== null) {
+          cartDeliveryDateUpdated.delivery_date = deliveryDate() as Date;
+          setActiveBasket(cartDeliveryDateUpdated);
+        }
+        swellCartDeliveryDate.set(deliveryDate()?.toISOString());
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  };
+
+  const fetchProducts = async (): Promise<void> => {
+    const params = {
+      method: "CART",
+    };
+    const queryString = new URLSearchParams(params).toString();
+    const response = await fetch(`/api/swell?${queryString}`, {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const resp = await response.json();
+      const cart = resp.data as GoodpluckCart;
+      const items = cart.items as GoodpluckCartItem[];
+      setActiveBasketProducts(items);
+    }
+  };
+
+  const deleteFromCart = async (
+    event: MouseEvent,
+    product: GoodpluckCartItem,
+  ): Promise<void> => {
+    event.preventDefault();
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "DELETEITEM",
+          itemId: product.product_id,
+        }),
+      });
+
+      if (response.ok) {
+        setIsBasketUpdated(true);
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  };
+
+  const updateCartItem = async (
+    productId: string | undefined,
+    quantity: number,
+  ): Promise<void> => {
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "UPDATEITEM",
+          itemId: productId,
+          itemQuantity: quantity,
+        }),
+      });
+
+      if (response.ok) {
+        setIsBasketUpdated(true);
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  };
+
+  createEffect(async () => {
+    if (isBasketUpdated()) {
+      await fetchProducts();
+      setIsBasketUpdated(false);
+    }
+  });
+
+  createEffect(() => {
+    setDeliverySlots(getDeliverySlots());
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  onMount(async () => {
+    swellCartDeliveryDate.set(String(activeBasket()?.delivery_date));
+    await fetchProducts();
+    setDeliverySlots(getDeliverySlots());
+  });
 
   return (
-    <>
-      <div class="sticky top-[80px] right-0 z-30">
-        <Presence exitBeforeEnter>
-          <Show when={isCartOpen()}>
-            <Motion
-              class="absolute right-0 w-80 p-4 bg-white  h-[calc(100vh-80px)]"
-              animate={{ x: [300, 0] }}
-              transition={{ duration: 0.2, easing: "ease-in-out" }}
-              exit={{ x: 300 }}
+    <Show when={$isCartOpen()}>
+      <div
+        data-testid="basket-sidebar"
+        class="z-50 fixed right-0 bottom-0 h-[calc(100vh_-_40px)] bg-slate-100 w-1/4"
+      >
+        <ul class="grid grid-cols-2">
+          <li onClick={updateTab(0)}>
+            <Show
+              when={hasValidZip()}
+              fallback={
+                <button
+                  data-testid="basket-tab-zip"
+                  type="button"
+                  class="bg-slate-300 w-full"
+                  role="tab"
+                >
+                  Enter Zip
+                </button>
+              }
             >
-              I am the cart flyout
-            </Motion>
-          </Show>
-        </Presence>
+              <button
+                data-testid="basket-tab-1"
+                type="button"
+                class="bg-slate-300 w-full flex flex-col"
+                role="tab"
+              >
+                <Show
+                  when={activeBasket()?.delivery_date === undefined}
+                  fallback={
+                    <>
+                      <h4>{formatDate(activeBasket()?.delivery_date)}</h4>
+                      <a
+                        data-testid="reschedule-delivery-link"
+                        onClick={() => {
+                          setOpenRescheduleDeliveryDialog(true);
+                        }}
+                        class="underline text-green-700 text-center"
+                      >
+                        Reschedule
+                      </a>
+                    </>
+                  }
+                >
+                  Select Date
+                </Show>
+              </button>
+            </Show>
+          </li>
+          <li classList={{ selected: tab() === 1 }} onClick={updateTab(1)}>
+            <button
+              type="button"
+              class="bg-slate-300 w-full"
+              data-testid="basket-tab-2"
+              role="tab"
+            >
+              Orders
+            </button>
+          </li>
+        </ul>
+        <div class="h-full" classList={{ pending: pending() }}>
+          <Suspense fallback={<div class="loader">Loading...</div>}>
+            <Switch>
+              <Match when={tab() === 0}>
+                <div class="max-h-[80vh] flex flex-col justify-center">
+                  <Show
+                    when={!hasValidZip()}
+                    fallback={
+                      <Show
+                        when={activeBasket()?.delivery_date === undefined}
+                        fallback={
+                          <>
+                            <Show when={!!activeBasket()}>
+                              <Show
+                                when={openRescheduleDeliveryDialog()}
+                                fallback={
+                                  <ul
+                                    data-testid="basket-items"
+                                    class="flex flex-col gap-y-1 py-1 overflow-y-auto"
+                                  >
+                                    <Show when={activeBasketProducts()}>
+                                      {activeBasketProducts().map(
+                                        (cartItem: GoodpluckCartItem) => (
+                                          <li class="grid grid-cols-4 gap-y-2 gap-x-1 px-1">
+                                            <img
+                                              alt={`Image of ${cartItem?.product_name}`}
+                                              src={
+                                                cartItem?.product.images?.[0]
+                                                  ?.file?.url ?? ""
+                                              }
+                                              width="65"
+                                              height="50"
+                                              loading="lazy"
+                                              decoding="async"
+                                            />
+                                            <div class="col-span-2 flex flex-col">
+                                              <span class="font-semibold">
+                                                {cartItem?.product_name}
+                                              </span>
+                                              <span class="text-slate-400">
+                                                {
+                                                  cartItem?.product?.vendor
+                                                    .first_name
+                                                }
+                                              </span>
+                                            </div>
+                                            <div class="flex flex-col">
+                                              <span class="font-semibold">
+                                                ${cartItem?.price}
+                                              </span>
+                                              <select
+                                                data-testid="basket-item-quantity"
+                                                value={cartItem?.quantity ?? 1}
+                                                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                                                onInput={async (e: Event) => {
+                                                  const inputValue = (
+                                                    e.target as HTMLInputElement
+                                                  ).value;
+                                                  if (
+                                                    inputValue !== null &&
+                                                    inputValue !== undefined
+                                                  ) {
+                                                    await updateCartItem(
+                                                      cartItem.product_id,
+                                                      parseInt(inputValue),
+                                                    );
+                                                  }
+                                                }}
+                                              >
+                                                <For
+                                                  each={[...Array(20)].map(
+                                                    (_, index) => index + 1,
+                                                  )}
+                                                >
+                                                  {(quantity) => (
+                                                    <option value={quantity}>
+                                                      {quantity}
+                                                    </option>
+                                                  )}
+                                                </For>
+                                              </select>
+                                              <button
+                                                data-testid="remove-basket-item-link"
+                                                onClick={(e) => {
+                                                  void deleteFromCart(
+                                                    e,
+                                                    cartItem,
+                                                  );
+                                                }}
+                                                class="text-green-700 underline"
+                                              >
+                                                Remove
+                                              </button>
+                                            </div>
+                                          </li>
+                                        ),
+                                      )}
+                                    </Show>
+                                  </ul>
+                                }
+                              >
+                                <ul
+                                  data-testid="reschedule-delivery-dialog"
+                                  class="max-h-[70vh] min-h-[70vh] overflow-y-auto"
+                                >
+                                  {deliverySlots().map((slot: Date) => (
+                                    <>
+                                      <li
+                                        onClick={() => {
+                                          setDeliveryDate(slot);
+                                        }}
+                                        class="px-3 py-4 cursor-pointer border-gray-300 border-b flex items-center justify-between"
+                                      >
+                                        <div class="">
+                                          <h4 class="text-2xl font-bold">
+                                            {formatDate(slot)}
+                                          </h4>
+                                          <span>Delivery time: 10:00AM</span>
+                                        </div>
+                                        {deliveryDate() === slot && (
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="w-8 h-8 bg-orange-800 text-white rounded-full p-1"
+                                            viewBox="0 0 24 24"
+                                          >
+                                            <path
+                                              fill="currentColor"
+                                              d="M9 20c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2m8-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2M18 2.8l-1.4-1.4l-4.8 4.8l-2.6-2.6L7.8 5l4 4z"
+                                            />
+                                          </svg>
+                                        )}
+                                      </li>
+                                    </>
+                                  ))}
+                                </ul>
+                              </Show>
+                            </Show>
+                            <Show
+                              when={openRescheduleDeliveryDialog()}
+                              fallback={
+                                <button
+                                  onClick={completeOrder}
+                                  data-testid="btn-create-order"
+                                  type="button"
+                                  class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                >
+                                  <Show
+                                    when={
+                                      activeBasketProducts() &&
+                                      activeBasketProducts().length > 0
+                                    }
+                                    fallback={"Start Shopping"}
+                                  >
+                                    Complete order
+                                  </Show>
+                                </button>
+                              }
+                            >
+                              <div class="flex gap-x-1">
+                                <button
+                                  onClick={() => {
+                                    setOpenRescheduleDeliveryDialog(false);
+                                  }}
+                                  data-testid="btn-cancel-reschedule"
+                                  type="button"
+                                  class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    void createOrder();
+                                  }}
+                                  data-testid="btn-reschedule-order"
+                                  type="button"
+                                  class="w-3/4 uppercase mt-4 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                >
+                                  Update
+                                </button>
+                              </div>
+                            </Show>
+                          </>
+                        }
+                      >
+                        <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
+                          {deliverySlots().map((slot: Date) => (
+                            <>
+                              <li
+                                data-testid="delivery-date-selector"
+                                onClick={() => {
+                                  setDeliveryDate(slot);
+                                }}
+                                class="px-3 py-4 cursor-pointer border-gray-300 border-b flex items-center justify-between"
+                              >
+                                <div class="">
+                                  <h4 class="text-2xl font-bold">
+                                    {formatDate(slot)}
+                                  </h4>
+                                  <span>Delivery time: 10:00AM</span>
+                                </div>
+                                {deliveryDate() === slot && (
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-8 h-8 bg-orange-800 text-white rounded-full p-1"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      fill="currentColor"
+                                      d="M9 20c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2m8-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2M18 2.8l-1.4-1.4l-4.8 4.8l-2.6-2.6L7.8 5l4 4z"
+                                    />
+                                  </svg>
+                                )}
+                              </li>
+                            </>
+                          ))}
+                        </ul>
+
+                        <button
+                          onClick={() => {
+                            void createOrder();
+                          }}
+                          data-testid="btn-create-order"
+                          type="submit"
+                          class="w-3/4 uppercase mt-2 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                        >
+                          Create order
+                        </button>
+                        <span
+                          data-testid="delivery-date-error"
+                          class="text-red-700 font-semibold"
+                        >
+                          {deliveryDateRequired() &&
+                            "Delivery date should be selected to continue"}
+                        </span>
+                      </Show>
+                    }
+                  >
+                    <form
+                      class="p-4 flex flex-col h-full gap-y-10"
+                      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                      onSubmit={handleSubmit}
+                    >
+                      <p class="text-gray-500 dark:text-gray-400">
+                        Before we add items to your order, let's{" "}
+                        <em class="font-semibold text-gray-800 dark:text-gray-200">
+                          confirm
+                        </em>{" "}
+                        we deliver to your area.
+                      </p>
+                      <div class="flex flex-col gap-y-3">
+                        <input
+                          required
+                          type="number"
+                          class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+                          placeholder="Zip Code"
+                          id="zip"
+                          name="zip"
+                          value={zip() as string}
+                          onInput={(e) => {
+                            setZip(e.target.value);
+                          }}
+                          data-testid="user-zip"
+                        />
+                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                          Already have an account?
+                          <a
+                            class="text-blue-600 ml-1 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                            href="/login"
+                          >
+                            Sign In here
+                          </a>
+                        </p>
+                        {zipRequired() && (
+                          <span class="text-red-500 font-medium">
+                            Error: a zip code number required to continue!
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => handleSubmit}
+                        data-testid="btn-verify-zip"
+                        type="submit"
+                        class="w-3/4 uppercase mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                      >
+                        Check
+                      </button>
+                    </form>
+                  </Show>
+                </div>
+              </Match>
+              <Match when={tab() === 1}>
+                <div class="flex flex-col content-center">
+                  <Show
+                    when={activeBasket()?.delivery_date !== null}
+                    fallback={
+                      <>
+                        <ul class="max-h-[70vh] min-h-[70vh] overflow-y-auto">
+                          {deliverySlots().map((slot: Date) => (
+                            <>
+                              <li
+                                onClick={() => {
+                                  setDeliveryDate(slot);
+                                }}
+                                class="px-3 py-4 cursor-pointer border-gray-300 border-b flex items-center justify-between"
+                              >
+                                <div class="">
+                                  <h4 class="text-2xl font-bold">
+                                    {formatDate(slot)}
+                                  </h4>
+                                  <span>Delivery time: 10:00AM</span>
+                                </div>
+                              </li>
+                            </>
+                          ))}
+                        </ul>
+                        <button
+                          data-testid="btn-create-order"
+                          type="submit"
+                          class="w-3/4 uppercase mt-2 mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                        >
+                          Create order
+                        </button>
+                      </>
+                    }
+                  >
+                    <>
+                      <h3 class="text-3xl font-medium text-center ">
+                        No Basket added yet!
+                      </h3>
+                      <button
+                        data-testid="btn-add-order2"
+                        type="button"
+                        class="w-3/4 uppercase mx-auto py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-orange-800 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                      >
+                        Create Order
+                      </button>
+                    </>
+                  </Show>
+                </div>
+              </Match>
+            </Switch>
+          </Suspense>
+        </div>
       </div>
-      <Show when={isCartOpen()}>
-        <Motion
-          class="fixed bg-brand-green  h-screen  w-full z-10"
-          onClick={() => {
-            $isCartOpen.set(false);
-          }}
-          animate={{ opacity: [0, 0.4] }}
-          transition={{ duration: 0.2, easing: "ease-in-out" }}
-        />
-      </Show>
-    </>
+    </Show>
   );
 };
 
