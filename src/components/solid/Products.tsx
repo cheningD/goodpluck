@@ -1,18 +1,28 @@
-import { Show, type Component, createSignal, onCleanup } from "solid-js";
-import { initSwell } from "../../lib/swell-js";
+import {
+  onMount,
+  Show,
+  type Component,
+  createSignal,
+  onCleanup,
+} from "solid-js";
 import { throttle } from "../../lib/throttle";
-import type { Product } from "swell-js";
+import {
+  $isCartOpen,
+  setIsBasketUpdated,
+  swellCartDeliveryDate,
+  swellCartId,
+} from "@src/store";
+import { useStore } from "@nanostores/solid";
+import type { GoodpluckProduct } from "@src/lib/types";
 
 interface IProps {
   currentCategory: string | undefined;
 }
-const swell = initSwell(
-  import.meta.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
 
 const Products: Component<IProps> = ({ currentCategory }) => {
-  const [products, setProducts] = createSignal<Product[]>([]);
+  const [products, setProducts] = createSignal<GoodpluckProduct[]>([], {
+    equals: false,
+  });
   const [isLoading, setIsLoading] = createSignal(false);
   const [page, setPage] = createSignal(1);
   const [totalProducts, setTotalProducts] = createSignal(0);
@@ -20,6 +30,8 @@ const Products: Component<IProps> = ({ currentCategory }) => {
   let isFetching = false; // flag to indicate if fetching is in progress
   const [error, setError] = createSignal(false);
   const [errorMsg, setErrorMsg] = createSignal("");
+  const $swellCartDeliveryDate = useStore(swellCartDeliveryDate);
+  const $swellCartId = useStore(swellCartId);
 
   const fetchProducts = async (): Promise<void> => {
     if (products().length >= totalProducts() || isFetching) {
@@ -32,22 +44,46 @@ const Products: Component<IProps> = ({ currentCategory }) => {
     setIsLoading(true);
 
     try {
-      let newProducts = { results: [] };
-      newProducts.results = [];
+      let newProducts: GoodpluckProduct[] = [];
       if (currentCategory !== "") {
-        newProducts = await swell.products.list({
-          category: `${currentCategory}`, // Slug or ID
-          limit: 10,
-          page: page(),
-        });
-      } else {
-        newProducts = await swell.products.list({
-          limit: 10,
-          page: page(),
-        });
-      }
+        const params = [
+          ["method", "ITEMS"],
+          ["category", currentCategory],
+          ["page", page()],
+        ];
 
-      setProducts([...products(), ...newProducts.results]);
+        const queryString = new URLSearchParams(
+          params as string[][],
+        ).toString();
+        const response = await fetch(`/api/swell?${queryString}`, {
+          method: "GET",
+        });
+
+        if (response.ok) {
+          const resp = (await response.json()).data;
+          newProducts = resp;
+        }
+      } else {
+        const params = [
+          ["method", "ITEMS"],
+          ["category", ""],
+          ["page", page()],
+        ];
+        const queryString = new URLSearchParams(
+          params as string[][],
+        ).toString();
+        const response = await fetch(`/api/swell?${queryString}`, {
+          method: "GET",
+        });
+
+        if (response.ok) {
+          const resp = (await response.json()).data;
+          newProducts = resp;
+        }
+      }
+      const allProducts = products().concat(newProducts);
+
+      setProducts([...allProducts]);
       setPage(page() + 1);
     } catch (err) {
       setError(true);
@@ -68,7 +104,11 @@ const Products: Component<IProps> = ({ currentCategory }) => {
   const throttledCheckScroll = throttle(checkScroll, 200);
 
   window.addEventListener("scroll", throttledCheckScroll);
-  void fetchProducts();
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  onMount(async () => {
+    void fetchProducts();
+  });
 
   onCleanup(() => {
     window.removeEventListener("scroll", throttledCheckScroll);
@@ -89,6 +129,35 @@ const Products: Component<IProps> = ({ currentCategory }) => {
     itemListElement,
   };
 
+  async function addToCart(
+    event: MouseEvent,
+    productId: string | undefined,
+  ): Promise<void> {
+    event.preventDefault();
+    $isCartOpen.set(true);
+    if ($swellCartDeliveryDate() === undefined) {
+      return;
+    }
+    try {
+      const response = await fetch("/api/swell", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "ADDITEM",
+          cartId: $swellCartId(),
+          itemId: productId,
+        }),
+      });
+
+      if (response.ok) {
+        setIsBasketUpdated(true);
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the fetch:", error);
+    }
+  }
+
   return (
     <>
       <span class="text-4xl text-blue-600" data-testid="product-list">
@@ -101,14 +170,14 @@ const Products: Component<IProps> = ({ currentCategory }) => {
             data-testid="product-items"
             class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10 justify-center"
           >
-            {products().map((product: any) => (
+            {products().map((product: GoodpluckProduct) => (
               <li class="flex flex-col gap-y-2">
                 <div class="relative rounded-xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-52">
                   <a href={`/product/${product.slug}`}>
-                    <Show when={product.images !== undefined}>
+                    <Show when={product?.images && product?.images?.length > 0}>
                       <img
-                        alt={`Image of ${product.name}`}
-                        src={product.images[0].file.url}
+                        alt={`${product.name}`}
+                        src={product.images?.[0]?.file?.url ?? ""}
                         width="305"
                         height="205"
                         loading="lazy"
@@ -117,6 +186,10 @@ const Products: Component<IProps> = ({ currentCategory }) => {
                       />
                     </Show>
                     <button
+                      data-testid="add-to-cart-btn"
+                      onClick={(e) => {
+                        void addToCart(e, product.id);
+                      }}
                       aria-label="Add to Cart"
                       type="button"
                       class="absolute bottom-2 right-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-full border-2 border-gray-900 text-white bg-gray-800 shadow-sm hover:bg-transparent disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
@@ -130,7 +203,9 @@ const Products: Component<IProps> = ({ currentCategory }) => {
                   {product.name}
                 </a>
                 <div class="flex justify-between items-center">
-                  <span class="text-xs text-gray-600">{product.kind}</span>
+                  <span class="text-xs text-gray-600">
+                    {product.vendor.first_name}
+                  </span>
                   <span class="text-right font-semibold">${product.price}</span>
                 </div>
               </li>
@@ -152,7 +227,7 @@ const Products: Component<IProps> = ({ currentCategory }) => {
           <button
             data-testid="retry-fetch"
             onClick={() => {
-              fetchProducts().catch((error) => {
+              void fetchProducts().catch((error) => {
                 // Handle any errors that occur during fetchProducts
                 setError(true);
                 setErrorMsg(error);
