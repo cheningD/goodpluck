@@ -19,14 +19,13 @@ export default defineConfig({
   /* Fail the build early on CI if you break too many tests. */
   maxFailures: 25,
   retries: isDevelopment ? 0 : 1,
-  // timeout: 10000,
-  // expect: {
-  //   timeout: 10000,
-  // },
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 2 : 8,
+  expect: {
+    timeout: 10000,
+  },
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  reporter: [["html", { open: "never" }]],
   webServer: process.env.CI
     ? []
     : {
@@ -60,25 +59,5 @@ export default defineConfig({
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
     },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 });
