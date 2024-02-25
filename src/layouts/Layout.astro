@@ -1,8 +1,8 @@
 ---
 import Header from "@components/solid/global/Header";
 import Footer from "@components/solid/global/Footer";
-import { getCartFromSession } from "src/lib/swell/cart";
-import CartFlyout from "@components/solid/CartFlyout";
+import { getOrCreateGuestCart } from "src/lib/swell/cart";
+import CartFlyout from "@components/solid/CartFlyout.tsx";
 import Banner from "@components/solid/Banner";
 import Breadcrumb from "@components/solid/Breadcrumb";
 import SidebarMenu from "@components/solid/global/SidebarMenu";
@@ -11,12 +11,10 @@ import favicon from "@assets/img/favicon.png";
 
 const { title, categories, currentCollection } = Astro.props;
 
-// Retrieve session token and get user/cart data
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
 let cart = null;
 
 try {
-  cart = await getCartFromSession(sessionToken as string);
+  cart = await getOrCreateGuestCart();
 } catch (error) {
   console.log(error);
 }
@@ -31,13 +29,9 @@ try {
     <title>{title} - Goodpluck</title>
   </head>
   <body class="flex flex-col min-h-screen">
-    <Banner
-      isZipDeliverable={!!cart?.shipping?.zip}
-      deliveryDate={cart?.date_delivery || null}
-      client:load
-    />
+    <Banner isZipDeliverable={!!cart?.shipping?.zip} client:load />
     <Header collections={categories} client:load />
-    <CartFlyout client:load />
+    <CartFlyout basket={cart} client:load />
     <main
       id="sidebar-page"
       class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
@@ -59,7 +53,6 @@ try {
         >
           {
             currentCollection && (
-              // <h4>Bread</h4>
               <Breadcrumb
                 categories={categories}
                 collectionId={currentCollection.id}

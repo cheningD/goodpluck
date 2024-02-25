@@ -1,7 +1,11 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { swell } from "../../lib/swell";
+import { initSwell } from "../../lib/swell-js";
 
+const swell = initSwell(
+  import.meta.env.PUBLIC_SWELL_STORE_ID,
+  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
+);
 const { slug } = Astro.params;
 
 const product = await swell.products.get(slug === undefined ? "" : slug);
@@ -10,7 +14,7 @@ const product = await swell.products.get(slug === undefined ? "" : slug);
 const categories = await swell.categories.list({
   limit: 100,
   page: 1,
-});
+}).results;
 
 const { name } = product;
 ---
@@ -18,7 +22,7 @@ const { name } = product;
 <Layout
   title={`${name}`}
   description="Delivered farm fresh to you"
-  categories={categories.results}
+  categories={categories}
 >
   <h1 class="text-5xl text-gray-800 p-4">
     Product name: <span class="text-blue-500">{product.name}</span>

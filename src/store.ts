@@ -4,7 +4,7 @@ import { createSignal } from "solid-js";
 
 export const [isSearchVisible, setIsSearchVisible] = createSignal(false);
 export const [isBasketUpdated, setIsBasketUpdated] = createSignal(false);
-export const isCartOpen = atom(false);
+export const $isCartOpen = atom(false);
 export const isMenuOpen = atom(false);
 export const swellCartId = persistentAtom<string | undefined>(
   "guest_cart_id",

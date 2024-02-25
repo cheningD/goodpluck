@@ -57,8 +57,8 @@ dependencies:
     specifier: ^9.1.0
     version: 9.1.0
   swell-js:
-    specifier: ^4.0.3
-    version: 4.0.3
+    specifier: ^4.0.4
+    version: 4.0.4
   swell-node:
     specifier: ^5.6.0
     version: 5.6.0
@@ -9258,10 +9258,10 @@ packages:
         integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==,
       }
 
-  /swell-js@4.0.3:
+  /swell-js@4.0.4:
     resolution:
       {
-        integrity: sha512-XKujbwnSPJZ47i8Gb/67v38VxRkQmuej16IsDXVZoVbC93aJvoTIkWlQ1MKUOgPJeoOuZ0V4pnJaoxwe8Yr5Vg==,
+        integrity: sha512-FXMsAZ2V3+KJH34YeAfTSD/7OL5pa/5O//0ZhENSBGZka7T2RWM/kuHglnkTW4qH/7LKONpC7V1QRrpO88fS+g==,
       }
     engines: { node: ">=16" }
     dependencies:

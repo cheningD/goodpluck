@@ -15,7 +15,7 @@ import { formatDate } from "@src/utils/time";
 import { getDeliverySlots } from "@src/utils/basket";
 import {
   isBasketUpdated,
-  isCartOpen,
+  $isCartOpen,
   setIsBasketUpdated,
   swellCartDeliveryDate,
 } from "@src/store";
@@ -34,7 +34,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
   const [activeBasketProducts, setActiveBasketProducts] = createSignal<
     GoodpluckCartItem[]
   >([], { equals: false });
-  const $isCartOpen = useStore(isCartOpen);
+  const isCartOpen = useStore($isCartOpen);
   const [deliverySlots, setDeliverySlots] = createSignal<Date[]>([]);
   const [zipRequired, setZipRequired] = createSignal<boolean>(false);
   const [zip, setZip] = createSignal<string | undefined>("");
@@ -213,7 +213,7 @@ const CartFlyout: Component<CartProps> = ({ basket }) => {
   });
 
   return (
-    <Show when={$isCartOpen()}>
+    <Show when={isCartOpen()}>
       <div
         data-testid="basket-sidebar"
         class="z-50 fixed right-0 bottom-0 h-[calc(100vh_-_40px)] bg-slate-100 w-1/4"
