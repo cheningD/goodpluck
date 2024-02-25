@@ -21,11 +21,6 @@ if (!currentCollection) return Astro.redirect("/404");
 const { name } = currentCollection;
 ---
 
-<Layout
-  title={`${name}`}
-  description="Delivered farm fresh to you"
-  categories={categories.results}
-  currentCollection={currentCollection}
->
+<Layout title={`${name}`} currentCollection={currentCollection}>
   <Products currentCategory={slug} client:only />
 </Layout>

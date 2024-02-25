@@ -5,21 +5,9 @@ import { swell } from "../../lib/swell";
 const { slug } = Astro.params;
 
 const product = await swell.products.get(slug === undefined ? "" : slug);
-
-// if (!product) return Astro.redirect("/404");
-const categories = await swell.categories.list({
-  limit: 100,
-  page: 1,
-});
-
-const { name } = product;
 ---
 
-<Layout
-  title={`${name}`}
-  description="Delivered farm fresh to you"
-  categories={categories.results}
->
+<Layout title={`${product.name}`}>
   <h1 class="text-5xl text-gray-800 p-4">
     Product name: <span class="text-blue-500">{product.name}</span>
   </h1>

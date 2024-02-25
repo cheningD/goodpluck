@@ -1,6 +1,6 @@
 import { createSignal, createEffect, type Component } from "solid-js";
 import algoliasearch from "algoliasearch/lite";
-import { setIsSearchVisible } from "../../store";
+// import { setIsSearchVisible } from "../../store";
 
 const searchClient = algoliasearch(
   import.meta.env.PUBLIC_ALGOLIA_APPLICATION_ID,
@@ -20,7 +20,7 @@ const AlgoliaSearch: Component = () => {
     setQuery("");
     setIsUserInteracted(false);
     setIsDialogVisible(false);
-    setIsSearchVisible(false);
+    // setIsSearchVisible(false);
   };
 
   const performSearch = async (): Promise<void> => {

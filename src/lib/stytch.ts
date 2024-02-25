@@ -5,6 +5,17 @@ export const stytch = new stytchpkg.Client({
   secret: import.meta.env.STYTCH_PROJECT_SECRET,
 });
 
+export const getSwellAccountId = async (
+  sessionToken: string,
+): Promise<string | null> => {
+  // Get stytch user data
+  const sessionAuthenticateResponse: stytchpkg.SessionsAuthenticateResponse =
+    await stytch.sessions.authenticate({ session_token: sessionToken });
+  const swellAccountId =
+    sessionAuthenticateResponse.user.trusted_metadata?.swell_account_id;
+  return swellAccountId || null;
+};
+
 export const isLoggedIn = async (
   sessionToken: string,
 ): Promise<stytchpkg.SessionsAuthenticateResponse | null> => {
