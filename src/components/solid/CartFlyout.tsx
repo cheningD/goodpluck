@@ -22,6 +22,7 @@ const CartFlyout: Component = () => {
             >
               <p>Cart ID {cart()?.id}</p>
               <p>ZIP: {cart()?.shipping?.zip ?? "Not Set"}</p>
+              <p>Cart: {cart()?.account_logged_in ?? "Guest"}</p>
               _____
               <Show when={cart()?.shipping?.zip} fallback={<ZipForm />}>
                 <Cart />

@@ -26,7 +26,6 @@ if (!session) {
 // Redirect if account isn't created yet or billing info is already set
 const email = session?.user.emails[0]?.email as string;
 const account = await swell.get(`/accounts/${email}`);
-console.log(account);
 
 if (!account) {
   return Astro.redirect("/join/personal-info");
