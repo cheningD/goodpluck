@@ -1,6 +1,7 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
 import type { GoodpluckCart } from "../types";
+import { type Account as SwellAccount } from "swell-js";
 
 import { logger } from "@nanostores/logger";
 import { type SessionsAuthenticateResponse } from "stytch";
@@ -13,13 +14,13 @@ export const $gpSessionToken = persistentAtom<string | undefined>(
 
 // Fetch and store the authenticated stytch user's session
 export const $stytchAuthResp = createFetcherStore<SessionsAuthenticateResponse>(
-  ["/api/auth/", $gpSessionToken],
+  ["/api/auth/"],
 );
 
 // Extract the Swell account ID from the stytch user's trusted metadata
 const $swellAccountId = computed<string | null, typeof $stytchAuthResp>(
   $stytchAuthResp,
-  (response) => response.data?.user.trusted_metadata?.swell_account_id ?? null,
+  (response) => response.data?.user?.trusted_metadata?.swell_account_id ?? null,
 );
 
 // Is the user a guest
@@ -74,6 +75,24 @@ export const $updateShipping = createMutatorStore<CartUpdate>(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+    });
+  },
+);
+
+export const $createSwellAccount = createMutatorStore<SwellAccount>(
+  async ({ data, invalidate }) => {
+    const response = await fetch("/api/auth/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    invalidate("/api/auth");
+    return await fetch("/api/auth/", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ swellAccountId: result.accountId }),
     });
   },
 );
