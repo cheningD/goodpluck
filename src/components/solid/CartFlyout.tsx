@@ -1,35 +1,13 @@
-import { Show, type Component } from "solid-js";
-import {
-  $isCartOpen,
-  $cart,
-  $zip,
-  $gpSessionToken,
-  $stytchAuthResp,
-  $guestCartID,
-  $guestCart,
-} from "../../lib/store";
 import { useStore } from "@nanostores/solid";
+import { Show, createSignal, type Component } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
+import { $cart, $isCartOpen } from "../../lib/store";
 import ZipForm from "./ZipForm";
 
 const CartFlyout: Component = () => {
   const isCartOpen = useStore($isCartOpen);
   const cart = useStore($cart);
-  const zip = useStore($zip);
-  const gpSessionToken = useStore($gpSessionToken);
-  const stytchAuthResp = useStore($stytchAuthResp);
-  const guestCartID = useStore($guestCartID);
-  const guestCart = useStore($guestCart);
-
-  const clearZip = (): void => {
-    void fetch("/api/cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: cart()?.id, shipping: { zip: null } }),
-    });
-  };
+  const [showZipForm, setShowZipForm] = createSignal(false);
 
   return (
     <>
@@ -42,22 +20,23 @@ const CartFlyout: Component = () => {
               transition={{ duration: 0.2, easing: "ease-in-out" }}
               exit={{ x: 300 }}
             >
-              <p>This is the zip: {zip()}</p>
-              <p>
-                This is the gpSessionToken: {JSON.stringify(gpSessionToken())}
-              </p>
-              <p>
-                This is the stytchAuthResp: {JSON.stringify(stytchAuthResp())}
-              </p>
-              <p>This is the guestCartID: {guestCartID()}</p>
-              <p>This is the guestCart: {JSON.stringify(guestCart())}</p>
-
-              <p>This is the cartid: {cart()?.id}</p>
-
-              <Show when={!zip()}>
+              <p>Cart ID {cart()?.id}</p>
+              <p>ZIP: {cart()?.shipping?.zip ?? "Not Set"}</p>
+              _____
+              <Show when={showZipForm() || !cart()?.shipping?.zip}>
                 <ZipForm />
               </Show>
-              <button onclick={clearZip}>Change Zip</button>
+              <Show when={cart()?.shipping?.zip && !showZipForm()}>
+                {" "}
+                <button
+                  class="text-brand-green"
+                  onClick={() => {
+                    setShowZipForm(!showZipForm());
+                  }}
+                >
+                  Update zip
+                </button>
+              </Show>
             </Motion>
           </Show>
         </Presence>
