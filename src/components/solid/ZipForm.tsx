@@ -1,43 +1,35 @@
-import { createSignal } from "solid-js";
-import { type Component } from "solid-js";
-// import { $cart } from "@src/lib/store";
-// import { useStore } from "@nanostores/solid";
-// import type { GoodpluckCart } from "@src/lib/types";
+import { useStore } from "@nanostores/solid";
+import { $cart, $updateShipping } from "@src/lib/store";
+import { zipcodes } from "@src/lib/zipcodes";
+import { Show, createSignal, type Component } from "solid-js";
 
 export const ZipForm: Component = () => {
+  const [showWaitlist, setShowWaitlist] = createSignal(false);
   const [zipInput, setZipInput] = createSignal("");
-  const [error, setError] = createSignal("");
-  // const cart = useStore($cart);
+  const [zipError, setError] = createSignal("");
+  const { mutate, loading, error } = useStore($updateShipping)();
+  const cart = useStore($cart);
 
   // This function returns a Promise<void>, which we'll call from our event handler
   const submitForm = async (): Promise<void> => {
+    setError(""); // Clear any previous errors
     if (!/^\d{5}$/.test(zipInput())) {
       setError("Zip code must be 5 digits.");
-      // return;
+    } else if (!zipcodes[zipInput()]?.deliverable) {
+      console.log("show waitlist");
+      setShowWaitlist(true);
+    } else {
+      const id = cart()?.id;
+      if (!id) {
+        setError("Could not update zip, could not load cart");
+        return; // No cart ID, can't update shipping
+      }
+      const shipping = {
+        zip: zipInput(),
+      };
+      console.log("submitting", id, shipping);
+      await mutate({ id, shipping });
     }
-
-    // try {
-    //   const cartID = cart()?.data.id;
-    //   const response = await fetch("/api/cart", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ id: cartID, shipping: { zip: zipInput() } }),
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error("Failed to update cart");
-    //   } else {
-    //     const updatedCart = (await response.json()).result as GoodpluckCart;
-    //     $cart.set(updatedCart);
-    //   }
-
-    //   setError("");
-    //   // Handle successful submission here
-    // } catch (error) {
-    //   setError("An error occurred. Please try again.");
-    // }
   };
 
   const handleSubmit = (event: Event): void => {
@@ -46,24 +38,80 @@ export const ZipForm: Component = () => {
   };
 
   return (
-    <form class="flex flex-col gap-2" onSubmit={handleSubmit}>
-      <h1>Enter Zip</h1>
-      <p>First, let's confirm we deliver to you.</p>
-      <label for="zipInput">Zip</label>
-      <input
-        id="zipInput"
-        type="text"
-        placeholder="e.g. 48123"
-        value={zipInput()}
-        onInput={(e) => setZipInput(e.currentTarget.value)}
-      />
-      <button type="submit">Submit</button>
-      {error() && <p class="text-red-500">{error()}</p>}
-      <p>
-        Already have an account? <a href="/login">Login here</a>
-      </p>
-    </form>
+    <>
+      <Show
+        when={!showWaitlist()}
+        fallback={
+          <WaitlistForm
+            zip={zipInput()}
+            city={zipcodes[zipInput()]?.city}
+            setShowWaitlist={setShowWaitlist}
+          />
+        }
+      >
+        <form class="flex flex-col gap-2" onSubmit={handleSubmit}>
+          <h1>Enter Zip</h1>
+          <p>First, let's confirm we deliver to you.</p>
+          <label for="zipInput">Zip</label>
+          <input
+            id="zipInput"
+            type="text"
+            placeholder="e.g. 48123"
+            value={zipInput()}
+            onInput={(e) => setZipInput(e.currentTarget.value)}
+          />
+          <button type="submit" disabled={loading ?? false}>
+            Submit
+          </button>
+          {zipError() && <p class="text-red-500">{zipError()}</p>}
+          {error && (
+            <p class="text-red-500">
+              Couldn't update zip, please try again! {`${error}`}
+            </p>
+          )}
+          <p>
+            Already have an account? <a href="/login">Login here</a>
+          </p>
+        </form>
+      </Show>
+    </>
   );
 };
 
 export default ZipForm;
+
+interface WaitlistFormProps {
+  zip: string;
+  city: string | undefined;
+  setShowWaitlist: (value: any) => void;
+}
+
+const WaitlistForm: Component<WaitlistFormProps> = ({
+  zip,
+  city,
+  setShowWaitlist,
+}) => {
+  return (
+    <div class="flex flex-col gap-4 items-center">
+      <h1 class="text-2xl font-bold">{`Sorry, we don't serve ${city ?? zip} yet!`}</h1>
+      <p>We expanding to new areas after 30 people join the waitlist.</p>
+      <p>
+        Join{" "}
+        <a
+          class="underline hover:font-semibold hover:cursor-pointer text-brand-green"
+          href="https://airtable.com/appJVu70KyaMMofIb/shrs9WED21nlCwrrc"
+        >
+          our waitlist{" "}
+        </a>
+        and we'll let you know when we are in your neighborhood!
+      </p>
+      <button
+        onClick={() => {
+          setShowWaitlist(false);
+        }}
+      >
+        Try a different zip!
+      </button>
+    </div>
+  );
+};
