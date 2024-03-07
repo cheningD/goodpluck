@@ -26,16 +26,14 @@ const $swellAccountId = computed<string | null, typeof $stytchAuthResp>(
 const $isGuest = computed([$swellAccountId], (accountId) => !accountId);
 
 // Save an ID to the current cart
-export const $currentCartID = persistentAtom<string | undefined>(
-  "current_cart_id",
-);
+export const $currentCartID = persistentAtom<string>("current_cart_id");
 
 export const $currentCart = createFetcherStore<GoodpluckCart>([
   `/api/cart/`,
   $currentCartID,
 ]);
 
-export const $carts = createFetcherStore<GoodpluckCart[]>([`/api/cart/`]);
+export const $carts = createFetcherStore<GoodpluckCart[]>([`/api/cart`]);
 
 // If there is no currentCart, use first cart in the list of carts
 export const $cart = computed(
@@ -45,7 +43,7 @@ export const $cart = computed(
 
 // Save the category ID to the currentCartId store (https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events)
 onSet($cart, ({ newValue }) => {
-  if (newValue?.id) {
+  if (newValue?.id && newValue?.id !== $currentCartID.value) {
     $currentCartID.set(newValue.id);
   }
 });
@@ -83,6 +81,7 @@ export const $updateShipping = createMutatorStore<CartUpdate>(
 // Watch these stores and output changes to the console
 logger({
   Cart: $cart,
+  Carts: $carts,
   "Swell Acc ID": $swellAccountId,
   "Stytch Auth Resp": $stytchAuthResp,
   "Session Token": $gpSessionToken,

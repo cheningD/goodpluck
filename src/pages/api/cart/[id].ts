@@ -60,7 +60,7 @@ export const GET: APIRoute = async ({ params, request }) => {
       id,
     });
 
-    if (cart.errors) {
+    if (cart?.errors) {
       return new Response(JSON.stringify({ errors: cart.errors }), {
         status: 400,
         headers: {
@@ -85,6 +85,8 @@ export const GET: APIRoute = async ({ params, request }) => {
         },
       });
     }
+
+    console.log(`Cart not found for id: ${id}<----`);
 
     return new Response(JSON.stringify({ message: "Cart not found" }), {
       status: 404,

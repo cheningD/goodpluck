@@ -1,6 +1,7 @@
 import { swell } from "@src/lib/swell";
 import type { APIRoute } from "astro";
 import { getLoggedInSwellAccountID } from "../auth";
+import calculateCartDates from "@src/lib/swell/cart/dates";
 
 // Returns a list of valid carts
 export const GET: APIRoute = async ({ request }) => {
@@ -8,10 +9,20 @@ export const GET: APIRoute = async ({ request }) => {
 
   try {
     // If you are not logged in create a guest cart
+    const {
+      orderingWindowStartDate,
+      orderingWindowEndDate,
+      orderChargeDate,
+      deliveryDate,
+    } = calculateCartDates();
     if (!swellAccountID) {
       const cartResponse = await swell.post("/carts", {
         guest: true,
         account_logged_in: false,
+        orderingWindowStartDate,
+        orderingWindowEndDate,
+        orderChargeDate,
+        deliveryDate,
       });
 
       if (cartResponse.errors) {
@@ -40,8 +51,33 @@ export const GET: APIRoute = async ({ request }) => {
         page: 1,
       });
 
-      if (cartsResponse.errors) {
-        return new Response(JSON.stringify({ errors: cartsResponse.errors }), {
+      // If there are no valid carts for logged in user, create one
+      if (cartsResponse === null || cartsResponse.length === 0) {
+        const cartResponse = await swell.post("/carts", {
+          account_id: swellAccountID,
+          guest: false,
+          orderingWindowStartDate,
+          orderingWindowEndDate,
+          orderChargeDate,
+          deliveryDate,
+        });
+
+        if (cartResponse.errors) {
+          return new Response(JSON.stringify({ errors: cartResponse.errors }), {
+            status: 400,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        }
+
+        return new Response(JSON.stringify([cartResponse]), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } else if (cartsResponse.errors) {
+        return new Response(JSON.stringify({ errors: cartsResponse?.errors }), {
           status: 400,
           headers: {
             "Content-Type": "application/json",
