@@ -69,9 +69,6 @@ export const ZipForm: Component = () => {
               Couldn't update zip, please try again! {`${error}`}
             </p>
           )}
-          <p>
-            Already have an account? <a href="/login">Login here</a>
-          </p>
         </form>
       </Show>
     </>

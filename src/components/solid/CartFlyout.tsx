@@ -1,13 +1,13 @@
 import { useStore } from "@nanostores/solid";
-import { Show, createSignal, type Component } from "solid-js";
+import { Show, type Component } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 import { $cart, $isCartOpen } from "../../lib/store";
 import ZipForm from "./ZipForm";
+import Cart from "./Cart";
 
 const CartFlyout: Component = () => {
   const isCartOpen = useStore($isCartOpen);
   const cart = useStore($cart);
-  const [showZipForm, setShowZipForm] = createSignal(false);
 
   return (
     <>
@@ -15,27 +15,16 @@ const CartFlyout: Component = () => {
         <Presence exitBeforeEnter>
           <Show when={isCartOpen()}>
             <Motion
-              class="absolute right-0 w-80 p-4 bg-white  h-[calc(100vh-80px)]"
-              animate={{ x: [300, 0] }}
+              class="absolute right-0 w-[475px] p-4 bg-white  h-[calc(100vh-80px)]"
+              animate={{ x: [475, 0] }}
               transition={{ duration: 0.2, easing: "ease-in-out" }}
-              exit={{ x: 300 }}
+              exit={{ x: 475 }}
             >
               <p>Cart ID {cart()?.id}</p>
               <p>ZIP: {cart()?.shipping?.zip ?? "Not Set"}</p>
               _____
-              <Show when={showZipForm() || !cart()?.shipping?.zip}>
-                <ZipForm />
-              </Show>
-              <Show when={cart()?.shipping?.zip && !showZipForm()}>
-                {" "}
-                <button
-                  class="text-brand-green"
-                  onClick={() => {
-                    setShowZipForm(!showZipForm());
-                  }}
-                >
-                  Update zip
-                </button>
+              <Show when={cart()?.shipping?.zip} fallback={<ZipForm />}>
+                <Cart />
               </Show>
             </Motion>
           </Show>
