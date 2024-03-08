@@ -1,26 +1,54 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Products from "@components/solid/Products";
-import { initSwell } from "../../lib/swell-js";
+import { swell, type SwellCategoryResponse } from "@src/lib/swell";
+import type { Product } from "swell-js";
 
-const swell = initSwell(
-  import.meta.env.PUBLIC_SWELL_STORE_ID,
-  import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
-);
-
-const categories = await swell.categories.list({
-  limit: 100,
-  page: 1,
-});
 const { slug } = Astro.params;
 
-const currentCollection = categories.results.find(
-  (category: any) => category.slug === slug,
+// Get all the categories
+const listCategoriesResponse = await swell.get("/categories", {
+  sort: "order asc",
+  expand: "products:50", // Return no more than 50 products per category
+  fields: "name,slug,parent_id,products,sort,top_id,product.name",
+});
+
+const categories: SwellCategoryResponse[] = listCategoriesResponse.results;
+const categoriesWithProducts = categories.filter(
+  (cat) => cat.products.count > 0,
 );
-if (!currentCollection) return Astro.redirect("/404");
-const { name } = currentCollection;
+
+const currentCategory = categories.find((cat) => cat.slug === slug);
+
+if (!currentCategory) {
+  return Astro.redirect("/404");
+}
+
+const categoriesInCurrentHeirarchy = categoriesWithProducts.filter((cat) => {
+  if (currentCategory?.top_id) {
+    return cat.top_id === currentCategory.top_id;
+  } else {
+    return cat.top_id === currentCategory?.id;
+  }
+});
+
+// Get all products in this category heirarchy (e.g. get all products under "Produce")
+const listProductsResopnse = await swell.get("/products", {
+  categories: currentCategory.top_id,
+});
+const productIdToProductMap: Map<string, Product> = new Map(
+  listProductsResopnse.results.map((product: Product) => [product.id, product]),
+);
 ---
 
-<Layout title={`${name}`} currentCollection={currentCollection}>
-  <Products currentCategory={slug} client:only />
+<Layout
+  title={`${currentCategory?.name || "market"}`}
+  currentCategory={currentCategory}
+>
+  <Products
+    currentCategory={currentCategory}
+    categories={categoriesInCurrentHeirarchy}
+    productMap={productIdToProductMap}
+    client:only
+  />
 </Layout>
