@@ -21,7 +21,7 @@ const Products: Component<IProps> = ({
       const target = document.querySelector(hash);
       if (target) {
         const offset =
-          target.getBoundingClientRect().top + window.pageYOffset - 90; // Adjust the offset value (80) based on your navbar's height
+          target.getBoundingClientRect().top + window.scrollY - 170; // Adjust the offset value (80) based on your navbar's height
         window.scrollTo({
           top: offset,
           behavior: "smooth",
@@ -61,10 +61,15 @@ const Products: Component<IProps> = ({
                           decoding="async"
                         />
                       </Show>
+                      <p>{productMap.get(p.product_id)?.name}</p>
+                      <p>
+                        {`${productMap.get(p.product_id)?.unit_quantity} ${productMap.get(p.product_id)?.unit}`}
+                      </p>
+                      <p>${productMap.get(p.product_id)?.price}</p>
                       <button
                         aria-label="Add to Cart"
                         type="button"
-                        class="mt-2"
+                        class="mt-2 bg-brand-red text-white p-2 rounded"
                       >
                         Add
                       </button>
