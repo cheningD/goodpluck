@@ -44,8 +44,7 @@ const Breadcrumbs: Component<IProps> = ({
 
   // Breadcrumb preparation
   const breadcrumb = createMemo(() => {
-    const homeCategory = { id: "home", name: "Home", slug: "" };
-    const hierarchy = [homeCategory, ...currentCategoryHierarchy()];
+    const hierarchy: any[] = [...currentCategoryHierarchy()];
     if (product) {
       hierarchy.push({
         id: product.id ?? "",
