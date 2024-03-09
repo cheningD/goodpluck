@@ -52,7 +52,7 @@ export const GET: APIRoute = async ({ request }) => {
       });
 
       // If there are no valid carts for logged in user, create one
-      if (cartsResponse === null || cartsResponse.length === 0) {
+      if (cartsResponse === null || cartsResponse.results.length === 0) {
         const cartResponse = await swell.post("/carts", {
           account_id: swellAccountID,
           guest: false,

@@ -1,13 +1,14 @@
 import { useStore } from "@nanostores/solid";
 import { Show, type Component } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
-import { $cart, $isCartOpen } from "../../lib/store";
+import { $cart, $currentCartID, $isCartOpen } from "../../lib/store";
 import ZipForm from "./ZipForm";
 import Cart from "./Cart";
 
 const CartFlyout: Component = () => {
   const isCartOpen = useStore($isCartOpen);
   const cart = useStore($cart);
+  const cartId = useStore($currentCartID);
 
   return (
     <>
@@ -20,9 +21,10 @@ const CartFlyout: Component = () => {
               transition={{ duration: 0.2, easing: "ease-in-out" }}
               exit={{ x: 475 }}
             >
-              <p>Cart ID {cart()?.id}</p>
+              <p>Cart ID (from session storage): {cartId()}</p>
+              <p>Cart ID: {cart()?.id}</p>
               <p>ZIP: {cart()?.shipping?.zip ?? "Not Set"}</p>
-              <p>Cart: {cart()?.account_logged_in ?? "Guest"}</p>
+              <p>Guest: {cart()?.account_id ? "No" : "Yes"}</p>
               _____
               <Show when={cart()?.shipping?.zip} fallback={<ZipForm />}>
                 <Cart />

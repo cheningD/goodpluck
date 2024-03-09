@@ -1,8 +1,8 @@
 import { isLoggedIn, stytch } from "@src/lib/stytch";
+import type { SessionsAuthenticateResponse } from "stytch";
 import type { APIRoute } from "astro";
-import { swell } from "@src/lib/swell";
 
-async function getSessionToken(request: Request): Promise<string | null> {
+const getSessionToken = async (request: Request): Promise<string | null> => {
   const cookieHeader = request.headers.get("cookie");
   if (!cookieHeader) {
     return null;
@@ -12,11 +12,11 @@ async function getSessionToken(request: Request): Promise<string | null> {
     cookieHeader.split(";").map((cookie) => cookie.trim().split("=")),
   );
   return cookies.gp_session_token || null;
-}
+};
 
-async function getAuthResponse(
+const getAuthResponse = async (
   sessionToken: string | null,
-): Promise<any | null> {
+): Promise<SessionsAuthenticateResponse | null> => {
   if (!sessionToken) {
     return null;
   }
@@ -25,7 +25,7 @@ async function getAuthResponse(
   return authResp && authResp.status_code >= 200 && authResp.status_code < 300
     ? authResp
     : null;
-}
+};
 
 export const isAuthenticated = async (request: Request): Promise<boolean> => {
   const authResp = await getAuthResponse(await getSessionToken(request));
@@ -36,7 +36,9 @@ export const getLoggedInSwellAccountID = async (
   request: Request,
 ): Promise<string | null> => {
   const authResp = await getAuthResponse(await getSessionToken(request));
-  return authResp ? authResp.user.trusted_metadata?.swell_id || null : null;
+  return authResp
+    ? authResp.user.trusted_metadata?.swell_account_id || null
+    : null;
 };
 
 export const GET: APIRoute = async ({ request }) => {
@@ -56,46 +58,6 @@ export const GET: APIRoute = async ({ request }) => {
   return new Response(JSON.stringify({ message: "User is not logged in" }), {
     status: 401,
   });
-};
-
-export const POST: APIRoute = async ({ request }) => {
-  try {
-    const {
-      email,
-      firstName,
-      lastName,
-      phone,
-      address,
-      apartment,
-      city,
-      state,
-      zip,
-      consent,
-    } = await request.json();
-
-    const account = await swell.post("/accounts", {
-      email,
-      first_name: firstName,
-      last_name: lastName,
-      phone,
-      email_optin: consent,
-      type: "individual",
-      shipping: { address1: address, address2: apartment, city, state, zip },
-    });
-
-    return new Response(
-      JSON.stringify({
-        message: "Account successfully created",
-        accountId: account.id,
-      }),
-      { status: 200 },
-    );
-  } catch (error) {
-    return new Response(
-      JSON.stringify({ message: "Account creation failed", error }),
-      { status: 500 },
-    );
-  }
 };
 
 export const PUT: APIRoute = async ({ request }) => {
