@@ -1,5 +1,9 @@
 import { useStore } from "@nanostores/solid";
-import { $createSwellAccount, $stytchAuthResp } from "@src/lib/store";
+import {
+  $createSwellAccount,
+  $currentCartID,
+  $stytchAuthResp,
+} from "@src/lib/store";
 import { createSignal, type Component } from "solid-js";
 
 export const PersonalInfoForm: Component = () => {
@@ -18,7 +22,6 @@ export const PersonalInfoForm: Component = () => {
   const [error, setError] = createSignal<string | null>(null);
   const { mutate, loading } = useStore($createSwellAccount)();
 
-  // todo: validate all fields
   const validateForm = (): void => {
     const optionalFields = ["apartment", "consent"];
     const allReqFieldsProvided = Object.entries(form()).every(
@@ -35,6 +38,7 @@ export const PersonalInfoForm: Component = () => {
       ...form(),
       email: authResp().data?.user.emails[0]?.email ?? "",
     });
+    $currentCartID.set(""); // hacky way to force a cart id refresh (in session storage)
     window.location.assign("/join/payment-info");
   };
 
