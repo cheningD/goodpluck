@@ -1,14 +1,13 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { swell } from "../../lib/swell";
-import type { Product } from "swell-js";
 import Breadcrumbs from "@components/solid/Breadcrumbs";
 import ProductCartActions from "@components/solid/ProductCartActions";
-import type { WeightOption } from "@src/lib/types";
+import type { GoodpluckProduct, WeightOption } from "@src/lib/types";
 
 const { slug } = Astro.params;
 
-const product: Product = await swell.get(`/products/${slug}`);
+const product: GoodpluckProduct = await swell.get(`/products/${slug}`);
 
 if (!product) {
   return Astro.redirect("/404");
