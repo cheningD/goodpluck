@@ -1,25 +1,16 @@
 import swellnode from "swell-node";
-import { type Category } from "swell-js";
+import type { GoodpluckCategory } from "../types";
 
 export const swell = swellnode.init(
   import.meta.env.PUBLIC_SWELL_STORE_ID,
   import.meta.env.SWELL_SECRET_KEY,
 );
 
-interface ProductExpansion {
-  count: number;
-}
-
-export interface SwellCategoryResponse extends Omit<Category, "products"> {
-  products: ProductExpansion;
-  id: string;
-}
-
 // Only get categories that contain products
 export const getCategories = async (
   limit: number = 50,
   page: number = 1,
-): Promise<SwellCategoryResponse[]> => {
+): Promise<GoodpluckCategory[]> => {
   const resp = await swell.get("/categories", {
     limit,
     page,
@@ -34,13 +25,13 @@ export const getCategories = async (
   return categories;
 };
 const getObjectsWithProductsAndAncestors = (
-  categories: SwellCategoryResponse[],
-): SwellCategoryResponse[] => {
+  categories: GoodpluckCategory[],
+): GoodpluckCategory[] => {
   // Create a Map for fast lookup of categories by their id
   const map = new Map(categories.map((category) => [category.id, category]));
 
   // Use a Set to store the result and avoid duplicates
-  const result = new Set<SwellCategoryResponse>();
+  const result = new Set<GoodpluckCategory>();
 
   // Recursive function to get all ancestors of a category
   const getAncestors = (id: string): void => {

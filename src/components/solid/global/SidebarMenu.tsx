@@ -1,24 +1,24 @@
+import type { GoodpluckCategory } from "@src/lib/types";
 import { For, Show, createMemo, type Component, type JSX } from "solid-js";
-import type { Category } from "swell-js";
 
 interface SidebarMenuProps {
   categorySlug: string;
-  categories: Category[];
+  categories: GoodpluckCategory[];
 }
 
-interface EnhancedCategory extends Category {
+interface EnhancedCategory extends GoodpluckCategory {
   isSelected: boolean;
   subcategories: EnhancedCategory[];
 }
 
 const structureCategories = (
-  categories: Category[],
+  categories: GoodpluckCategory[],
   selectedSlug: string,
 ): EnhancedCategory[] => {
   const categoryMap: Record<string, EnhancedCategory> = categories.reduce(
     (map, category) => ({
       ...map,
-      [category.id as string]: {
+      [category.id]: {
         ...category,
         isSelected: category.slug === selectedSlug,
         subcategories: [],
@@ -31,7 +31,7 @@ const structureCategories = (
   categories.forEach((category) => {
     if (category.parent_id) {
       const parent = categoryMap[category.parent_id];
-      const child = categoryMap[category.id as string];
+      const child = categoryMap[category.id];
       if (!parent || !child) {
         return;
       }

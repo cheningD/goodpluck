@@ -1,11 +1,10 @@
-import type { SwellCategoryResponse } from "@src/lib/swell";
+import type { GoodpluckProduct, GoodpluckCategory } from "@src/lib/types";
 import { For, Show, type Component, onMount } from "solid-js";
-import type { Product } from "swell-js";
 
 interface IProps {
-  currentCategory: SwellCategoryResponse;
-  categories: SwellCategoryResponse[];
-  productMap: Map<string, Product>;
+  currentCategory?: GoodpluckCategory;
+  categories: GoodpluckCategory[];
+  productMap: Map<string, GoodpluckProduct>;
 }
 
 const Products: Component<IProps> = ({
@@ -14,6 +13,9 @@ const Products: Component<IProps> = ({
   productMap,
 }) => {
   onMount(() => {
+    if (!currentCategory) {
+      return;
+    }
     // Scroll to the currentCategory
     const hash = `#${currentCategory.slug}`;
     if (hash) {
