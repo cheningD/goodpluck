@@ -2,7 +2,7 @@ import type { GoodpluckProduct, GoodpluckCategory } from "@src/lib/types";
 import { For, Show, type Component, onMount } from "solid-js";
 
 interface IProps {
-  currentCategory?: GoodpluckCategory;
+  currentCategory?: GoodpluckCategory | undefined;
   categories: GoodpluckCategory[];
   productMap: Map<string, GoodpluckProduct>;
 }

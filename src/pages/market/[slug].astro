@@ -6,52 +6,79 @@ import type { GoodpluckCategory, GoodpluckProduct } from "@src/lib/types";
 
 const { slug } = Astro.params;
 
-// Get all the categories
-const listCategoriesResponse = await swell.get("/categories", {
-  sort: "order asc",
-  expand: "products:50", // Return no more than 50 products per category
-  fields: "name,slug,parent_id,products,sort,top_id,product.name",
-});
+let categories: GoodpluckCategory[] = [];
+let currentCategory: GoodpluckCategory | undefined;
+let categoriesInCurrentHeirarchy: GoodpluckCategory[] = [];
+let productIdToProductMap: Map<string, GoodpluckProduct> = new Map();
 
-const categories: GoodpluckCategory[] = listCategoriesResponse.results;
-const categoriesWithProducts = categories.filter(
-  (cat) => cat.products.count > 0,
-);
+try {
+  // Get all the categories
+  const listCategoriesResponse = await swell.get("/categories", {
+    sort: "order asc",
+    expand: "products:50", // Return no more than 50 products per category
+    fields: "name,slug,parent_id,products,sort,top_id,product.name",
+  });
 
-const currentCategory = categories.find((cat) => cat.slug === slug);
-
-if (!currentCategory) {
-  return Astro.redirect("/404");
-}
-
-const categoriesInCurrentHeirarchy = categoriesWithProducts.filter((cat) => {
-  if (currentCategory?.top_id) {
-    return cat.top_id === currentCategory.top_id;
-  } else {
-    return cat.top_id === currentCategory?.id;
+  if (!listCategoriesResponse.results) {
+    throw new Error("No categories found");
   }
-});
 
-// Get all products in this category heirarchy (e.g. get all products under "Produce")
-const listProductsResopnse = await swell.get("/products", {
-  categories: currentCategory.top_id,
-});
-const productIdToProductMap: Map<string, GoodpluckProduct> = new Map(
-  listProductsResopnse.results.map((product: GoodpluckProduct) => [
-    product.id,
-    product,
-  ]),
-);
+  categories = listCategoriesResponse.results;
+  const categoriesWithProducts = categories.filter(
+    (cat) => cat.products.count > 0,
+  );
+
+  currentCategory = categories.find((cat) => cat.slug === slug);
+
+  if (!currentCategory) {
+    return Astro.redirect("/404");
+  }
+
+  categoriesInCurrentHeirarchy = categoriesWithProducts.filter((cat) => {
+    if (currentCategory?.top_id) {
+      return cat.top_id === currentCategory.top_id;
+    } else {
+      return cat.top_id === currentCategory?.id;
+    }
+  });
+
+  // Get all products in this category heirarchy (e.g. get all products under "Produce")
+  const listProductsResponse = await swell.get("/products", {
+    categories: currentCategory.top_id,
+  });
+
+  if (!listProductsResponse.results) {
+    throw new Error("No products found");
+  }
+
+  productIdToProductMap = new Map(
+    listProductsResponse.results.map((product: GoodpluckProduct) => [
+      product.id,
+      product,
+    ]),
+  );
+} catch (error) {
+  console.error("Error fetching data from Swell:", error);
+}
 ---
 
 <Layout
   title={`${currentCategory?.name || "market"}`}
   currentCategory={currentCategory}
 >
-  <Products
-    currentCategory={currentCategory}
-    categories={categoriesInCurrentHeirarchy}
-    productMap={productIdToProductMap}
-    client:only
-  />
+  {
+    categories && productIdToProductMap.size && (
+      <Products
+        currentCategory={currentCategory}
+        categories={categoriesInCurrentHeirarchy}
+        productMap={productIdToProductMap}
+        client:only
+      />
+    )
+  }
+  {
+    (!categories || !productIdToProductMap.size) && (
+      <p>Could not load products</p>
+    )
+  }
 </Layout>
