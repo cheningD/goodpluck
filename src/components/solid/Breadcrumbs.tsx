@@ -1,21 +1,21 @@
+import type { GoodpluckCategory, GoodpluckProduct } from "@src/lib/types";
 import { Show, For, createMemo, type Component } from "solid-js";
-import type { Category, Product } from "swell-js";
 
 interface IProps {
-  categories: Category[];
+  categories: GoodpluckCategory[];
   collectionId: string;
-  product?: Product;
+  product?: GoodpluckProduct;
 }
 
 const findCategoryById = (
-  categories: Category[],
+  categories: GoodpluckCategory[],
   id: string,
-): Category | null => categories.find((col) => col.id === id) ?? null;
+): GoodpluckCategory | null => categories.find((col) => col.id === id) ?? null;
 
 const buildCategoryHierarchy = (
-  categories: Category[],
+  categories: GoodpluckCategory[],
   categoryId: string,
-): Category[] => {
+): GoodpluckCategory[] => {
   const hierarchy = [];
   let currentCategory = findCategoryById(categories, categoryId);
 

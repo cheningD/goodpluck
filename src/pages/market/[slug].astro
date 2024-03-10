@@ -1,8 +1,8 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Products from "@components/solid/Products";
-import { swell, type SwellCategoryResponse } from "@src/lib/swell";
-import type { Product } from "swell-js";
+import { swell } from "@src/lib/swell";
+import type { GoodpluckCategory, GoodpluckProduct } from "@src/lib/types";
 
 const { slug } = Astro.params;
 
@@ -13,7 +13,7 @@ const listCategoriesResponse = await swell.get("/categories", {
   fields: "name,slug,parent_id,products,sort,top_id,product.name",
 });
 
-const categories: SwellCategoryResponse[] = listCategoriesResponse.results;
+const categories: GoodpluckCategory[] = listCategoriesResponse.results;
 const categoriesWithProducts = categories.filter(
   (cat) => cat.products.count > 0,
 );
@@ -36,8 +36,11 @@ const categoriesInCurrentHeirarchy = categoriesWithProducts.filter((cat) => {
 const listProductsResopnse = await swell.get("/products", {
   categories: currentCategory.top_id,
 });
-const productIdToProductMap: Map<string, Product> = new Map(
-  listProductsResopnse.results.map((product: Product) => [product.id, product]),
+const productIdToProductMap: Map<string, GoodpluckProduct> = new Map(
+  listProductsResopnse.results.map((product: GoodpluckProduct) => [
+    product.id,
+    product,
+  ]),
 );
 ---
 

@@ -1,6 +1,6 @@
-import { initSwell } from "@src/lib/swell-js";
+import swell from "swell-js";
 
-const swell = initSwell(
+swell.init(
   import.meta.env.PUBLIC_SWELL_STORE_ID,
   import.meta.env.PUBLIC_SWELL_PUBLIC_KEY,
 );
@@ -20,7 +20,7 @@ const createStripeCardElement = (): void => {
     if (checkoutId) {
       void (async () => {
         await swell.cart.recover(checkoutId);
-        swell.payment.createElements({
+        await swell.payment.createElements({
           card: {
             elementId: "card-element",
             options: {
@@ -61,7 +61,11 @@ const appendTokenAndSubmitForm = async (
   form: HTMLFormElement,
 ): Promise<void> => {
   try {
-    const token: string = (await swell.cart.get()).billing.card.token;
+    const resp = await swell?.cart?.get();
+    const token: string | undefined = resp?.billing?.card?.token;
+    if (!token) {
+      throw new Error("Token not found.");
+    }
     const tokenInput: HTMLInputElement = document.createElement("input");
     tokenInput.type = "hidden";
     tokenInput.name = "token";
