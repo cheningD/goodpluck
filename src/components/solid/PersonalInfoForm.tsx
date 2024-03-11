@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/solid";
 import {
   $createSwellAccount,
-  $currentCartID,
+  // $currentCartID,
   $stytchAuthResp,
 } from "@src/lib/store";
 import { createSignal, type Component } from "solid-js";
@@ -17,11 +17,16 @@ export const PersonalInfoForm: Component = () => {
     city: "",
     state: "",
     zip: "",
-    consent: false, // optional
+    consent: false,
   });
   const [error, setError] = createSignal<string | null>(null);
-  const { mutate, loading } = useStore($createSwellAccount)();
+  const {
+    mutate: createSwellAccount,
+    loading: mutatorLoading,
+    error: mutatorError,
+  } = useStore($createSwellAccount)();
 
+  // todo: add validation for each field
   const validateForm = (): void => {
     const optionalFields = ["apartment", "consent"];
     const allReqFieldsProvided = Object.entries(form()).every(
@@ -34,12 +39,12 @@ export const PersonalInfoForm: Component = () => {
 
   const submitForm = async (): Promise<void> => {
     validateForm();
-    await mutate({
+    await createSwellAccount({
       ...form(),
       email: authResp().data?.user.emails[0]?.email ?? "",
     });
-    $currentCartID.set(""); // hacky way to force a cart id refresh (in session storage)
-    window.location.assign("/join/payment-info");
+    // $currentCartID.set(""); // hacky way to force a cart id refresh (in session storage)
+    // window.location.assign("/join/payment-info");
   };
 
   const handleSubmit = (e: Event): void => {
@@ -49,7 +54,18 @@ export const PersonalInfoForm: Component = () => {
 
   const updateField = (fieldName: string) => (e: Event) => {
     const target = e.target as HTMLInputElement;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    let value = target.type === "checkbox" ? target.checked : target.value;
+
+    if (fieldName === "phone") {
+      value = value.toString().replace(/\D/g, "");
+      value = value.replace(/^(\d{3})(\d{3})(\d{4})$/, "($1) $2-$3");
+    }
+
+    if (fieldName === "zip") {
+      value = value.toString().replace(/\D/g, "");
+      value = value.replace(/^(\d{5})(\d{4})$/, "$1-$2");
+    }
+
     setForm((prev) => ({ ...prev, [fieldName]: value }));
   };
 
@@ -58,6 +74,11 @@ export const PersonalInfoForm: Component = () => {
       {error() && (
         <div class="mb-8 p-4 font-medium text-rose-600 bg-rose-50 rounded border border-rose-500">
           {error()}
+        </div>
+      )}
+      {mutatorError && (
+        <div class="mb-8 p-4 font-medium text-rose-600 bg-rose-50 rounded border border-rose-500">
+          {mutatorError}
         </div>
       )}
       <h2 class="text-xl font-semibold mb-4">Personal Info</h2>
@@ -138,18 +159,17 @@ export const PersonalInfoForm: Component = () => {
                 id="phone"
                 value={form().phone}
                 autocomplete="tel-national"
-                placeholder="555 555 1234"
-                class="peer mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none invalid:[&:not(:placeholder-shown):not(:focus)]:border-rose-500"
-                pattern="[0-9]{10}"
-                maxlength="10"
+                placeholder="(555) 555-1234"
+                class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                pattern="^\(\d{3}\) \d{3}-\d{4}$"
                 aria-describedby="phone-error phone-description"
                 onChange={updateField("phone")}
               />
               <span
                 id="phone-error"
-                class="error-message hidden text-sm text-rose-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
+                class="error-message hidden text-sm text-rose-500"
               >
-                Please enter a valid phone number, e.g., 555 555 1234.
+                Please enter a valid phone number, e.g., (555) 555-1234.
               </span>
               <span id="phone-description" class="sr-only">
                 Please enter your phone number.
@@ -169,7 +189,7 @@ export const PersonalInfoForm: Component = () => {
                 name="address"
                 id="address"
                 value={form().address}
-                // todo: see why mapbox isnt working
+                // todo: see why mapbox isn't working
                 // autocomplete="address-line1"
                 class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                 aria-describedby="address-description"
@@ -217,7 +237,7 @@ export const PersonalInfoForm: Component = () => {
                 id="city"
                 value={form().city}
                 autocomplete="address-level2"
-                class="peer mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+                class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                 aria-describedby="city-description"
                 onChange={updateField("city")}
               />
@@ -267,6 +287,7 @@ export const PersonalInfoForm: Component = () => {
                   autocomplete="postal-code"
                   class="mb-1 text-base py-3 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
                   aria-describedby="zip-description"
+                  pattern="^\d{5}(-\d{4})?$"
                   onChange={updateField("zip")}
                 />
                 <span id="zip-description" class="sr-only">
@@ -302,7 +323,7 @@ export const PersonalInfoForm: Component = () => {
             type="submit"
             class="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"
             aria-label="Continue to next step"
-            disabled={loading ?? false}
+            disabled={mutatorLoading ?? false}
           >
             Continue{""}
             <span class="sr-only">

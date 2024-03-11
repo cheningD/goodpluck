@@ -11,7 +11,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@assets/*": ["src/assets/*"],
       "@src/*": ["src/*"]
-    }
+    },
+    "strict": true
   },
   "exclude": ["dist", "tests", "vitest.config.ts"]
 }

@@ -77,25 +77,28 @@ export const PUT: APIRoute = async ({ request }) => {
     });
   }
 
-  try {
-    await stytch.users.update({
-      user_id: authResp.user.user_id,
-      trusted_metadata: { swell_account_id: swellAccountId },
-    });
+  const updateAccountResp = await stytch.users.update({
+    user_id: authResp.user.user_id,
+    trusted_metadata: { swell_account_id: swellAccountId },
+  });
 
-    return new Response(
-      JSON.stringify({
-        message: "User's swell account ID updated successfully",
-      }),
-      { status: 200 },
-    );
-  } catch (error) {
+  if (
+    updateAccountResp.status_code < 200 ||
+    updateAccountResp.status_code >= 300
+  ) {
     return new Response(
       JSON.stringify({
         message: "Failed to update user's swell account ID",
-        error,
+        error: updateAccountResp,
       }),
       { status: 500 },
     );
   }
+
+  return new Response(
+    JSON.stringify({
+      message: "User's swell account ID updated successfully",
+    }),
+    { status: 200 },
+  );
 };

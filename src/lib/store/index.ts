@@ -82,20 +82,35 @@ export const $updateShipping = createMutatorStore<CartUpdate>(
 export const $createSwellAccount = createMutatorStore<SwellAccount>(
   async ({ data, invalidate }) => {
     // Create a new account in Swell
-    const response = await fetch("/api/account/", {
+    const createAccountResp = await fetch("/api/account/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
 
+    const createAccountData = await createAccountResp.json();
+
+    if (!createAccountResp.ok) {
+      console.log("error here: ", createAccountData.message); // ok
+      throw new Error(createAccountData.message);
+    }
+
     // Update the stytch user with the new account ID
-    const swellAccountId = (await response.json()).account.id;
+    const swellAccountId = createAccountData.account.id;
     invalidate("/api/auth");
-    return await fetch("/api/auth/", {
+    const updateStytchResp = await fetch("/api/auth/", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ swellAccountId }),
     });
+
+    const updateStytchData = await updateStytchResp.json();
+
+    if (!updateStytchResp.ok) {
+      throw new Error(updateStytchData.message);
+    }
+
+    return updateStytchData;
   },
 );
 
