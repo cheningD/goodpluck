@@ -91,7 +91,6 @@ export const $createSwellAccount = createMutatorStore<SwellAccount>(
     const createAccountData = await createAccountResp.json();
 
     if (!createAccountResp.ok) {
-      console.log("error here: ", createAccountData.message); // ok
       throw new Error(createAccountData.message);
     }
 
