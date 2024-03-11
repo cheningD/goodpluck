@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/solid";
 import {
   $createSwellAccount,
-  // $currentCartID,
+  $currentCartID,
   $stytchAuthResp,
 } from "@src/lib/store";
 import { createSignal, type Component } from "solid-js";
@@ -38,13 +38,14 @@ export const PersonalInfoForm: Component = () => {
   };
 
   const submitForm = async (): Promise<void> => {
+    setError("");
     validateForm();
     await createSwellAccount({
       ...form(),
       email: authResp().data?.user.emails[0]?.email ?? "",
     });
-    // $currentCartID.set(""); // hacky way to force a cart id refresh (in session storage)
-    // window.location.assign("/join/payment-info");
+    $currentCartID.set(""); // hacky way to force a cart id refresh (in session storage)
+    window.location.assign("/join/payment-info");
   };
 
   const handleSubmit = (e: Event): void => {
@@ -77,8 +78,8 @@ export const PersonalInfoForm: Component = () => {
         </div>
       )}
       {mutatorError && (
-        <div class="mb-8 p-4 font-medium text-rose-600 bg-rose-50 rounded border border-rose-500">
-          {mutatorError}
+        <div class="mb-8 p-4 font-medium  text-rose-600 bg-rose-50 rounded border border-rose-500">
+          {mutatorError.message ?? mutatorError}
         </div>
       )}
       <h2 class="text-xl font-semibold mb-4">Personal Info</h2>
