@@ -1,5 +1,5 @@
-import swellnode from "swell-node";
 import type { GoodpluckCategory } from "../types";
+import swellnode from "swell-node";
 
 export const swell = swellnode.init(
   import.meta.env.PUBLIC_SWELL_STORE_ID,

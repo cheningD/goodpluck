@@ -1,12 +1,14 @@
+import { getLoggedInSwellAccountID, getSessionToken } from "../auth";
+
 import type { APIRoute } from "astro";
+import { SwellCartUpdateSchema } from "@src/schemas/zod";
 import { swell } from "@src/lib/swell";
-import { getLoggedInSwellAccountID } from "../auth";
 
 // Todo: this needs to be authenticated and args validated (https://zod.dev/?id=strict)
 // Todo: verify that the cart belongs to the user, if logged in
 export const PUT: APIRoute = async ({ request }) => {
   try {
-    const cartUpdateJSON = await request.json();
+    const cartUpdateJSON = SwellCartUpdateSchema.parse(await request.json());
 
     const updatedCart = await swell.put(
       `/carts/${cartUpdateJSON.id}`,
@@ -52,8 +54,6 @@ export const PUT: APIRoute = async ({ request }) => {
 };
 
 export const GET: APIRoute = async ({ params, request }) => {
-  const swellAccountID = await getLoggedInSwellAccountID(request);
-
   const { id } = params;
   try {
     const cart = await swell.get(`/carts/${id}`, {
@@ -67,6 +67,12 @@ export const GET: APIRoute = async ({ params, request }) => {
           "Content-Type": "application/json",
         },
       });
+    }
+
+    let swellAccountID;
+    const sessionToken = await getSessionToken(request);
+    if (sessionToken) {
+      swellAccountID = await getLoggedInSwellAccountID(sessionToken);
     }
 
     if (swellAccountID && cart?.account_id === swellAccountID) {
@@ -85,8 +91,6 @@ export const GET: APIRoute = async ({ params, request }) => {
         },
       });
     }
-
-    console.log(`Cart not found for id: ${id}<----`);
 
     return new Response(JSON.stringify({ message: "Cart not found" }), {
       status: 404,

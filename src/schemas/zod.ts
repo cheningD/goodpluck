@@ -43,3 +43,46 @@ export const SwellAccountSchema = z
     consent: z.boolean(),
   })
   .strict();
+
+export const SwellCartUpdateSchema = z
+  .object({
+    id: z.string(), // Swell cart ID
+    items: z
+      .array(
+        z.object({
+          // These are the only fields we allow the user to set
+          product_id: z.string(), // Swell product ID
+          quantity: z
+            .number()
+            .int()
+            .gte(1, { message: "Minimum quantity is 1" })
+            .lte(15, { message: "Maximum quantity is 15" }),
+        }),
+      )
+      .optional(),
+    shipping: z
+      .object({
+        address1: z.string().max(100),
+        address2: z.string().max(100),
+        city: z.string().max(50),
+        country: z
+          .string()
+          .length(2)
+          .regex(/^[A-Z]{2}$/),
+        default: z.boolean(),
+        first_name: z.string().max(50),
+        last_name: z.string().max(50),
+        name: z.string().max(100),
+        phone: z.string().max(20),
+        price: z.number(),
+        service: z.string().max(50),
+        service_name: z.string().max(50),
+        state: z.string().max(50),
+        zip: z.string().regex(/^\d{5}(-\d{4})?$/, {
+          message: "Invalid ZIP code, e.g., 12345 or 12345-6789",
+        }),
+        pickup: z.boolean(),
+      })
+      .partial(),
+  })
+  .strict();
