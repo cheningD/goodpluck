@@ -1,6 +1,7 @@
 import { isLoggedIn, stytch } from "@src/lib/stytch";
-import type { SessionsAuthenticateResponse } from "stytch";
+import type { SessionsAuthenticateResponse, UsersUpdateRequest } from "stytch";
 import type { APIRoute } from "astro";
+import { stytchUserUpdateSchema } from "@src/schemas/zod";
 
 const getSessionToken = async (request: Request): Promise<string | null> => {
   const cookieHeader = request.headers.get("cookie");
@@ -69,17 +70,42 @@ export const PUT: APIRoute = async ({ request }) => {
     });
   }
 
-  const { swellAccountId } = await request.json();
+  const updateData = stytchUserUpdateSchema.parse(
+    await request.json(),
+  ) as Partial<UsersUpdateRequest>;
 
-  if (!swellAccountId) {
-    return new Response(JSON.stringify({ message: "Account ID is required" }), {
-      status: 400,
-    });
+  // Retrieve the current user data from Stytch
+  const currentUserResp = await stytch.users.get({
+    user_id: authResp.user.user_id,
+  });
+  if (currentUserResp.status_code < 200 || currentUserResp.status_code >= 300) {
+    return new Response(
+      JSON.stringify({
+        message: "Failed to retrieve current user data",
+        error: currentUserResp,
+      }),
+      { status: 500 },
+    );
   }
 
+  // Merge update data with existing metadata
+  if (updateData.trusted_metadata) {
+    updateData.trusted_metadata = {
+      ...currentUserResp.trusted_metadata,
+      ...updateData.trusted_metadata,
+    };
+  }
+  if (updateData.untrusted_metadata) {
+    updateData.untrusted_metadata = {
+      ...currentUserResp.untrusted_metadata,
+      ...updateData.untrusted_metadata,
+    };
+  }
+
+  // Update the user data
   const updateAccountResp = await stytch.users.update({
     user_id: authResp.user.user_id,
-    trusted_metadata: { swell_account_id: swellAccountId },
+    ...updateData,
   });
 
   if (
@@ -88,7 +114,7 @@ export const PUT: APIRoute = async ({ request }) => {
   ) {
     return new Response(
       JSON.stringify({
-        message: "Failed to update user's swell account ID",
+        message: "Failed to update user",
         error: updateAccountResp,
       }),
       { status: 500 },
@@ -97,7 +123,7 @@ export const PUT: APIRoute = async ({ request }) => {
 
   return new Response(
     JSON.stringify({
-      message: "User's swell account ID updated successfully",
+      message: "User updated successfully",
     }),
     { status: 200 },
   );

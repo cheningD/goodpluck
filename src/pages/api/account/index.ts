@@ -1,26 +1,8 @@
 import type { APIRoute } from "astro";
 import { swell } from "@src/lib/swell";
-import { ZodError, z } from "zod";
+import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-
-const SwellAccountSchema = z
-  .object({
-    email: z.string().email(), // already validated by Stytch when first creating the account (`/join/`)
-    firstName: z.string(),
-    lastName: z.string(),
-    phone: z.string().regex(/^\(\d{3}\) \d{3}-\d{4}$/, {
-      message: "Please enter a valid phone number, e.g., (555) 555-1234",
-    }),
-    address: z.string(),
-    apartment: z.string().optional(),
-    city: z.string(),
-    state: z.string(),
-    zip: z.string().regex(/^\d{5}(-\d{4})?$/, {
-      message: "Invalid ZIP code, e.g., 12345 or 12345-6789",
-    }),
-    consent: z.boolean(),
-  })
-  .strict();
+import { SwellAccountSchema } from "@src/schemas/zod";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
