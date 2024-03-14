@@ -1,6 +1,7 @@
 import type { Card, Account } from "swell-js";
 import { swell } from "../index";
-import { getCartFromSession } from "../cart";
+import { getOrCreateCarts } from "../cart";
+import { getLoggedInSwellAccountID } from "@pages/api/auth";
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => ({
   value: (i + 1).toString().padStart(2, "0"),
@@ -85,7 +86,9 @@ const updateBillingInfo = async (
   });
 
   // Update cart with new billing information
-  const cart = await getCartFromSession(sessionToken);
+  const swellAccountID = await getLoggedInSwellAccountID(sessionToken);
+  const carts = await getOrCreateCarts(swellAccountID);
+  const cart = carts[0];
   if (cart) {
     await swell.put(`/carts/${cart.id}`, {
       billing: {

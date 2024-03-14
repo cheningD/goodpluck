@@ -1,9 +1,12 @@
-import { isLoggedIn, stytch } from "@src/lib/stytch";
 import type { SessionsAuthenticateResponse, UsersUpdateRequest } from "stytch";
+import { isLoggedIn, stytch } from "@src/lib/stytch";
+
 import type { APIRoute } from "astro";
 import { stytchUserUpdateSchema } from "@src/schemas/zod";
 
-const getSessionToken = async (request: Request): Promise<string | null> => {
+export const getSessionToken = async (
+  request: Request,
+): Promise<string | null> => {
   const cookieHeader = request.headers.get("cookie");
   if (!cookieHeader) {
     return null;
@@ -34,12 +37,10 @@ export const isAuthenticated = async (request: Request): Promise<boolean> => {
 };
 
 export const getLoggedInSwellAccountID = async (
-  request: Request,
-): Promise<string | null> => {
-  const authResp = await getAuthResponse(await getSessionToken(request));
-  return authResp
-    ? authResp.user.trusted_metadata?.swell_account_id || null
-    : null;
+  sessionToken: string,
+): Promise<string | undefined> => {
+  const authResp = await getAuthResponse(sessionToken);
+  return authResp?.user.trusted_metadata?.swell_account_id;
 };
 
 export const GET: APIRoute = async ({ request }) => {

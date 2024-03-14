@@ -1,11 +1,12 @@
 ---
-import { getCartFromSession } from "@src/lib/swell/cart";
+import { getOrCreateCarts } from "@src/lib/swell/cart";
 import Layout from "../../layouts/Layout.astro";
 import { stytch } from "@src/lib/stytch";
 import { swell } from "@src/lib/swell";
 import { updateBillingInfo } from "@src/lib/swell/card";
 import MapboxAutofill from "@components/solid/MapboxAutofill";
 import Spinner from "@components/solid/Spinner";
+import { getLoggedInSwellAccountID } from "@pages/api/auth";
 
 const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 
@@ -39,7 +40,9 @@ if (!account) {
 }
 
 // Needed to recover the cart on the client side
-const cart = await getCartFromSession(sessionToken as string);
+const swellAccountID = await getLoggedInSwellAccountID(sessionToken);
+const carts = await getOrCreateCarts(swellAccountID);
+const cart = carts[0];
 const checkoutId = cart?.checkout_id;
 
 if (Astro.request.method === "POST") {
