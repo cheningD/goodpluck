@@ -65,7 +65,9 @@ export const PersonalInfoForm: Component = () => {
     const updateStytchResp = await fetch("/api/auth/", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ swellAccountId }),
+      body: JSON.stringify({
+        trusted_metadata: { swellAccountId },
+      }),
     });
 
     if (!updateStytchResp.ok) {
