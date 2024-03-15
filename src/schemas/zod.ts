@@ -47,19 +47,6 @@ export const SwellAccountSchema = z
 export const SwellCartUpdateSchema = z
   .object({
     id: z.string(), // Swell cart ID
-    items: z
-      .array(
-        z.object({
-          // These are the only fields we allow the user to set
-          product_id: z.string(), // Swell product ID
-          quantity: z
-            .number()
-            .int()
-            .gte(1, { message: "Minimum quantity is 1" })
-            .lte(15, { message: "Maximum quantity is 15" }),
-        }),
-      )
-      .optional(),
     shipping: z
       .object({
         address1: z.string().max(100),
@@ -83,6 +70,29 @@ export const SwellCartUpdateSchema = z
         }),
         pickup: z.boolean(),
       })
-      .partial(),
+      .partial()
+      .optional(),
   })
   .strict();
+
+export const SwellEditCartItemsUpdateSchema = z.object({
+  product_id: z.string(), // Swell product ID
+  quantity: z
+    .number()
+    .int()
+    .gte(1, { message: "Minimum quantity is 1" })
+    .lte(15, { message: "Maximum quantity is 15" }),
+});
+
+export const SwellEditCartItemsSchema = z
+  .object({
+    cartId: z.string(), // Swell cart ID
+    items: z.array(SwellEditCartItemsUpdateSchema),
+  })
+  .strict();
+
+export type SwellCartUpdate = z.infer<typeof SwellCartUpdateSchema>;
+export type SwellCartItemsPutArgs = z.infer<typeof SwellEditCartItemsSchema>;
+export type SwellCartItemsUpdate = z.infer<
+  typeof SwellEditCartItemsUpdateSchema
+>;

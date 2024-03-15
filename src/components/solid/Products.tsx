@@ -1,5 +1,6 @@
-import type { GoodpluckProduct, GoodpluckCategory } from "@src/lib/types";
-import { For, Show, type Component, onMount } from "solid-js";
+import type { GoodpluckCategory, GoodpluckProduct } from "@src/lib/types";
+import { For, type Component, onMount } from "solid-js";
+import Product from "./Product";
 
 interface IProps {
   currentCategory?: GoodpluckCategory | undefined;
@@ -42,42 +43,13 @@ const Products: Component<IProps> = ({
             </h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <For each={category.products.results}>
-                {(p) => (
-                  <div>
-                    <a href={`/product/${productMap.get(p.product_id)?.slug}`}>
-                      <Show
-                        when={
-                          productMap.get(p.product_id)?.images !== undefined
-                        }
-                      >
-                        <img
-                          class="h-[200px] w-full object-cover"
-                          alt={`Image of ${productMap.get(p.product_id)?.name}`}
-                          src={
-                            productMap.get(p.product_id)?.images?.[0]?.file
-                              ?.url ?? "via.placeholder.com/300x200"
-                          }
-                          width="300"
-                          height="200"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </Show>
-                      <p>{productMap.get(p.product_id)?.name}</p>
-                      <p>
-                        {`${productMap.get(p.product_id)?.unit_quantity} ${productMap.get(p.product_id)?.unit}`}
-                      </p>
-                      <p>${productMap.get(p.product_id)?.price}</p>
-                      <button
-                        aria-label="Add to Cart"
-                        type="button"
-                        class="mt-2 bg-brand-red text-white p-2 rounded"
-                      >
-                        Add
-                      </button>
-                    </a>
-                  </div>
-                )}
+                {(p) => {
+                  const product = productMap.get(p.product_id);
+                  if (!product) {
+                    return null;
+                  }
+                  return <Product product={product} />;
+                }}
               </For>
             </div>
           </div>

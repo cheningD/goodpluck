@@ -6,6 +6,10 @@ import { type Account as SwellAccount } from "swell-js";
 import { logger } from "@nanostores/logger";
 import { type SessionsAuthenticateResponse } from "stytch";
 import { createFetcherStore, createMutatorStore } from "./fetcher";
+import {
+  type SwellCartItemsPutArgs,
+  type SwellCartUpdate,
+} from "@src/schemas/zod";
 
 // Track the session token from Stytch
 export const $gpSessionToken = persistentAtom<string | undefined>(
@@ -51,25 +55,23 @@ onSet($cart, ({ newValue }) => {
 
 export const $isCartOpen = atom<boolean>(false);
 
-interface ShippingInfo {
-  name?: string;
-  address1?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-  phone?: string;
-}
-
-interface CartUpdate {
-  id: string;
-  shipping: ShippingInfo;
-}
-
-export const $updateShipping = createMutatorStore<CartUpdate>(
+export const $updateShipping = createMutatorStore<SwellCartUpdate>(
   async ({ data, invalidate }) => {
     invalidate(`/api/cart/${data.id}`);
     return await fetch(`/api/cart/${data.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  },
+);
+
+export const $updateCartItems = createMutatorStore<SwellCartItemsPutArgs>(
+  async ({ data, invalidate }) => {
+    invalidate(`/api/cart/${data.cartId}`);
+    return await fetch(`/api/cart/items/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

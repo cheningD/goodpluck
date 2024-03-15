@@ -9,7 +9,13 @@ export interface WeightOption {
   name: string;
 }
 
-export interface GoodpluckProduct extends Product {
+export interface GoodpluckProduct extends Omit<Product, "id"> {
+  unit_quantity: number;
+  unit: string;
+  id: string;
+}
+
+export interface GoodpluckProductFromCategory extends Omit<Product, "id"> {
   unit_quantity: number;
   unit: string;
   product_id: string;
@@ -17,7 +23,7 @@ export interface GoodpluckProduct extends Product {
 
 interface ProductExpansion {
   count: number;
-  results: GoodpluckProduct[];
+  results: GoodpluckProductFromCategory[];
 }
 
 export interface GoodpluckCategory extends Omit<Category, "products"> {
