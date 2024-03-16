@@ -1,8 +1,18 @@
 import { useStore } from "@nanostores/solid";
-import { $currentCartID, $stytchAuthResp } from "@src/lib/store";
+import {
+  $createSwellAccount,
+  $currentCartID,
+  $stytchAuthResp,
+} from "@src/lib/store";
 import { createSignal, type Component } from "solid-js";
 import { TextInput } from "./TextInput";
 import Spinner from "./Spinner";
+import {
+  validatePhone,
+  validateZip,
+  phoneErrorMessage,
+  zipErrorMessage,
+} from "@src/utils/validation";
 
 export const PersonalInfoForm: Component = () => {
   const authResp = useStore($stytchAuthResp);
@@ -17,93 +27,34 @@ export const PersonalInfoForm: Component = () => {
     zip: "",
     emailOptin: false,
   });
+  const [loading, setLoading] = createSignal(false);
   const [errors, setErrors] = createSignal<
     Record<string, string | null | undefined>
   >({});
-  const [loading, setLoading] = createSignal(false);
-
-  const validatePhone = (phone: string): boolean => {
-    // eslint-disable-next-line no-useless-escape
-    return /^(?:\(\d{3}\)|\d{3})[\s.\-]?\d{3}[\s.\-]?\d{4}$|^\d{10}$/.test(
-      phone,
-    );
-  };
-  const validateZip = (zip: string): boolean => /^\d{5}(-\d{4})?$/.test(zip);
   const setError = (field: string, message: string | null): void => {
     setErrors((prev: Record<string, string | null | undefined>) => {
       return { ...prev, [field]: message };
     });
   };
+  const createSwellAccountMutation = useStore($createSwellAccount)();
+  const { mutate: createSwellAccount } = createSwellAccountMutation;
+  const getMutatorErrors = (): any => createSwellAccountMutation.error;
 
   const validateForm = (): void => {
     const { apartment, emailOptin, ...requiredFields } = form();
-    if (
-      Object.values(requiredFields).some((value) => !value) ||
-      Object.keys(errors()).length > 0
-    ) {
+    if (Object.values(requiredFields).some((value) => !value)) {
       throw new Error("Please fill out all required fields.");
     }
   };
 
   const submitForm = async (): Promise<void> => {
-    setErrors({});
     setLoading(true);
     validateForm();
-
-    const {
-      firstName,
-      lastName,
-      phone,
-      address,
-      apartment,
-      city,
-      state,
-      zip,
-      emailOptin,
-    } = form();
-
-    const shipping = {
-      address1: address,
-      address2: apartment,
-      city,
-      state,
-      zip,
-    };
-    const email = authResp().data?.user.emails[0]?.email;
-    const createAccountResp = await fetch("/api/account/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        phone,
-        emailOptin,
-        email,
-        shipping,
-      }),
+    await createSwellAccount({
+      ...form(),
+      email: authResp().data?.user.emails[0]?.email ?? "",
     });
-
-    if (!createAccountResp.ok) {
-      const { message } = await createAccountResp.json();
-      throw new Error(message);
-    }
-
-    const {
-      account: { id: swellAccountId },
-    } = await createAccountResp.json();
-    const updateStytchResp = await fetch("/api/auth/", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        trusted_metadata: { swellAccountId },
-      }),
-    });
-
-    if (!updateStytchResp.ok) {
-      const { message } = await updateStytchResp.json();
-      throw new Error(message);
-    }
-
+    if (getMutatorErrors()) throw new Error(getMutatorErrors().message);
     $currentCartID.set("");
     window.location.assign("/join/payment-info");
   };
@@ -111,38 +62,25 @@ export const PersonalInfoForm: Component = () => {
   const handleSubmit = (e: Event): void => {
     e.preventDefault();
     submitForm().catch((err) => {
-      setErrors({ general: err.message });
       setLoading(false);
+      setErrors((prev) => ({
+        ...prev,
+        general: getMutatorErrors()?.message ?? err.message,
+      }));
     });
   };
 
   const handleInputChange = (fieldName: string) => (e: Event) => {
     const target = e.target as HTMLInputElement;
     const value = target.type === "checkbox" ? target.checked : target.value;
-
-    // Update form state on every input
     setForm((prev) => ({ ...prev, [fieldName]: value }));
 
-    // Validation checks
     if (fieldName === "phone" && !validatePhone(value as string)) {
-      setError(
-        "phone",
-        "Please enter a valid phone number, e.g. (555) 555-1234.",
-      );
-      return;
-    }
-
-    if (fieldName === "zip" && !validateZip(value as string)) {
-      setError(
-        "zip",
-        "Please enter a valid ZIP code, e.g. 12345 or 12345-6789.",
-      );
-      return;
-    }
-
-    // Clear error if value is not empty
-    if (value) {
-      setError(fieldName, null);
+      setErrors((prev) => ({ ...prev, phone: phoneErrorMessage }));
+    } else if (fieldName === "zip" && !validateZip(value as string)) {
+      setErrors((prev) => ({ ...prev, zip: zipErrorMessage }));
+    } else {
+      setErrors((prev) => ({ ...prev, [fieldName]: null }));
     }
   };
 
@@ -319,7 +257,7 @@ export const PersonalInfoForm: Component = () => {
           </div>
         </fieldset>
 
-        <div class="flex justify-end" id="continue-btn-container">
+        <div class="flex justify-end " id="continue-btn-container">
           <button
             type="submit"
             class="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"

@@ -11,10 +11,10 @@ export const POST: APIRoute = async ({ request }) => {
     );
     const account = await swell.post("/accounts", {
       email: validatedAccountData.email,
-      first_name: validatedAccountData.firstName,
-      last_name: validatedAccountData.lastName,
+      first_name: validatedAccountData.first_name,
+      last_name: validatedAccountData.last_name,
       phone: validatedAccountData.phone,
-      email_optin: validatedAccountData.emailOptin,
+      email_optin: validatedAccountData.email_optin,
       type: "individual",
       shipping: {
         address1: validatedAccountData.shipping?.address1,
