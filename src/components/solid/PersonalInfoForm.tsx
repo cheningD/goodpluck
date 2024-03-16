@@ -75,6 +75,10 @@ export const PersonalInfoForm: Component = () => {
     const value = target.type === "checkbox" ? target.checked : target.value;
     setForm((prev) => ({ ...prev, [fieldName]: value }));
 
+    // Update form state on every input
+    setForm((prev) => ({ ...prev, [fieldName]: value }));
+
+    // Validation checks
     if (fieldName === "phone" && !validatePhone(value as string)) {
       setErrors((prev) => ({ ...prev, phone: phoneErrorMessage }));
     } else if (fieldName === "zip" && !validateZip(value as string)) {
