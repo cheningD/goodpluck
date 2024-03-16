@@ -2,13 +2,13 @@ import { z } from "zod";
 import { getYear } from "date-fns";
 
 const addressFields = {
-  accountAddressId: z.string().optional(),
+  account_address_id: z.string().optional(),
   address1: z.string().optional(),
   address2: z.string().optional(),
   city: z.string().optional(),
   country: z.string().length(2).optional(),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
   name: z.string().optional(),
   phone: z
     .string()
@@ -31,7 +31,7 @@ const AddressSchema = z
     active: z.boolean().optional(),
     company: z.string().optional(),
     fingerprint: z.string().optional(),
-    parentId: z.string().optional(),
+    parent_id: z.string().optional(),
   })
   .strict(); // prevents additional properties from being added to the object
 
@@ -39,10 +39,10 @@ const CartShippingSchema = z
   .object({
     ...addressFields,
     service: z.string().optional(),
-    serviceName: z.string().optional(),
+    service_name: z.string().optional(),
     price: z.number().optional(),
     default: z.boolean().optional(),
-    accountAddress: z.any().optional(),
+    account_address: z.any().optional(),
     pickup: z.boolean().optional(),
   })
   .strict();
@@ -50,20 +50,20 @@ const CartShippingSchema = z
 const CardSchema = z
   .object({
     active: z.boolean().optional(),
-    addressCheck: z.enum(["unchecked", "pass", "fail"]).optional(),
+    address_check: z.enum(["unchecked", "pass", "fail"]).optional(),
     billing: z.any().optional(), // Replace z.any() with the Billing schema
     brand: z.string().optional(),
-    cvcCheck: z.enum(["unchecked", "pass", "fail"]).optional(),
-    expMonth: z.number().min(1).max(12).optional(),
-    expYear: z.number().min(getYear(new Date())).optional(),
+    cvc_check: z.enum(["unchecked", "pass", "fail"]).optional(),
+    exp_month: z.number().min(1).max(12).optional(),
+    exp_year: z.number().min(getYear(new Date())).optional(),
     fingerprint: z.string().optional(),
     gateway: z.string().optional(),
     last4: z.string().length(4).optional(),
     parent: z.any().optional(), // Replace z.any() with the Account schema
-    parentId: z.string().optional(),
+    parent_id: z.string().optional(),
     test: z.boolean().optional(),
     token: z.string(),
-    zipCheck: z.enum(["unchecked", "pass", "fail"]).optional(),
+    zip_check: z.enum(["unchecked", "pass", "fail"]).optional(),
   })
   .strict();
 
@@ -73,8 +73,8 @@ const BillingSchema = z
     method: z.enum(["card", "account"]).optional(), // or any one of the manual methods defined in payment settings
     card: CardSchema.omit({ billing: true }).optional(),
     default: z.boolean().optional(),
-    accountCardId: z.string().optional(),
-    accountCard: z.any().optional(),
+    account_card_id: z.string().optional(),
+    account_card: z.any().optional(),
     amazon: z.any().optional(),
     paypal: z.any().optional(),
     intent: z.any().optional(),
@@ -83,35 +83,35 @@ const BillingSchema = z
 
 const CartItem = z
   .object({
-    bundleItems: z.array(z.object({})).optional(),
+    bundle_items: z.array(z.object({})).optional(),
     delivery: z
       .enum(["shipment", "giftcard", "subscription"])
       .nullable()
       .optional(),
     description: z.string().optional(),
-    discountEach: z.number().optional(),
-    discountTotal: z.number().optional(),
+    discount_each: z.number().optional(),
+    discount_total: z.number().optional(),
     discounts: z.array(z.object({})).optional(), // Replace {} with the Discount schema
     metadata: z.object({}).optional(),
     options: z.array(z.object({})).optional(), // Replace {} with the CartItemOption schema
-    origPrice: z.number().optional(),
+    orig_price: z.number().optional(),
     price: z.number().optional(),
-    priceTotal: z.number().optional(),
-    productId: z.string().optional(),
-    productName: z.string().optional(),
+    price_total: z.number().optional(),
+    product_id: z.string().optional(),
+    product_name: z.string().optional(),
     product: z.object({}).optional(), // Replace {} with the Product schema
     quantity: z.number().optional(),
-    shipmentLocation: z.string().optional(),
-    shipmentWeight: z.number().optional(),
-    subscriptionInterval: z.string().optional(),
-    subscriptionIntervalCount: z.number().optional(),
-    subscriptionTrialDays: z.number().optional(),
-    subscriptionPaid: z.boolean().optional(),
-    taxEach: z.number().optional(),
-    taxTotal: z.number().optional(),
+    shipment_location: z.string().optional(),
+    shipment_weight: z.number().optional(),
+    subscription_interval: z.string().optional(),
+    subscription_interval_count: z.number().optional(),
+    subscription_trial_days: z.number().optional(),
+    subscription_paid: z.boolean().optional(),
+    tax_each: z.number().optional(),
+    tax_total: z.number().optional(),
     taxes: z.array(z.object({})).optional(), // Replace {} with the Tax schema
-    trialPriceTotal: z.number().optional(),
-    variantId: z.string().optional(),
+    trial_price_total: z.number().optional(),
+    variant_id: z.string().optional(),
     variant: z.object({}).optional(), // Replace {} with the Variant schema
   })
   .strict();
@@ -125,17 +125,17 @@ const SwellAccountSchema = z
     dateFirstOrder: z.date().optional(),
     dateLastOrder: z.date().optional(),
     email: z.string().email().optional(),
-    emailOptin: z.boolean().optional(),
-    firstName: z.string().optional(),
+    email_optin: z.boolean().optional(),
+    first_name: z.string().optional(),
     group: z.string().optional(),
-    lastName: z.string().optional(),
+    last_name: z.string().optional(),
     metadata: z.object({}).optional(),
     name: z.string().optional(),
     orders: z.array(z.object({})).optional(), // Replace {} with the Order schema
-    orderCount: z.number().optional(),
-    orderValue: z.number().optional(),
+    order_count: z.number().optional(),
+    order_value: z.number().optional(),
     password: z.string().optional(),
-    passwordResetUrl: z.string().optional(),
+    password_reset_url: z.string().optional(),
     phone: z
       .string()
       .regex(/^\(\d{3}\) \d{3}-\d{4}$/, {
@@ -145,7 +145,7 @@ const SwellAccountSchema = z
     shipping: AddressSchema.optional(),
     subscriptions: z.array(z.object({})).optional(), // Replace {} with the Subscription schema
     type: z.enum(["individual", "business"]).optional(),
-    vatNumber: z.string().optional(),
+    vat_number: z.string().optional(),
   })
   .strict();
 
@@ -165,25 +165,25 @@ const SwellCartSchema = z
     checkoutUrl: z.string().optional(),
     comments: z.string().optional(),
     coupon: z.object({}).optional(), // Replace {} with the Coupon schema
-    couponCode: z.string().optional(),
-    couponId: z.string().optional(),
+    coupon_code: z.string().optional(),
+    coupon_id: z.string().optional(),
     currency: z.string().optional(),
-    currencyRate: z.number().optional(),
-    dateAbandoned: z.string().optional(),
-    dateAbandonedNext: z.string().optional(),
-    dateWebhookFirstFailed: z.string().optional(),
-    dateWebhookLastSucceeded: z.string().optional(),
-    discountTotal: z.number().optional(),
+    currency_rate: z.number().optional(),
+    date_abandoned: z.string().optional(),
+    date_abandoned_next: z.string().optional(),
+    date_webhook_first_failed: z.string().optional(),
+    date_webhook_last_succeeded: z.string().optional(),
+    discount_total: z.number().optional(),
     discounts: z.array(z.object({})).optional(), // Replace {} with the Discount schema
-    displayCurrency: z.string().optional(),
-    displayLocale: z.string().optional(),
+    display_currency: z.string().optional(),
+    display_locale: z.string().optional(),
     gift: z.boolean().optional(),
-    giftMessage: z.string().optional(),
-    giftcardDelivery: z.boolean().optional(),
-    giftcardTotal: z.number().optional(),
+    gift_message: z.string().optional(),
+    giftcard_delivery: z.boolean().optional(),
+    giftcard_total: z.number().optional(),
     giftcards: z.array(z.object({})).optional(), // Replace {} with the CartGiftCardItem schema
-    captureTotal: z.number().optional(),
-    grandTotal: z.number().optional(),
+    capture_total: z.number().optional(),
+    grand_total: z.number().optional(),
     guest: z.boolean().optional(),
     itemDiscount: z.number().optional(),
     itemQuantity: z.number().optional(),
@@ -195,13 +195,13 @@ const SwellCartSchema = z
     notes: z.string().optional(),
     number: z.string().optional(),
     order: z.object({}).optional(), // Replace {} with the Order schema
-    orderId: z.string().optional(),
-    origPrice: z.number().optional(),
-    promotionIds: z.array(z.any()).optional(),
+    order_id: z.string().optional(),
+    orig_price: z.number().optional(),
+    promotion_ids: z.array(z.any()).optional(),
     promotions: z.array(z.object({})).optional(), // Replace {} with the Promotion schema
-    purchaseLinkIds: z.array(z.string()).optional(),
-    purchaseLinks: z.array(z.object({})).optional(), // Replace {} with the PurchaseLink schema
-    purchaseLinksErrors: z.array(z.object({})).optional(),
+    purchase_link_ids: z.array(z.string()).optional(),
+    purchase_links: z.array(z.object({})).optional(), // Replace {} with the PurchaseLink schema
+    purchase_links_errors: z.array(z.object({})).optional(),
     recovered: z.boolean().optional(),
     schedule: z.object({}).optional(),
     shipmentDelivery: z.boolean().optional(),
@@ -215,19 +215,19 @@ const SwellCartSchema = z
     status: z
       .enum(["active", "converted", "abandoned", "recovered"])
       .optional(),
-    subTotal: z.number().optional(),
+    sub_total: z.number().optional(),
     subscription: z.object({}).optional(), // Replace {} with the Subscription schema
-    subscriptionDelivery: z.boolean().optional(),
-    subscriptionId: z.string().optional(),
-    targetOrder: z.object({}).optional(), // Replace {} with the Order schema
-    targetOrderId: z.string().optional(),
-    taxIncludedTotal: z.number().optional(),
-    taxTotal: z.number().optional(),
+    subscription_delivery: z.boolean().optional(),
+    subscription_id: z.string().optional(),
+    target_order: z.object({}).optional(), // Replace {} with the Order schema
+    target_order_id: z.string().optional(),
+    tax_included_total: z.number().optional(),
+    tax_total: z.number().optional(),
     taxes: z.array(z.object({})).optional(), // Replace {} with the Tax schema
-    taxesFixed: z.boolean().optional(),
-    webhookAttemptsFailed: z.number().optional(),
-    webhookResponse: z.string().optional(),
-    webhookStatus: z.number().optional(),
+    taxes_fixed: z.boolean().optional(),
+    webhook_attempts_failed: z.number().optional(),
+    webhook_response: z.string().optional(),
+    webhook_status: z.number().optional(),
   })
   .strict();
 

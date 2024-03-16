@@ -1,7 +1,6 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
 import type { GoodpluckCart } from "../types";
-import { type Account as SwellAccount } from "swell-js";
 
 import { logger } from "@nanostores/logger";
 import { type SessionsAuthenticateResponse } from "stytch";
@@ -9,7 +8,7 @@ import { createFetcherStore, createMutatorStore } from "./fetcher";
 import {
   type SwellCartItemsPutArgs,
   type SwellCartUpdate,
-} from "@src/schemas/zod";
+} from "@src/schemas/zod/swell";
 
 // Track the session token from Stytch
 export const $gpSessionToken = persistentAtom<string | undefined>(
@@ -89,34 +88,62 @@ export const $updateCartItems = createMutatorStore<SwellCartItemsPutArgs>(
   },
 );
 
-export const $createSwellAccount = createMutatorStore<SwellAccount>(
+interface AccountCreate {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  address: string;
+  apartment: string;
+  city: string;
+  state: string;
+  zip: string;
+  emailOptin: boolean;
+  email: string;
+}
+
+export const $createSwellAccount = createMutatorStore<AccountCreate>(
   async ({ data, invalidate }) => {
-    // Create a new account in Swell
     const createAccountResp = await fetch("/api/account/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        phone: data.phone,
+        email_optin: data.emailOptin,
+        email: data.email,
+        shipping: {
+          address1: data.address,
+          address2: data.apartment,
+          city: data.city,
+          state: data.state,
+          zip: data.zip,
+        },
+      }),
     });
 
-    const createAccountData = await createAccountResp.json();
-
     if (!createAccountResp.ok) {
-      throw new Error(createAccountData.message);
+      const { message } = await createAccountResp.json();
+      throw new Error(message);
     }
 
-    // Update the stytch user with the new account ID
-    const swellAccountId = createAccountData.account.id;
+    const {
+      account: { id },
+    } = await createAccountResp.json();
     invalidate("/api/auth");
     const updateStytchResp = await fetch("/api/auth/", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ swellAccountId }),
+      body: JSON.stringify({
+        trusted_metadata: { swell_account_id: id },
+      }),
     });
 
     const updateStytchData = await updateStytchResp.json();
 
     if (!updateStytchResp.ok) {
-      throw new Error(updateStytchData.message);
+      const { message } = await updateStytchResp.json();
+      throw new Error(message);
     }
 
     return updateStytchData;
