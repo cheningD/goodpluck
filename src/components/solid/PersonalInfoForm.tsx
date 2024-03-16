@@ -15,7 +15,7 @@ export const PersonalInfoForm: Component = () => {
     city: "",
     state: "",
     zip: "",
-    consent: false,
+    emailOptin: false,
   });
   const [errors, setErrors] = createSignal<
     Record<string, string | null | undefined>
@@ -36,8 +36,11 @@ export const PersonalInfoForm: Component = () => {
   };
 
   const validateForm = (): void => {
-    const { apartment, consent, ...requiredFields } = form();
-    if (Object.values(requiredFields).some((value) => !value)) {
+    const { apartment, emailOptin, ...requiredFields } = form();
+    if (
+      Object.values(requiredFields).some((value) => !value) ||
+      Object.keys(errors()).length > 0
+    ) {
       throw new Error("Please fill out all required fields.");
     }
   };
@@ -47,11 +50,37 @@ export const PersonalInfoForm: Component = () => {
     setLoading(true);
     validateForm();
 
-    const email = authResp().data?.user.emails[0]?.email ?? "";
+    const {
+      firstName,
+      lastName,
+      phone,
+      address,
+      apartment,
+      city,
+      state,
+      zip,
+      emailOptin,
+    } = form();
+
+    const shipping = {
+      address1: address,
+      address2: apartment,
+      city,
+      state,
+      zip,
+    };
+    const email = authResp().data?.user.emails[0]?.email;
     const createAccountResp = await fetch("/api/account/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form(), email }),
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        phone,
+        emailOptin,
+        email,
+        shipping,
+      }),
     });
 
     if (!createAccountResp.ok) {
@@ -91,6 +120,10 @@ export const PersonalInfoForm: Component = () => {
     const target = e.target as HTMLInputElement;
     const value = target.type === "checkbox" ? target.checked : target.value;
 
+    // Update form state on every input
+    setForm((prev) => ({ ...prev, [fieldName]: value }));
+
+    // Validation checks
     if (fieldName === "phone" && !validatePhone(value as string)) {
       setError(
         "phone",
@@ -107,13 +140,10 @@ export const PersonalInfoForm: Component = () => {
       return;
     }
 
-    if (!value) {
-      setError(fieldName, " "); // Forces only the border to turn red without showing an error message
-      return;
+    // Clear error if value is not empty
+    if (value) {
+      setError(fieldName, null);
     }
-
-    setForm((prev) => ({ ...prev, [fieldName]: value }));
-    setError(fieldName, null); // Clear any existing error
   };
 
   return (
@@ -136,7 +166,12 @@ export const PersonalInfoForm: Component = () => {
                 value={form().firstName}
                 autocomplete="given-name"
                 placeholder="Kale"
-                onBlur={handleInputChange("firstName")}
+                onChange={handleInputChange("firstName")}
+                onBlur={() => {
+                  if (!form().firstName) {
+                    setError("firstName", " "); // Forces only the border to turn red without showing an error message
+                  }
+                }}
                 onFocus={() =>
                   setErrors((prev) => ({ ...prev, firstName: null }))
                 }
@@ -149,7 +184,12 @@ export const PersonalInfoForm: Component = () => {
                 value={form().lastName}
                 autocomplete="family-name"
                 placeholder="Greens"
-                onBlur={handleInputChange("lastName")}
+                onChange={handleInputChange("lastName")}
+                onBlur={() => {
+                  if (!form().lastName) {
+                    setError("lastName", " "); // Forces only the border to turn red without showing an error message
+                  }
+                }}
                 onFocus={() =>
                   setErrors((prev) => ({ ...prev, lastName: null }))
                 }
@@ -164,8 +204,15 @@ export const PersonalInfoForm: Component = () => {
               value={form().phone}
               autocomplete="tel-national"
               placeholder="(555) 555-1234"
-              pattern="^(?:\(\d{3}\)|\d{3})[\s.\-]?\d{3}[\s.\-]?\d{4}$|^\d{10}$"
-              onBlur={handleInputChange("phone")}
+              onChange={handleInputChange("phone")}
+              onBlur={() => {
+                if (!form().phone) {
+                  setError(
+                    "phone",
+                    "Please enter a valid phone number, e.g. (555) 555-1234.",
+                  );
+                }
+              }}
               onFocus={() => setErrors((prev) => ({ ...prev, phone: null }))}
               error={errors().phone}
             />
@@ -178,7 +225,12 @@ export const PersonalInfoForm: Component = () => {
               label="Street Address"
               value={form().address}
               // autocomplete="address-line1"
-              onBlur={handleInputChange("address")}
+              onChange={handleInputChange("address")}
+              onBlur={() => {
+                if (!form().address) {
+                  setError("address", " "); // Forces only the border to turn red without showing an error message
+                }
+              }}
               onFocus={() => setErrors((prev) => ({ ...prev, address: null }))}
               error={errors().address}
             />
@@ -198,7 +250,12 @@ export const PersonalInfoForm: Component = () => {
               label="City"
               value={form().city}
               autocomplete="address-level2"
-              onBlur={handleInputChange("city")}
+              onChange={handleInputChange("city")}
+              onBlur={() => {
+                if (!form().city) {
+                  setError("city", " "); // Forces only the border to turn red without showing an error message
+                }
+              }}
               onFocus={() => setErrors((prev) => ({ ...prev, city: null }))}
               error={errors().city}
             />
@@ -210,7 +267,12 @@ export const PersonalInfoForm: Component = () => {
                 label="State"
                 value={form().state}
                 autocomplete="address-level1"
-                onBlur={handleInputChange("state")}
+                onChange={handleInputChange("state")}
+                onBlur={() => {
+                  if (!form().state) {
+                    setError("state", " "); // Forces only the border to turn red without showing an error message
+                  }
+                }}
                 onFocus={() => setErrors((prev) => ({ ...prev, state: null }))}
                 error={errors().state}
               />
@@ -221,31 +283,38 @@ export const PersonalInfoForm: Component = () => {
                 label="ZIP Code"
                 value={form().zip}
                 autocomplete="postal-code"
-                pattern="^\d{5}(-\d{4})?$"
-                onBlur={handleInputChange("zip")}
+                onChange={handleInputChange("zip")}
+                onBlur={() => {
+                  if (!form().zip) {
+                    setError(
+                      "zip",
+                      "Please enter a valid ZIP code, e.g. 12345 or 12345-6789.",
+                    );
+                  }
+                }}
                 onFocus={() => setErrors((prev) => ({ ...prev, zip: null }))}
                 error={errors().zip}
               />
             </div>
           </div>
 
-          <div id="consent-container" class="flex mb-9">
+          <div id="email-optin-container" class="flex mb-9">
             <input
               type="checkbox"
-              name="consent"
-              id="consent"
-              checked={form().consent}
+              name="emailOptin"
+              id="emailOptin"
+              checked={form().emailOptin}
               class="text-green-700 focus:ring-green-800 border border-zinc-400 rounded mt-0.5 cursor-pointer"
-              aria-describedby="consent-description"
-              onBlur={handleInputChange("consent")}
+              aria-describedby="email-optin-description"
+              onChange={handleInputChange("emailOptin")}
             />
-            <label for="consent" class="ml-2 text-sm text-gray-500">
+            <label for="emailOptin" class="ml-2 text-sm text-gray-500">
               Get text alerts on sales, orders and important account
               information.
             </label>
-            <span id="consent-description" class="sr-only">
+            <span id="email-optin-description" class="sr-only">
               Check this box if you agree to receive order updates and other
-              communications to the provided phone number.
+              communications to the provided email.
             </span>
           </div>
         </fieldset>

@@ -2,7 +2,7 @@ import type { SessionsAuthenticateResponse, UsersUpdateRequest } from "stytch";
 import { isLoggedIn, stytch } from "@src/lib/stytch";
 
 import type { APIRoute } from "astro";
-import { stytchUserUpdateSchema } from "@src/schemas/zod";
+import { updateStytchUserSchema } from "@src/schemas/zod/stytch";
 
 export const getSessionToken = async (
   request: Request,
@@ -71,7 +71,7 @@ export const PUT: APIRoute = async ({ request }) => {
     });
   }
 
-  const updateData = stytchUserUpdateSchema.parse(
+  const updateData = updateStytchUserSchema.parse(
     await request.json(),
   ) as Partial<UsersUpdateRequest>;
 
