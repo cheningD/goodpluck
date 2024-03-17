@@ -21,7 +21,7 @@ export const $stytchAuthResp = createFetcherStore<SessionsAuthenticateResponse>(
 );
 
 // Extract the Swell account ID from the stytch user's trusted metadata
-const $swellAccountId = computed<string | null, typeof $stytchAuthResp>(
+export const $swellAccountId = computed<string | null, typeof $stytchAuthResp>(
   $stytchAuthResp,
   (response) => response.data?.user?.trusted_metadata?.swell_account_id ?? null,
 );
@@ -139,6 +139,21 @@ export const $createSwellAccount = createMutatorStore<AccountCreate>(
     }
 
     return updateStytchData;
+  },
+);
+
+export const $createSwellPaymentInfo = createMutatorStore<any>(
+  async ({ data }) => {
+    const updateAccountResp = await fetch("/api/account/", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!updateAccountResp.ok) {
+      const { message } = await updateAccountResp.json();
+      throw new Error(message);
+    }
   },
 );
 
