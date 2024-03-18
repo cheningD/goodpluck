@@ -58,6 +58,7 @@ export const GET: APIRoute = async ({ params, request }) => {
   try {
     const cart = await swell.get(`/carts/${id}`, {
       id,
+      expand: ["items.product", "items.product.vendor"],
     });
 
     if (cart?.errors) {

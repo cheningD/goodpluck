@@ -1,16 +1,33 @@
+import { useStore } from "@nanostores/solid";
+import { $cart, $updateCartItems } from "@src/lib/store";
+import {
+  editItemQuantityCart,
+  removeCartFromCart,
+} from "@src/lib/swell/cart/item";
+
 import { type Component } from "solid-js";
 
 interface QuantitySelectorProps {
   quantity: number;
-  setQuantity: (arg0: number) => void;
+  productId: string;
 }
 
 const QuantitySelector: Component<QuantitySelectorProps> = ({
   quantity,
-  setQuantity,
+  productId,
 }) => {
-  const handleQuantityChange = (event: { target: { value: string } }): void => {
-    setQuantity(parseInt(event.target.value));
+  const { mutate } = useStore($updateCartItems)();
+  const cart = useStore($cart);
+  const handleQuantityChange = async (quantity: number): Promise<void> => {
+    const cartdata = cart();
+    if (!cartdata) {
+      throw new Error("Cart not found");
+    }
+    if (quantity === 0) {
+      await removeCartFromCart(productId, cartdata, mutate);
+    } else {
+      await editItemQuantityCart(productId, quantity, cartdata, mutate);
+    }
   };
 
   const options = [];
@@ -23,15 +40,25 @@ const QuantitySelector: Component<QuantitySelectorProps> = ({
   }
 
   return (
-    <div>
+    <>
       <select
-        class="rounded-md h-9 my-2"
+        class="rounded-md h-9"
         value={quantity}
-        onChange={handleQuantityChange}
+        onChange={(event) => {
+          void handleQuantityChange(parseInt(event.target.value));
+        }}
       >
         {options}
       </select>
-    </div>
+      <button
+        class="text-sm text-brand-green"
+        onClick={() => {
+          void handleQuantityChange(0);
+        }}
+      >
+        Remove
+      </button>
+    </>
   );
 };
 

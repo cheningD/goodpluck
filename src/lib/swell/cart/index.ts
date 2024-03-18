@@ -26,6 +26,7 @@ export const getOrCreateCarts = async (
       orderingWindowEndDate,
       orderChargeDate,
       deliveryDate,
+      expand: ["items.product", "items.product.vendor"],
     });
 
     if (cartResponse.errors) {
@@ -42,6 +43,7 @@ export const getOrCreateCarts = async (
       sort: "delivery_date asc",
       limit: 25,
       page: 1,
+      expand: ["items.product", "items.product.vendor"],
     });
 
     if (cartsResponse === null || cartsResponse.results.length === 0) {
@@ -52,6 +54,7 @@ export const getOrCreateCarts = async (
         orderingWindowEndDate,
         orderChargeDate,
         deliveryDate,
+        expand: ["items.product", "items.product.vendor"],
       });
 
       if (cartResponse.errors) {
