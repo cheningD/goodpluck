@@ -1,7 +1,18 @@
+import type { CartItemSnake } from "node_modules/swell-js/types/cart/snake";
 import type { Cart, Category, Product } from "swell-js";
 
-export interface GoodpluckCart extends Cart {
+interface GoodpluckVendor {
+  name: string;
+}
+
+export interface GoodpluckCartItem extends Omit<CartItemSnake, "product"> {
+  product: GoodpluckProduct;
+}
+
+export interface GoodpluckCart extends Omit<Cart, "items"> {
   delivery_date?: string;
+  name: string;
+  items: GoodpluckCartItem[];
 }
 
 export interface WeightOption {
@@ -13,6 +24,7 @@ export interface GoodpluckProduct extends Omit<Product, "id"> {
   unit_quantity: number;
   unit: string;
   id: string;
+  vendor: GoodpluckVendor;
 }
 
 export interface GoodpluckProductFromCategory extends Omit<Product, "id"> {

@@ -38,7 +38,15 @@ export const $currentCart = createFetcherStore<GoodpluckCart>([
   $currentCartID,
 ]);
 
-export const $carts = createFetcherStore<GoodpluckCart[]>([`/api/cart`]);
+const $shouldFetchCarts = computed(
+  [$currentCart],
+  (currentCart) => !currentCart,
+);
+
+export const $carts = createFetcherStore<GoodpluckCart[]>([
+  `/api/cart?shouldFetchCarts=`,
+  $shouldFetchCarts,
+]);
 
 // If there is no currentCart, use first cart in the list of carts
 export const $cart = computed(
