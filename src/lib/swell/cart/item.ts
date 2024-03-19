@@ -1,5 +1,5 @@
 import type { GoodpluckCart } from "@src/lib/types";
-import type { SwellCartItemsUpdate } from "@src/schemas/zod";
+import type { SwellCartItemsUpdate } from "@src/schemas/zod/swell";
 
 // This function checks if an object with a matching `product_id` exists in the `items` array.
 // If it does, it updates that object with `newItem`. If it doesn't, it adds `newItem` to the array.

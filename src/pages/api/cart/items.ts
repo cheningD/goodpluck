@@ -1,7 +1,7 @@
 import { getLoggedInSwellAccountID, getSessionToken } from "../auth";
 
 import type { APIRoute } from "astro";
-import { SwellEditCartItemsSchema } from "@src/schemas/zod";
+import { SwellEditCartItemsSchema } from "@src/schemas/zod/swell";
 import { swell } from "@src/lib/swell";
 
 // Todo if you are logged in make sure this is your cart
