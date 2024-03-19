@@ -21,7 +21,7 @@ export const $stytchAuthResp = createFetcherStore<SessionsAuthenticateResponse>(
 );
 
 // Extract the Swell account ID from the stytch user's trusted metadata
-const $swellAccountId = computed<string | null, typeof $stytchAuthResp>(
+export const $swellAccountId = computed<string | null, typeof $stytchAuthResp>(
   $stytchAuthResp,
   (response) => response.data?.user?.trusted_metadata?.swell_account_id ?? null,
 );
@@ -147,6 +147,48 @@ export const $createSwellAccount = createMutatorStore<AccountCreate>(
     }
 
     return updateStytchData;
+  },
+);
+
+interface SwellPaymentInfo {
+  firstName?: string;
+  lastName?: string;
+  address?: string;
+  apartment?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  token: string;
+  accountId: string;
+}
+
+export const $createSwellAccountCard = createMutatorStore<SwellPaymentInfo>(
+  async ({ data }) => {
+    const billingData = {
+      address1: data.address,
+      address2: data.apartment,
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+    };
+
+    const hasEmptyFields = Object.values(billingData).some((field) => !field);
+    const billing = hasEmptyFields ? null : billingData;
+
+    const resp = await fetch("/api/account/card", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        parent_id: data.accountId,
+        token: data.token,
+        billing,
+      }),
+    });
+
+    if (!resp.ok) {
+      const { message } = await resp.json();
+      throw new Error(message);
+    }
   },
 );
 

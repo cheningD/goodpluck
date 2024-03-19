@@ -1,0 +1,350 @@
+import { Show, createEffect, createSignal, type Component } from "solid-js";
+import Spinner from "./Spinner";
+import {
+  $cart,
+  $createSwellAccountCard,
+  $currentCartID,
+  $swellAccountId,
+} from "@src/lib/store";
+import { useStore } from "@nanostores/solid";
+import { swell as swellClient } from "@src/lib/swell/client";
+import { TextInput } from "./TextInput";
+
+export const PaymentInfoForm: Component = () => {
+  const accountId = useStore($swellAccountId);
+  const cart = useStore($cart);
+  const accountCardMutation = useStore($createSwellAccountCard)();
+  const { mutate: createAccountCard } = accountCardMutation;
+
+  const [form, setForm] = createSignal({
+    firstName: "",
+    lastName: "",
+    address: "",
+    apartment: "",
+    city: "",
+    state: "",
+    zip: "",
+  });
+  const [errors, setErrors] = createSignal<
+    Record<string, string | null | undefined>
+  >({});
+  const [loading, setLoading] = createSignal(true);
+  const [showAddressForm, setShowAddressForm] = createSignal(false);
+
+  const setFieldError = (field: string, message: string | null): void => {
+    setErrors((prev) => ({ ...prev, [field]: message }));
+  };
+
+  const getAccountId = (): string => accountId() as string;
+  const getCheckoutId = (): string => cart()?.checkout_id as string;
+  const getMutationErrors = (): any => accountCardMutation.error;
+
+  createEffect(async () => {
+    $currentCartID.set("");
+    const checkoutId = getCheckoutId();
+    if (checkoutId) {
+      await createStripeCardElement();
+    }
+  });
+
+  const createStripeCardElement = async (): Promise<void> => {
+    await swellClient.cart.recover(getCheckoutId());
+    await swellClient.payment.createElements({
+      card: {
+        elementId: "card-element",
+        options: {
+          style: { base: { fontSize: "16px" } },
+          hidePostalCode: true,
+        },
+        onReady: () => setLoading(false),
+      },
+    });
+  };
+
+  const validateForm = (): void => {
+    const { apartment, ...requiredFields } = form();
+    if (
+      showAddressForm() &&
+      Object.values(requiredFields).some((value) => !value)
+    ) {
+      throw new Error("Please fill out all required fields.");
+    }
+    setErrors({});
+  };
+
+  const submitForm = async (): Promise<void> => {
+    setLoading(true);
+    validateForm();
+    await swellClient.payment.tokenize({
+      card: {
+        onError: async (err: Error) => {
+          console.error(err);
+          setLoading(false);
+        },
+      },
+    });
+
+    const token = (await swellClient.cart.get())?.billing?.card?.token;
+    if (token) {
+      await createAccountCard({
+        ...form(),
+        token,
+        accountId: getAccountId(),
+      });
+
+      if (getMutationErrors()) throw new Error(getMutationErrors().message);
+
+      window.location.assign("/?message=Onboarding%20complete!");
+    } else {
+      setLoading(false);
+      setErrors((prev) => ({
+        ...prev,
+        general: "There was an error processing your payment.",
+      }));
+    }
+  };
+
+  const handleSubmit = (e: Event): void => {
+    e.preventDefault();
+    submitForm().catch((err) => {
+      setLoading(false);
+      setErrors((prev) => ({
+        ...prev,
+        general: err.message,
+      }));
+    });
+  };
+
+  const handleInputChange = (fieldName: string) => (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    setForm((prev) => ({ ...prev, [fieldName]: value }));
+  };
+
+  return (
+    <>
+      {errors().general && (
+        <div class="mb-8 p-4 font-medium text-rose-600 bg-rose-50 rounded border border-rose-500">
+          {errors().general}
+        </div>
+      )}
+      <form id="payment-info-form" method="post" onSubmit={handleSubmit}>
+        <fieldset aria-describedby="billing-info-desc">
+          <legend class="sr-only">Payment Information</legend>
+          <div id="billing-address-section" class="mb-8">
+            <legend class="text-xl font-semibold mb-2">Billing Address</legend>
+            <p
+              id="billing-info-desc"
+              class="text-lg font-semibold mb-4 sr-only"
+            >
+              Enter your billing information below.
+            </p>
+            <div id="same-address-container" class="flex mb-6">
+              <input
+                id="same-address-checkbox"
+                class="text-green-700 focus:ring-green-800 border border-zinc-400 rounded mt-0.5 cursor-pointer"
+                type="checkbox"
+                name="same-address"
+                checked={!showAddressForm()}
+                aria-checked="true"
+                aria-describedby="same-as-delivery-desc"
+                onClick={() => {
+                  setShowAddressForm(!showAddressForm());
+                }}
+              />
+              <label
+                for="same-address-checkbox"
+                class="ml-2 text-sm text-gray-600"
+              >
+                Same as delivery address
+              </label>
+              <span id="same-as-delivery-desc" class="sr-only">
+                Check this box if your billing address is the same as your
+                delivery address.
+              </span>
+            </div>
+
+            <Show when={showAddressForm()}>
+              <div
+                id="billing-container"
+                hidden={!showAddressForm()}
+                aria-labelledby="billing-address-title"
+              >
+                <h3 id="billing-address-title" class="sr-only">
+                  Billing Address Details
+                </h3>
+                <div
+                  id="name-container"
+                  class="flex md:gap-4 flex-col md:flex-row"
+                >
+                  <TextInput
+                    name="firstName"
+                    type="text"
+                    label="First Name"
+                    value={form().firstName}
+                    autocomplete="given-name"
+                    placeholder="Kale"
+                    onChange={handleInputChange("firstName")}
+                    onBlur={() => {
+                      if (!form().firstName) {
+                        setFieldError("firstName", " "); // Forces only the border to turn red without showing an error message
+                      }
+                    }}
+                    onFocus={() =>
+                      setErrors((prev) => ({ ...prev, firstName: null }))
+                    }
+                    error={errors().firstName}
+                  />
+                  <TextInput
+                    name="lastName"
+                    type="text"
+                    label="Last Name"
+                    value={form().lastName}
+                    autocomplete="family-name"
+                    placeholder="Greens"
+                    onChange={handleInputChange("lastName")}
+                    onBlur={() => {
+                      if (!form().lastName) {
+                        setFieldError("lastName", " "); // Forces only the border to turn red without showing an error message
+                      }
+                    }}
+                    onFocus={() =>
+                      setErrors((prev) => ({ ...prev, lastName: null }))
+                    }
+                    error={errors().lastName}
+                  />
+                </div>
+                <div id="billing-address-section" class="mb-4">
+                  <TextInput
+                    name="address"
+                    type="text"
+                    label="Street Address"
+                    value={form().address}
+                    // autocomplete="address-line1"
+                    onChange={handleInputChange("address")}
+                    onBlur={() => {
+                      if (!form().address) {
+                        setFieldError("address", " "); // Forces only the border to turn red without showing an error message
+                      }
+                    }}
+                    onFocus={() =>
+                      setErrors((prev) => ({ ...prev, address: null }))
+                    }
+                    error={errors().address}
+                  />
+
+                  <TextInput
+                    name="apartment"
+                    type="text"
+                    label="Apt. or Unit No."
+                    value={form().apartment}
+                    autocomplete="address-line2"
+                    onChange={handleInputChange("apartment")}
+                  />
+
+                  <TextInput
+                    name="city"
+                    type="text"
+                    label="City"
+                    value={form().city}
+                    autocomplete="address-level2"
+                    onChange={handleInputChange("city")}
+                    onBlur={() => {
+                      if (!form().city) {
+                        setFieldError("city", " "); // Forces only the border to turn red without showing an error message
+                      }
+                    }}
+                    onFocus={() =>
+                      setErrors((prev) => ({ ...prev, city: null }))
+                    }
+                    error={errors().city}
+                  />
+
+                  <div class="flex md:gap-4 flex-col md:flex-row">
+                    <TextInput
+                      name="state"
+                      type="text"
+                      label="State"
+                      value={form().state}
+                      autocomplete="address-level1"
+                      onChange={handleInputChange("state")}
+                      onBlur={() => {
+                        if (!form().state) {
+                          setFieldError("state", " "); // Forces only the border to turn red without showing an error message
+                        }
+                      }}
+                      onFocus={() =>
+                        setErrors((prev) => ({ ...prev, state: null }))
+                      }
+                      error={errors().state}
+                    />
+
+                    <TextInput
+                      name="zip"
+                      type="text"
+                      label="ZIP Code"
+                      value={form().zip}
+                      autocomplete="postal-code"
+                      onChange={handleInputChange("zip")}
+                      onBlur={() => {
+                        if (!form().zip) {
+                          setFieldError(
+                            "zip",
+                            "Please enter a valid ZIP code, e.g. 12345 or 12345-6789.",
+                          );
+                        }
+                      }}
+                      onFocus={() =>
+                        setErrors((prev) => ({ ...prev, zip: null }))
+                      }
+                      error={errors().zip}
+                    />
+                  </div>
+                </div>
+              </div>
+            </Show>
+          </div>
+
+          <div
+            id="payment-info-section"
+            class="mb-8"
+            aria-describedby="payment-info-desc"
+          >
+            <legend class="text-xl font-semibold mb-2">Payment Info</legend>
+            <p id="payment-info-desc" class="sr-only">
+              Enter your payment details below, including card number,
+              expiration date, and CVC.
+            </p>
+            <div
+              id="card-details-container"
+              class="mb-1 text-base py-4 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
+            >
+              <div id="card-element" aria-labelledby="card-info">
+                <Spinner />
+              </div>
+              <span id="card-info" class="sr-only">
+                Card details input field.
+              </span>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="flex justify-end" id="submit-btn-container">
+          <button
+            id="submit-btn"
+            type="submit"
+            class="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:outline-none disabled:cursor-wait disabled:bg-green-700"
+            aria-describedby="submit-btn-desc"
+            disabled={loading() ?? false}
+          >
+            {loading() ? <Spinner /> : "Submit"}
+          </button>
+          <span id="submit-btn-desc" class="sr-only">
+            Click to submit your details and complete the account creation
+            process.
+          </span>
+        </div>
+      </form>
+    </>
+  );
+};

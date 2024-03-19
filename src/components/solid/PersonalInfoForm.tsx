@@ -7,12 +7,6 @@ import {
 import { createSignal, type Component } from "solid-js";
 import { TextInput } from "./TextInput";
 import Spinner from "./Spinner";
-import {
-  validatePhone,
-  validateZip,
-  phoneErrorMessage,
-  zipErrorMessage,
-} from "@src/utils/validation";
 
 export const PersonalInfoForm: Component = () => {
   const authResp = useStore($stytchAuthResp);
@@ -45,6 +39,7 @@ export const PersonalInfoForm: Component = () => {
     if (Object.values(requiredFields).some((value) => !value)) {
       throw new Error("Please fill out all required fields.");
     }
+    setErrors({});
   };
 
   const submitForm = async (): Promise<void> => {
@@ -74,14 +69,6 @@ export const PersonalInfoForm: Component = () => {
     const target = e.target as HTMLInputElement;
     const value = target.type === "checkbox" ? target.checked : target.value;
     setForm((prev) => ({ ...prev, [fieldName]: value }));
-
-    if (fieldName === "phone" && !validatePhone(value as string)) {
-      setErrors((prev) => ({ ...prev, phone: phoneErrorMessage }));
-    } else if (fieldName === "zip" && !validateZip(value as string)) {
-      setErrors((prev) => ({ ...prev, zip: zipErrorMessage }));
-    } else {
-      setErrors((prev) => ({ ...prev, [fieldName]: null }));
-    }
   };
 
   return (
