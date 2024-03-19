@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/solid";
 import { $cart, $updateCartItems } from "@src/lib/store";
 import type { GoodpluckProduct } from "@src/lib/types";
-import type { SwellCartItemsUpdate } from "@src/schemas/zod";
+import type { SwellCartItemsUpdate } from "@src/schemas/zod/swell";
 import { Show, type Component } from "solid-js";
 
 interface ProductProps {
