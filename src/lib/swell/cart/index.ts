@@ -37,6 +37,7 @@ export const getOrCreateCarts = async (
   } else {
     const cartsResponse = await swell.get("/carts", {
       where: {
+        account_id: swellAccountID,
         guest: false,
         delivery_date: { $gte: new Date() },
       },

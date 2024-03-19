@@ -16,9 +16,7 @@ const session = sessionToken
   : null;
 
 if (!session) {
-  return Astro.redirect(
-    "/?message=" + encodeURIComponent("You are not logged in"),
-  );
+  return Astro.redirect("/join");
 }
 
 const email = session.user.emails[0]?.email;

@@ -13,9 +13,7 @@ const session = sessionToken
   : null;
 
 if (!session) {
-  return Astro.redirect(
-    "/?message=" + encodeURIComponent("You are not logged in"),
-  );
+  return Astro.redirect("/join");
 }
 
 // Redirect if account isn't created yet or billing info is already set
