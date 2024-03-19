@@ -232,6 +232,11 @@ export const SwellAccountUpdateSchema = SwellAccountSchema.extend({
   id: z.string(), // makes the id required
 });
 
+export const SwellAccountCardSchema = CardSchema.extend({
+  parent_id: z.string(),
+  token: z.string(),
+});
+
 export const SwellCartUpdateSchema = z
   .object({
     id: z.string(), // Swell cart ID
