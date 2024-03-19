@@ -10,6 +10,9 @@ const errors = { code: "", general: "", email: "" };
 // Extract method_id from the URL
 const url = new URL(Astro.request.url);
 let method_id = url.searchParams.get("method_id");
+if (!method_id) {
+  return Astro.redirect("/login");
+}
 const user_exists = url.searchParams.get("user_exists");
 
 // Handle POST request for both OTP submission and resend OTP request

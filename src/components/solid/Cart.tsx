@@ -6,6 +6,8 @@ import DeliveryProgressBar from "./DeliveryProgressBar";
 
 const Cart: Component = () => {
   const cart = useStore($cart);
+  const getBilling = (): any => cart()?.billing ?? null;
+  const getAccountId = (): string => cart()?.account_id ?? "";
   const getSubTotal = (): number => cart()?.sub_total ?? 0;
   const getCreditApplied = (): number => cart()?.account_credit_amount ?? 0;
   const getDeliveryFee = (): number => cart()?.shipment_total ?? 0;
@@ -53,22 +55,40 @@ const Cart: Component = () => {
           <span>${getTotal()}</span>
         </div>
 
-        <p>
-          <button class="bg-brand-yellow p-4 rounded-md my-4">
-            Complete Order
-          </button>
-        </p>
+        <Show
+          when={getAccountId() && Object.keys(getBilling()).length !== 0}
+          fallback={
+            <p class="my-4">
+              <a
+                class="bg-brand-yellow p-4 rounded-md"
+                href="/join/personal-info"
+              >
+                Complete Order
+              </a>
+            </p>
+          }
+        >
+          <p class="my-4">
+            <a class="bg-brand-yellow p-4 rounded-md" href="/checkout">
+              Checkout
+            </a>
+          </p>
+        </Show>
+
         <p>
           {cart()?.delivery_date
             ? `Complete your order by ${cart()?.delivery_date} or your basket will be refreshed when we update the market.`
             : "Complete your order to get your delivery!"}
         </p>
-        <p class="py-2">
-          Already have an account?{" "}
-          <a class="text-brand-green underline" href="/login">
-            Login here
-          </a>
-        </p>
+
+        <Show when={!cart()?.account_id}>
+          <p class="py-2">
+            Already have an account?{" "}
+            <a class="text-brand-green underline" href="/login">
+              Login here
+            </a>
+          </p>
+        </Show>
       </Show>
     </>
   );

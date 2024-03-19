@@ -39,7 +39,7 @@ export const $currentCart = createFetcherStore<GoodpluckCart>([
 
 const $shouldFetchCarts = computed(
   [$currentCart],
-  (currentCart) => !currentCart,
+  (currentCart) => !currentCart.data,
 );
 
 export const $carts = createFetcherStore<GoodpluckCart[]>([
