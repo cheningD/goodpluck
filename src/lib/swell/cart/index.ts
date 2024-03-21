@@ -22,10 +22,10 @@ export const getOrCreateCarts = async (
     const cartResponse = await swell.post("/carts", {
       guest: true,
       account_logged_in: false,
-      orderingWindowStartDate,
-      orderingWindowEndDate,
-      orderChargeDate,
-      deliveryDate,
+      ordering_window_start_date: orderingWindowStartDate,
+      ordering_window_end_date: orderingWindowEndDate,
+      order_charge_date: orderChargeDate,
+      delivery_date: deliveryDate,
       expand: ["items.product", "items.product.vendor"],
     });
 
@@ -33,12 +33,11 @@ export const getOrCreateCarts = async (
       throw new Error(JSON.stringify({ errors: cartResponse.errors }));
     }
 
-    return [cartResponse];
+    return cartResponse.results;
   } else {
     const cartsResponse = await swell.get("/carts", {
       where: {
         account_id: swellAccountID,
-        guest: false,
         delivery_date: { $gte: new Date() },
       },
       sort: "delivery_date asc",
@@ -51,10 +50,10 @@ export const getOrCreateCarts = async (
       const cartResponse = await swell.post("/carts", {
         account_id: swellAccountID,
         guest: false,
-        orderingWindowStartDate,
-        orderingWindowEndDate,
-        orderChargeDate,
-        deliveryDate,
+        ordering_window_start_date: orderingWindowStartDate,
+        ordering_window_end_date: orderingWindowEndDate,
+        order_charge_date: orderChargeDate,
+        delivery_date: deliveryDate,
         expand: ["items.product", "items.product.vendor"],
       });
 
@@ -62,11 +61,11 @@ export const getOrCreateCarts = async (
         throw new Error(JSON.stringify({ errors: cartResponse.errors }));
       }
 
-      return [cartResponse];
+      return cartResponse.results;
     } else if (cartsResponse.errors) {
       throw new Error(JSON.stringify({ errors: cartsResponse.errors }));
     }
 
-    return cartsResponse;
+    return cartsResponse.results;
   }
 };
