@@ -3,6 +3,7 @@ import { $cart } from "@src/lib/store";
 import { For, Show, type Component } from "solid-js";
 import CartItem from "./CartItem";
 import DeliveryProgressBar from "./DeliveryProgressBar";
+import { parseISO, format } from "date-fns";
 
 const Cart: Component = () => {
   const cart = useStore($cart);
@@ -13,12 +14,18 @@ const Cart: Component = () => {
   const getDeliveryFee = (): number => cart()?.shipment_total ?? 0;
   const getTotalTax = (): number => cart()?.tax_total ?? 0;
   const getTotal = (): number => cart()?.grand_total ?? 0;
+  const getDate = (): string => {
+    const date = parseISO(cart()?.delivery_date ?? "");
+    const day = format(date, "EEE"); // Mon, Tue, Wed, etc.
+    const month = format(date, "MMM"); // Jan, Feb, Mar, etc.
+    const dayOfMonth = format(date, "d"); // 1, 2, 3, etc.
+    const time = format(date, "h:mma"); // 1:00AM, 2:00PM, etc.
+    return `${day}, ${month} ${dayOfMonth} at ${time}`;
+  };
   return (
     <>
-      {cart()?.delivery_date ? (
-        <div class="bg-brand-green text-white">
-          Shopping for {cart()?.delivery_date}
-        </div>
+      {getDate() ? (
+        <div class="bg-brand-green text-white">Shopping for {getDate()}</div>
       ) : null}
       <Show when={cart()?.items?.length} fallback={<EmptyCart />}>
         <DeliveryProgressBar />
@@ -68,16 +75,22 @@ const Cart: Component = () => {
             </p>
           }
         >
-          <p class="my-4">
-            <a class="bg-brand-yellow p-4 rounded-md" href="/checkout">
-              Checkout
-            </a>
-          </p>
+          <div class="bg-yellow-50 p-4">
+            <strong>No Checkout Required!</strong>
+            <div>
+              You'll be automatically charged for items in your cart after the
+              cutoff time.{" "}
+              <a href="#" class="underline text-brand-green">
+                Skip
+              </a>{" "}
+              or edit by <strong>{getDate()}.</strong>
+            </div>
+          </div>
         </Show>
 
         <p>
-          {cart()?.delivery_date
-            ? `Complete your order by ${cart()?.delivery_date} or your basket will be refreshed when we update the market.`
+          {getDate()
+            ? `Complete your order by ${getDate()} or your basket will be refreshed when we update the market.`
             : "Complete your order to get your delivery!"}
         </p>
 

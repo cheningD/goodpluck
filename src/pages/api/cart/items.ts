@@ -28,10 +28,13 @@ export const PUT: APIRoute = async ({ request }) => {
       $set: { items },
       where,
     });
-    if (cart?.errors) {
-      return new Response(JSON.stringify({ error: cart.errors }), {
-        status: 400,
-      });
+    if (!cart || cart?.errors) {
+      return new Response(
+        JSON.stringify({ error: cart?.errors || "Cart not found" }),
+        {
+          status: 400,
+        },
+      );
     }
     return new Response(
       JSON.stringify({
