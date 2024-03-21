@@ -1,9 +1,5 @@
 import { useStore } from "@nanostores/solid";
-import {
-  $createSwellAccount,
-  $currentCartID,
-  $stytchAuthResp,
-} from "@src/lib/store";
+import { $createSwellAccount, $stytchAuthResp } from "@src/lib/store";
 import { createSignal, type Component } from "solid-js";
 import { TextInput } from "./TextInput";
 import Spinner from "./Spinner";
@@ -50,7 +46,6 @@ export const PersonalInfoForm: Component = () => {
       email: authResp().data?.user.emails[0]?.email ?? "",
     });
     if (getMutatorErrors()) throw new Error(getMutatorErrors().message);
-    $currentCartID.set("");
     window.location.assign("/join/payment-info");
   };
 

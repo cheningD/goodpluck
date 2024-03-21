@@ -37,10 +37,10 @@ export const $currentCart = createFetcherStore<GoodpluckCart>([
   $currentCartID,
 ]);
 
-const $shouldFetchCarts = computed(
-  [$currentCart],
-  (currentCart) => !currentCart.data,
-);
+// Only fetch carts if the currentCart has been loaded but does not have an ID (cart not found)
+const $shouldFetchCarts = computed([$currentCart], (currentCart) => {
+  return !!currentCart.data && !currentCart.data.id;
+});
 
 export const $carts = createFetcherStore<GoodpluckCart[]>([
   `/api/cart?shouldFetchCarts=`,
