@@ -13,5 +13,5 @@
       "@src/*": ["src/*"]
     }
   },
-  "exclude": ["dist", "tests", "vitest.config.ts"]
+  "exclude": ["dist", "tests/e2e", "vitest.config.ts"]
 }

@@ -1,6 +1,6 @@
 import { assert, expect, test } from "vitest";
 import { render } from "@solidjs/testing-library";
-import Banner from "../../src/components/solid/Banner";
+import Banner from "@src/components/solid/Banner";
 
 // Edit an assertion and save to see HMR in action
 
@@ -23,9 +23,7 @@ test("JSON", () => {
 });
 
 test("render", () => {
-  const results = render(() => (
-    <Banner isZipDeliverable={false} deliveryDate={null} />
-  ));
+  const results = render(() => <Banner />);
   expect(Math.sqrt(4)).toBe(2);
   expect(results.getByText("Free Delivery to Detroit & Nearby.")).toBeVisible();
 });
