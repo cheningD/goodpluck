@@ -1,55 +1,37 @@
-# GoodpluckV2 Frontend & Backend Repo
+# GoodpluckV2
 
-## Development Philosophy
+Goodpluck, our ecommerce webapp, uses the [Astro](https://astro.build/) Framework for frontend and backend development. [SolidJS](https://www.solidjs.com/) is used for reactive components. [Vercel](https://vercel.com/) is used for hosting and deployment.
 
-Our approach emphasizes writing simple, straightforward code to enhance long-term maintainability and reduce the likelihood of bugs. For an understanding of what we consider 'simple,' refer to Rich Hickey's talk, [Simple Made Easy](https://www.infoq.com/presentations/Simple-Made-Easy/). Adhere to the following guidelines for successful PRs:
+## Development Philosophy: Simplicity
 
-- **Minimize Dependencies:** Scrutinize each new node-module addition. Essentiality is key. If a feature isn't crucial, reconsider its inclusion.
-- **Opt for Simplicity:** Choose simpler solutions, even if it means removing non-essential features.
-- **End-to-end Test Critical User Flows:** Write end-to-end tests for critical features that rely on external services (e.g. auth)
-- **PR Readiness:** Before submitting a PR, confirm that your code functions as intended and all tests pass.
+Simple programs are more reliable and easier to maintain. Here are some tips to write simple PRs:
 
-## Workflow for Handling Tasks in This Repository:
+- Break issues into smaller issues and post multiple PRs that each tackle a small part of the problem
+- Simple does not mean easy, often the simplest solutions requires a more thorough understanding of the problem
+- Watch Rich Hickey's talk: [Simple Made Easy](https://www.infoq.com/presentations/Simple-Made-Easy/)
 
-When you are ready to start working on a task, please adhere to the following steps to ensure consistency and traceability within the project workflow:
+## Contribution Workflow
 
-1. **Development Workflow:**
-
-   - Create a new branch from `main` for your task using a reasonable name e.g. `feature/issue-number-short-description`
-   - Work on your task in this branch, committing code as you make progress.
-   - Write unit tests (or end-to-end tests if appropriate)
-   - Test your changes locally with `pnpm run test` and `pnpm run test:e2e`
-
-2. **Pull Requests (PR):**
-
-   - Keep your PRs small and focused on the task you are solving.
-   - After tests pass, create a Pull Request against the `main` branch.
-   - Follow the PR template that is generated automatically
-   - Vercel will build a preview url for your changes
-   - Github actions will automatically run tests against your development deployment
-
-3. **Code Review:**
-
-   - Request review from teammates and address all suggestions.
-   - Once approved, merge your PR into the `main` branch.
-   - We don't merge code that doesn't build, or fails tests
-
-4. **After Merging:**
-   - Update the project board by moving the issue to the "Done" column.
-   - Delete the feature branch after merging to keep the repository clean.
+1. **Get an Issue**: Assign yourself an issue from the project board.
+2. **Branch**: Create a new branch from `main` with a descriptive name, e.g., `feature/issue-123-short-description`.
+3. **Code**: Work on the task in your branch, committing frequently.
+4. **Test**: Write unit and end-to-end tests, and run `pnpm run test` and `pnpm run test:e2e` locally.
+5. **Pull Request (PR)**: Keep PRs small and focused. Vercel will build a preview deployment.
+6. **Review**: Request a review from teammates and address all suggestions.
+7. **Merge**: Rebase (preferred) or squash and merge your commits into `main`.
 
 By following these guidelines, we maintain a clear and efficient process for task management and code integration.
 
 ## Testing Overview
 
-- Write unit tests o test component behavior and to test functions. We use vitest see [vitest.config.ts](/vitest.config.ts) along with [soli-testing-library](https://github.com/solidjs/solid-testing-library) and [@testing-library/jest-dom](https://github.com/testing-library/jest-dom) for custom jest matchers
+**Goal:** Ensure critical user flows are covered by end-to-end (E2E) tests. Critical flows are those which, if broken, would prevent users from using the app. Supplement E2E tests with unit tests to verify key logic.
 
-- Use [Playwright](https://playwright.dev/docs/running-tests) to write end-to-end (e2e) tests for critical user paths, like authentication.
-- E2e tests, despite being slower and less stable than unit tests, are crucial for ensuring the reliability of critical user journeys.
-- See example e2e tests in ./test-examples
+### Unit Tests (Vitest)
 
-- Todo: Use Vitest to unit test complex functions, like date manipulation
+Write unit tests to test solidjs components
 
-## Contribution Guidelines
+- [@testing-library/jest-dom](https://github.com/testing-library/jest-dom) Allows us tp jest matchers
 
-For all changes, please submit a pull request (PR) for review.
+### End-to-end Tests ([Playwright](https://playwright.dev/docs/running-tests))
+
+- Use to test flows that require interacting with the backend or exernal services

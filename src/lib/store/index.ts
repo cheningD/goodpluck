@@ -3,12 +3,13 @@ import { atom, computed, onSet } from "nanostores";
 import type { GoodpluckCart } from "../types";
 
 import { logger } from "@nanostores/logger";
-import { type SessionsAuthenticateResponse } from "stytch";
+
 import { createFetcherStore, createMutatorStore } from "./fetcher";
 import {
   type SwellCartItemsPutArgs,
   type SwellCartUpdate,
 } from "@src/schemas/zod/swell";
+import type { SessionsAuthenticateResponse } from "../stytch_types_b2c";
 
 // Track the session token from Stytch
 export const $gpSessionToken = persistentAtom<string | undefined>(

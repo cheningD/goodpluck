@@ -19,6 +19,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
+  ignorePatterns: ["dist", "tests/e2e/*", "vitest.config.ts"],
   rules: {
     "@typescript-eslint/strict-boolean-expressions": "off", // disabled to run tests
     "prettier/prettier": "error",

@@ -1,4 +1,5 @@
 import { getViteConfig } from "astro/config";
+import path from "path";
 import solidPlugin from "vite-plugin-solid";
 
 export default getViteConfig({
@@ -8,6 +9,11 @@ export default getViteConfig({
     // globals: true,
     dir: "./tests/unit",
     environment: "jsdom",
-    setupFiles: ["node_modules/@testing-library/jest-dom/vitest"],
+    setupFiles: ["tests/vitest-setup.ts"],
+  },
+  resolve: {
+    alias: {
+      "@src": path.resolve(__dirname, "./src"),
+    },
   },
 });
