@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import { swell } from "../../lib/swell";
 import Breadcrumbs from "@components/solid/Breadcrumbs";
 import ProductCartActions from "@components/solid/ProductCartActions";
+import ProductInfoTabs from "@components/solid/ProductInfoTabs";
 import type { GoodpluckProduct, WeightOption } from "@src/lib/types";
 
 const { slug } = Astro.params;
@@ -51,10 +52,7 @@ const productInfo = [
 ];
 
 // @ts-expect-error - not sure why Swell's Product type doesn't include vendor_id
-const vendorId = product?.vendor_id;
-const vendor = await swell.get(`/accounts/${vendorId}`);
-const vendorImage = vendor.thumbnail[0]?.file?.url;
-const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove with a home on it. Once they moved on to the ranch, they started to get ideas about packing and selling their own fruit without going through a large commercial packing house. This gave them the flexibility to grow some of the unique varieties that weren't readily available in produce departments. From this idea, Ripe to You was born. Ripe to You was started by building a small packing facility on the ranch and by packing the Christensens' own fruit. Eric & Kim were excited to pack the different varieties and deliver them to their first customers. Being small allowed them to pick the fruit when it was at its best, and to pick and pack small amounts to meet their customer's needs.`;
+const vendor = await swell.get(`/accounts/${product?.vendor_id}`);
 ---
 
 <Layout
@@ -116,82 +114,6 @@ const vendorStory = `In 1988, Eric and Kim Christensen purchased an orange grove
       client:visible
     />
 
-    <section id="additional-info" class="w-full mb-12">
-      <div class="flex justify-center">
-        <nav class="flex space-x-4" aria-label="Tabs" role="tablist">
-          <button
-            type="button"
-            class="hs-tab-active:font-semibold rounded-t-sm hs-tab-active:bg-brand-green hs-tab-active:text-white py-4 px-8 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-brand-black bg-brand-cream focus:outline-none disabled:opacity-50 disabled:pointer-events-none active"
-            id="producer-item"
-            data-hs-tab="#producer"
-            aria-controls="producer"
-            role="tab"
-          >
-            Producer
-          </button>
-          <button
-            type="button"
-            class="hs-tab-active:font-semibold rounded-t-sm hs-tab-active:bg-brand-green hs-tab-active:text-white py-4 px-8 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-brand-black bg-brand-cream focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
-            id="storage-tips-item"
-            data-hs-tab="#storage-tips"
-            aria-controls="storage-tips"
-            role="tab"
-          >
-            Storage Tips
-          </button>
-        </nav>
-      </div>
-
-      <div class="border border-custom-silver rounded-md p-12">
-        <div
-          id="producer"
-          role="tabpanel"
-          aria-labelledby="producer-item"
-          class="flex lg:flex-row flex-col"
-        >
-          <img
-            alt={`Image of ${productName}`}
-            src={vendorImage || productImage}
-            loading="lazy"
-            decoding="async"
-            class="object-cover rounded-sm mb-8 lg:mb-0 lg:mr-8"
-          />
-          <div class="ml-4 flex flex-col justify-between leading-normal">
-            <h3 class="text-4xl font-bold mb-6 text-brand-green">
-              {vendor.name}
-            </h3>
-            <p class="text-custom-gray">
-              {vendorStory}
-            </p>
-          </div>
-        </div>
-        <div
-          id="storage-tips"
-          class="hidden"
-          role="tabpanel"
-          aria-labelledby="storage-tips-item"
-        >
-          <p class="text-custom-gray">
-            Store mandarins at room temperature for up to 1 week. For longer
-            storage, refrigerate in a plastic bag for up to 2 weeks. Mandarins
-            can be stored in the refrigerator for up to 2 weeks. If you have a
-            lot of mandarins, you can freeze them for up to 6 months. To freeze
-            mandarins, peel and separate the segments, then place them in a
-            single layer on a baking sheet and freeze until solid. Once frozen,
-            transfer the segments to a resealable plastic bag and store in the
-            freezer.
-          </p>
-        </div>
-      </div>
-    </section>
+    <ProductInfoTabs vendor={vendor} product={product} client:visible />
   </article>
-
-  <script>
-    const firstOption = document.querySelector(
-      'input[type="radio"]',
-    ) as HTMLInputElement;
-    if (firstOption) {
-      firstOption.checked = true;
-    }
-  </script>
 </Layout>
