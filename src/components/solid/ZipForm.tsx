@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/solid";
-import { $cart, $updateShipping } from "@src/lib/store";
-import { zipcodes } from "@src/lib/zipcodes";
+import { $cart, $updateShipping } from "src/lib/store";
+import { zipcodes } from "src/lib/zipcodes";
 import { Show, createSignal, type Component } from "solid-js";
 
 export const ZipForm: Component = () => {

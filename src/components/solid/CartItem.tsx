@@ -1,5 +1,5 @@
 import { type Component } from "solid-js";
-import type { GoodpluckCartItem } from "@src/lib/types";
+import type { GoodpluckCartItem } from "src/lib/types";
 import QuantitySelector from "./QuantitySelector";
 
 const CartItem: Component<GoodpluckCartItem> = ({

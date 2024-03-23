@@ -1,4 +1,4 @@
-import type { GoodpluckProduct } from "@src/lib/types";
+import type { GoodpluckProduct } from "src/lib/types";
 import { Show, type Component } from "solid-js";
 import { AddToCartButton } from "./AddToCartButton";
 

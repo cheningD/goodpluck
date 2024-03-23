@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/solid";
-import { $createSwellAccount, $stytchAuthResp } from "@src/lib/store";
+import { $createSwellAccount, $stytchAuthResp } from "src/lib/store";
 import { createSignal, type Component } from "solid-js";
 import { TextInput } from "./TextInput";
 import Spinner from "./Spinner";

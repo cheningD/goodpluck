@@ -8,7 +8,7 @@ import { createFetcherStore, createMutatorStore } from "./fetcher";
 import {
   type SwellCartItemsPutArgs,
   type SwellCartUpdate,
-} from "@src/schemas/zod/swell";
+} from "src/schemas/zod/swell";
 import type { SessionsAuthenticateResponse } from "../stytch_types_b2c";
 
 // Track the session token from Stytch

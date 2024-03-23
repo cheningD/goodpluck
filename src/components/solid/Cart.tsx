@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/solid";
-import { $cart } from "@src/lib/store";
+import { $cart } from "src/lib/store";
 import { For, Show, type Component } from "solid-js";
 import CartItem from "./CartItem";
 import DeliveryProgressBar from "./DeliveryProgressBar";

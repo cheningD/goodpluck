@@ -1,12 +1,8 @@
 import { Show, createEffect, createSignal, type Component } from "solid-js";
 import Spinner from "./Spinner";
-import {
-  $cart,
-  $createSwellAccountCard,
-  $swellAccountId,
-} from "@src/lib/store";
+import { $cart, $createSwellAccountCard, $swellAccountId } from "src/lib/store";
 import { useStore } from "@nanostores/solid";
-import { swell as swellClient } from "@src/lib/swell/client";
+import { swell as swellClient } from "src/lib/swell/client";
 import { TextInput } from "./TextInput";
 
 export const PaymentInfoForm: Component = () => {

@@ -4,14 +4,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@pages/*": ["src/pages/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@assets/*": ["src/assets/*"],
-      "@src/*": ["src/*"]
-    }
+    "baseUrl": "./"
   },
-  "exclude": ["dist", "tests/e2e", "vitest.config.ts"]
+  "exclude": ["dist", "tests/e2e"]
 }

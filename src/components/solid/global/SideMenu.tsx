@@ -1,6 +1,6 @@
-import right from "@assets/img/right.svg";
-import search from "@assets/img/search.svg";
-import user from "@assets/img/user.svg";
+import right from "src/assets/img/right.svg";
+import search from "src/assets/img/search.svg";
+import user from "src/assets/img/user.svg";
 import { For, Show, createSignal, type Component } from "solid-js";
 
 interface NavProps {

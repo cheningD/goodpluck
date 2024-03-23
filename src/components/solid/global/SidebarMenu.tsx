@@ -1,4 +1,4 @@
-import type { GoodpluckCategory } from "@src/lib/types";
+import type { GoodpluckCategory } from "src/lib/types";
 import { For, Show, createMemo, type Component, type JSX } from "solid-js";
 
 interface SidebarMenuProps {

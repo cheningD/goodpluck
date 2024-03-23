@@ -1,4 +1,4 @@
-import type { GoodpluckCategory, GoodpluckProduct } from "@src/lib/types";
+import type { GoodpluckCategory, GoodpluckProduct } from "src/lib/types";
 import { For, type Component, onMount } from "solid-js";
 import Product from "./Product";
 
