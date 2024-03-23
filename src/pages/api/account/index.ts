@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro";
-import { swell } from "@src/lib/swell";
+import { swell } from "src/lib/swell";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { SwellAccountCreateSchema } from "@src/schemas/zod/swell";
+import { SwellAccountCreateSchema } from "src/schemas/zod/swell";
 
 export const GET: APIRoute = async ({ request }) => {
   try {

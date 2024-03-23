@@ -1,10 +1,10 @@
 import { useStore } from "@nanostores/solid";
-import { $cart, $updateCartItems } from "@src/lib/store";
+import { $cart, $updateCartItems } from "src/lib/store";
 import { Show, type Component } from "solid-js";
 import {
   editItemQuantityCart,
   removeCartFromCart,
-} from "@src/lib/swell/cart/item";
+} from "src/lib/swell/cart/item";
 
 interface AddToCartButtonProps {
   productId: string;

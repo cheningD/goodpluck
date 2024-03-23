@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/solid";
-import { $cart } from "@src/lib/store";
+import { $cart } from "src/lib/store";
 import { type Component } from "solid-js";
 
 const DeliveryProgressBar: Component = () => {

@@ -1,4 +1,4 @@
-import type { GoodpluckCart } from "@src/lib/types";
+import type { GoodpluckCart } from "src/lib/types";
 import calculateCartDates from "./dates";
 import { swell } from "..";
 

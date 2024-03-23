@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
-import { swell } from "@src/lib/swell";
-import { SwellAccountCardSchema } from "@src/schemas/zod/swell";
+import { swell } from "src/lib/swell";
+import { SwellAccountCardSchema } from "src/schemas/zod/swell";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 

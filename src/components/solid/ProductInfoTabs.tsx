@@ -1,4 +1,4 @@
-import type { GoodpluckProduct } from "@src/lib/types";
+import type { GoodpluckProduct } from "src/lib/types";
 import { createSignal, type Component } from "solid-js";
 import type { Account } from "swell-js";
 

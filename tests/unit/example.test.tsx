@@ -1,6 +1,6 @@
 import { assert, expect, test } from "vitest";
 import { render } from "@solidjs/testing-library";
-import Banner from "@src/components/solid/Banner";
+import Banner from "src/components/solid/Banner";
 
 // Edit an assertion and save to see HMR in action
 

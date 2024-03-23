@@ -1,4 +1,4 @@
-import type { WeightOption } from "@src/lib/types";
+import type { WeightOption } from "src/lib/types";
 import { createSignal, type Component } from "solid-js";
 
 interface IProps {

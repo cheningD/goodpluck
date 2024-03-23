@@ -1,4 +1,4 @@
-import type { GoodpluckCategory, GoodpluckProduct } from "@src/lib/types";
+import type { GoodpluckCategory, GoodpluckProduct } from "src/lib/types";
 import { Show, For, createMemo, type Component } from "solid-js";
 
 interface IProps {

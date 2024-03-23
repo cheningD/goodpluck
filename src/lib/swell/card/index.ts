@@ -1,7 +1,7 @@
 import type { Card, Account } from "swell-js";
 import { swell } from "../index";
 import { getOrCreateCarts } from "../cart";
-import { getLoggedInSwellAccountID } from "@pages/api/auth";
+import { getLoggedInSwellAccountID } from "src/pages/api/auth";
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => ({
   value: (i + 1).toString().padStart(2, "0"),

@@ -1,7 +1,7 @@
 import { getLoggedInSwellAccountID, getSessionToken } from "../auth";
 
 import type { APIRoute } from "astro";
-import { getOrCreateCarts } from "@src/lib/swell/cart";
+import { getOrCreateCarts } from "src/lib/swell/cart";
 
 export const GET: APIRoute = async ({ request }) => {
   try {

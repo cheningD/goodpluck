@@ -1,11 +1,11 @@
-import basket from "@assets/img/basket.svg";
-import search from "@assets/img/search.svg";
-import user from "@assets/img/user.svg";
-import wordmark from "@assets/img/wordmark.svg";
-import NavMenu from "@components/solid/global/NavMenu";
-import SideMenu from "@components/solid/global/SideMenu";
+import basket from "src/assets/img/basket.svg";
+import search from "src/assets/img/search.svg";
+import user from "src/assets/img/user.svg";
+import wordmark from "src/assets/img/wordmark.svg";
+import NavMenu from "src/components/solid/global/NavMenu";
+import SideMenu from "src/components/solid/global/SideMenu";
 import { type Component } from "solid-js";
-import { $isCartOpen } from "@src/lib/store";
+import { $isCartOpen } from "src/lib/store";
 import { useStore } from "@nanostores/solid";
 
 interface HeaderProps {

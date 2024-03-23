@@ -1,8 +1,8 @@
 import type { SessionsAuthenticateResponse, UsersUpdateRequest } from "stytch";
-import { isLoggedIn, stytch } from "@src/lib/stytch";
+import { isLoggedIn, stytch } from "src/lib/stytch";
 
 import type { APIRoute } from "astro";
-import { updateStytchUserSchema } from "@src/schemas/zod/stytch";
+import { updateStytchUserSchema } from "src/schemas/zod/stytch";
 
 export const getSessionToken = async (
   request: Request,

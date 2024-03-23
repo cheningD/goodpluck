@@ -1,8 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { stytch } from "@src/lib/stytch";
-import { swell } from "@src/lib/swell";
-import { PaymentInfoForm } from "@components/solid/PaymentInfoForm";
+import { stytch } from "src/lib/stytch";
+import { swell } from "src/lib/swell";
+import { PaymentInfoForm } from "src/components/solid/PaymentInfoForm";
 
 // Redirect if not logged in
 const sessionToken = Astro.cookies.get("gp_session_token")?.value as string;

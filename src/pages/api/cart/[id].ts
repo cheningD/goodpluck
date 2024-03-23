@@ -1,8 +1,8 @@
 import { getLoggedInSwellAccountID, getSessionToken } from "../auth";
 
 import type { APIRoute } from "astro";
-import { swell } from "@src/lib/swell";
-import { SwellCartUpdateSchema } from "@src/schemas/zod/swell";
+import { swell } from "src/lib/swell";
+import { SwellCartUpdateSchema } from "src/schemas/zod/swell";
 
 // Todo: verify that the cart belongs to the user, if logged in
 export const PUT: APIRoute = async ({ request }) => {
