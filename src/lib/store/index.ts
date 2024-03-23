@@ -38,9 +38,10 @@ export const $currentCart = createFetcherStore<GoodpluckCart>([
   $currentCartID,
 ]);
 
+// Only fetch carts if the currentCart has been loaded but does not have an ID (cart not found)
 const $shouldFetchCarts = computed(
   [$currentCart],
-  (currentCart) => !currentCart,
+  (currentCart) => !currentCart.loading && !currentCart.data?.id,
 );
 
 export const $carts = createFetcherStore<GoodpluckCart[]>([
@@ -49,9 +50,9 @@ export const $carts = createFetcherStore<GoodpluckCart[]>([
 ]);
 
 // If there is no currentCart, use first cart in the list of carts
-export const $cart = computed(
-  [$carts, $currentCart],
-  (carts, currentCart) => currentCart.data ?? carts.data?.[0],
+export const $cart = computed([$carts, $currentCart], (carts, currentCart) =>
+  // @ts-expect-error - when the cart is not found, the response is an object with a message property
+  currentCart.data?.message ? carts.data?.[0] : currentCart.data,
 );
 
 // Save the category ID to the currentCartId store (https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events)

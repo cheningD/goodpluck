@@ -1,11 +1,15 @@
 ---
-import { stytch, isLoggedIn } from "../../lib/stytch";
+import { stytch } from "../../lib/stytch";
 import { SESSION_DURATION_MINUTES } from "../../lib/constants";
 import { StytchError } from "stytch";
+import { swell } from "../../lib/swell";
 import Layout from "../../layouts/Layout.astro";
 
 // Initialize error state
 const errors = { code: "" };
+
+const url = new URL(Astro.request.url);
+const method_id = url.searchParams.get("method_id");
 
 // Handle POST request
 if (Astro.request.method === "POST") {
@@ -13,9 +17,6 @@ if (Astro.request.method === "POST") {
     // Collect form data and initialize params object
     const data = await Astro.request.formData();
     const code = data.get("otp-input")?.toString();
-
-    const url = new URL(Astro.request.url);
-    const method_id = url.searchParams.get("method_id");
 
     // Validate email
     if (!code || !/^[0-9]{6}$/.test(code)) {
@@ -67,12 +68,32 @@ if (Astro.request.method === "POST") {
 
 // Redirect authenticated users away from join page
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-const isUserLoggedIn = sessionToken && !!(await isLoggedIn(sessionToken));
+const session = sessionToken
+  ? await stytch.sessions.authenticate({
+      session_token: sessionToken,
+    })
+  : null;
 
-if (isUserLoggedIn) {
-  return Astro.redirect(
-    "/?message=" + encodeURIComponent("You are already logged in"),
-  );
+if (session) {
+  const email = session.user.emails[0]?.email;
+  const account = await swell.get(`/accounts/${email}`);
+
+  if (!account) {
+    return Astro.redirect("/join/personal-info");
+  } else if (
+    !account.billing?.card ||
+    Object.keys(account.billing?.card).length === 0
+  ) {
+    return Astro.redirect("/join/payment-info");
+  } else {
+    return Astro.redirect(
+      "/?message=" + encodeURIComponent("You are already logged in"),
+    );
+  }
+}
+
+if (!method_id) {
+  return Astro.redirect("/join");
 }
 ---
 

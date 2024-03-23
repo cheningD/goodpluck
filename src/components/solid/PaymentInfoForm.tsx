@@ -3,7 +3,6 @@ import Spinner from "./Spinner";
 import {
   $cart,
   $createSwellAccountCard,
-  $currentCartID,
   $swellAccountId,
 } from "@src/lib/store";
 import { useStore } from "@nanostores/solid";
@@ -40,7 +39,6 @@ export const PaymentInfoForm: Component = () => {
   const getMutationErrors = (): any => accountCardMutation.error;
 
   createEffect(async () => {
-    $currentCartID.set("");
     const checkoutId = getCheckoutId();
     if (checkoutId) {
       await createStripeCardElement();

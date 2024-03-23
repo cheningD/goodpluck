@@ -14,12 +14,13 @@ export const PUT: APIRoute = async ({ request }) => {
   let swellAccountId = null;
   const sessionToken = await getSessionToken(request);
   if (sessionToken) {
-    swellAccountId = getLoggedInSwellAccountID(sessionToken);
+    swellAccountId = await getLoggedInSwellAccountID(sessionToken);
   }
-  const guest = !swellAccountId;
-  const where: Record<string, any> = { guest };
+  const where: Record<string, any> = {};
   if (swellAccountId) {
     where.account_id = swellAccountId;
+  } else {
+    where.guest = true;
   }
   try {
     const cart = await swell.put(`/carts/${cartId}`, {
@@ -27,10 +28,13 @@ export const PUT: APIRoute = async ({ request }) => {
       $set: { items },
       where,
     });
-    if (cart.errors) {
-      return new Response(JSON.stringify({ error: cart.errors }), {
-        status: 400,
-      });
+    if (!cart || cart?.errors) {
+      return new Response(
+        JSON.stringify({ error: cart?.errors || "Cart not found" }),
+        {
+          status: 400,
+        },
+      );
     }
     return new Response(
       JSON.stringify({

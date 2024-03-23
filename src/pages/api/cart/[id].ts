@@ -60,13 +60,13 @@ export const GET: APIRoute = async ({ params, request }) => {
       expand: ["items.product", "items.product.vendor"],
     });
 
-    if (cart?.errors) {
-      return new Response(JSON.stringify({ errors: cart.errors }), {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json",
+    if (!cart || cart?.errors) {
+      return new Response(
+        JSON.stringify({ error: cart?.errors || "Cart not found" }),
+        {
+          status: 400,
         },
-      });
+      );
     }
 
     let swellAccountID;
@@ -83,7 +83,7 @@ export const GET: APIRoute = async ({ params, request }) => {
           "Content-Type": "application/json",
         },
       });
-    } else if (!swellAccountID && cart?.guest === true) {
+    } else if (!swellAccountID && !cart?.account_id) {
       // If not logged in and the cart is a guest cart, return the cart
       return new Response(JSON.stringify(cart), {
         headers: {
