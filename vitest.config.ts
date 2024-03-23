@@ -9,7 +9,7 @@ export default getViteConfig({
     // globals: true,
     dir: "./tests/unit",
     environment: "jsdom",
-    setupFiles: ["node_modules/@testing-library/jest-dom/vitest"],
+    setupFiles: ["tests/vitest-setup.ts"],
   },
   resolve: {
     alias: {
