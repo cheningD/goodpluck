@@ -57,6 +57,7 @@ const Header: Component<HeaderProps> = ({ collections }) => {
         />
         {/* Basket */}
         <button
+          data-testid="cart-btn"
           onClick={handleButtonClick}
           style={{ "background-image": `url(${basket.src})` }}
           class="w-7 h-7 shrink-0  bg-cover bg-no-repeat relative overflow-hidden"

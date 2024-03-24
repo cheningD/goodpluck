@@ -50,10 +50,13 @@ export const $carts = createFetcherStore<GoodpluckCart[]>([
 ]);
 
 // If there is no currentCart, use first cart in the list of carts
-export const $cart = computed([$carts, $currentCart], (carts, currentCart) =>
-  // @ts-expect-error - when the cart is not found, the response is an object with a message property
-  currentCart.data?.message ? carts.data?.[0] : currentCart.data,
-);
+export const $cart = computed([$carts, $currentCart], (carts, currentCart) => {
+  if (currentCart.data?.id) {
+    return currentCart.data;
+  } else {
+    return carts.data?.[0];
+  }
+});
 
 // Save the category ID to the currentCartId store (https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events)
 onSet($cart, ({ newValue }) => {

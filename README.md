@@ -35,3 +35,5 @@ Write unit tests to test solidjs components
 ### End-to-end Tests ([Playwright](https://playwright.dev/docs/running-tests))
 
 - Use to test flows that require interacting with the backend or exernal services
+- To run a specific test file in interactive mode:  
+  `pnpm run test:e2e tests/e2e/cart.spec.ts --ui`
