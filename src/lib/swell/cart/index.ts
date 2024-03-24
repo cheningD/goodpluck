@@ -33,7 +33,7 @@ export const getOrCreateCarts = async (
       throw new Error(JSON.stringify({ errors: cartResponse.errors }));
     }
 
-    return cartResponse.results;
+    return [cartResponse];
   } else {
     const cartsResponse = await swell.get("/carts", {
       where: {
@@ -61,7 +61,7 @@ export const getOrCreateCarts = async (
         throw new Error(JSON.stringify({ errors: cartResponse.errors }));
       }
 
-      return cartResponse.results;
+      return [cartResponse];
     } else if (cartsResponse.errors) {
       throw new Error(JSON.stringify({ errors: cartsResponse.errors }));
     }
