@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/solid";
 import { $cart, $updateShipping } from "src/lib/store";
 import { zipcodes } from "src/lib/zipcodes";
-import { Show, createSignal, type Component } from "solid-js";
+import { Show, createSignal, type Component, onMount } from "solid-js";
 
 export const ZipForm: Component = () => {
   const [showWaitlist, setShowWaitlist] = createSignal(false);
@@ -38,28 +38,22 @@ export const ZipForm: Component = () => {
   };
 
   return (
-    <>
-      <Show
-        when={!showWaitlist()}
-        fallback={
-          <WaitlistForm
-            zip={zipInput()}
-            city={zipcodes[zipInput()]?.city}
-            setShowWaitlist={setShowWaitlist}
-          />
-        }
-      >
+    <Show
+      when={!showWaitlist()}
+      fallback={
+        <WaitlistForm
+          zip={zipInput()}
+          city={zipcodes[zipInput()]?.city}
+          setShowWaitlist={setShowWaitlist}
+        />
+      }
+    >
+      <Show when={cart()?.id} fallback={<div>No cart found.</div>}>
         <form class="flex flex-col gap-2" onSubmit={handleSubmit}>
           <h1>Enter Zip</h1>
           <p>First, let's confirm we deliver to you.</p>
           <label for="zipInput">Zip</label>
-          <input
-            id="zipInput"
-            type="text"
-            placeholder="e.g. 48123"
-            value={zipInput()}
-            onInput={(e) => setZipInput(e.currentTarget.value)}
-          />
+          <ZipInput zipInput={zipInput} setZipInput={setZipInput} />
           <button type="submit" disabled={loading ?? false}>
             Submit
           </button>
@@ -71,11 +65,31 @@ export const ZipForm: Component = () => {
           )}
         </form>
       </Show>
-    </>
+    </Show>
   );
 };
 
 export default ZipForm;
+
+const ZipInput: Component<any> = ({ zipInput, setZipInput }) => {
+  let ref: HTMLInputElement;
+
+  onMount(() => {
+    ref.focus();
+  });
+
+  return (
+    <input
+      ref={ref}
+      data-testid="zip-input"
+      id="zipInput"
+      type="text"
+      placeholder="e.g. 48123"
+      value={zipInput()}
+      onInput={(e) => setZipInput(e.currentTarget.value)}
+    />
+  );
+};
 
 interface WaitlistFormProps {
   zip: string;
