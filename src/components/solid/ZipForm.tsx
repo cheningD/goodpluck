@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/solid";
-import { $cart, $updateShipping } from "src/lib/store";
+import { $cart, $updateCart } from "src/lib/store";
 import { zipcodes } from "src/lib/zipcodes";
 import { Show, createSignal, type Component, onMount } from "solid-js";
 
@@ -7,7 +7,7 @@ export const ZipForm: Component = () => {
   const [showWaitlist, setShowWaitlist] = createSignal(false);
   const [zipInput, setZipInput] = createSignal("");
   const [zipError, setError] = createSignal("");
-  const { mutate, loading, error } = useStore($updateShipping)();
+  const { mutate: updateShipping, loading, error } = useStore($updateCart)();
   const cart = useStore($cart);
 
   // This function returns a Promise<void>, which we'll call from our event handler
@@ -28,7 +28,7 @@ export const ZipForm: Component = () => {
         zip: zipInput(),
       };
       console.log("submitting", id, shipping);
-      await mutate({ id, shipping });
+      await updateShipping({ id, shipping });
     }
   };
 
