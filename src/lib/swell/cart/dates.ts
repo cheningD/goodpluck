@@ -1,6 +1,13 @@
-import { addDays, startOfDay, endOfDay, startOfWeek } from "date-fns";
+import {
+  addDays,
+  startOfDay,
+  endOfDay,
+  startOfWeek,
+  format,
+  parseISO,
+} from "date-fns";
 
-const calculateCartDates = (): {
+export const calculateCartDates = (): {
   orderingWindowStartDate: Date;
   orderingWindowEndDate: Date;
   orderChargeDate: Date;
@@ -26,4 +33,11 @@ const calculateCartDates = (): {
   };
 };
 
-export default calculateCartDates;
+export const formatDeliveryDate = (date: string): string => {
+  const parsedDate = parseISO(date);
+  const day = format(parsedDate, "EEE"); // Mon, Tue, Wed, etc.
+  const month = format(parsedDate, "MMM"); // Jan, Feb, Mar, etc.
+  const dayOfMonth = format(parsedDate, "d"); // 1, 2, 3, etc.
+  const time = format(parsedDate, "h:mma"); // 1:00AM, 2:00PM, etc.
+  return `${day}, ${month} ${dayOfMonth} at ${time}`;
+};
