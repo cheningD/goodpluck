@@ -72,7 +72,7 @@ export const ZipForm: Component = () => {
 export default ZipForm;
 
 const ZipInput: Component<any> = ({ zipInput, setZipInput }) => {
-  let ref: HTMLInputElement;
+  let ref!: HTMLInputElement;
 
   onMount(() => {
     ref.focus();
