@@ -51,9 +51,10 @@ const Header: Component<HeaderProps> = ({ collections }) => {
         </div>
 
         {/* Account */}
-        <button
+        <a
           style={{ "background-image": `url(${user.src})` }}
           class="hidden lg:flex w-7 h-7 shrink-0  bg-cover bg-no-repeat relative overflow-hidden"
+          href="/account"
         />
         {/* Basket */}
         <button
