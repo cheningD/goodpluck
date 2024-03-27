@@ -94,15 +94,10 @@ const BillingCardEditor: Component<{ setEditing: (value: boolean) => void }> = (
 
   const handleSubmit = (e: Event): void => {
     e.preventDefault();
-    submitForm()
-      .catch((err) => {
-        props.setEditing(false);
-        setError(getMutationErrors()?.message ?? err.message);
-      })
-      .finally(() => {
-        props.setEditing(false);
-        setLoading(false);
-      });
+    submitForm().catch((err) => {
+      props.setEditing(false);
+      setError(getMutationErrors()?.message ?? err.message);
+    });
   };
 
   return (
