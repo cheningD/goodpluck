@@ -3,7 +3,7 @@ import { $cart } from "src/lib/store";
 import { For, Show, type Component } from "solid-js";
 import CartItem from "./CartItem";
 import DeliveryProgressBar from "./DeliveryProgressBar";
-import { parseISO, format } from "date-fns";
+import { formatDeliveryDate } from "src/lib/swell/cart/dates";
 
 const Cart: Component = () => {
   const cart = useStore($cart);
@@ -15,12 +15,8 @@ const Cart: Component = () => {
   const getTotalTax = (): number => cart()?.tax_total ?? 0;
   const getTotal = (): number => cart()?.grand_total ?? 0;
   const getDate = (): string => {
-    const date = parseISO(cart()?.delivery_date ?? "");
-    const day = format(date, "EEE"); // Mon, Tue, Wed, etc.
-    const month = format(date, "MMM"); // Jan, Feb, Mar, etc.
-    const dayOfMonth = format(date, "d"); // 1, 2, 3, etc.
-    const time = format(date, "h:mma"); // 1:00AM, 2:00PM, etc.
-    return `${day}, ${month} ${dayOfMonth} at ${time}`;
+    const date = cart()?.delivery_date;
+    return date ? formatDeliveryDate(date) : "";
   };
   return (
     <>
