@@ -27,3 +27,16 @@ test.describe("New Cart", () => {
     //
   });
 });
+
+test.describe("Add to Cart", () => {
+  test("should redirect to ", async ({ page }) => {
+    // Click add on a random item
+    await page.goto("/market/produce");
+    await page.waitForLoadState("networkidle");
+    await page.getByTestId("add-to-cart").first().click();
+
+    // Expect the cart flyout to open and ask user for zip
+    await expect(page.getByTestId("zip-input")).toBeVisible();
+    await expect(page.getByTestId("zip-input")).toBeFocused();
+  });
+});
