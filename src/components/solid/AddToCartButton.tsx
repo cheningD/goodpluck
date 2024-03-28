@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/solid";
-import { $cart, $updateCartItems } from "src/lib/store";
+import { $cart, $updateCartItems, $isCartOpen } from "src/lib/store";
+
 import { Show, type Component } from "solid-js";
 import {
   editItemQuantityCart,
@@ -21,6 +22,9 @@ const AddToCartButton: Component<AddToCartButtonProps> = ({ productId }) => {
     const cartdata = cart();
     if (!cartdata) {
       throw new Error("Cart not found");
+    }
+    if (!cartdata.shipping?.zip) {
+      $isCartOpen.set(true);
     }
     if (quantity === 0) {
       await removeCartFromCart(productId, cartdata, mutate);
@@ -79,6 +83,7 @@ const AddButton: Component<AddButtonProps> = ({
   return (
     <button
       aria-label="Add to Cart"
+      data-testid="add-to-cart"
       type="button"
       class="mt-2 bg-brand-red text-white p-2 rounded"
       onClick={() => {

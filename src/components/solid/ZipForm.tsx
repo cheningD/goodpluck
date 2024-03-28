@@ -54,7 +54,12 @@ export const ZipForm: Component = () => {
           <p>First, let's confirm we deliver to you.</p>
           <label for="zipInput">Zip</label>
           <ZipInput zipInput={zipInput} setZipInput={setZipInput} />
-          <button type="submit" disabled={loading ?? false}>
+          <button
+            type="submit"
+            disabled={loading ?? false}
+            data-testid="zip-submit-btn"
+          >
+
             Submit
           </button>
           {zipError() && <p class="text-red-500">{zipError()}</p>}
@@ -117,6 +122,7 @@ const WaitlistForm: Component<WaitlistFormProps> = ({
         and we'll let you know when we are in your neighborhood!
       </p>
       <button
+        data-testid="try-different-zip"
         onClick={() => {
           setShowWaitlist(false);
         }}
