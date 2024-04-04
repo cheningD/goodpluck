@@ -1,11 +1,16 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
 import type { GoodpluckCart } from "../types";
+import type { Account } from "swell-js";
 
 import { logger } from "@nanostores/logger";
 
 import { createFetcherStore, createMutatorStore } from "./fetcher";
 import {
+  type SwellAccountCardCreate,
+  type SwellAccountCardUpdate,
+  type SwellAccountCreate,
+  type SwellAccountUpdate,
   type SwellCartItemsPutArgs,
   type SwellCartUpdate,
 } from "src/schemas/zod/swell";
@@ -25,6 +30,16 @@ export const $stytchAuthResp = createFetcherStore<SessionsAuthenticateResponse>(
 export const $swellAccountId = computed<string | null, typeof $stytchAuthResp>(
   $stytchAuthResp,
   (response) => response.data?.user?.trusted_metadata?.swell_account_id ?? null,
+);
+
+export const $swellAccountResp = createFetcherStore<Account>([
+  `/api/account/`,
+  $swellAccountId,
+]);
+
+export const $swellAccount = computed(
+  [$swellAccountResp],
+  (account) => account.data,
 );
 
 // Is the user a guest
@@ -93,38 +108,12 @@ export const $updateCartItems = createMutatorStore<SwellCartItemsPutArgs>(
   },
 );
 
-interface AccountCreate {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  address: string;
-  apartment: string;
-  city: string;
-  state: string;
-  zip: string;
-  emailOptin: boolean;
-  email: string;
-}
-
-export const $createSwellAccount = createMutatorStore<AccountCreate>(
+export const $createSwellAccount = createMutatorStore<SwellAccountCreate>(
   async ({ data, invalidate }) => {
     const createAccountResp = await fetch("/api/account/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        first_name: data.firstName,
-        last_name: data.lastName,
-        phone: data.phone,
-        email_optin: data.emailOptin,
-        email: data.email,
-        shipping: {
-          address1: data.address,
-          address2: data.apartment,
-          city: data.city,
-          state: data.state,
-          zip: data.zip,
-        },
-      }),
+      body: JSON.stringify(data),
     });
 
     if (!createAccountResp.ok) {
@@ -155,28 +144,22 @@ export const $createSwellAccount = createMutatorStore<AccountCreate>(
   },
 );
 
-interface SwellPaymentInfo {
-  firstName?: string;
-  lastName?: string;
-  address?: string;
-  apartment?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  token: string;
-  accountId: string;
-}
+export const $updateSwellAccount = createMutatorStore<SwellAccountUpdate>(
+  async ({ data, invalidate }) => {
+    invalidate(`/api/account/${data.id}`);
+    return await fetch(`/api/account/${data.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  },
+);
 
-export const $createSwellAccountCard = createMutatorStore<SwellPaymentInfo>(
-  async ({ data }) => {
-    const billingData = {
-      address1: data.address,
-      address2: data.apartment,
-      city: data.city,
-      state: data.state,
-      zip: data.zip,
-    };
-
+export const $createSwellAccountCard =
+  createMutatorStore<SwellAccountCardCreate>(async ({ data }) => {
+    const billingData = data.billing;
     const hasEmptyFields = Object.values(billingData).some((field) => !field);
     const billing = hasEmptyFields ? null : billingData;
 
@@ -184,7 +167,7 @@ export const $createSwellAccountCard = createMutatorStore<SwellPaymentInfo>(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        parent_id: data.accountId,
+        parent_id: data.parent_id,
         token: data.token,
         billing,
       }),
@@ -194,13 +177,27 @@ export const $createSwellAccountCard = createMutatorStore<SwellPaymentInfo>(
       const { message } = await resp.json();
       throw new Error(message);
     }
-  },
-);
+  });
+
+export const $updateSwellAccountCard =
+  createMutatorStore<SwellAccountCardUpdate>(async ({ data }) => {
+    const resp = await fetch(`/api/account/card/${data.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!resp.ok) {
+      const { message } = await resp.json();
+      throw new Error(message);
+    }
+  });
 
 // Watch these stores and output changes to the console
 logger({
   Cart: $cart,
   Carts: $carts,
+  Account: $swellAccount,
   "Swell Acc ID": $swellAccountId,
   "Stytch Auth Resp": $stytchAuthResp,
   "Session Token": $gpSessionToken,

@@ -42,7 +42,16 @@ export const PersonalInfoForm: Component = () => {
     setLoading(true);
     validateForm();
     await createSwellAccount({
-      ...form(),
+      first_name: form().firstName,
+      last_name: form().lastName,
+      phone: form().phone,
+      shipping: {
+        address1: form().address,
+        address2: form().apartment,
+        city: form().city,
+        state: form().state,
+        zip: form().zip,
+      },
       email: authResp().data?.user.emails[0]?.email ?? "",
     });
     if (getMutatorErrors()) throw new Error(getMutatorErrors().message);

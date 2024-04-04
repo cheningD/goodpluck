@@ -232,9 +232,13 @@ export const SwellAccountUpdateSchema = SwellAccountSchema.extend({
   id: z.string(), // makes the id required
 });
 
-export const SwellAccountCardSchema = CardSchema.extend({
+export const SwellAccountCardCreateSchema = CardSchema.extend({
   parent_id: z.string(),
   token: z.string(),
+});
+
+export const SwellAccountCardUpdateSchema = CardSchema.extend({
+  id: z.string(),
 });
 
 export const SwellCartUpdateSchema = z
@@ -287,4 +291,12 @@ export type SwellCartUpdate = z.infer<typeof SwellCartUpdateSchema>;
 export type SwellCartItemsPutArgs = z.infer<typeof SwellEditCartItemsSchema>;
 export type SwellCartItemsUpdate = z.infer<
   typeof SwellEditCartItemsUpdateSchema
+>;
+export type SwellAccountCreate = z.infer<typeof SwellAccountCreateSchema>;
+export type SwellAccountUpdate = z.infer<typeof SwellAccountUpdateSchema>;
+export type SwellAccountCardCreate = z.infer<
+  typeof SwellAccountCardCreateSchema
+>;
+export type SwellAccountCardUpdate = z.infer<
+  typeof SwellAccountCardUpdateSchema
 >;

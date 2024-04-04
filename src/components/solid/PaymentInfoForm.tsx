@@ -1,13 +1,13 @@
-import { Show, createEffect, createSignal, type Component } from "solid-js";
+import { Show, createSignal, type Component } from "solid-js";
 import Spinner from "./Spinner";
-import { $cart, $createSwellAccountCard, $swellAccountId } from "src/lib/store";
+import { $createSwellAccountCard, $swellAccountId } from "src/lib/store";
 import { useStore } from "@nanostores/solid";
 import { swell as swellClient } from "src/lib/swell/client";
 import { TextInput } from "./TextInput";
+import { StripeCardElement } from "./StripeCardElement";
 
 export const PaymentInfoForm: Component = () => {
   const accountId = useStore($swellAccountId);
-  const cart = useStore($cart);
   const accountCardMutation = useStore($createSwellAccountCard)();
   const { mutate: createAccountCard } = accountCardMutation;
 
@@ -31,29 +31,7 @@ export const PaymentInfoForm: Component = () => {
   };
 
   const getAccountId = (): string => accountId() as string;
-  const getCheckoutId = (): string => cart()?.checkout_id as string;
   const getMutationErrors = (): any => accountCardMutation.error;
-
-  createEffect(async () => {
-    const checkoutId = getCheckoutId();
-    if (checkoutId) {
-      await createStripeCardElement();
-    }
-  });
-
-  const createStripeCardElement = async (): Promise<void> => {
-    await swellClient.cart.recover(getCheckoutId());
-    await swellClient.payment.createElements({
-      card: {
-        elementId: "card-element",
-        options: {
-          style: { base: { fontSize: "16px" } },
-          hidePostalCode: true,
-        },
-        onReady: () => setLoading(false),
-      },
-    });
-  };
 
   const validateForm = (): void => {
     const { apartment, ...requiredFields } = form();
@@ -81,9 +59,15 @@ export const PaymentInfoForm: Component = () => {
     const token = (await swellClient.cart.get())?.billing?.card?.token;
     if (token) {
       await createAccountCard({
-        ...form(),
+        parent_id: getAccountId(), // Swell account ID
         token,
-        accountId: getAccountId(),
+        billing: {
+          address1: form().address,
+          address2: form().apartment,
+          city: form().city,
+          state: form().state,
+          zip: form().zip,
+        },
       });
 
       if (getMutationErrors()) throw new Error(getMutationErrors().message);
@@ -161,7 +145,6 @@ export const PaymentInfoForm: Component = () => {
             <Show when={showAddressForm()}>
               <div
                 id="billing-container"
-                hidden={!showAddressForm()}
                 aria-labelledby="billing-address-title"
               >
                 <h3 id="billing-address-title" class="sr-only">
@@ -299,28 +282,7 @@ export const PaymentInfoForm: Component = () => {
             </Show>
           </div>
 
-          <div
-            id="payment-info-section"
-            class="mb-8"
-            aria-describedby="payment-info-desc"
-          >
-            <legend class="text-xl font-semibold mb-2">Payment Info</legend>
-            <p id="payment-info-desc" class="sr-only">
-              Enter your payment details below, including card number,
-              expiration date, and CVC.
-            </p>
-            <div
-              id="card-details-container"
-              class="mb-1 text-base py-4 px-4 block w-full border border-zinc-400 rounded shadow-md focus:border-zinc-800 focus:ring-0 focus:outline-none"
-            >
-              <div id="card-element" aria-labelledby="card-info">
-                <Spinner />
-              </div>
-              <span id="card-info" class="sr-only">
-                Card details input field.
-              </span>
-            </div>
-          </div>
+          <StripeCardElement onReady={() => setLoading(false)} />
         </fieldset>
 
         <div class="flex justify-end" id="submit-btn-container">
