@@ -1,6 +1,7 @@
 ---
 import { BillingAddressCard } from "src/components/solid/BillingAddressCard";
 import { BillingInfoCard } from "src/components/solid/BillingInfoCard";
+import { SubscriptionCard } from "src/components/solid/SubscriptionCard";
 import Layout from "src/layouts/Layout.astro";
 import { isLoggedIn } from "src/lib/stytch";
 
@@ -18,5 +19,6 @@ if (!isUserLoggedIn) {
     <h1 class="text-2xl">Account Info</h1>
     <BillingInfoCard client:load />
     <BillingAddressCard client:load />
+    <SubscriptionCard client:load />
   </div>
 </Layout>
