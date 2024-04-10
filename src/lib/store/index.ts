@@ -82,7 +82,7 @@ onSet($cart, ({ newValue }) => {
 
 export const $isCartOpen = atom<boolean>(false);
 
-export const $updateShipping = createMutatorStore<SwellCartUpdate>(
+export const $updateCart = createMutatorStore<SwellCartUpdate>(
   async ({ data, invalidate }) => {
     invalidate(`/api/cart/${data.id}`);
     return await fetch(`/api/cart/${data.id}`, {
