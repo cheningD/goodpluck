@@ -1,6 +1,10 @@
 import { useStore } from "@nanostores/solid";
 import { createSignal, Show, type Component } from "solid-js";
-import { $swellAccount, $createSwellAccountCard } from "src/lib/store";
+import {
+  $swellAccount,
+  $createSwellAccountCard,
+  $subscription,
+} from "src/lib/store";
 import type { Card } from "swell-js";
 import { StripeCardElement } from "./StripeCardElement";
 import { swell as swellClient } from "src/lib/swell/client";
@@ -9,7 +13,8 @@ import Spinner from "./Spinner";
 export const BillingInfoCard: Component = () => {
   const [editing, setEditing] = createSignal(false);
   const account = useStore($swellAccount);
-
+  const sub = useStore($subscription);
+  console.log(sub()); // for testing
   const isLoading = (): boolean => account() === undefined;
   const getBillingCard = (): Card | undefined => account()?.billing?.card;
 

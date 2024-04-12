@@ -1,7 +1,7 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
 import type { GoodpluckCart } from "../types";
-import type { Account } from "swell-js";
+import type { Account, Subscription } from "swell-js";
 
 import { logger } from "@nanostores/logger";
 
@@ -73,10 +73,57 @@ export const $cart = computed([$carts, $currentCart], (carts, currentCart) => {
   }
 });
 
+/* Start Swell Subscription Stores */
+
+// Store for fetching the logged-in user's current subscription details.
+export const $currentSubscription = createFetcherStore<Subscription>([
+  `/api/subscription/`,
+  $swellAccountId,
+]);
+
+// Computation to determine if a new subscription needs to be fetched/created.
+// A new subscription is needed if:
+// 1. The current subscription isn't loading and doesn't have an ID (i.e. it doesn't exist).
+// 2. The cart contains items.
+export const $shouldFetchSubscription = computed(
+  [$currentSubscription, $cart],
+  (currentSubscription, cart) =>
+    !currentSubscription.loading &&
+    !currentSubscription.data?.id &&
+    (cart?.items?.length ?? 0) > 0,
+);
+
+// Store for creating a new subscription if needed.
+export const $subscriptions = createFetcherStore<Subscription[]>([
+  `/api/subscription?shouldFetchSubscription=`,
+  $shouldFetchSubscription,
+]);
+
+// Computation to determine which subscription data to use.
+// If the current subscription has a valid ID, use it; otherwise, use the newly created subscription.
+export const $subscription = computed(
+  [$subscriptions, $currentSubscription],
+  (subscriptions, currentSubscription) =>
+    currentSubscription.data?.id
+      ? currentSubscription.data
+      : subscriptions.data?.[0],
+);
+
+/* End Swell Subscription Stores */
+
 // Save the category ID to the currentCartId store (https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events)
 onSet($cart, ({ newValue }) => {
   if (newValue?.id && newValue?.id !== $currentCartID.value) {
     $currentCartID.set(newValue.id);
+  }
+
+  // TODO: Update the subscription based on the new cart contents
+  if ((newValue?.items?.length ?? 0) > 0) {
+    // There are items in the cart, update the subscription items
+    // updateSubscriptionItems(newValue.items);
+  } else {
+    // Cart is empty, remove the subscription
+    // removeSubscription();
   }
 });
 
@@ -198,6 +245,7 @@ logger({
   Cart: $cart,
   Carts: $carts,
   Account: $swellAccount,
+  Subscription: $subscription,
   "Swell Acc ID": $swellAccountId,
   "Stytch Auth Resp": $stytchAuthResp,
   "Session Token": $gpSessionToken,
