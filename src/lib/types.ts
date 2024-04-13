@@ -43,3 +43,8 @@ export interface GoodpluckCategory extends Omit<Category, "products"> {
   id: string;
   top_id: string;
 }
+
+export interface ProductItem {
+  product_id: string | undefined;
+  quantity: number | undefined;
+}

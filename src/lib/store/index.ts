@@ -117,13 +117,9 @@ onSet($cart, ({ newValue }) => {
     $currentCartID.set(newValue.id);
   }
 
-  // TODO: Update the subscription based on the new cart contents
-  if ((newValue?.items?.length ?? 0) > 0) {
-    // There are items in the cart, update the subscription items
-    // updateSubscriptionItems(newValue.items);
-  } else {
-    // Cart is empty, remove the subscription
-    // removeSubscription();
+  if ((newValue?.items?.length ?? 0) === 0) {
+    const subscriptionId = $subscription.value?.id;
+    if (subscriptionId) void $deleteSwellSubscription.mutate(subscriptionId);
   }
 });
 
@@ -200,6 +196,15 @@ export const $updateSwellAccount = createMutatorStore<SwellAccountUpdate>(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+    });
+  },
+);
+
+export const $deleteSwellSubscription = createMutatorStore<string>(
+  async ({ data: id, invalidate }) => {
+    invalidate(`/api/subscription/${id}`);
+    return await fetch(`/api/subscription/${id}`, {
+      method: "DELETE",
     });
   },
 );

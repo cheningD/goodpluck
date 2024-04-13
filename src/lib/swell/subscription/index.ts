@@ -1,10 +1,7 @@
 import { swell } from "..";
 import type { Subscription } from "swell-js";
-
-interface CartItem {
-  id: string | undefined;
-  quantity: number | undefined;
-}
+import type { ProductItem } from "src/lib/types";
+import { SwellSubscriptionCreateSchema } from "src/schemas/zod/swell";
 
 /**
  * Get or create a subscription for the Swell account.
@@ -12,31 +9,36 @@ interface CartItem {
  * https://developers.swell.is/backend-api/subscription-plans/create-a-subscription-plan
  *
  * @param {string | undefined} swellAccountID - The ID of the Swell account.
- * @param {CartItem[]} cartItems - An array of product IDs along with their quantities.
+ * @param {ProductItem[]} ProductItems - An array of product IDs along with their quantities.
  * @returns {Promise<Subscription[]>} The subscription details with the default billing set to weekly.
  * @throws An error if the Swell API returns errors.
  */
 export const getOrCreateSubscription = async (
   swellAccountID: string | undefined,
-  cartItems: CartItem[],
+  ProductItems: ProductItem[],
 ): Promise<Subscription[]> => {
   const subscriptionsResp = await swell.get("/subscriptions", {
     account_id: swellAccountID,
   });
 
   if (subscriptionsResp === null || subscriptionsResp.results.length === 0) {
+    const validatedSubscription = SwellSubscriptionCreateSchema.parse({
+      account_id: swellAccountID,
+      items: ProductItems,
+    });
+
     // Swell requires the first product to be a subscription product. The rest of the products are added as invoice items.
-    const [firstProduct, ...additionalProducts] = cartItems;
+    const [firstProduct, ...additionalProducts] = validatedSubscription.items;
 
     const invoiceItems = additionalProducts.map((item) => ({
-      product_id: item.id,
+      product_id: item.product_id,
       quantity: item.quantity,
       recurring: true,
     }));
 
     const response = await swell.post("/subscriptions", {
-      account_id: swellAccountID,
-      product_id: firstProduct?.id,
+      account_id: validatedSubscription.account_id,
+      product_id: firstProduct?.product_id,
       quantity: firstProduct?.quantity,
       draft: false,
       items: invoiceItems,

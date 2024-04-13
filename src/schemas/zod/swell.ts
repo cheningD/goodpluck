@@ -79,7 +79,7 @@ const BillingSchema = z
   .partial()
   .strict();
 
-const CartItem = z
+const CartItemSchema = z
   .object({
     bundle_items: z.array(z.object({})),
     delivery: z.enum(["shipment", "giftcard", "subscription"]).nullable(),
@@ -184,7 +184,7 @@ export const SwellCartSchema = z
     item_shipment_weight: z.number(),
     item_tax: z.number(),
     item_tax_included: z.boolean(),
-    items: z.array(CartItem),
+    items: z.array(CartItemSchema),
     metadata: z.object({}),
     notes: z.string(),
     number: z.string(),
@@ -341,10 +341,12 @@ export const SwellSubscriptionSchema = z
   .partial()
   .strict();
 
-export const SwellSubscriptionCreateSchema = z.object({
-  account_id: z.string(),
-  items: z.array(z.string()), // Swell product IDs
-});
+export const SwellSubscriptionCreateSchema = z
+  .object({
+    account_id: z.string(),
+    items: z.array(CartItemSchema),
+  })
+  .strict();
 
 export const SwellAccountCreateSchema = SwellAccountSchema.extend({
   email: z.string().email(), // makes the email required

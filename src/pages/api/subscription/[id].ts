@@ -28,3 +28,27 @@ export const GET: APIRoute = async ({ params }) => {
     return new Response(JSON.stringify({ message }), { status: 500 });
   }
 };
+
+export const DELETE: APIRoute = async ({ params }) => {
+  try {
+    const { id } = params;
+    const resp = await swell.delete(`/subscriptions/${id}`);
+
+    if (resp.errors) {
+      return new Response(
+        JSON.stringify({
+          message: "Failed to delete subscription",
+          errors: resp.errors,
+        }),
+        { status: 400 },
+      );
+    }
+
+    return new Response(JSON.stringify(resp), {
+      status: 200,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return new Response(JSON.stringify({ message }), { status: 500 });
+  }
+};
