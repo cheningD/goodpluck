@@ -348,6 +348,13 @@ export const SwellSubscriptionCreateSchema = z
   })
   .strict();
 
+export const SwellSubscriptionUpdateSchema = z
+  .object({
+    id: z.string(),
+    items: z.array(CartItemSchema),
+  })
+  .strict();
+
 export const SwellAccountCreateSchema = SwellAccountSchema.extend({
   email: z.string().email(), // makes the email required
 });
@@ -426,4 +433,7 @@ export type SwellAccountCardUpdate = z.infer<
 >;
 export type SwellSubscriptionCreate = z.infer<
   typeof SwellSubscriptionCreateSchema
+>;
+export type SwellSubscriptionUpdate = z.infer<
+  typeof SwellSubscriptionUpdateSchema
 >;

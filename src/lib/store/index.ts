@@ -2,6 +2,7 @@ import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
 import type { GoodpluckCart } from "../types";
 import type { Account, Subscription } from "swell-js";
+import isEqual from "lodash.isequal";
 
 import { logger } from "@nanostores/logger";
 
@@ -13,6 +14,7 @@ import {
   type SwellAccountUpdate,
   type SwellCartItemsPutArgs,
   type SwellCartUpdate,
+  type SwellSubscriptionUpdate,
 } from "src/schemas/zod/swell";
 import type { SessionsAuthenticateResponse } from "../stytch_types_b2c";
 
@@ -112,14 +114,47 @@ export const $subscription = computed(
 /* End Swell Subscription Stores */
 
 // Save the category ID to the currentCartId store (https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events)
-onSet($cart, ({ newValue }) => {
-  if (newValue?.id && newValue?.id !== $currentCartID.value) {
-    $currentCartID.set(newValue.id);
+onSet($cart, ({ newValue: cart }) => {
+  if (cart?.id && cart.id !== $currentCartID.value) {
+    $currentCartID.set(cart.id);
   }
 
-  if ((newValue?.items?.length ?? 0) === 0) {
-    const subscriptionId = $subscription.value?.id;
-    if (subscriptionId) void $deleteSwellSubscription.mutate(subscriptionId);
+  // Map cart items to the required format
+  const cartItems = cart?.items ?? [];
+  const cartProductItems = cartItems.map((item) => ({
+    product_id: item.product_id,
+    quantity: item.quantity,
+  }));
+
+  // Get subscription data and map its items
+  const subscription = $subscription?.value ?? {};
+  const subscriptionItems = subscription.items ?? [];
+  const subscriptionProductItems = [
+    ...subscriptionItems.map(({ id, quantity }) => ({
+      product_id: id,
+      quantity,
+    })),
+    ...(subscription.product_id && subscription.quantity
+      ? [
+          {
+            product_id: subscription.product_id,
+            quantity: subscription.quantity,
+          },
+        ]
+      : []),
+  ];
+
+  // Conditionally handle subscription updates or deletions based on cart content
+  if (subscription.id) {
+    if (cartProductItems.length === 0) {
+      void $deleteSwellSubscription.mutate(subscription.id);
+    } else if (!isEqual(cartProductItems, subscriptionProductItems)) {
+      // Update the subscription if the cart items differ from subscription items
+      void $updateSwellSubscription.mutate({
+        id: subscription.id,
+        items: cartProductItems,
+      });
+    }
   }
 });
 
@@ -208,6 +243,18 @@ export const $deleteSwellSubscription = createMutatorStore<string>(
     });
   },
 );
+
+export const $updateSwellSubscription =
+  createMutatorStore<SwellSubscriptionUpdate>(async ({ data, invalidate }) => {
+    invalidate(`/api/subscription/${data.id}`);
+    return await fetch(`/api/subscription/${data.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  });
 
 export const $createSwellAccountCard =
   createMutatorStore<SwellAccountCardCreate>(async ({ data }) => {
