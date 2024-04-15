@@ -72,6 +72,8 @@ export const PUT: APIRoute = async ({ params, request }) => {
       product_id: firstProduct?.product_id,
       quantity: firstProduct?.quantity,
       items: invoiceItems.length ? invoiceItems : null,
+      draft: false,
+      billing_schedule: { interval: "weekly" },
     });
 
     if (resp.errors) {
