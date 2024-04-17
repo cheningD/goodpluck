@@ -28,13 +28,14 @@ export const DeliveryDateSelector: Component = () => {
     );
 
     if (cartDetails?.id && nextDeliveryDate) {
-      const { ok } = (await updateDeliveryDate({
+      const resp = (await updateDeliveryDate({
         id: cartDetails.id,
         delivery_date: nextDeliveryDate,
-      })) as { ok: boolean };
+      })) as Response;
 
-      if (!ok) {
-        setError("Failed to update delivery date");
+      if (!resp.ok) {
+        const err = await resp.json();
+        setError(err.message ?? "Failed to update delivery date");
       }
     }
   };
