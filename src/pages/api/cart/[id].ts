@@ -3,16 +3,43 @@ import { getLoggedInSwellAccountID, getSessionToken } from "../auth";
 import type { APIRoute } from "astro";
 import { swell } from "src/lib/swell";
 import { SwellCartUpdateSchema } from "src/schemas/zod/swell";
+import { format, differenceInDays, isPast } from "date-fns";
 
 // Todo: verify that the cart belongs to the user, if logged in
 export const PUT: APIRoute = async ({ request }) => {
   try {
     const cartUpdateJSON = SwellCartUpdateSchema.parse(await request.json());
+    const { delivery_date: deliveryDate, id } = cartUpdateJSON;
 
-    const updatedCart = await swell.put(
-      `/carts/${cartUpdateJSON.id}`,
-      cartUpdateJSON,
-    );
+    if (deliveryDate) {
+      const cart = await swell.get(`/carts/${id}`);
+      const windowEnd = new Date(cart.ordering_window_end_date);
+      const windowStart = new Date(cart.ordering_window_start_date);
+      const newDeliveryDate = new Date(deliveryDate);
+
+      // Cart edit window needs to be open to update the delivery date
+      if (isPast(windowEnd)) {
+        return new Response(
+          JSON.stringify({
+            message: `Cart edit window closed ${format(windowEnd, "MM-dd-yyyy")}`,
+          }),
+          { status: 400, headers: { "Content-Type": "application/json" } },
+        );
+      }
+
+      // Delivery date must be within or on the 7th day from the cart order window start date.
+      // This is because cart order windows open on Monday and at most can be delivered the following Monday.
+      if (differenceInDays(newDeliveryDate, windowStart) >= 7) {
+        return new Response(
+          JSON.stringify({
+            message: `Delivery date must be within 7 days of ${format(windowStart, "MM-dd-yyyy")}`,
+          }),
+          { status: 400, headers: { "Content-Type": "application/json" } },
+        );
+      }
+    }
+
+    const updatedCart = await swell.put(`/carts/${id}`, cartUpdateJSON);
 
     if (updatedCart.errors) {
       return new Response(
