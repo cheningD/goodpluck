@@ -79,7 +79,7 @@ const BillingSchema = z
   .partial()
   .strict();
 
-const CartItem = z
+const CartItemSchema = z
   .object({
     bundle_items: z.array(z.object({})),
     delivery: z.enum(["shipment", "giftcard", "subscription"]).nullable(),
@@ -184,7 +184,7 @@ export const SwellCartSchema = z
     item_shipment_weight: z.number(),
     item_tax: z.number(),
     item_tax_included: z.boolean(),
-    items: z.array(CartItem),
+    items: z.array(CartItemSchema),
     metadata: z.object({}),
     notes: z.string(),
     number: z.string(),
@@ -222,6 +222,129 @@ export const SwellCartSchema = z
     webhook_status: z.number(),
   })
   .partial()
+  .strict();
+
+export const SubscriptionBillingSchedule = z
+  .object({
+    interval: z.enum(["daily", "weekly", "monthly", "yearly"]),
+    interval_count: z.number(),
+    trial_days: z.number(),
+    limit: z.number(),
+    limit_current: z.number(),
+    date_limit_end: z.string(),
+  })
+  .partial()
+  .strict();
+
+export const SwellSubscriptionSchema = z
+  .object({
+    account_id: z.string(),
+    account: SwellAccountSchema,
+    active: z.boolean(),
+    billing: BillingSchema,
+    billing_schedule: SubscriptionBillingSchedule,
+    bundle_item_id: z.string(),
+    coupon: z.object({}), // Replace {} with the coupon schema
+    coupon_code: z.string(),
+    coupon_id: z.string(),
+    cancel_at_end: z.boolean(),
+    cancelled: z.boolean(),
+    currency: z.string(),
+    currency_rate: z.string(),
+    complete: z.boolean(),
+    date_canceled: z.string(),
+    date_order_cycle_start: z.string(),
+    date_order_period_end: z.string(),
+    date_order_period_start: z.string(),
+    date_payment_expiring: z.string(),
+    date_payment_failed: z.string(),
+    date_payment_retry: z.string(),
+    date_period_end: z.string(),
+    date_period_start: z.string(),
+    date_prorated: z.string(),
+    date_resumed: z.string(),
+    date_trial_end: z.string(),
+    date_trial_start: z.string(),
+    date_updated: z.string(),
+    discount_total: z.number(),
+    discounts: z.array(z.object({})), // Replace {} with the discount schema
+    draft: z.boolean(),
+    grand_total: z.number(),
+    interval: z.enum(["daily", "weekly", "monthly", "yearly"]),
+    interval_count: z.number(),
+    invoices: z.array(z.object({})), // Replace {} with the invoice schema
+    invoice_total: z.number(),
+    item_discount: z.number(),
+    item_tax: z.number(),
+    item_total: z.number(),
+    items: z.array(z.object({})), // Replace {} with the subscription_items schema
+    number: z.string(),
+    product_id: z.string(),
+    notes: z.string(),
+    options: z.array(z.object({})),
+    order_id: z.string(),
+    order_item_id: z.string(),
+    order_schedule: z.string(),
+    orders: z.array(z.object({})),
+    ordering: z.boolean(),
+    paid: z.boolean(),
+    payments: z.array(z.object({})), // Replace {} with the payment schema
+    payment_balance: z.number(),
+    payment_total: z.number(),
+    pending_invoices: z.array(z.object({})), // Replace {} with the invoice schema
+    plan_id: z.string(),
+    plan_name: z.string(),
+    price: z.number(),
+    price_total: z.number(),
+    product: z.object({}), // Replace {} with the product schema
+    product_discount_each: z.number(),
+    product_discount_total: z.number(),
+    product_discounts: z.number(),
+    product_tax_each: z.number(),
+    product_tax_total: z.number(),
+    product_taxes: z.number(),
+    product_name: z.string(),
+    prorated: z.boolean(),
+    quantity: z.number(),
+    recurring_discount_total: z.number(),
+    recurring_item_discount: z.number(),
+    recurring_item_tax: z.number(),
+    recurring_item_total: z.number(),
+    recurring_tax_included_total: z.number(),
+    recurring_tax_total: z.number(),
+    recurring_total: z.number(),
+    refunds: z.object({}), // Replace {} with the refund schema
+    refund_total: z.number(),
+    status: z.enum([
+      "pending",
+      "active",
+      "trial",
+      "pastdue",
+      "unpaid",
+      "canceled",
+      "paid",
+      "complete",
+      "draft",
+      "paused",
+    ]),
+    sub_total: z.number(),
+    tax_included_total: z.number(),
+    tax_total: z.number(),
+    taxes: z.array(z.object({})), // Replace {} with the tax schema
+    taxes_fixed: z.boolean(),
+    trial: z.boolean(),
+    trial_days: z.number(),
+    unpaid: z.boolean(),
+    variant: z.object({}), // Replace {} with the variant schema
+    variant_id: z.string(),
+  })
+  .partial()
+  .strict();
+
+export const SwellSubscriptionCreateSchema = z
+  .object({
+    account_id: z.string(),
+  })
   .strict();
 
 export const SwellAccountCreateSchema = SwellAccountSchema.extend({
@@ -304,4 +427,7 @@ export type SwellAccountCardCreate = z.infer<
 >;
 export type SwellAccountCardUpdate = z.infer<
   typeof SwellAccountCardUpdateSchema
+>;
+export type SwellSubscriptionCreate = z.infer<
+  typeof SwellSubscriptionCreateSchema
 >;

@@ -1,7 +1,7 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
 import type { GoodpluckCart } from "../types";
-import type { Account } from "swell-js";
+import type { Account, Subscription } from "swell-js";
 
 import { logger } from "@nanostores/logger";
 
@@ -81,6 +81,12 @@ onSet($cart, ({ newValue }) => {
 });
 
 export const $isCartOpen = atom<boolean>(false);
+
+// Store for fetching the logged-in user's current subscription details.
+export const $subscription = createFetcherStore<Subscription>([
+  `/api/subscription/`,
+  $swellAccountId,
+]);
 
 export const $updateCart = createMutatorStore<SwellCartUpdate>(
   async ({ data, invalidate }) => {
@@ -198,6 +204,7 @@ logger({
   Cart: $cart,
   Carts: $carts,
   Account: $swellAccount,
+  Subscription: $subscription,
   "Swell Acc ID": $swellAccountId,
   "Stytch Auth Resp": $stytchAuthResp,
   "Session Token": $gpSessionToken,
