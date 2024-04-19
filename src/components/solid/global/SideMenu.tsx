@@ -1,7 +1,9 @@
 import right from "src/assets/img/right.svg";
 import search from "src/assets/img/search.svg";
 import user from "src/assets/img/user.svg";
+import { useStore } from "@nanostores/solid";
 import { For, Show, createSignal, type Component } from "solid-js";
+import { $swellAccount } from "src/lib/store";
 
 interface NavProps {
   collections: any[];
@@ -10,6 +12,7 @@ interface NavProps {
 const SideMenu: Component<NavProps> = ({ collections }) => {
   const [isOpen, setIsOpen] = createSignal(false);
   const [expandedId, setExpandedId] = createSignal(null);
+  const account = useStore($swellAccount);
   const toggleIsOpen = (): void => {
     setIsOpen(!isOpen());
     setExpandedId(null);
@@ -106,12 +109,24 @@ const SideMenu: Component<NavProps> = ({ collections }) => {
               )}
             </For>
             {/* Account */}
+
             <div class="flex items-center justify-around mt-4">
-              <button
-                style={{ "background-image": `url(${user.src})` }}
-                class=" w-5 h-5 shrink-0  bg-cover bg-no-repeat relative overflow-hidden "
-              />
-              <a href="/login">Log in</a> | <a href="/join">Sign up</a>
+              <Show
+                when={!!account()}
+                fallback={
+                  <>
+                    <a href="/login">Log in</a> | <a href="/join">Sign up</a>
+                  </>
+                }
+              >
+                <button
+                  style={{ "background-image": `url(${user.src})` }}
+                  class="w-5 h-5 shrink-0 bg-cover bg-no-repeat relative overflow-hidden"
+                  onclick={() => {
+                    window.location.href = "/account";
+                  }}
+                />
+              </Show>
             </div>
           </div>
 
