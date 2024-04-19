@@ -244,6 +244,7 @@ export const SwellAccountCardUpdateSchema = CardSchema.extend({
 export const SwellCartUpdateSchema = z
   .object({
     id: z.string(), // Swell cart ID
+    delivery_date: z.string(),
     shipping: z
       .object({
         address1: z.string().max(100),
@@ -268,6 +269,10 @@ export const SwellCartUpdateSchema = z
         pickup: z.boolean(),
       })
       .partial(),
+  })
+  .partial()
+  .extend({
+    id: z.string(), // makes the id required
   })
   .strict();
 
