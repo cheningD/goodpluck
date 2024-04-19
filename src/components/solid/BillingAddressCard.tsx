@@ -11,7 +11,7 @@ export const BillingAddressCard: Component = () => {
   const [editing, setEditing] = createSignal(false);
   const account = useStore($swellAccount);
 
-  const isLoading = (): boolean => account() === undefined;
+  const isLoading = (): boolean => account() === undefined; // Todo: create a differernt init (null) value so we can actually tell when loading is finished.
   const getBilling = (): Account["billing"] | undefined => account()?.billing;
 
   return (
