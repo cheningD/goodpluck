@@ -75,15 +75,15 @@ export const $cart = computed([$carts, $currentCart], (carts, currentCart) => {
   }
 });
 
-// Store for fetching the logged-in user's current subscription details.
+// Store for fetching the logged-in user's current membership subscription.
 export const $subscription = createFetcherStore<Subscription>([
-  `/api/subscription/`,
-  $swellAccountId,
+  "/api/membership/",
 ]);
 
-// Save the category ID to the currentCartId store (https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events)
+// Synchronize subscription items with updated cart items.
+// Refresh the cart ID if it changes, for example, when local storage is reset.
+// More about store events: https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events
 onSet($cart, ({ newValue: cart }) => {
-  // Update current cart ID if it differs from the new cart ID
   if (cart?.id && cart.id !== $currentCartID.value) {
     $currentCartID.set(cart.id);
   }
@@ -116,8 +116,8 @@ export const $isCartOpen = atom<boolean>(false);
 
 export const $updateSwellSubscription =
   createMutatorStore<SwellSubscriptionUpdate>(async ({ data, invalidate }) => {
-    invalidate(`/api/subscription/${data.id}`);
-    return await fetch(`/api/subscription/${data.id}`, {
+    invalidate(`/api/membership/${data.id}`);
+    return await fetch(`/api/membership/${data.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
