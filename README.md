@@ -10,6 +10,13 @@ Simple programs are more reliable and easier to maintain. Here are some tips to 
 - Simple does not mean easy, often the simplest solutions requires a more thorough understanding of the problem
 - Watch Rich Hickey's talk: [Simple Made Easy](https://www.infoq.com/presentations/Simple-Made-Easy/)
 
+## Setup
+
+- Install [pnpm](https://pnpm.io/installation)
+- Install dependencies `pnpm install`
+- Install Playwright `pnpm exec playwright install`
+- Install [Vercel cli](https://vercel.com/docs/cli) and run `vercel login` to login, then `vercel dev` to try out the dev server
+
 ## Contribution Workflow
 
 1. **Get an Issue**: Assign yourself an issue from the project board.
