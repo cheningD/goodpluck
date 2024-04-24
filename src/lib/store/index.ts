@@ -1,7 +1,7 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
 import type { GoodpluckCart } from "../types";
-import type { Account } from "swell-js";
+import type { Account, Subscription } from "swell-js";
 
 import { logger } from "@nanostores/logger";
 
@@ -13,8 +13,10 @@ import {
   type SwellAccountUpdate,
   type SwellCartItemsPutArgs,
   type SwellCartUpdate,
+  type SwellSubscriptionUpdate,
 } from "src/schemas/zod/swell";
 import type { SessionsAuthenticateResponse } from "../stytch_types_b2c";
+import isEqual from "lodash.isequal";
 
 // Track the session token from Stytch
 export const $gpSessionToken = persistentAtom<string | undefined>(
@@ -73,14 +75,56 @@ export const $cart = computed([$carts, $currentCart], (carts, currentCart) => {
   }
 });
 
-// Save the category ID to the currentCartId store (https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events)
-onSet($cart, ({ newValue }) => {
-  if (newValue?.id && newValue?.id !== $currentCartID.value) {
-    $currentCartID.set(newValue.id);
+// Store for fetching the logged-in user's current membership subscription.
+export const $subscription = createFetcherStore<Subscription>([
+  "/api/membership/",
+]);
+
+// Synchronize subscription items with updated cart items.
+// Refresh the cart ID if it changes, for example, when local storage is reset.
+// More about store events: https://github.com/nanostores/nanostores?tab=readme-ov-file#store-events
+onSet($cart, ({ newValue: cart }) => {
+  if (cart?.id && cart.id !== $currentCartID.value) {
+    $currentCartID.set(cart.id);
+  }
+
+  // Map cart items to product items format
+  const cartProductItems =
+    cart?.items?.map((item) => ({
+      product_id: item.product_id,
+      quantity: item.quantity,
+    })) ?? [];
+
+  // Map subscription items to one-time items format
+  const subscription = $subscription?.value?.data ?? {};
+  const subscriptionOneTimeItems =
+    subscription.items?.map(({ id, quantity }) => ({
+      product_id: id,
+      quantity,
+    })) ?? [];
+
+  // Update one-time items if they differ from the cart items
+  if (subscription.id && !isEqual(cartProductItems, subscriptionOneTimeItems)) {
+    void $updateSwellSubscription.mutate({
+      id: subscription.id,
+      items: cartProductItems,
+    });
   }
 });
 
 export const $isCartOpen = atom<boolean>(false);
+
+export const $updateSwellSubscription =
+  createMutatorStore<SwellSubscriptionUpdate>(async ({ data, invalidate }) => {
+    invalidate(`/api/membership/${data.id}`);
+    return await fetch(`/api/membership/${data.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  });
 
 export const $updateCart = createMutatorStore<SwellCartUpdate>(
   async ({ data, invalidate }) => {
@@ -198,6 +242,7 @@ logger({
   Cart: $cart,
   Carts: $carts,
   Account: $swellAccount,
+  Subscription: $subscription,
   "Swell Acc ID": $swellAccountId,
   "Stytch Auth Resp": $stytchAuthResp,
   "Session Token": $gpSessionToken,
