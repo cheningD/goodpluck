@@ -34,15 +34,6 @@ export const calculateCartDates = (): {
   };
 };
 
-export const formatDeliveryDate = (date: string): string => {
-  const parsedDate = parseISO(date);
-  const day = format(parsedDate, "EEE"); // Mon, Tue, Wed, etc.
-  const month = format(parsedDate, "MMM"); // Jan, Feb, Mar, etc.
-  const dayOfMonth = format(parsedDate, "d"); // 1, 2, 3, etc.
-  const time = format(parsedDate, "h:mma"); // 1:00AM, 2:00PM, etc.
-  return `${day}, ${month} ${dayOfMonth} at ${time}`;
-};
-
 /**
  * Returns the next available delivery date option based on the current delivery date.
  * The delivery dates are only Sunday and Monday.

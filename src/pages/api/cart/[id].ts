@@ -96,6 +96,19 @@ export const GET: APIRoute = async ({ params, request }) => {
       );
     }
 
+    // If `ignorePastCart=true` and cart edit is past, return a 404
+    if (
+      new URL(request.url).searchParams.get("ignorePastCarts") === "true" &&
+      isPast(new Date(cart.ordering_window_end_date))
+    ) {
+      return new Response(JSON.stringify({ message: "Cart not found" }), {
+        status: 404,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
     let swellAccountID;
     const sessionToken = await getSessionToken(request);
     if (sessionToken) {

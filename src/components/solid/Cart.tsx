@@ -3,7 +3,7 @@ import { $cart } from "src/lib/store";
 import { For, Show, type Component } from "solid-js";
 import CartItem from "./CartItem";
 import DeliveryProgressBar from "./DeliveryProgressBar";
-import { formatDeliveryDate } from "src/lib/swell/cart/dates";
+import { format } from "date-fns";
 
 const Cart: Component = () => {
   const cart = useStore($cart);
@@ -14,14 +14,13 @@ const Cart: Component = () => {
   const getDeliveryFee = (): number => cart()?.shipment_total ?? 0;
   const getTotalTax = (): number => cart()?.tax_total ?? 0;
   const getTotal = (): number => cart()?.grand_total ?? 0;
-  const getDate = (): string => {
-    const date = cart()?.delivery_date;
-    return date ? formatDeliveryDate(date) : "";
-  };
+  const getDate = (): string => cart()?.delivery_date ?? "";
   return (
     <>
       {getDate() ? (
-        <div class="bg-brand-green text-white">Shopping for {getDate()}</div>
+        <div class="bg-brand-green text-white">
+          Shopping for {format(getDate(), "EEE, MMM d")}
+        </div>
       ) : null}
       <Show when={cart()?.items?.length} fallback={<EmptyCart />}>
         <DeliveryProgressBar />
@@ -79,14 +78,15 @@ const Cart: Component = () => {
               <a href="#" class="underline text-brand-green">
                 Skip
               </a>{" "}
-              or edit by <strong>{getDate()}.</strong>
+              or edit by{" "}
+              <strong>{format(getDate(), "h:mma EEE, MMM d")}.</strong>
             </div>
           </div>
         </Show>
 
         <p>
           {getDate()
-            ? `Complete your order by ${getDate()} or your basket will be refreshed when we update the market.`
+            ? `Complete your order by ${format(getDate(), "h:mma EEE, MMM d")} or your basket will be refreshed when we update the market.`
             : "Complete your order to get your delivery!"}
         </p>
 

@@ -53,6 +53,7 @@ export const $currentCartID = persistentAtom<string>("current_cart_id");
 export const $currentCart = createFetcherStore<GoodpluckCart>([
   `/api/cart/`,
   $currentCartID,
+  "?ignorePastCarts=true",
 ]);
 
 // Only fetch carts if the currentCart has been loaded but does not have an ID (cart not found)
@@ -128,7 +129,7 @@ export const $updateSwellSubscription =
 
 export const $updateCart = createMutatorStore<SwellCartUpdate>(
   async ({ data, invalidate }) => {
-    invalidate(`/api/cart/${data.id}`);
+    invalidate((key) => key.startsWith(`/api/cart/${data.id}`));
     return await fetch(`/api/cart/${data.id}`, {
       method: "PUT",
       headers: {
