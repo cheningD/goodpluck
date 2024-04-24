@@ -27,7 +27,6 @@ export const ZipForm: Component = () => {
       const shipping = {
         zip: zipInput(),
       };
-      console.log("submitting", id, shipping);
       await updateShipping({ id, shipping });
     }
   };
