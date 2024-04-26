@@ -350,14 +350,24 @@ export const SwellSubscriptionCreateSchema = z
 export const SwellSubscriptionUpdateSchema = z
   .object({
     id: z.string(),
-    items: z.array(
-      z
-        .object({
-          product_id: z.string(),
-          quantity: z.number(),
-        })
-        .partial(),
-    ),
+    interval_count: z.number(),
+    billing_schedule: z.object({
+      interval_count: z.number().optional(),
+    }),
+    items: z
+      .array(
+        z
+          .object({
+            product_id: z.string(),
+            quantity: z.number(),
+          })
+          .partial(),
+      )
+      .nullable(),
+  })
+  .partial()
+  .extend({
+    id: z.string(), // makes the id required
   })
   .strict();
 
