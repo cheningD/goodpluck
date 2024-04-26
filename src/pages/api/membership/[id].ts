@@ -9,11 +9,13 @@ export const PUT: APIRoute = async ({ params, request }) => {
       await request.json(),
     );
 
+    // When the items array is empty, set it to null to clear one-time items in the subscription.
     const items = validatedData.items;
+    if (items && !items.length) {
+      validatedData.items = null;
+    }
 
-    const resp = await swell.put(`/subscriptions/${id}`, {
-      items: items.length ? items : null,
-    });
+    const resp = await swell.put(`/subscriptions/${id}`, validatedData);
 
     if (resp.errors) {
       return new Response(

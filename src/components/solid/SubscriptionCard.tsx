@@ -1,5 +1,6 @@
 import { type Component } from "solid-js";
 import { DeliveryDateSelector } from "./DeliveryDateSelector";
+import { DeliveryFrequencySelector } from "./DeliveryFrequencySelector";
 
 export const SubscriptionCard: Component = () => {
   return (
@@ -12,6 +13,7 @@ export const SubscriptionCard: Component = () => {
       </div>
 
       <DeliveryDateSelector />
+      <DeliveryFrequencySelector />
     </div>
   );
 };

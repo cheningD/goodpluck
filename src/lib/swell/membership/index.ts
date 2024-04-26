@@ -25,10 +25,17 @@ export const getOrCreateMembershipSubscription = async (
         account_id: swellAccountID,
       });
 
+      // A draft subscription is created to avoid immediate billing
       const response = await swell.post("/subscriptions", {
+        draft: true,
         account_id: validatedSubscription.account_id,
         product_id: GP_MEMBERSHIP_PRODUCT_ID,
-        draft: false,
+        billing_schedule: {
+          interval: "weekly",
+          interval_count: 1,
+        },
+        interval: "weekly",
+        interval_count: 1,
       });
 
       if (response.errors) {

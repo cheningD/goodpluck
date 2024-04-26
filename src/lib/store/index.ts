@@ -77,9 +77,11 @@ export const $cart = computed([$carts, $currentCart], (carts, currentCart) => {
 });
 
 // Store for fetching the logged-in user's current membership subscription.
-export const $subscription = createFetcherStore<Subscription>([
+export const $subscriptionResp = createFetcherStore<Subscription>([
   "/api/membership/",
 ]);
+
+export const $subscription = computed([$subscriptionResp], (sub) => sub.data);
 
 // Synchronize subscription items with updated cart items.
 // Refresh the cart ID if it changes, for example, when local storage is reset.
@@ -97,18 +99,24 @@ onSet($cart, ({ newValue: cart }) => {
     })) ?? [];
 
   // Map subscription items to one-time items format
-  const subscription = $subscription?.value?.data ?? {};
+  const subscription = $subscription?.value ?? {};
   const subscriptionOneTimeItems =
-    subscription.items?.map(({ id, quantity }) => ({
+    // @ts-expect-error - `SubscriptionItems` type does not have a product_id field (https://github.com/swellstores/swell-js/blob/f6a9bb83bc512e17df3d554620252f6cc686c709/types/subscription/snake.d.ts#L19)
+    subscription.items?.map(({ product_id: id, quantity }) => ({
       product_id: id,
       quantity,
     })) ?? [];
 
   // Update one-time items if they differ from the cart items
+  // Updating the interval count is necessary to prevent Swell from resetting the interval count to 1
   if (subscription.id && !isEqual(cartProductItems, subscriptionOneTimeItems)) {
     void $updateSwellSubscription.mutate({
       id: subscription.id,
       items: cartProductItems,
+      interval_count: subscription.interval_count,
+      billing_schedule: {
+        interval_count: subscription.interval_count,
+      },
     });
   }
 });
