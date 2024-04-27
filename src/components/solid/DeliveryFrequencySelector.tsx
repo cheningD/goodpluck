@@ -10,27 +10,24 @@ export const DeliveryFrequencySelector: Component = () => {
   const subscription = useStore($subscription);
 
   const toggleFrequency = async (): Promise<void> => {
-    const sub = subscription();
-    if (!sub?.id) {
-      setError("Subscription ID missing.");
-      return;
-    }
-
     // Interval count is the number of weeks between deliveries.
     // Goodpluck only supports weekly (1) and bi-weekly (2) deliveries.
-    const newIntervalCount = sub.interval_count === 1 ? 2 : 1;
+    const { id, interval_count: intervalCount } = subscription() ?? {};
 
-    const response = (await updateDeliveryFrequency({
-      id: sub.id,
-      interval_count: newIntervalCount,
-      billing_schedule: { interval_count: newIntervalCount },
-    })) as Response;
+    if (id) {
+      const newIntervalCount = intervalCount === 1 ? 2 : 1;
+      const response = (await updateDeliveryFrequency({
+        id,
+        interval_count: newIntervalCount,
+        billing_schedule: { interval_count: newIntervalCount },
+      })) as Response;
 
-    if (!response.ok) {
-      const errorMessage =
-        (await response.json()).message ||
-        "Failed to update delivery frequency.";
-      setError(errorMessage);
+      if (response.ok) {
+        location.reload(); // Refresh page to reflect changes (temporary solution).
+      } else {
+        const err = await response.json();
+        setError(err.message ?? "Failed to update delivery frequency");
+      }
     }
   };
 
