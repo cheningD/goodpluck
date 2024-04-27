@@ -1,6 +1,10 @@
 import { useStore } from "@nanostores/solid";
 import { createSignal, Show, type Component } from "solid-js";
-import { $subscription, $updateSwellSubscription } from "src/lib/store";
+import {
+  $subscription,
+  $subscriptionResp,
+  $updateSwellSubscription,
+} from "src/lib/store";
 
 export const DeliveryFrequencySelector: Component = () => {
   const [error, setError] = createSignal("");
@@ -23,7 +27,8 @@ export const DeliveryFrequencySelector: Component = () => {
       })) as Response;
 
       if (response.ok) {
-        location.reload(); // Refresh page to reflect changes (temporary solution).
+        // More on caching: https://github.com/nanostores/query?tab=readme-ov-file#how-cache-works
+        $subscriptionResp.revalidate();
       } else {
         const err = await response.json();
         setError(err.message ?? "Failed to update delivery frequency");
