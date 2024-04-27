@@ -13,6 +13,7 @@ export const GET: APIRoute = async ({ request }) => {
 
     const membershipSubscription =
       await getOrCreateMembershipSubscription(swellAccountID);
+
     return new Response(JSON.stringify(membershipSubscription), {
       headers: { "Content-Type": "application/json" },
       status: 200,
@@ -25,6 +26,12 @@ export const GET: APIRoute = async ({ request }) => {
         ? 404
         : 401
       : 500;
-    return new Response(JSON.stringify({ message }), { status });
+
+    return new Response(JSON.stringify({ message }), {
+      status,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 };
