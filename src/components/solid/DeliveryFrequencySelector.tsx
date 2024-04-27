@@ -42,7 +42,7 @@ export const DeliveryFrequencySelector: Component = () => {
     subscription()?.interval_count === 1 ? "Bi-weekly" : "Weekly";
 
   return (
-    <Show when={subscription()} fallback={<div>No subscription found</div>}>
+    <Show when={subscription()?.id} fallback={<div>No subscription found</div>}>
       <div>
         {error() && <div class="text-rose-500">{error()}</div>}
         <div>
