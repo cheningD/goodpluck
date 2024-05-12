@@ -71,8 +71,8 @@ importers:
         specifier: ^9.1.0
         version: 9.1.0
       swell-js:
-        specifier: ^4.0.3
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       swell-node:
         specifier: ^5.6.0
         version: 5.6.0
@@ -6669,12 +6669,17 @@ packages:
         integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==,
       }
 
-  swell-js@4.1.0:
+  swell-js@4.1.1:
     resolution:
       {
-        integrity: sha512-OL7S26CYZMKPQESH3pa357aca5csCRVhoriGb0qNLk/NZAV/U7yadprgoZ1F+l4g4I5k7fJ9VjsIQ7jhLqqBBQ==,
+        integrity: sha512-MlhC1o5yAgZzAquh103PGdp91pxxb5bfx0vIKpYgcqc5cF83jJDas2eZpgDyYhcOs8GWiyaQa8u8Wd/2FXU2yQ==,
       }
     engines: { node: ">=16" }
+    dependencies:
+      deepmerge: 4.3.1
+      fast-case: 1.7.0
+      qs: 6.12.1
+    dev: false
 
   swell-node@5.6.0:
     resolution:
@@ -11922,12 +11927,6 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   svg-tags@1.0.0: {}
-
-  swell-js@4.1.0:
-    dependencies:
-      deepmerge: 4.3.1
-      fast-case: 1.7.0
-      qs: 6.12.1
 
   swell-node@5.6.0: {}
 
