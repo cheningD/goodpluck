@@ -350,6 +350,7 @@ export const SwellSubscriptionCreateSchema = z
 export const SwellSubscriptionUpdateSchema = z
   .object({
     id: z.string(),
+    delivery_preferences: z.string(),
     interval_count: z.number(),
     billing_schedule: z.object({
       interval_count: z.number().optional(),

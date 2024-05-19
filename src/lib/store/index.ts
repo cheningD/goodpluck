@@ -1,7 +1,7 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
-import type { GoodpluckCart } from "../types";
-import type { Account, Subscription } from "swell-js";
+import type { GoodpluckCart, GoodpluckSubscription } from "../types";
+import type { Account } from "swell-js";
 
 import { logger } from "@nanostores/logger";
 
@@ -77,7 +77,7 @@ export const $cart = computed([$carts, $currentCart], (carts, currentCart) => {
 });
 
 // Store for fetching the logged-in user's current membership subscription.
-export const $subscriptionResp = createFetcherStore<Subscription>([
+export const $subscriptionResp = createFetcherStore<GoodpluckSubscription>([
   "/api/membership/",
 ]);
 

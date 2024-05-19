@@ -1,5 +1,5 @@
 import type { CartItemSnake } from "node_modules/swell-js/types/cart/snake";
-import type { Cart, Category, Product } from "swell-js";
+import type { Cart, Category, Product, Subscription } from "swell-js";
 
 interface GoodpluckVendor {
   name: string;
@@ -42,4 +42,8 @@ export interface GoodpluckCategory extends Omit<Category, "products"> {
   products: ProductExpansion;
   id: string;
   top_id: string;
+}
+
+export interface GoodpluckSubscription extends Subscription {
+  delivery_preferences?: string;
 }
