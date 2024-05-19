@@ -3,7 +3,8 @@ import { createSignal, Show, type Component } from "solid-js";
 import { $swellAccount } from "src/lib/store";
 import { BillingAddressEditor } from "./BillingAddressEditor";
 import { BillingAddressDisplay } from "./BillingAddressDisplay";
-import type { Billing } from "swell-js";
+import type { Account } from "swell-js";
+type Billing = Account["billing"] | undefined;
 
 export const BillingAddressCard: Component = () => {
   const [editing, setEditing] = createSignal(false);
