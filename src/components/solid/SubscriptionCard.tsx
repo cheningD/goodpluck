@@ -1,6 +1,7 @@
 import { type Component } from "solid-js";
 import { DeliveryDateSelector } from "./DeliveryDateSelector";
 import { DeliveryFrequencySelector } from "./DeliveryFrequencySelector";
+import { DeliveryPreferencesEditor } from "./DeliveryPreferencesEditor";
 
 export const SubscriptionCard: Component = () => {
   return (
@@ -14,6 +15,7 @@ export const SubscriptionCard: Component = () => {
 
       <DeliveryDateSelector />
       <DeliveryFrequencySelector />
+      <DeliveryPreferencesEditor />
     </div>
   );
 };
