@@ -28,7 +28,7 @@ const { title, currentCategory } = Astro.props;
     <CartFlyout client:load />
     <main
       id="sidebar-page"
-      class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col max-w-7xl mx-auto"
+      class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col"
     >
       <div class="grid grid-cols-5">
         {
@@ -42,9 +42,7 @@ const { title, currentCategory } = Astro.props;
         }
         {!currentCategory && <div />}
 
-        <div
-          class={`col-span-5 ${currentCategory ? "md:col-span-4" : ""} px-4`}
-        >
+        <div class={`col-span-5 ${currentCategory ? "md:col-span-4" : ""}`}>
           {
             currentCategory && (
               // <h4>Bread</h4>

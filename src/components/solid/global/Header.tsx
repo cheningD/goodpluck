@@ -28,7 +28,7 @@ const Header: Component<HeaderProps> = ({ collections }) => {
           <img
             src={wordmark.src}
             alt="Goodpluck Logo"
-            class="mx-auto lg:mx-0 h-6 shrink-0 color-brand-green"
+            class="mx-auto lg:mx-0 h-6 shrink-0"
           />
         </a>
 
