@@ -23,7 +23,7 @@ test.describe("New Cart", () => {
     await expect(page.getByTestId("zip-input")).toBeVisible();
     await page.getByTestId("zip-input").fill("48206");
     await page.getByTestId("zip-submit-btn").click();
-    await expect(page.getByText("Add items to your basket!")).toBeVisible();
+    await expect(page.getByText("Add items to your basket")).toBeVisible();
     //
   });
 });
