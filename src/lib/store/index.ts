@@ -1,6 +1,10 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom, computed, onSet } from "nanostores";
-import type { GoodpluckCart, GoodpluckSubscription } from "../types";
+import type {
+  GoodpluckAuthResp,
+  GoodpluckCart,
+  GoodpluckSubscription,
+} from "../types";
 import type { Account } from "swell-js";
 
 import { logger } from "@nanostores/logger";
@@ -15,7 +19,6 @@ import {
   type SwellCartUpdate,
   type SwellSubscriptionUpdate,
 } from "src/schemas/zod/swell";
-import type { SessionsAuthenticateResponse } from "../stytch_types_b2c";
 import isEqual from "lodash.isequal";
 
 // Track the session token from Stytch
@@ -24,8 +27,17 @@ export const $gpSessionToken = persistentAtom<string | undefined>(
 );
 
 // Fetch and store the authenticated stytch user's session
-export const $stytchAuthResp = createFetcherStore<SessionsAuthenticateResponse>(
-  ["/api/auth/"],
+export const $stytchAuthResp = createFetcherStore<GoodpluckAuthResp>([
+  "/api/auth/",
+]);
+
+// Check if they are logged into the stytch account (may not have a valid swell account)
+export const $isLoggedInStytch = computed<any, typeof $stytchAuthResp>(
+  $stytchAuthResp,
+  (response) =>
+    typeof response.data?.isLoggedInStytch === "boolean"
+      ? response.data?.isLoggedInStytch
+      : null,
 );
 
 // Extract the Swell account ID from the stytch user's trusted metadata

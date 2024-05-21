@@ -1,5 +1,6 @@
 import type { CartItemSnake } from "node_modules/swell-js/types/cart/snake";
 import type { Cart, Category, Product, Subscription } from "swell-js";
+import type { Session, User } from "./stytch_types_b2c";
 
 interface GoodpluckVendor {
   name: string;
@@ -46,4 +47,11 @@ export interface GoodpluckCategory extends Omit<Category, "products"> {
 
 export interface GoodpluckSubscription extends Subscription {
   delivery_preferences?: string;
+}
+
+export interface GoodpluckAuthResp {
+  message?: string;
+  isLoggedInStytch: boolean;
+  session?: Session;
+  user?: User;
 }

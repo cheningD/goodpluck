@@ -82,7 +82,7 @@ export const PersonalInfoForm: Component = () => {
           {errors().general}
         </div>
       )}
-      <h2 class="text-xl font-semibold mb-4">Personal Info</h2>
+      <h2 class="text-xl font-semibold mb-4">Delivery Address</h2>
       <form id="personal-info-form" method="post" onSubmit={handleSubmit}>
         <fieldset>
           <legend class="sr-only">Personal Information</legend>
