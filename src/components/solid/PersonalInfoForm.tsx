@@ -52,7 +52,7 @@ export const PersonalInfoForm: Component = () => {
         state: form().state,
         zip: form().zip,
       },
-      email: authResp().data?.user.emails[0]?.email ?? "",
+      email: authResp().data?.user?.emails[0]?.email ?? "",
     });
     if (getMutatorErrors()) throw new Error(getMutatorErrors().message);
     window.location.assign("/join/payment-info");
