@@ -12,6 +12,9 @@ export interface GoodpluckCartItem extends Omit<CartItemSnake, "product"> {
 
 export interface GoodpluckCart extends Omit<Cart, "items"> {
   delivery_date?: string;
+  ordering_window_start_date?: string; // Monday to Thursday
+  ordering_window_end_date?: string; // Friday
+  order_charge_date?: string; // Sunday or Monday
   name: string;
   items: GoodpluckCartItem[];
 }

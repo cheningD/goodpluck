@@ -3,14 +3,30 @@ import { BillingAddressCard } from "src/components/solid/BillingAddressCard";
 import { BillingInfoCard } from "src/components/solid/BillingInfoCard";
 import { SubscriptionCard } from "src/components/solid/SubscriptionCard";
 import Layout from "src/layouts/Layout.astro";
-import { isLoggedIn } from "src/lib/stytch";
+import { stytch } from "src/lib/stytch";
+import { swell } from "src/lib/swell";
 
-// Redirect unauthenticated users away from account page
-const sessionToken = Astro.cookies.get("gp_session_token")?.value;
-const isUserLoggedIn = sessionToken && !!(await isLoggedIn(sessionToken));
+// Redirect unauthenticated users away from account page to join page
+const sessionToken = Astro.cookies.get("gp_session_token")?.value as string;
+const session = sessionToken
+  ? await stytch.sessions.authenticate({
+      session_token: sessionToken,
+    })
+  : null;
 
-if (!isUserLoggedIn) {
-  return Astro.redirect("/join");
+if (!session) return Astro.redirect("/join");
+
+// Redirect if account isn't created yet or billing info is already set
+const email = session?.user.emails[0]?.email as string;
+const account = await swell.get(`/accounts/${email}`);
+
+if (!account) {
+  return Astro.redirect("/join/personal-info");
+} else if (
+  !account?.billing?.card ||
+  Object.keys(account.billing.card).length === 0
+) {
+  return Astro.redirect("/join/payment-info");
 }
 ---
 
