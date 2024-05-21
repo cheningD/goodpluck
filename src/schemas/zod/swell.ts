@@ -351,6 +351,9 @@ export const SwellSubscriptionUpdateSchema = z
   .object({
     id: z.string(),
     delivery_preferences: z.string(),
+    paused: z.boolean(),
+    draft: z.boolean(),
+    date_pause_end: z.string().nullable(), // Date the subscription was unpaused, if applicable.
     interval_count: z.number(),
     billing_schedule: z.object({
       interval_count: z.number().optional(),
