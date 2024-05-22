@@ -9,7 +9,7 @@ const CartItem: Component<GoodpluckCartItem> = ({
   price_total,
 }) => {
   return (
-    <div class="flex gap-4 py-4">
+    <div class="flex gap-4 py-2">
       <img
         class="w-20 h-20 object-cover rounded-sm"
         src={

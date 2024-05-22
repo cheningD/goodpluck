@@ -50,6 +50,7 @@ export const GET: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         message: "User is logged in",
+        isLoggedInStytch: true,
         session: authResp.session,
         user: authResp.user,
       }),
@@ -57,9 +58,15 @@ export const GET: APIRoute = async ({ request }) => {
     );
   }
 
-  return new Response(JSON.stringify({ message: "User is not logged in" }), {
-    status: 401,
-  });
+  return new Response(
+    JSON.stringify({
+      message: "User is not logged in",
+      isLoggedInStytch: false,
+    }),
+    {
+      status: 401,
+    },
+  );
 };
 
 export const PUT: APIRoute = async ({ request }) => {

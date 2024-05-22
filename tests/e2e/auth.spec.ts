@@ -256,7 +256,7 @@ test.describe("Join - Stytch Account Creation", () => {
 
   test("should validate when an email is not entered", async ({ page }) => {
     await page.fill("#zipcode", validZipcode);
-    await page.click('button:text("Continue")');
+    await page.click('button[id="submit-join-code-btn"]');
 
     const isInvalid = await page.evaluate(() => {
       const emailInput = document.querySelector('input[id="email"]');
@@ -270,7 +270,7 @@ test.describe("Join - Stytch Account Creation", () => {
 
   test("should validate for invalid email format", async ({ page }) => {
     await page.fill("#zipcode", validZipcode);
-    await page.click('button:text("Continue")');
+    await page.click('button[id="submit-join-code-btn"]');
 
     const isInvalid = await page.evaluate(() => {
       const emailInput = document.querySelector('input[id="email"]');
@@ -289,7 +289,7 @@ test.describe("Join - Stytch Account Creation", () => {
     );
 
     await page.fill("#email", validEmail);
-    await page.click('button:text("Continue")');
+    await page.click('button[id="submit-join-code-btn"]');
 
     const isInvalid = await page.evaluate(() => {
       const zipcodeInput = document.querySelector('input[id="zipcode"]');
@@ -309,7 +309,7 @@ test.describe("Join - Stytch Account Creation", () => {
 
     await page.fill("#email", validEmail);
     await page.fill("#zipcode", "99999");
-    await page.click('button:text("Continue")');
+    await page.click('button[id="submit-join-code-btn"]');
     await expect(
       page.locator("h2", {
         hasText: "Unfortunately, we don't deliver to 99999 yet!",
@@ -367,7 +367,7 @@ test.describe("Join - Stytch Account Creation", () => {
 
     await page.fill("#email", validEmail);
     await page.fill("#zipcode", validZipcode);
-    await page.click('button:text("Continue")');
+    await page.click('button[id="submit-join-code-btn"]');
     await expect(
       page.locator('h2:has-text("Check your email!")'),
     ).toBeVisible();

@@ -52,7 +52,7 @@ export const PersonalInfoForm: Component = () => {
         state: form().state,
         zip: form().zip,
       },
-      email: authResp().data?.user.emails[0]?.email ?? "",
+      email: authResp().data?.user?.emails[0]?.email ?? "",
     });
     if (getMutatorErrors()) throw new Error(getMutatorErrors().message);
     window.location.assign("/join/payment-info");
@@ -82,7 +82,7 @@ export const PersonalInfoForm: Component = () => {
           {errors().general}
         </div>
       )}
-      <h2 class="text-xl font-semibold mb-4">Personal Info</h2>
+      <h2 class="text-xl font-semibold mb-4">Delivery Address</h2>
       <form id="personal-info-form" method="post" onSubmit={handleSubmit}>
         <fieldset>
           <legend class="sr-only">Personal Information</legend>
