@@ -12,7 +12,7 @@ import Product from "./Product";
 import { SearchBar } from "./SearchBar";
 
 interface IProps {
-  currentCategory?: GoodpluckCategory;
+  currentCategory?: GoodpluckCategory | undefined; // https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes
   categories: GoodpluckCategory[];
   productMap: Map<string, GoodpluckProduct>;
 }
