@@ -1,5 +1,13 @@
 import { z } from "zod";
 import { getYear } from "date-fns";
+import { validatePhoneNumber, normalizePhoneNumber } from "src/utils/phone";
+
+const phoneNumberField = z
+  .string()
+  .refine((value) => validatePhoneNumber(value, "US"), {
+    message: "Please enter a valid phone number, e.g., (555) 555-1234",
+  })
+  .transform((value) => normalizePhoneNumber(value, "US"));
 
 const addressFields = {
   account_address_id: z.string(),
@@ -10,9 +18,7 @@ const addressFields = {
   first_name: z.string(),
   last_name: z.string(),
   name: z.string(),
-  phone: z.string().regex(/^\(\d{3}\) \d{3}-\d{4}$/, {
-    message: "Please enter a valid phone number, e.g., (555) 555-1234",
-  }),
+  phone: phoneNumberField,
   state: z.string(),
   zip: z.string().regex(/^\d{5}(-\d{4})?$/, {
     message: "Invalid ZIP code, e.g., 12345 or 12345-6789",
@@ -132,9 +138,7 @@ const SwellAccountSchema = z
     order_value: z.number(),
     password: z.string(),
     password_reset_url: z.string(),
-    phone: z.string().regex(/^\(\d{3}\) \d{3}-\d{4}$/, {
-      message: "Please enter a valid phone number, e.g., (555) 555-1234",
-    }),
+    phone: phoneNumberField,
     shipping: AddressSchema,
     subscriptions: z.array(z.object({})), // Replace {} with the Subscription schema
     type: z.enum(["individual", "business"]),
@@ -409,7 +413,7 @@ export const SwellCartUpdateSchema = z
         first_name: z.string().max(50),
         last_name: z.string().max(50),
         name: z.string().max(100),
-        phone: z.string().max(20),
+        phone: phoneNumberField,
         price: z.number(),
         service: z.string().max(50),
         service_name: z.string().max(50),
