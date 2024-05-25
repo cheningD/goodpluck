@@ -3,6 +3,7 @@ import { $createSwellAccount, $stytchAuthResp } from "src/lib/store";
 import { createSignal, type Component } from "solid-js";
 import { TextInput } from "./TextInput";
 import Spinner from "./Spinner";
+import { validatePhoneNumber } from "src/utils/phone";
 
 export const PersonalInfoForm: Component = () => {
   const authResp = useStore($stytchAuthResp);
@@ -32,30 +33,54 @@ export const PersonalInfoForm: Component = () => {
 
   const validateForm = (): void => {
     const { apartment, emailOptin, ...requiredFields } = form();
+    let hasErrors = false;
+
     if (Object.values(requiredFields).some((value) => !value)) {
-      throw new Error("Please fill out all required fields.");
+      setError("general", "Please fill out all required fields.");
+      hasErrors = true;
     }
+
+    if (!validatePhoneNumber(form().phone, "US")) {
+      setError(
+        "phone",
+        "Please enter a valid phone number, e.g. (555) 555-1234.",
+      );
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      throw new Error("Validation errors.");
+    }
+
     setErrors({});
   };
 
   const submitForm = async (): Promise<void> => {
     setLoading(true);
-    validateForm();
-    await createSwellAccount({
-      first_name: form().firstName,
-      last_name: form().lastName,
-      phone: form().phone,
-      shipping: {
-        address1: form().address,
-        address2: form().apartment,
-        city: form().city,
-        state: form().state,
-        zip: form().zip,
-      },
-      email: authResp().data?.user?.emails[0]?.email ?? "",
-    });
-    if (getMutatorErrors()) throw new Error(getMutatorErrors().message);
-    window.location.assign("/join/payment-info");
+    try {
+      validateForm();
+      await createSwellAccount({
+        first_name: form().firstName,
+        last_name: form().lastName,
+        phone: form().phone,
+        shipping: {
+          address1: form().address,
+          address2: form().apartment,
+          city: form().city,
+          state: form().state,
+          zip: form().zip,
+        },
+        email: authResp().data?.user?.emails[0]?.email ?? "",
+      });
+      if (getMutatorErrors()) throw new Error(getMutatorErrors().message);
+      window.location.assign("/join/payment-info");
+    } catch (err) {
+      setLoading(false);
+      setErrors((prev) => ({
+        ...prev,
+        general: getMutatorErrors()?.message ?? err,
+      }));
+    }
   };
 
   const handleSubmit = (e: Event): void => {
@@ -64,7 +89,7 @@ export const PersonalInfoForm: Component = () => {
       setLoading(false);
       setErrors((prev) => ({
         ...prev,
-        general: getMutatorErrors()?.message ?? err.message,
+        general: err.message,
       }));
     });
   };
@@ -135,7 +160,7 @@ export const PersonalInfoForm: Component = () => {
               placeholder="(555) 555-1234"
               onChange={handleInputChange("phone")}
               onBlur={() => {
-                if (!form().phone) {
+                if (!validatePhoneNumber(form().phone, "US")) {
                   setError(
                     "phone",
                     "Please enter a valid phone number, e.g. (555) 555-1234.",
