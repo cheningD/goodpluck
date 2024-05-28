@@ -3,9 +3,7 @@ import { createEffect, createSignal, type Component } from "solid-js";
 import { $swellAccount, $updateSwellAccountCard } from "src/lib/store";
 
 import Spinner from "./Spinner";
-import { TextInput } from "./TextInput";
-import type { Account } from "swell-js";
-type Billing = Account["billing"] | undefined;
+import { AddressSection } from "./AddressSection";
 
 export const BillingAddressEditor: Component<{
   setEditing: (value: boolean) => void;
@@ -21,15 +19,6 @@ export const BillingAddressEditor: Component<{
   const account = useStore($swellAccount);
   const accountCardMutation = useStore($updateSwellAccountCard)();
   const { mutate: updateAccountCard } = accountCardMutation;
-
-  // Form fields
-  const formFields = [
-    { name: "address1", label: "Street Address" },
-    { name: "address2", label: "Apt. or Unit No." },
-    { name: "city", label: "City" },
-    { name: "state", label: "State" },
-    { name: "zip", label: "ZIP Code" },
-  ];
 
   // Helper functions
   const getBillingCardId = (): string =>
@@ -51,6 +40,10 @@ export const BillingAddressEditor: Component<{
     setForm((prev) => ({ ...prev, [fieldName]: value.toString() }));
   };
 
+  const setFieldError = (field: string, message: string | null): void => {
+    setErrors((prev) => ({ ...prev, [field]: message }));
+  };
+
   const handleSubmit = (e: Event): void => {
     e.preventDefault();
     setLoading(true);
@@ -67,7 +60,11 @@ export const BillingAddressEditor: Component<{
     await updateAccountCard({
       id: getBillingCardId(),
       billing: {
-        ...form(),
+        address1: form().address,
+        address2: form().apartment,
+        city: form().city,
+        state: form().state,
+        zip: form().zip,
       },
     });
     if (getMutationErrors()) throw new Error(getMutationErrors().message);
@@ -75,13 +72,13 @@ export const BillingAddressEditor: Component<{
   };
 
   createEffect(() => {
-    setForm(
-      formFields.reduce<Record<string, string>>((acc, field) => {
-        acc[field.name] =
-          account()?.billing?.[field.name as keyof Billing] ?? "";
-        return acc;
-      }, {}),
-    );
+    setForm({
+      address: account()?.billing?.address1 ?? "",
+      apartment: account()?.billing?.address2 ?? "",
+      city: account()?.billing?.city ?? "",
+      state: account()?.billing?.state ?? "",
+      zip: account()?.billing?.zip ?? "",
+    });
   });
 
   return (
@@ -92,20 +89,12 @@ export const BillingAddressEditor: Component<{
         </div>
       )}
       <form onSubmit={handleSubmit}>
-        <div id="billing-address-section" class="mb-4">
-          {formFields.map((field) => (
-            <TextInput
-              name={field.name}
-              type="text"
-              label={field.label}
-              value={form()[field.name]}
-              onChange={handleInputChange(field.name)}
-              error={
-                field.name !== "address2" ? errors()[field.name] : undefined
-              }
-            />
-          ))}
-        </div>
+        <AddressSection
+          form={[form]}
+          errors={[errors, setErrors]}
+          setFieldError={setFieldError}
+          handleInputChange={handleInputChange}
+        />
         <button type="submit" disabled={isFormDataSameAsBilling() || loading()}>
           {loading() ? <Spinner /> : "Save Address"}
         </button>

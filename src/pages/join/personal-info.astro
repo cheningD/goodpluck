@@ -2,10 +2,7 @@
 import { stytch } from "src/lib/stytch";
 import { swell } from "src/lib/swell";
 import Layout from "../../layouts/Layout.astro";
-import MapboxAutofill from "src/components/solid/MapboxAutofill";
 import { PersonalInfoForm } from "src/components/solid/PersonalInfoForm";
-
-const mapboxToken = import.meta.env.MAPBOX_DEFAULT_PUBLIC_TOKEN;
 
 // Redirect unauthenticated users to homepage
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
@@ -50,7 +47,4 @@ if (account) {
       <PersonalInfoForm client:load />
     </section>
   </div>
-
-  <MapboxAutofill client:only mapboxToken={mapboxToken} />
-  <!-- <MapboxConfirmation client:only mapboxToken={mapboxToken} /> -->
 </Layout>

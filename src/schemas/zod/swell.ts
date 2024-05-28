@@ -49,11 +49,14 @@ const CartShippingSchema = z
   .partial()
   .strict();
 
-const CardSchema = z
+// Avoid circular reference between BillingSchema and TempCardSchema by using a placeholder
+const BillingSchemaPlaceholder = z.object({}).partial().strict();
+
+const TempCardSchema = z
   .object({
     active: z.boolean(),
     address_check: z.enum(["unchecked", "pass", "fail"]),
-    billing: z.any(), // Replace z.any() with the Billing schema
+    billing: BillingSchemaPlaceholder,
     brand: z.string(),
     cvc_check: z.enum(["unchecked", "pass", "fail"]),
     exp_month: z.number().min(1).max(12),
@@ -61,7 +64,7 @@ const CardSchema = z
     fingerprint: z.string(),
     gateway: z.string(),
     last4: z.string().length(4),
-    parent: z.any(), // Replace z.any() with the Account schema
+    parent: z.any(),
     parent_id: z.string(),
     test: z.boolean(),
     token: z.string(),
@@ -73,8 +76,8 @@ const CardSchema = z
 const BillingSchema = z
   .object({
     ...addressFields,
-    method: z.enum(["card", "account"]), // or any one of the manual methods defined in payment settings
-    card: CardSchema.omit({ billing: true }),
+    method: z.enum(["card", "account"]),
+    card: TempCardSchema.omit({ billing: true }),
     default: z.boolean(),
     account_card_id: z.string(),
     account_card: z.any(),
@@ -84,6 +87,10 @@ const BillingSchema = z
   })
   .partial()
   .strict();
+
+const CardSchema = TempCardSchema.extend({
+  billing: BillingSchema,
+});
 
 const CartItemSchema = z
   .object({
