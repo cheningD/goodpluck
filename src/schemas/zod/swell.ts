@@ -89,7 +89,7 @@ const BillingSchema = z
   .strict();
 
 const CardSchema = TempCardSchema.extend({
-  billing: BillingSchema,
+  billing: BillingSchema.nullable(),
 });
 
 const CartItemSchema = z
