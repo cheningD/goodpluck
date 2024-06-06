@@ -39,10 +39,10 @@ export const FirstBasketInfo: Component = () => {
           in our seasonal market.
         </p>
         <a
-          href="/"
+          href="/market/produce-vegetables"
           class="block bg-brand-green text-white py-2 px-4 mx-10 rounded hover:bg-green-600"
         >
-          Set Your Delivery Preferences
+          Explore the Market
         </a>
       </div>
     </>
