@@ -5,18 +5,19 @@ on:
 jobs:
   run-e2es:
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
-    runs-on:
-      [
-        buildjet-2vcpu-ubuntu-2204,
-        buildjet-4vcpu-ubuntu-2204,
-        buildjet-8vcpu-ubuntu-2204,
-        buildjet-16vcpu-ubuntu-2204,
-      ]
+    runs-on: buildjet-8vcpu-ubuntu-2204
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
         run: pnpm i && npx playwright install --with-deps
       - name: Run tests
