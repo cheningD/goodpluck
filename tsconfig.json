@@ -6,5 +6,5 @@
     "jsxImportSource": "solid-js",
     "baseUrl": "./"
   },
-  "exclude": ["dist", "tests/e2e"]
+  "exclude": ["dist", "tests/e2e", "vitest.config.ts"]
 }
