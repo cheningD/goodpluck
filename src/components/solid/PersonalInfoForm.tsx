@@ -2,6 +2,7 @@ import { useStore } from "@nanostores/solid";
 import { $createSwellAccount, $stytchAuthResp } from "src/lib/store";
 import { createSignal, type Component } from "solid-js";
 import { TextInput } from "./TextInput";
+import { AddressSection } from "./AddressSection";
 import Spinner from "./Spinner";
 import { validatePhoneNumber } from "src/utils/phone";
 
@@ -22,7 +23,7 @@ export const PersonalInfoForm: Component = () => {
   const [errors, setErrors] = createSignal<
     Record<string, string | null | undefined>
   >({});
-  const setError = (field: string, message: string | null): void => {
+  const setFieldError = (field: string, message: string | null): void => {
     setErrors((prev: Record<string, string | null | undefined>) => {
       return { ...prev, [field]: message };
     });
@@ -36,12 +37,12 @@ export const PersonalInfoForm: Component = () => {
     let hasErrors = false;
 
     if (Object.values(requiredFields).some((value) => !value)) {
-      setError("general", "Please fill out all required fields.");
+      setFieldError("general", "Please fill out all required fields.");
       hasErrors = true;
     }
 
     if (!validatePhoneNumber(form().phone, "US")) {
-      setError(
+      setFieldError(
         "phone",
         "Please enter a valid phone number, e.g. (555) 555-1234.",
       );
@@ -123,7 +124,7 @@ export const PersonalInfoForm: Component = () => {
                 onChange={handleInputChange("firstName")}
                 onBlur={() => {
                   if (!form().firstName) {
-                    setError("firstName", " "); // Forces only the border to turn red without showing an error message
+                    setFieldError("firstName", " "); // Forces only the border to turn red without showing an error message
                   }
                 }}
                 onFocus={() =>
@@ -141,7 +142,7 @@ export const PersonalInfoForm: Component = () => {
                 onChange={handleInputChange("lastName")}
                 onBlur={() => {
                   if (!form().lastName) {
-                    setError("lastName", " "); // Forces only the border to turn red without showing an error message
+                    setFieldError("lastName", " "); // Forces only the border to turn red without showing an error message
                   }
                 }}
                 onFocus={() =>
@@ -161,7 +162,7 @@ export const PersonalInfoForm: Component = () => {
               onChange={handleInputChange("phone")}
               onBlur={() => {
                 if (!validatePhoneNumber(form().phone, "US")) {
-                  setError(
+                  setFieldError(
                     "phone",
                     "Please enter a valid phone number, e.g. (555) 555-1234.",
                   );
@@ -172,85 +173,12 @@ export const PersonalInfoForm: Component = () => {
             />
           </div>
 
-          <div id="address-section" class="mb-4">
-            <TextInput
-              name="address"
-              type="text"
-              label="Street Address"
-              value={form().address}
-              // autocomplete="address-line1"
-              onChange={handleInputChange("address")}
-              onBlur={() => {
-                if (!form().address) {
-                  setError("address", " "); // Forces only the border to turn red without showing an error message
-                }
-              }}
-              onFocus={() => setErrors((prev) => ({ ...prev, address: null }))}
-              error={errors().address}
-            />
-
-            <TextInput
-              name="apartment"
-              type="text"
-              label="Apt. or Unit No."
-              value={form().apartment}
-              autocomplete="address-line2"
-              onChange={handleInputChange("apartment")}
-            />
-
-            <TextInput
-              name="city"
-              type="text"
-              label="City"
-              value={form().city}
-              autocomplete="address-level2"
-              onChange={handleInputChange("city")}
-              onBlur={() => {
-                if (!form().city) {
-                  setError("city", " "); // Forces only the border to turn red without showing an error message
-                }
-              }}
-              onFocus={() => setErrors((prev) => ({ ...prev, city: null }))}
-              error={errors().city}
-            />
-
-            <div class="flex md:gap-4 flex-col md:flex-row">
-              <TextInput
-                name="state"
-                type="text"
-                label="State"
-                value={form().state}
-                autocomplete="address-level1"
-                onChange={handleInputChange("state")}
-                onBlur={() => {
-                  if (!form().state) {
-                    setError("state", " "); // Forces only the border to turn red without showing an error message
-                  }
-                }}
-                onFocus={() => setErrors((prev) => ({ ...prev, state: null }))}
-                error={errors().state}
-              />
-
-              <TextInput
-                name="zip"
-                type="text"
-                label="ZIP Code"
-                value={form().zip}
-                autocomplete="postal-code"
-                onChange={handleInputChange("zip")}
-                onBlur={() => {
-                  if (!form().zip) {
-                    setError(
-                      "zip",
-                      "Please enter a valid ZIP code, e.g. 12345 or 12345-6789.",
-                    );
-                  }
-                }}
-                onFocus={() => setErrors((prev) => ({ ...prev, zip: null }))}
-                error={errors().zip}
-              />
-            </div>
-          </div>
+          <AddressSection
+            form={[form]}
+            errors={[errors, setErrors]}
+            setFieldError={setFieldError}
+            handleInputChange={handleInputChange}
+          />
 
           <div id="email-optin-container" class="flex mb-9">
             <input

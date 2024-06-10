@@ -225,7 +225,9 @@ export const $updateSwellAccount = createMutatorStore<SwellAccountUpdate>(
 export const $createSwellAccountCard =
   createMutatorStore<SwellAccountCardCreate>(async ({ data }) => {
     const billingData = data.billing;
-    const hasEmptyFields = Object.values(billingData).some((field) => !field);
+    const hasEmptyFields = Object.entries(billingData ?? {})
+      .filter(([key]) => key !== "address2")
+      .some(([, value]) => !value);
     const billing = hasEmptyFields ? null : billingData;
 
     const resp = await fetch("/api/account/card", {

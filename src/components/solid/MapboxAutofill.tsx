@@ -1,18 +1,21 @@
-import { onCleanup, onMount } from "solid-js";
+import { onCleanup, onMount, type Component } from "solid-js";
 
 interface MapboxAutofillProps {
   readonly mapboxToken: string;
 }
 
-const MapboxAutofill = ({ mapboxToken }: MapboxAutofillProps) => {
+const MapboxAutofill: Component<MapboxAutofillProps> = ({
+  mapboxToken,
+}: MapboxAutofillProps) => {
   onMount(() => {
     const script = document.createElement("script");
-    script.src = "https://api.mapbox.com/search-js/v1.0.0-beta.18/web.js";
+    script.id = "search-js";
+    script.src = "https://api.mapbox.com/search-js/v1.0.0-beta.21/web.js";
     script.defer = true;
     document.body.appendChild(script);
 
     script.onload = () => {
-      // @ts-ignore
+      // @ts-expect-error - mapboxsearch is a global variable
       mapboxsearch.autofill({
         accessToken: mapboxToken,
         options: { country: "us" },
