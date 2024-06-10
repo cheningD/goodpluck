@@ -73,7 +73,7 @@ export const PaymentInfoForm: Component = () => {
 
       if (getMutationErrors()) throw new Error(getMutationErrors().message);
 
-      window.location.assign("/?message=Onboarding%20complete!");
+      window.location.assign("/join/first-basket/");
     } else {
       setLoading(false);
       setErrors((prev) => ({
