@@ -6,7 +6,7 @@ export default getViteConfig({
   test: {
     /* for example, use global to avoid globals imports (describe, test, expect): */
     // globals: true,
-    dir: "./tests/unit",
+    include: "./tests/unit/*",
     environment: "jsdom",
     setupFiles: ["tests/vitest-setup.ts"],
   },
