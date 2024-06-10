@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { getViteConfig } from "astro/config";
 import solidPlugin from "vite-plugin-solid";
 
