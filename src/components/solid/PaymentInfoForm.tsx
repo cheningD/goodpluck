@@ -73,7 +73,7 @@ export const PaymentInfoForm: Component = () => {
 
       if (getMutationErrors()) throw new Error(getMutationErrors().message);
 
-      window.location.assign("/join/first-basket/");
+      window.location.assign("/market/produce-vegetables");
     } else {
       setLoading(false);
       setErrors((prev) => ({

@@ -3,6 +3,7 @@ import { stytch } from "src/lib/stytch";
 import { swell } from "src/lib/swell";
 import AuthLayout from "../../layouts/AuthLayout.astro";
 import { PersonalInfoForm } from "src/components/solid/PersonalInfoForm";
+import OrderSummary from "src/components/solid/OrderSummary";
 
 // Redirect unauthenticated users to homepage
 const sessionToken = Astro.cookies.get("gp_session_token")?.value;
@@ -12,19 +13,19 @@ const session = sessionToken
     })
   : null;
 
-if (!session) {
-  return Astro.redirect("/join");
-}
+// if (!session) {
+//   return Astro.redirect("/join");
+// }
 
-const email = session.user.emails[0]?.email;
-const account = await swell.get(`/accounts/${email}`);
+// const email = session.user.emails[0]?.email;
+// const account = await swell.get(`/accounts/${email}`);
 
-if (account) {
-  return !account.billing?.card ||
-    Object.keys(account.billing?.card).length === 0
-    ? Astro.redirect("/join/payment-info")
-    : Astro.redirect("/?message=" + encodeURIComponent("Onboarding complete!"));
-}
+// if (account) {
+//   return !account.billing?.card ||
+//     Object.keys(account.billing?.card).length === 0
+//     ? Astro.redirect("/join/payment-info")
+//     : Astro.redirect("/?message=" + encodeURIComponent("Onboarding complete!"));
+// }
 ---
 
 <AuthLayout title="Goodpluck | Join">
@@ -38,4 +39,7 @@ if (account) {
     ><span class="text-gray-500">Payment Info</span>
   </div>
   <PersonalInfoForm client:load />
+  <div slot="order_summary">
+    <OrderSummary />
+  </div>
 </AuthLayout>
