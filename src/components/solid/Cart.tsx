@@ -95,7 +95,7 @@ const Cart: Component = () => {
             <p class="py-8">
               Already have an account?{" "}
               <a class="text-brand-green underline" href="/login">
-                Login here
+                Sign in here
               </a>
             </p>
           </Show>

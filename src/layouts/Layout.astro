@@ -21,39 +21,41 @@ const { title, currentCategory } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title} - Goodpluck</title>
   </head>
-  <body class="flex flex-col min-h-screen">
-    <Header collections={categories} client:load />
-    <CartFlyout client:load />
-    <main
-      id="sidebar-page"
-      class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col"
-    >
-      <div class="grid grid-cols-5">
-        {
-          currentCategory && (
-            <SidebarMenu
-              categories={categories}
-              categorySlug={currentCategory.slug}
-              client:only
-            />
-          )
-        }
-        {!currentCategory && <div />}
-
-        <div class={`col-span-5 ${currentCategory ? "md:col-span-4" : ""}`}>
+  <body class="flex flex-col min-h-screen justify-between">
+    <div>
+      <Header collections={categories} client:load />
+      <CartFlyout client:load />
+      <main
+        id="sidebar-page"
+        class="relative w-full min-h-[calc(100vh_-_468px)] flex flex-col"
+      >
+        <div class="grid grid-cols-5">
           {
             currentCategory && (
-              // <h4>Bread</h4>
-              <Breadcrumbs
+              <SidebarMenu
                 categories={categories}
-                collectionId={currentCategory.id}
+                categorySlug={currentCategory.slug}
+                client:only
               />
             )
           }
-          <slot />
+          {!currentCategory && <div />}
+
+          <div class={`col-span-5 ${currentCategory ? "md:col-span-4" : ""}`}>
+            {
+              currentCategory && (
+                // <h4>Bread</h4>
+                <Breadcrumbs
+                  categories={categories}
+                  collectionId={currentCategory.id}
+                />
+              )
+            }
+            <slot />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
     <Footer client:load />
   </body>
 </html>

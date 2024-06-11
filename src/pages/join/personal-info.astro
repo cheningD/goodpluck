@@ -1,7 +1,7 @@
 ---
 import { stytch } from "src/lib/stytch";
 import { swell } from "src/lib/swell";
-import Layout from "../../layouts/Layout.astro";
+import AuthLayout from "../../layouts/AuthLayout.astro";
 import { PersonalInfoForm } from "src/components/solid/PersonalInfoForm";
 
 // Redirect unauthenticated users to homepage
@@ -27,24 +27,20 @@ if (account) {
 }
 ---
 
-<Layout title="Goodpluck | Join">
-  <div class="flex flex-col items-center">
-    <section class="bg-white p-10 max-w-lg">
-      <h1 class="text-3xl font-bold mb-8 text-center max-w-md mx-auto">
-        Create an account to place your orders!
-      </h1>
-      <div
-        role="progressbar"
-        aria-valuenow="0"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-label="Progress: 0%"
-        class="w-full bg-gray-300 rounded-full h-1.5 my-8"
-      >
-        <div class="bg-green-700 h-1.5 rounded-full w-0"></div>
-        <div class="sr-only">Account Creation Form Progress: 0% complete</div>
-      </div>
-      <PersonalInfoForm client:load />
-    </section>
+<AuthLayout title="Goodpluck | Join">
+  <div
+    role="progressbar"
+    aria-valuenow="0"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-label="Progress: 0%"
+    class="w-full bg-gray-300 rounded-full h-1.5 my-8"
+  >
+    <div class="bg-green-700 h-1.5 rounded-full w-0"></div>
+    <div class="sr-only">Account Creation Form Progress: 0% complete</div>
   </div>
-</Layout>
+  <h1 class="text-3xl mt-4 mb-4 font-semibold text-gray-900 text-center">
+    Create an account to place your orders!
+  </h1>
+  <PersonalInfoForm client:load />
+</AuthLayout>

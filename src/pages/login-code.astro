@@ -2,7 +2,7 @@
 import { stytch, isLoggedIn } from "../lib/stytch";
 import { SESSION_DURATION_MINUTES } from "../lib/constants";
 import { StytchError } from "stytch";
-import Layout from "../layouts/Layout.astro";
+import AuthLayout from "../layouts/AuthLayout.astro";
 
 // Initialize error state
 const errors = { code: "", general: "", email: "" };
@@ -13,6 +13,13 @@ let method_id = url.searchParams.get("method_id");
 if (!method_id) {
   return Astro.redirect("/login");
 }
+
+const email_query_arg = url.searchParams.get("email");
+let email;
+if (email_query_arg) {
+  email = decodeURIComponent(email_query_arg);
+}
+
 //const user_exists = url.searchParams.get("user_exists");
 
 // Handle POST request for both OTP submission and resend OTP request
@@ -80,60 +87,52 @@ if (isUserLoggedIn) {
 }
 ---
 
-<Layout title="Goodpluck">
-  <div class="flex flex-col py-40 w-full sm:w-[400px] mx-auto">
-    <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">
-      Check your email!
+<AuthLayout title="Goodpluck">
+  <!-- OTP Verification Form -->
+  <form method="POST" id="otp-form">
+    <h1 class="text-3xl mt-4 mb-4 font-semibold text-gray-900 text-center">
+      Check your email for a code
     </h1>
-    <p class="py-4 text-center w-40 mx-auto">We sent a code to your email</p>
-
-    <!-- OTP Verification Form -->
-    <form method="POST" id="otp-form">
-      {
-        errors.general && (
-          <p class="mb-4 text-sm font-medium text-red-600 bg-red-50 p-2 rounded border border-red-500">
-            {errors.general}
-          </p>
-        )
-      }
-      <label for="otp-input">Enter code</label>
-      <input
-        class="border rounded-md p-2 w-full mb-4"
-        id="otp-input"
-        name="otp-input"
-        autocomplete="one-time-code"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        required
-      />
-      {
-        errors.code && (
-          <p
-            id="login-code-error"
-            class="my-2 text-sm font-medium text-red-600"
-          >
-            {errors.code}
-          </p>
-        )
-      }
-      <button
-        class="px-6 py-4 w-full mt-8 bg-brand-yellow border-2 border-black text-center font-bold rounded shadow-md hover:bg-yellow-400 focus:shadow-md focus:top-[1px] focus:left-[1px] transition ease-in duration-50"
-        id="submit-login-code-btn"
-        type="submit">Submit</button
-      >
-    </form>
-
-    <!-- Resend OTP -->
-    <p class="mt-6 text-sm text-center text-gray-600" id="resend-text">
-      Didn't receive the code?
-      <a
-        id="resend-button"
-        class="text-orange-500 hover:underline"
-        type="submit"
-        href="/login?resend=true"
-      >
-        Resend code
-      </a>
+    <p class="text-center mb-10">
+      We sent a code to {email ? email : " your email"}. The code expires
+      shortly, so please enter it soon.
     </p>
-  </div>
-</Layout>
+
+    <input
+      class="border rounded-md p-2 w-full mb-6 mt-2 text-2xl tracking-widest"
+      id="otp-input"
+      name="otp-input"
+      autocomplete="one-time-code"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      placeholder="enter code"
+      required
+    />
+    {
+      errors.code && (
+        <p id="login-code-error" class="text-red-400">
+          {errors.code}
+        </p>
+      )
+    }
+    {errors.general && <p class="text-red-400">{errors.general}</p>}
+    <button
+      class="px-6 py-4 mt-6 w-full bg-brand-yellow border-2 border-black text-center rounded shadow-md hover:bg-yellow-400"
+      id="submit-login-code-btn"
+      type="submit">Sign In</button
+    >
+  </form>
+
+  <!-- Resend OTP -->
+  <p class="mt-6 text-center text-gray-600" id="resend-text">
+    Been waiting a minue?
+    <a
+      id="resend-button"
+      class="text-orange-500 hover:underline"
+      type="submit"
+      href="/login?resend=true"
+    >
+      Try again
+    </a>
+  </p>
+</AuthLayout>

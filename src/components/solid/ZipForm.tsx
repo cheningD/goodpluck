@@ -58,7 +58,7 @@ export const ZipForm: Component = () => {
           <p class="py-8">
             Already have an account?{" "}
             <a href="/login" class="text-brand-green underline">
-              Login here
+              Sign in here
             </a>
           </p>
           <button

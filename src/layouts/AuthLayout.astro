@@ -1,0 +1,41 @@
+---
+import Footer from "src/components/solid/global/Footer";
+import "src/assets/styles/global.css";
+import favicon from "src/assets/img/favicon.png";
+import wordmark from "src/assets/img/wordmark.svg";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href={favicon.src} />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Goodpluck</title>
+  </head>
+  <body
+    class="flex flex-col min-h-screen bg-brand-green justify-between items-center gap-12"
+  >
+    <header
+      class="flex flex-col justify-center items-center h-20 w-full px-4 lg:px-12 bg-white"
+    >
+      <a href="/">
+        <img src={wordmark.src} alt="Goodpluck Logo" class="h-6" />
+      </a>
+    </header>
+    <div>
+      <div
+        class="p-8 w-full md:w-[500px] max-h-[600px] rounded-lg bg-white shadow-md"
+      >
+        <slot />
+      </div>
+      <p class="mt-2 text-center text-gray-100">
+        Reach out to <a
+          class="hover:underline"
+          href="mailto:hello@goodpluck.com">hello@goodpluck.com</a
+        > for help
+      </p>
+    </div>
+    <Footer client:load />
+  </body>
+</html>

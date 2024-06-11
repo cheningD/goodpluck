@@ -321,10 +321,10 @@ test.describe("Join - Stytch Account Creation", () => {
     );
   });
 
-  test("should redirect to login page on clicking `Log in` link", async ({
+  test("should redirect to login page on clicking `Sign in` link", async ({
     page,
   }) => {
-    await page.click("text=Log in");
+    await page.click("text=Sign in");
     await expect(page).toHaveURL("/login");
   });
 
