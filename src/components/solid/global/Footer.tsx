@@ -3,7 +3,7 @@ import wordmark from "src/assets/img/wordmark.svg";
 
 const Footer: Component = () => {
   return (
-    <footer class="bg-brand-off-white py-12">
+    <footer class="bg-brand-off-white py-12 w-full">
       <div class="max-w-[85rem] px-8 mx-auto flex justify-around text-green-800 ">
         <img
           src={wordmark.src}

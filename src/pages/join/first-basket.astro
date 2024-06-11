@@ -1,6 +1,6 @@
 ---
 import { isLoggedIn } from "src/lib/stytch";
-import Layout from "../../layouts/Layout.astro";
+import AuthLayout from "../../layouts/AuthLayout.astro";
 import { FirstBasketInfo } from "src/components/solid/FirstBasketInfo";
 
 // Redirect unauthenticated users away from page
@@ -12,29 +12,9 @@ if (!isUserLoggedIn) {
 }
 ---
 
-<Layout title="Goodpluck | Your First Basket">
-  <div class="flex flex-col items-center">
-    <section
-      class="bg-white p-10 max-w-lg"
-      aria-labelledby="create-account-title"
-    >
-      <h1
-        id="create-account-title"
-        class="text-3xl font-bold mb-8 text-center max-w-md mx-auto"
-      >
-        Your First Basket With Goodpluck!
-      </h1>
-      <div
-        role="progressbar"
-        aria-valuenow="66"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-label="Account creation progress: 66% complete."
-        class="w-full bg-gray-300 rounded-full h-1.5 my-8"
-      >
-        <div class="bg-green-700 h-1.5 rounded-full w-2/3"></div>
-      </div>
-      <FirstBasketInfo client:load />
-    </section>
-  </div>
-</Layout>
+<AuthLayout title="Goodpluck | Your First Basket">
+  <h1 class="text-3xl mt-4 mb-4 font-semibold text-gray-900 text-center">
+    Your First Basket With Goodpluck!
+  </h1>
+  <FirstBasketInfo client:load />
+</AuthLayout>

@@ -3,13 +3,18 @@ import { stytch } from "../../lib/stytch";
 import { SESSION_DURATION_MINUTES } from "../../lib/constants";
 import { StytchError } from "stytch";
 import { swell } from "../../lib/swell";
-import Layout from "../../layouts/Layout.astro";
+import AuthLayout from "../../layouts/AuthLayout.astro";
 
 // Initialize error state
 const errors = { code: "" };
 
 const url = new URL(Astro.request.url);
 const method_id = url.searchParams.get("method_id");
+const email_query_arg = url.searchParams.get("email");
+let email;
+if (email_query_arg) {
+  email = decodeURIComponent(email_query_arg);
+}
 
 // Handle POST request
 if (Astro.request.method === "POST") {
@@ -93,33 +98,45 @@ if (session) {
 }
 
 if (!method_id) {
-  return Astro.redirect("/join");
+  return Astro.redirect("/join?message=no-method-id");
 }
 ---
 
-<Layout title="Goodpluck">
-  <div class="flex flex-col py-40 w-full sm:w-[400px] mx-auto">
-    <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">
+<AuthLayout title="Goodpluck">
+  <form method="POST">
+    <h1 class="text-3xl mt-4 mb-4 font-semibold text-gray-900 text-center">
       Check your email!
     </h1>
-    <p class="py-4 text-center w-40 mx-auto">We sent a code to your email</p>
-    <form method="POST" class="w-60 mx-auto py-8">
-      <label for="otp-input">Enter code</label>
-      <input
-        class="border rounded-md p-2 w-full mb-4 text-2xl"
-        id="otp-input"
-        name="otp-input"
-        autocomplete="one-time-code"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        required
-      />
-      {errors.code && <p>{errors.code}</p>}
-      <button
-        class="px-6 py-4 w-full mt-8 bg-brand-yellow border-2 border-black text-center font-bold rounded shadow-md hover:bg-yellow-400 focus:shadow-md focus:top-[1px] focus:left-[1px] transition ease-in duration-50"
-        id="submit-join-code-btn"
-        type="submit">Verify Email</button
-      >
-    </form>
-  </div>
-</Layout>
+    <p class="text-center mb-10">
+      We've sent a code to {email ? email : " your email"}. The code expires
+      soon, so don't leave it out too long!
+    </p>
+    <label for="otp-input">Enter code</label>
+    <input
+      class="border rounded-md p-2 w-full mb-8 mt-2 text-2xl tracking-widest"
+      id="otp-input"
+      name="otp-input"
+      autocomplete="one-time-code"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      required
+    />
+    {errors.code && <p class="text-red-400">{errors.code}</p>}
+    <button
+      class="px-6 py-4 mt-6 w-full bg-brand-yellow border-2 border-black text-center rounded shadow-md hover:bg-yellow-400"
+      id="submit-join-code-btn"
+      type="submit">Verify Email</button
+    >
+  </form>
+  <p class="mt-6 text-center text-gray-600" id="resend-text">
+    Been waiting a minue and still no email?
+    <a
+      id="resend-button"
+      class="text-orange-500 hover:underline"
+      type="submit"
+      href="/join"
+    >
+      Try again
+    </a>
+  </p>
+</AuthLayout>

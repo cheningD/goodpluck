@@ -211,7 +211,7 @@ export const PersonalInfoForm: Component = () => {
         <div class="flex justify-end " id="continue-btn-container">
           <button
             type="submit"
-            class="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:border-none focus:ring focus:outline-none focus:ring-green-800 focus:ring-offset-2"
+            class="px-6 py-4 mt-6 w-full bg-brand-yellow border-2 border-black text-center rounded shadow-md hover:bg-yellow-400"
             aria-label="Continue to next step"
             disabled={loading() ?? false}
           >

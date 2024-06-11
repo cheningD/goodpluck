@@ -1,7 +1,7 @@
 ---
 import { StytchError } from "stytch";
 import { stytch, isLoggedIn } from "../../lib/stytch";
-import Layout from "../../layouts/Layout.astro";
+import AuthLayout from "../../layouts/AuthLayout.astro";
 import { CONFIRMED_ZIPCODES } from "../../lib/constants";
 
 const errors = { email: "" };
@@ -32,11 +32,20 @@ if (Astro.request.method === "POST") {
 
         if (response.user_created) {
           // New user created, proceed with signup
-          return Astro.redirect("/join/code?method_id=" + response.email_id);
+          return Astro.redirect(
+            "/join/code?method_id=" +
+              response.email_id +
+              "&email=" +
+              encodeURIComponent(email),
+          );
         } else {
           // User already exists, redirect to login-code with a message
           return Astro.redirect(
-            "/login-code?method_id=" + response.email_id + "&user_exists=true",
+            "/login-code?method_id=" +
+              response.email_id +
+              "&user_exists=true" +
+              "&email=" +
+              encodeURIComponent(email),
           );
         }
       } catch (error) {
@@ -64,46 +73,46 @@ if (isUserLoggedIn) {
 }
 ---
 
-<Layout title="Goodpluck">
-  <div class="flex flex-col py-40 w-full sm:w-[400px] mx-auto">
-    <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">
-      Create an account to get started
+<AuthLayout title="Goodpluck">
+  <form method="POST">
+    <h1 class="text-3xl mt-4 mb-10 font-semibold text-gray-900 text-center">
+      First, let's confirm that we deliver to you
     </h1>
-    <form method="POST" class="w-60 mx-auto py-8">
-      <label for="email">What's your email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="kale@example.com"
-        required
-        class="border rounded-md p-2 w-full mb-8"
-        value={email}
-      />
-      <label for="zipcode">Confirm your zip</label>
-      <input
-        type="text"
-        id="zipcode"
-        name="zipcode"
-        pattern="^[0-9]{5}(-[0-9]{4})?$"
-        placeholder="48201"
-        required
-        class="border rounded-md p-2 w-full mb-4"
-        title="Enter a 5-digit ZIP code or a 9-digit ZIP+4 code."
-        maxlength="10"
-      />
-      {errors.email && <p class="text-red-400">{errors.email}</p>}
-      <button
-        class="px-6 py-4 w-full mt-8 bg-brand-yellow border-2 border-black text-center font-bold rounded shadow-md hover:bg-yellow-400"
-        id="submit-join-code-btn"
-        type="submit">Create Account</button
-      >
-    </form>
-    <p class="mt-6 text-sm text-center text-gray-600">
-      You already have an account? <a
-        href="/login"
-        class="text-orange-500 hover:underline">Log in</a
-      >
-    </p>
-  </div>
-</Layout>
+
+    <label for="zipcode">What is your zip code?</label>
+    <input
+      type="text"
+      id="zipcode"
+      name="zipcode"
+      pattern="^[0-9]{5}(-[0-9]{4})?$"
+      placeholder="48201"
+      required
+      class="border rounded-md p-2 w-full mb-8 mt-2"
+      title="Enter a 5-digit ZIP code or a 9-digit ZIP+4 code."
+      maxlength="10"
+    />
+    <label for="email">What's your email?</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="kale@example.com"
+      required
+      class="border rounded-md p-2 w-full mb-6 mt-2"
+      value={email}
+    />
+
+    {errors.email && <p class="text-red-400">{errors.email}</p>}
+    <button
+      class="px-6 py-4 mt-6 w-full bg-brand-yellow border-2 border-black text-center rounded shadow-md hover:bg-yellow-400"
+      id="submit-join-code-btn"
+      type="submit">Create account</button
+    >
+  </form>
+  <p class="mt-6 text-center text-gray-600">
+    Already have an account? <a
+      href="/login"
+      class="text-orange-500 hover:underline">Sign in</a
+    >
+  </p>
+</AuthLayout>

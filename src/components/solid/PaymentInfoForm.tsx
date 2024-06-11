@@ -209,7 +209,7 @@ export const PaymentInfoForm: Component = () => {
           <button
             id="submit-btn"
             type="submit"
-            class="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:outline-none disabled:cursor-wait disabled:bg-green-700"
+            class="px-6 py-4 mt-6 w-full bg-brand-yellow border-2 border-black text-center rounded shadow-md hover:bg-yellow-400"
             aria-describedby="submit-btn-desc"
             disabled={loading() ?? false}
           >
