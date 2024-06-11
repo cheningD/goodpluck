@@ -5,11 +5,12 @@ interface TextInputProps {
   type: "text" | "email" | "tel" | "password" | "url" | "date";
   label?: string;
   placeholder?: string;
-  value: string | undefined;
+  value?: string | undefined;
   autocomplete?: string;
   error?: string | null | undefined;
   required?: boolean;
   pattern?: string;
+  inputmode?: string;
   onChange?: JSX.EventHandler<HTMLInputElement, Event>;
   onBlur?: JSX.EventHandler<HTMLInputElement, Event>;
   onFocus?: JSX.EventHandler<HTMLInputElement, Event>;
@@ -32,6 +33,7 @@ export const TextInput: Component<TextInputProps> = (props) => {
         id={props.name}
         name={props.name}
         value={props.value ?? ""}
+        inputmode={props.inputmode === "numeric" ? "numeric" : "text"}
         class={`border rounded-md p-2 w-full mb-1 focus:ring-0 focus:outline-none ${
           props.error
             ? "border-rose-500"

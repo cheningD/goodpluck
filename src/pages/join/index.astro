@@ -86,23 +86,17 @@ if (isUserLoggedIn) {
     <TextInput
       label="Zip code"
       type="text"
-      id="zipcode"
       name="zipcode"
       pattern="^[0-9]{5}(-[0-9]{4})?$"
       placeholder="Enter zip"
       required
-      class="border rounded-md p-2 w-full mb-8 mt-2"
-      title="Enter a 5-digit ZIP code or a 9-digit ZIP+4 code."
-      maxlength="10"
     />
     <TextInput
       label="Enter your email to create an acount"
       type="email"
-      id="email"
       name="email"
       placeholder="kale@example.com"
       required
-      class="border rounded-md p-2 w-full mb-6 mt-2"
       value={email}
     />
 
