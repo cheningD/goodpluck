@@ -1,3 +1,4 @@
+import { zipcodes } from "src/lib/zipcodes";
 import { useStore } from "@nanostores/solid";
 import { $createSwellAccount, $stytchAuthResp } from "src/lib/store";
 import { createSignal, type Component } from "solid-js";
@@ -32,28 +33,32 @@ export const PersonalInfoForm: Component = () => {
   const { mutate: createSwellAccount } = createSwellAccountMutation;
   const getMutatorErrors = (): any => createSwellAccountMutation.error;
 
-  const validateForm = (): void => {
-    const { apartment, emailOptin, ...requiredFields } = form();
-    let hasErrors = false;
+  const isZipDeliverable = (zip: string): boolean => {
+    return zipcodes[zip]?.deliverable ?? false;
+  };
 
+  const validateForm = (): void => {
+    setErrors({}); // Clear any previous errors
+    const { apartment, emailOptin, ...requiredFields } = form(); // Extract the optional form fields
+
+    // Check for empty required fields
     if (Object.values(requiredFields).some((value) => !value)) {
       setFieldError("general", "Please fill out all required fields.");
-      hasErrors = true;
-    }
-
-    if (!validatePhoneNumber(form().phone, "US")) {
+      throw new Error("Please fill out all required fields.");
+    } else if (!validatePhoneNumber(form().phone, "US")) {
+      // Check for valid phone number
       setFieldError(
         "phone",
         "Please enter a valid phone number, e.g. (555) 555-1234.",
       );
-      hasErrors = true;
+      throw new Error(
+        "Please enter a valid phone number, e.g. (555) 555-1234.",
+      );
+    } else if (!isZipDeliverable(form().zip)) {
+      // Check if the zip code is deliverable
+      setFieldError("zip", "Sorry, we don't deliver to your area yet.");
+      throw new Error("Sorry, we don't deliver to your area yet.");
     }
-
-    if (hasErrors) {
-      throw new Error("Validation errors.");
-    }
-
-    setErrors({});
   };
 
   const submitForm = async (): Promise<void> => {
@@ -79,7 +84,9 @@ export const PersonalInfoForm: Component = () => {
       setLoading(false);
       setErrors((prev) => ({
         ...prev,
-        general: getMutatorErrors()?.message ?? err,
+        general:
+          getMutatorErrors()?.message ??
+          (err instanceof Error ? err.message : "An unknown error occurred"),
       }));
     }
   };
