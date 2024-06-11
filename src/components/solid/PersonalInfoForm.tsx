@@ -47,13 +47,8 @@ export const PersonalInfoForm: Component = () => {
       throw new Error("Please fill out all required fields.");
     } else if (!validatePhoneNumber(form().phone, "US")) {
       // Check for valid phone number
-      setFieldError(
-        "phone",
-        "Please enter a valid phone number, e.g. (555) 555-1234.",
-      );
-      throw new Error(
-        "Please enter a valid phone number, e.g. (555) 555-1234.",
-      );
+      setFieldError("phone", "Please enter a valid phone number");
+      throw new Error("Please enter a valid phone number");
     } else if (!isZipDeliverable(form().zip)) {
       // Check if the zip code is deliverable
       setFieldError("zip", "Sorry, we don't deliver to your area yet.");
@@ -115,7 +110,6 @@ export const PersonalInfoForm: Component = () => {
           {errors().general}
         </div>
       )}
-      <h2 class="text-xl font-semibold mb-4">Delivery Address</h2>
       <form id="personal-info-form" method="post" onSubmit={handleSubmit}>
         <fieldset>
           <legend class="sr-only">Personal Information</legend>
@@ -127,7 +121,7 @@ export const PersonalInfoForm: Component = () => {
                 label="First Name"
                 value={form().firstName}
                 autocomplete="given-name"
-                placeholder="Kale"
+                placeholder="Turnip"
                 onChange={handleInputChange("firstName")}
                 onBlur={() => {
                   if (!form().firstName) {
@@ -138,6 +132,7 @@ export const PersonalInfoForm: Component = () => {
                   setErrors((prev) => ({ ...prev, firstName: null }))
                 }
                 error={errors().firstName}
+                required
               />
               <TextInput
                 name="lastName"
@@ -156,13 +151,14 @@ export const PersonalInfoForm: Component = () => {
                   setErrors((prev) => ({ ...prev, lastName: null }))
                 }
                 error={errors().lastName}
+                required
               />
             </div>
 
             <TextInput
               name="phone"
               type="tel"
-              label="Phone Number"
+              label="Phone Number (for order updates)"
               value={form().phone}
               autocomplete="tel-national"
               placeholder="(555) 555-1234"
@@ -171,12 +167,13 @@ export const PersonalInfoForm: Component = () => {
                 if (!validatePhoneNumber(form().phone, "US")) {
                   setFieldError(
                     "phone",
-                    "Please enter a valid phone number, e.g. (555) 555-1234.",
+                    "That phone number doesn't look right",
                   );
                 }
               }}
               onFocus={() => setErrors((prev) => ({ ...prev, phone: null }))}
               error={errors().phone}
+              required
             />
           </div>
 
@@ -187,7 +184,7 @@ export const PersonalInfoForm: Component = () => {
             handleInputChange={handleInputChange}
           />
 
-          <div id="email-optin-container" class="flex mb-9">
+          {/* <div id="email-optin-container" class="flex mb-9">
             <input
               type="checkbox"
               name="emailOptin"
@@ -205,7 +202,7 @@ export const PersonalInfoForm: Component = () => {
               Check this box if you agree to receive order updates and other
               communications to the provided email.
             </span>
-          </div>
+          </div> */}
         </fieldset>
 
         <div class="flex justify-end " id="continue-btn-container">

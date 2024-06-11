@@ -209,17 +209,33 @@ export const PaymentInfoForm: Component = () => {
           <button
             id="submit-btn"
             type="submit"
-            class="px-6 py-4 mt-6 w-full bg-brand-yellow border-2 border-black text-center rounded shadow-md hover:bg-yellow-400"
+            class="px-6 py-4 my-6 w-full bg-brand-yellow border-2 border-black text-center rounded shadow-md hover:bg-yellow-400"
             aria-describedby="submit-btn-desc"
             disabled={loading() ?? false}
           >
-            {loading() ? <Spinner /> : "Submit"}
+            {loading() ? <Spinner /> : "Join Goodpluck"}
           </button>
           <span id="submit-btn-desc" class="sr-only">
             Click to submit your details and complete the account creation
             process.
           </span>
         </div>
+        <p class="my-4 text-gray-700">
+          By clicking "Join Goodpluck" you agree to our{" "}
+          <a href="/terms" target="#" class="underline hover:shadow-md ">
+            Terms of Service
+          </a>{" "}
+          and{" "}
+          <a href="/privacy" target="#" class="underline hover:shadow-md ">
+            Privacy Policy
+          </a>
+          .
+        </p>
+        <p class="my-4 text-gray-700">
+          Each week, you can edit or skip your basket during the shopping
+          period. Your card will be charged on Fridays, and we'll send your
+          order to our farms.
+        </p>
       </form>
     </>
   );

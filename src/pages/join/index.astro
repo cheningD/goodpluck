@@ -2,6 +2,7 @@
 import { StytchError } from "stytch";
 import { stytch, isLoggedIn } from "../../lib/stytch";
 import AuthLayout from "../../layouts/AuthLayout.astro";
+import { TextInput } from "src/components/solid/TextInput";
 import { CONFIRMED_ZIPCODES } from "../../lib/constants";
 
 const errors = { email: "" };
@@ -75,30 +76,27 @@ if (isUserLoggedIn) {
 
 <AuthLayout title="Goodpluck">
   <form method="POST">
-    <h1 class="text-3xl mt-4 mb-10 font-semibold text-gray-900 text-center">
-      First, let's confirm that we deliver to you
+    <h1 class="text-3xl mt-4 mb-4 font-semibold text-gray-900 text-center">
+      Let's confirm that we deliver to your neighborhood
     </h1>
+    <p class="text-center mb-10">
+      We currently deliver to Detroit and the neighboring areas
+    </p>
 
-    <label for="zipcode">What is your zip code?</label>
-    <input
+    <TextInput
+      label="Zip code"
       type="text"
-      id="zipcode"
       name="zipcode"
       pattern="^[0-9]{5}(-[0-9]{4})?$"
-      placeholder="48201"
+      placeholder="Enter zip"
       required
-      class="border rounded-md p-2 w-full mb-8 mt-2"
-      title="Enter a 5-digit ZIP code or a 9-digit ZIP+4 code."
-      maxlength="10"
     />
-    <label for="email">What's your email?</label>
-    <input
+    <TextInput
+      label="Enter your email to create an acount"
       type="email"
-      id="email"
       name="email"
       placeholder="kale@example.com"
       required
-      class="border rounded-md p-2 w-full mb-6 mt-2"
       value={email}
     />
 
@@ -106,7 +104,7 @@ if (isUserLoggedIn) {
     <button
       class="px-6 py-4 mt-6 w-full bg-brand-yellow border-2 border-black text-center rounded shadow-md hover:bg-yellow-400"
       id="submit-join-code-btn"
-      type="submit">Create account</button
+      type="submit">Continue</button
     >
   </form>
   <p class="mt-6 text-center text-gray-600">
