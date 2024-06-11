@@ -4,6 +4,7 @@ import { SESSION_DURATION_MINUTES } from "../../lib/constants";
 import { StytchError } from "stytch";
 import { swell } from "../../lib/swell";
 import AuthLayout from "../../layouts/AuthLayout.astro";
+import { TextInput } from "src/components/solid/TextInput";
 
 // Initialize error state
 const errors = { code: "" };
@@ -111,9 +112,9 @@ if (!method_id) {
       We've sent a code to {email ? email : " your email"}. The code expires
       soon, so don't leave it out too long!
     </p>
-    <label for="otp-input">Enter code</label>
-    <input
-      class="border rounded-md p-2 w-full mb-8 mt-2 text-2xl tracking-widest"
+
+    <TextInput
+      label="Enter code"
       id="otp-input"
       name="otp-input"
       autocomplete="one-time-code"

@@ -28,19 +28,14 @@ if (account) {
 ---
 
 <AuthLayout title="Goodpluck | Join">
-  <div
-    role="progressbar"
-    aria-valuenow="0"
-    aria-valuemin="0"
-    aria-valuemax="100"
-    aria-label="Progress: 0%"
-    class="w-full bg-gray-300 rounded-full h-1.5 my-8"
-  >
-    <div class="bg-green-700 h-1.5 rounded-full w-0"></div>
-    <div class="sr-only">Account Creation Form Progress: 0% complete</div>
-  </div>
-  <h1 class="text-3xl mt-4 mb-4 font-semibold text-gray-900 text-center">
-    Create an account to place your orders!
+  <h1 class="text-3xl mt-4 mb-8 font-semibold text-gray-900 text-center">
+    Create your account
   </h1>
+  <div class="mb-8 flex flex-row justify-around items-end border-b-2">
+    <span class="text-gray-500">Email</span>
+    <span class="underline underline-offset-8 text-brand-green"
+      >Delivery Address</span
+    ><span class="text-gray-500">Payment Info</span>
+  </div>
   <PersonalInfoForm client:load />
 </AuthLayout>
