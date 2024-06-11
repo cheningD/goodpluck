@@ -14,7 +14,7 @@ Simple programs are more reliable and easier to maintain. Here are some tips to 
 
 - Install [pnpm](https://pnpm.io/installation)
 - Install dependencies `pnpm install`
-- Create a .env file. Dev variables can be viewed in vercel. `touch .env`
+- Install Playwright `pnpm exec playwright install`
 - Install [Vercel cli](https://vercel.com/docs/cli) and run `vercel login` to login, then `vercel dev` to try out the dev server
 
 ## Contribution Workflow
@@ -42,5 +42,5 @@ Write unit tests to test solidjs components
 ### End-to-end Tests ([Playwright](https://playwright.dev/docs/running-tests))
 
 - Use to test flows that require interacting with the backend or exernal services
-- To run a specific test file in interactive mode:
+- To run a specific test file in interactive mode:  
   `pnpm run test:e2e tests/e2e/cart.spec.ts --ui`
