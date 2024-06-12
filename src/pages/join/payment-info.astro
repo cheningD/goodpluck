@@ -3,6 +3,7 @@ import AuthLayout from "../../layouts/AuthLayout.astro";
 import { stytch } from "src/lib/stytch";
 import { swell } from "src/lib/swell";
 import { PaymentInfoForm } from "src/components/solid/PaymentInfoForm";
+import OrderSummary from "src/components/solid/OrderSummary";
 
 // Redirect if not logged in
 const sessionToken = Astro.cookies.get("gp_session_token")?.value as string;
@@ -49,4 +50,7 @@ if (!account) {
     >
   </div>
   <PaymentInfoForm client:load />
+  <div slot="order_summary">
+    <OrderSummary />
+  </div>
 </AuthLayout>

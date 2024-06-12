@@ -183,26 +183,6 @@ export const PersonalInfoForm: Component = () => {
             setFieldError={setFieldError}
             handleInputChange={handleInputChange}
           />
-
-          {/* <div id="email-optin-container" class="flex mb-9">
-            <input
-              type="checkbox"
-              name="emailOptin"
-              id="emailOptin"
-              checked={form().emailOptin}
-              class="text-green-700 focus:ring-green-800 border border-zinc-400 rounded mt-0.5 cursor-pointer"
-              aria-describedby="email-optin-description"
-              onChange={handleInputChange("emailOptin")}
-            />
-            <label for="emailOptin" class="ml-2 text-sm text-gray-500">
-              Get text alerts on sales, orders and important account
-              information.
-            </label>
-            <span id="email-optin-description" class="sr-only">
-              Check this box if you agree to receive order updates and other
-              communications to the provided email.
-            </span>
-          </div> */}
         </fieldset>
 
         <div class="flex justify-end " id="continue-btn-container">
