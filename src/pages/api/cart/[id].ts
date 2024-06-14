@@ -5,14 +5,40 @@ import { swell } from "src/lib/swell";
 import { SwellCartUpdateSchema } from "src/schemas/zod/swell";
 import { format, differenceInDays, isPast } from "date-fns";
 
-// Todo: verify that the cart belongs to the user, if logged in
 export const PUT: APIRoute = async ({ request }) => {
   try {
     const cartUpdateJSON = SwellCartUpdateSchema.parse(await request.json());
     const { delivery_date: deliveryDate, id } = cartUpdateJSON;
 
+    // Get user authentication information
+    const sessionToken = await getSessionToken(request);
+    const swellAccountID = sessionToken
+      ? await getLoggedInSwellAccountID(sessionToken)
+      : null;
+
+    const cart = await swell.get(`/carts/${id}`);
+
+    if (!cart) {
+      return new Response(JSON.stringify({ message: "Cart not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Check if the user is authorized to update the cart
+    const isLoggedInUserAuthorized =
+      swellAccountID && cart.account_id === swellAccountID;
+    const isGuestUserAuthorized = !swellAccountID && !cart.account_id;
+
+    if (!isLoggedInUserAuthorized && !isGuestUserAuthorized) {
+      return new Response(
+        JSON.stringify({ message: "Unauthorized to update this cart" }),
+        { status: 403, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
+    // Validate delivery date if provided
     if (deliveryDate) {
-      const cart = await swell.get(`/carts/${id}`);
       const windowEnd = new Date(cart.ordering_window_end_date);
       const windowStart = new Date(cart.ordering_window_start_date);
       const newDeliveryDate = new Date(deliveryDate);

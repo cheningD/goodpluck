@@ -4,8 +4,6 @@ import type { APIRoute } from "astro";
 import { SwellEditCartItemsSchema } from "src/schemas/zod/swell";
 import { swell } from "src/lib/swell";
 
-// Todo if you are logged in make sure this is your cart
-// Todo if you are not logged in, make sure this cart is a guest cart
 // PUT will overwrite the items array with whatever you give it thanks to the $set directive
 export const PUT: APIRoute = async ({ request }) => {
   const { cartId, items } = SwellEditCartItemsSchema.parse(
