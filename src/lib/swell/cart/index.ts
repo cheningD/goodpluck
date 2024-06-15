@@ -69,3 +69,23 @@ export const getOrCreateCarts = async (
     return cartsResponse.results;
   }
 };
+
+/**
+ * Merges items from the guest cart into the user cart.
+ *
+ * @param userCart - The cart associated with the user.
+ * @param guestCart - The cart associated with the guest.
+ * @returns A promise that resolves to the updated user cart.
+ */
+export const mergeCartItems = async (
+  userCart: GoodpluckCart,
+  guestCart: GoodpluckCart,
+): Promise<GoodpluckCart> => {
+  const userCartItems = userCart.items ?? [];
+  const guestCartItems = guestCart.items ?? [];
+
+  const updatedUserCart = await swell.put(`/carts/${userCart.id}`, {
+    $set: { items: [...userCartItems, ...guestCartItems] },
+  });
+  return updatedUserCart;
+};

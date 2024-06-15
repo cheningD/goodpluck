@@ -4,6 +4,8 @@ import type { APIRoute } from "astro";
 import { swell } from "src/lib/swell";
 import { SwellCartUpdateSchema } from "src/schemas/zod/swell";
 import { format, differenceInDays, isPast } from "date-fns";
+import { mergeCartItems } from "src/lib/swell/cart";
+import type { GoodpluckCart } from "src/lib/types";
 
 export const PUT: APIRoute = async ({ request }) => {
   try {
@@ -118,11 +120,12 @@ export const GET: APIRoute = async ({ params, request }) => {
         JSON.stringify({ error: cart?.errors || "Cart not found" }),
         {
           status: 400,
+          headers: { "Content-Type": "application/json" },
         },
       );
     }
 
-    // If `ignorePastCart=true` and cart edit is past, return a 404
+    // If `ignorePastCarts=true` and cart edit is past, return a 404
     if (
       new URL(request.url).searchParams.get("ignorePastCarts") === "true" &&
       isPast(new Date(cart.ordering_window_end_date))
@@ -135,26 +138,17 @@ export const GET: APIRoute = async ({ params, request }) => {
       });
     }
 
-    let swellAccountID;
     const sessionToken = await getSessionToken(request);
-    if (sessionToken) {
-      swellAccountID = await getLoggedInSwellAccountID(sessionToken);
-    }
+    const swellAccountID = sessionToken
+      ? await getLoggedInSwellAccountID(sessionToken)
+      : null;
 
-    if (swellAccountID && cart?.account_id === swellAccountID) {
-      // Todo: If logged in, but user is requesting a guest cart, we should merge or replace it with the authenticated cart
-      // If logged in, and the cart id matches the account id return the cart
+    if (swellAccountID) {
+      return await handleAuthenticatedCart(cart, swellAccountID);
+    } else if (!cart.account_id) {
+      // Guest user requests a guest cart
       return new Response(JSON.stringify(cart), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } else if (!swellAccountID && !cart?.account_id) {
-      // If not logged in and the cart is a guest cart, return the cart
-      return new Response(JSON.stringify(cart), {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
     }
 
@@ -173,4 +167,53 @@ export const GET: APIRoute = async ({ params, request }) => {
       },
     });
   }
+};
+
+/**
+ * Handles authenticated user carts by either returning the existing user cart,
+ * assigning a guest cart to the user, or merging the guest cart with the user's cart.
+ *
+ * @param cart - The Goodpluck cart object.
+ * @param swellAccountID - The authenticated user's Swell account ID.
+ * @returns A promise that resolves to a Response object containing the Goodpluck cart data.
+ */
+const handleAuthenticatedCart = async (
+  cart: GoodpluckCart,
+  swellAccountID: string,
+): Promise<Response> => {
+  const userCartResponse = await swell.get("/carts", {
+    account_id: swellAccountID,
+  });
+  const userCart = userCartResponse.results[0];
+
+  if (cart.account_id === swellAccountID) {
+    // Authenticated user owns the cart
+    return new Response(JSON.stringify(cart), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } else if (!cart.account_id) {
+    if (!userCart) {
+      // No user cart exists, assign the guest cart to the authenticated user
+      const updatedCart = await swell.put(`/carts/${cart.id}`, {
+        account_id: swellAccountID,
+      });
+      return new Response(JSON.stringify(updatedCart), {
+        headers: { "Content-Type": "application/json" },
+      });
+    } else {
+      // Merge guest cart with user's existing cart
+      const mergedCart = await mergeCartItems(userCart, cart);
+      await swell.delete(`/carts/${cart.id}`);
+      return new Response(JSON.stringify(mergedCart), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  }
+
+  return new Response(JSON.stringify({ message: "Cart not found" }), {
+    status: 404,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
