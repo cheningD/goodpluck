@@ -10,9 +10,11 @@ import {
 import Fuse from "fuse.js";
 import Product from "./Product";
 import { SearchBar } from "./SearchBar";
+import { createIntersectionObserver } from "@solid-primitives/intersection-observer";
+import { $activeCategorySlug } from "src/lib/store";
 
 interface IProps {
-  currentCategory?: GoodpluckCategory | undefined; // https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes
+  activeCategorySlug?: string;
   categories: GoodpluckCategory[];
   productMap: Map<string, GoodpluckProduct>;
 }
@@ -23,22 +25,49 @@ interface FilteredCategory {
   products: GoodpluckProduct[];
 }
 
+// Observe the categories to select the active category
+// https://primitives.solidjs.community/package/intersection-observer
+const setActiveCategory = (): void => {
+  const categoryElements = Array.from(
+    document.querySelectorAll("#category-products > div[id^='category-']"),
+  );
+
+  createIntersectionObserver(
+    () => categoryElements,
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          Array.from(entry.target.children).forEach((child) => {
+            const categorySlug = child.getAttribute("data-slug");
+            if (categorySlug) {
+              $activeCategorySlug.set(categorySlug);
+            }
+          });
+        }
+      });
+    },
+    { threshold: 0.5 }, // Trigger when 50% of the element is visible
+  );
+};
+
 const Products: Component<IProps> = ({
-  currentCategory,
+  activeCategorySlug,
   categories,
   productMap,
 }) => {
   const [searchTerm, setSearchTerm] = createSignal("");
 
   onMount(() => {
-    // Scroll to the currentCategory
-    if (currentCategory) {
-      const target = document.querySelector(`#${currentCategory.slug}`);
+    if (activeCategorySlug) {
+      // Scroll to the active category
+      const target = document.querySelector(`#${activeCategorySlug}`);
       if (target) {
         const offset =
           target.getBoundingClientRect().top + window.scrollY - 170; // Adjust the offset value (170) based on your navbar's height
         window.scrollTo({ top: offset, behavior: "smooth" });
       }
+
+      setActiveCategory();
     }
   });
 
@@ -108,20 +137,29 @@ const Products: Component<IProps> = ({
           </div>
         }
       >
-        <For each={getFilteredCategories()}>
-          {({ name, slug, products }) => (
-            <div class="my-8">
-              <h1 class="text-2xl font-bold mb-4 scroll-mt-20" id={slug}>
-                {name}
-              </h1>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <For each={products}>
-                  {(product) => <Product product={product} />}
-                </For>
+        <div id="category-products">
+          <For each={getFilteredCategories()}>
+            {({ name, slug, products }) => (
+              <div id={`category-${slug}`} class="my-8">
+                <h1
+                  id={slug}
+                  class="text-2xl font-bold mb-4 scroll-mt-20"
+                  data-slug={slug}
+                >
+                  {name}
+                </h1>
+                <div
+                  id={`${slug}-products`}
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
+                  <For each={products}>
+                    {(product) => <Product product={product} />}
+                  </For>
+                </div>
               </div>
-            </div>
-          )}
-        </For>
+            )}
+          </For>
+        </div>
       </Show>
     </div>
   );

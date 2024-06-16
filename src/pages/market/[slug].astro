@@ -7,8 +7,8 @@ import type { GoodpluckCategory, GoodpluckProduct } from "src/lib/types";
 const { slug } = Astro.params;
 
 let categories: GoodpluckCategory[] = [];
-let currentCategory: GoodpluckCategory | undefined;
-let categoriesInCurrentHeirarchy: GoodpluckCategory[] = [];
+let activeCategory: GoodpluckCategory | undefined;
+let categoriesInCurrentHierarchy: GoodpluckCategory[] = [];
 let productIdToProductMap: Map<string, GoodpluckProduct> = new Map();
 
 try {
@@ -28,23 +28,23 @@ try {
     (cat) => cat.products.count > 0,
   );
 
-  currentCategory = categories.find((cat) => cat.slug === slug);
+  activeCategory = categories.find((cat) => cat.slug === slug);
 
-  if (!currentCategory) {
+  if (!activeCategory) {
     return Astro.redirect("/404");
   }
 
-  categoriesInCurrentHeirarchy = categoriesWithProducts.filter((cat) => {
-    if (currentCategory?.top_id) {
-      return cat.top_id === currentCategory.top_id;
+  categoriesInCurrentHierarchy = categoriesWithProducts.filter((cat) => {
+    if (activeCategory?.top_id) {
+      return cat.top_id === activeCategory.top_id;
     } else {
-      return cat.top_id === currentCategory?.id;
+      return cat.top_id === activeCategory?.id;
     }
   });
 
   // Get all products in this category heirarchy (e.g. get all products under "Produce")
   const listProductsResponse = await swell.get("/products", {
-    categories: currentCategory.top_id,
+    categories: activeCategory.top_id,
   });
 
   if (!listProductsResponse.results) {
@@ -63,14 +63,14 @@ try {
 ---
 
 <Layout
-  title={`${currentCategory?.name || "market"}`}
-  currentCategory={currentCategory}
+  title={`${activeCategory?.name || "market"}`}
+  activeCategory={activeCategory}
 >
   {
     categories && productIdToProductMap.size && (
       <Products
-        currentCategory={currentCategory}
-        categories={categoriesInCurrentHeirarchy}
+        activeCategorySlug={activeCategory?.slug || ""}
+        categories={categoriesInCurrentHierarchy}
         productMap={productIdToProductMap}
         client:only
       />

@@ -17,12 +17,12 @@ const buildCategoryHierarchy = (
   categoryId: string,
 ): GoodpluckCategory[] => {
   const hierarchy = [];
-  let currentCategory = findCategoryById(categories, categoryId);
+  let activeCategory = findCategoryById(categories, categoryId);
 
-  while (currentCategory) {
-    hierarchy.unshift(currentCategory);
-    currentCategory = currentCategory.parent_id
-      ? findCategoryById(categories, currentCategory.parent_id)
+  while (activeCategory) {
+    hierarchy.unshift(activeCategory);
+    activeCategory = activeCategory.parent_id
+      ? findCategoryById(categories, activeCategory.parent_id)
       : null;
   }
 
@@ -34,17 +34,17 @@ const Breadcrumbs: Component<IProps> = ({
   collectionId,
   product,
 }) => {
-  const currentCategoryHierarchy = createMemo(() =>
+  const activeCategoryHierarchy = createMemo(() =>
     buildCategoryHierarchy(categories, collectionId),
   );
 
-  if (currentCategoryHierarchy().length === 0) {
+  if (activeCategoryHierarchy().length === 0) {
     return null;
   }
 
   // Breadcrumb preparation
   const breadcrumb = createMemo(() => {
-    const hierarchy: any[] = [...currentCategoryHierarchy()];
+    const hierarchy: any[] = [...activeCategoryHierarchy()];
     if (product) {
       hierarchy.push({
         id: product.id ?? "",

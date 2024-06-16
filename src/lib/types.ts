@@ -46,6 +46,8 @@ export interface GoodpluckCategory extends Omit<Category, "products"> {
   products: ProductExpansion;
   id: string;
   top_id: string;
+  isActive?: boolean;
+  subcategories: GoodpluckCategory[];
 }
 
 export interface GoodpluckSubscription extends Subscription {

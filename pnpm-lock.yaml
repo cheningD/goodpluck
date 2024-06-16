@@ -37,6 +37,9 @@ importers:
       "@sentry/astro":
         specifier: ^7.116.0
         version: 7.116.0(astro@4.9.3(@types/node@20.12.12)(typescript@5.4.5))
+      "@solid-primitives/intersection-observer":
+        specifier: ^2.1.6
+        version: 2.1.6(solid-js@1.8.17)
       "@tailwindcss/forms":
         specifier: ^0.5.7
         version: 0.5.7(tailwindcss@3.4.3)
@@ -2239,6 +2242,14 @@ packages:
       {
         integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==,
       }
+
+  "@solid-primitives/intersection-observer@2.1.6":
+    resolution:
+      {
+        integrity: sha512-SeiCmN/R46Z+o9+5HhIQzSor0DqVPyo4ROLQMvCI8AsGZl/5nHlWzHTTbWPeukVUXTgb04wfC3DUo9IzF/XloA==,
+      }
+    peerDependencies:
+      solid-js: ^1.6.12
 
   "@solid-primitives/props@3.1.11":
     resolution:
@@ -9201,6 +9212,11 @@ snapshots:
   "@shikijs/core@1.6.3": {}
 
   "@sinclair/typebox@0.27.8": {}
+
+  "@solid-primitives/intersection-observer@2.1.6(solid-js@1.8.17)":
+    dependencies:
+      "@solid-primitives/utils": 6.2.3(solid-js@1.8.17)
+      solid-js: 1.8.17
 
   "@solid-primitives/props@3.1.11(solid-js@1.8.17)":
     dependencies:

@@ -1,47 +1,54 @@
 import type { GoodpluckCategory } from "src/lib/types";
-import { For, Show, createMemo, type Component, type JSX } from "solid-js";
+import { For, Show, createMemo, type Component } from "solid-js";
+import SubcategoryList from "../SubcategoryList";
+import { $activeCategorySlug } from "src/lib/store";
+import { useStore } from "@nanostores/solid";
 
-interface SidebarMenuProps {
-  categorySlug: string;
-  categories: GoodpluckCategory[];
-}
-
-interface EnhancedCategory extends GoodpluckCategory {
-  isSelected: boolean;
-  subcategories: EnhancedCategory[];
-}
-
+/**
+ * Structure and mark categories based on their status and parent-child relationships.
+ *
+ * @param categories - An array of GoodpluckCategory objects to be structured.
+ * @param activeCategorySlug - The slug of the active category.
+ * @returns A structured array of GoodpluckCategory objects with nested subcategories and selection status.
+ */
 const structureCategories = (
   categories: GoodpluckCategory[],
-  selectedSlug: string,
-): EnhancedCategory[] => {
-  const categoryMap: Record<string, EnhancedCategory> = categories.reduce(
-    (map, category) => ({
-      ...map,
-      [category.id]: {
+  activeCategorySlug: string,
+): GoodpluckCategory[] => {
+  if (categories.length === 0) return [];
+
+  if (!activeCategorySlug) activeCategorySlug = categories[0]?.slug ?? "";
+
+  const categoryMap = categories.reduce<Record<string, GoodpluckCategory>>(
+    (map, category) => {
+      map[category.id] = {
         ...category,
-        isSelected: category.slug === selectedSlug,
+        isActive: category.slug === activeCategorySlug,
         subcategories: [],
-      },
-    }),
+      };
+      return map;
+    },
     {},
   );
 
-  // Link subcategories to their parents
+  // Link subcategories to their parents and update selection status
   categories.forEach((category) => {
     if (category.parent_id) {
       const parent = categoryMap[category.parent_id];
       const child = categoryMap[category.id];
-      if (!parent || !child) {
-        return;
-      }
-      parent.subcategories.push(child);
-      // If the parent is selected, select the first child
-      if (parent.isSelected && parent.subcategories.length === 1) {
-        child.isSelected = true;
-      }
-      if (child.isSelected) {
-        parent.isSelected = true;
+
+      if (parent && child) {
+        parent.subcategories.push(child);
+
+        // If a parent has only one subcategory, select it
+        if (parent.isActive && parent.subcategories.length === 1) {
+          child.isActive = true;
+        }
+
+        // Propagate selection status from child to parent
+        if (child.isActive) {
+          parent.isActive = true;
+        }
       }
     }
   });
@@ -49,16 +56,12 @@ const structureCategories = (
   return Object.values(categoryMap).filter((category) => !category.top_id);
 };
 
-const CategoryItem = ({
+const ParentCategoryItem: Component<{ category: GoodpluckCategory }> = ({
   category,
-}: {
-  category: EnhancedCategory;
-}): JSX.Element => (
+}) => (
   <li class="py-5 !m-0 border-b border-brand-off-white last:border-b-0 font-bold">
     <div
-      class={`text-custom-gray text-sm ${
-        category.isSelected ? "border-l-2 border-brand-red pl-2 mb-4" : ""
-      }`}
+      class={`text-custom-gray text-sm ${category.isActive ? "border-l-2 border-brand-red pl-2 mb-4" : ""}`}
     >
       <a
         href={`/market/${category.slug}`}
@@ -67,47 +70,19 @@ const CategoryItem = ({
         {category.name}
       </a>
     </div>
-    <Show when={category.subcategories.length && category.isSelected}>
+    <Show when={category.subcategories.length && category.isActive}>
       <SubcategoryList subcategories={category.subcategories} />
     </Show>
   </li>
 );
 
-const SubcategoryList = ({
-  subcategories,
-}: {
-  subcategories: EnhancedCategory[];
-}): JSX.Element => (
-  <ul class="subcategories-list pl-4">
-    <For each={subcategories}>
-      {(subcategory) => (
-        <li class="py-3 last:pb-0">
-          <div
-            class={`text-sm ${
-              subcategory.isSelected ? "border-l-2 border-brand-red pl-2" : ""
-            }`}
-          >
-            <a
-              href={`/market/${subcategory.slug}`}
-              class={`text-sm ${
-                subcategory.isSelected ? "text-brand-black" : "text-custom-gray"
-              }`}
-            >
-              {subcategory.name}
-            </a>
-          </div>
-        </li>
-      )}
-    </For>
-  </ul>
-);
+const SidebarMenu: Component<{
+  categories: GoodpluckCategory[];
+}> = ({ categories }) => {
+  const activeCategorySlug = useStore($activeCategorySlug);
 
-const SidebarMenu: Component<SidebarMenuProps> = ({
-  categorySlug,
-  categories,
-}) => {
   const menuCategories = createMemo(() =>
-    structureCategories(categories, categorySlug),
+    structureCategories(categories, activeCategorySlug()),
   );
 
   return (
@@ -123,7 +98,7 @@ const SidebarMenu: Component<SidebarMenuProps> = ({
       </div>
       <ul class="sidebar-categories space-y-2 gap-5 w-48">
         <For each={menuCategories()} fallback={<div>Loading...</div>}>
-          {(category) => <CategoryItem category={category} />}
+          {(category) => <ParentCategoryItem category={category} />}
         </For>
       </ul>
     </aside>

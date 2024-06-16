@@ -135,6 +135,8 @@ onSet($cart, ({ newValue: cart }) => {
 
 export const $isCartOpen = atom<boolean>(false);
 
+export const $activeCategorySlug = atom<string>("");
+
 export const $updateSwellSubscription =
   createMutatorStore<SwellSubscriptionUpdate>(async ({ data, invalidate }) => {
     invalidate(`/api/membership/${data.id}`);

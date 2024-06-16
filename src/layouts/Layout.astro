@@ -10,7 +10,7 @@ import favicon from "src/assets/img/favicon.png";
 import { getCategories } from "../lib/swell";
 
 const categories = await getCategories();
-const { title, currentCategory } = Astro.props;
+const { title, activeCategory } = Astro.props;
 ---
 
 <html lang="en">
@@ -31,23 +31,21 @@ const { title, currentCategory } = Astro.props;
       >
         <div class="grid grid-cols-5">
           {
-            currentCategory && (
-              <SidebarMenu
-                categories={categories}
-                categorySlug={currentCategory.slug}
-                client:only
-              />
+            activeCategory && (
+              <div class="hidden lg:block sticky top-[85px] h-[calc(100vh_-_85px)] overflow-y-auto">
+                <SidebarMenu categories={categories} client:only />
+              </div>
             )
           }
-          {!currentCategory && <div />}
+          {!activeCategory && <div />}
 
-          <div class={`col-span-5 ${currentCategory ? "md:col-span-4" : ""}`}>
+          <div class={`col-span-5 ${activeCategory ? "md:col-span-4" : ""}`}>
             {
-              currentCategory && (
+              activeCategory && (
                 // <h4>Bread</h4>
                 <Breadcrumbs
                   categories={categories}
-                  collectionId={currentCategory.id}
+                  collectionId={activeCategory.id}
                 />
               )
             }
