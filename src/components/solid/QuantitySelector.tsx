@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/solid";
 import { $cart, $updateCartItems } from "src/lib/store";
 import {
   editItemQuantityCart,
-  removeCartFromCart,
+  removeItemFromCart,
 } from "src/lib/swell/cart/item";
 
 import { type Component } from "solid-js";
@@ -24,7 +24,7 @@ const QuantitySelector: Component<QuantitySelectorProps> = ({
       throw new Error("Cart not found");
     }
     if (quantity === 0) {
-      await removeCartFromCart(productId, cartdata, mutate);
+      await removeItemFromCart(productId, cartdata, mutate);
     } else {
       await editItemQuantityCart(productId, quantity, cartdata, mutate);
     }

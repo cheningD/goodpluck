@@ -16,7 +16,6 @@ export const ZipForm: Component = () => {
     if (!/^\d{5}$/.test(zipInput())) {
       setError("Zip code must be 5 digits.");
     } else if (!zipcodes[zipInput()]?.deliverable) {
-      console.log("show waitlist");
       setShowWaitlist(true);
     } else {
       const id = cart()?.id;

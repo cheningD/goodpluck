@@ -45,7 +45,7 @@ export const editItemQuantityCart = async (
   await mutate({ cartId: cart.id, items });
 };
 
-export const removeCartFromCart = async (
+export const removeItemFromCart = async (
   id: string,
   cart: GoodpluckCart,
   mutate: any,
