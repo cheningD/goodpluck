@@ -161,12 +161,6 @@ export const $updateCart = createMutatorStore<SwellCartUpdate>(
 
 export const $updateCartItems = createMutatorStore<SwellCartItemsPutArgs>(
   async ({ data, invalidate }) => {
-    // type Cart = Record<string, any>;
-    // const [updateCart, cart] = getCacheUpdater(`/api/cart/${data.cartId}`) as [
-    //   any,
-    //   Cart,
-    // ];
-    // updateCart({ ...cart, items: data.items });
     invalidate((key) => key.startsWith(`/api/cart/${data.cartId}`));
     return await fetch(`/api/cart/items/`, {
       method: "PUT",
