@@ -4,8 +4,9 @@ import { $cart, $updateCartItems, $isCartOpen } from "src/lib/store";
 import { Show, type Component } from "solid-js";
 import {
   editItemQuantityCart,
-  removeCartFromCart,
+  removeItemFromCart,
 } from "src/lib/swell/cart/item";
+import Spinner from "./Spinner";
 
 interface AddToCartButtonProps {
   productId: string;
@@ -14,7 +15,6 @@ interface AddToCartButtonProps {
 const AddToCartButton: Component<AddToCartButtonProps> = ({ productId }) => {
   const { mutate } = useStore($updateCartItems)();
   const cart = useStore($cart);
-
   const handleQuantityChange = async (
     productId: string,
     quantity: number,
@@ -27,7 +27,7 @@ const AddToCartButton: Component<AddToCartButtonProps> = ({ productId }) => {
       $isCartOpen.set(true);
     }
     if (quantity === 0) {
-      await removeCartFromCart(productId, cartdata, mutate);
+      await removeItemFromCart(productId, cartdata, mutate);
     } else {
       await editItemQuantityCart(productId, quantity, cartdata, mutate);
     }
@@ -38,37 +38,46 @@ const AddToCartButton: Component<AddToCartButtonProps> = ({ productId }) => {
 
   return (
     <Show
-      when={getQuantity()}
+      when={cart()}
       fallback={
-        <AddButton
-          productId={productId}
-          handleQuantityChange={handleQuantityChange}
-        />
+        <div class="h-[48px] flex justify-center items-center">
+          <Spinner />
+        </div>
       }
     >
-      <div class="flex items-baseline">
-        <button
-          aria-label="Decrease Quantity"
-          type="button"
-          class="mt-2 bg-brand-red text-white p-2"
-          onClick={() => {
-            void handleQuantityChange(productId, getQuantity() - 1);
-          }}
-        >
-          {getQuantity() === 1 ? "Remove" : "-"}
-        </button>
-        <p class="mx-4">{getQuantity()}</p>
-        <button
-          aria-label="Increase Quantity"
-          type="button"
-          class="mt-2 bg-brand-red text-white p-2  hover:bg-blue-700"
-          onClick={() => {
-            void handleQuantityChange(productId, getQuantity() + 1);
-          }}
-        >
-          +
-        </button>
-      </div>
+      <Show
+        when={getQuantity()}
+        fallback={
+          <AddButton
+            productId={productId}
+            handleQuantityChange={handleQuantityChange}
+          />
+        }
+      >
+        <div class="flex items-baseline">
+          <button
+            aria-label="Decrease Quantity"
+            type="button"
+            class="mt-2 bg-brand-red text-white p-2"
+            onClick={() => {
+              void handleQuantityChange(productId, getQuantity() - 1);
+            }}
+          >
+            {getQuantity() === 1 ? "Remove" : "-"}
+          </button>
+          <p class="mx-4">{getQuantity()}</p>
+          <button
+            aria-label="Increase Quantity"
+            type="button"
+            class="mt-2 bg-brand-red text-white p-2  hover:bg-blue-700"
+            onClick={() => {
+              void handleQuantityChange(productId, getQuantity() + 1);
+            }}
+          >
+            +
+          </button>
+        </div>
+      </Show>
     </Show>
   );
 };

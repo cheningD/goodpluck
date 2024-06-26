@@ -65,7 +65,6 @@ export const $currentCartID = persistentAtom<string>("current_cart_id");
 export const $currentCart = createFetcherStore<GoodpluckCart>([
   `/api/cart/`,
   $currentCartID,
-  "?ignorePastCarts=true",
 ]);
 
 // Only fetch carts if the currentCart has been loaded but does not have an ID (cart not found)
@@ -137,7 +136,7 @@ export const $isCartOpen = atom<boolean>(false);
 
 export const $updateSwellSubscription =
   createMutatorStore<SwellSubscriptionUpdate>(async ({ data, invalidate }) => {
-    invalidate(`/api/membership/${data.id}`);
+    invalidate((key) => key.startsWith(`/api/membership/${data.id}`));
     return await fetch(`/api/membership/${data.id}`, {
       method: "PUT",
       headers: {
@@ -162,7 +161,13 @@ export const $updateCart = createMutatorStore<SwellCartUpdate>(
 
 export const $updateCartItems = createMutatorStore<SwellCartItemsPutArgs>(
   async ({ data, invalidate }) => {
-    invalidate(`/api/cart/${data.cartId}`);
+    // type Cart = Record<string, any>;
+    // const [updateCart, cart] = getCacheUpdater(`/api/cart/${data.cartId}`) as [
+    //   any,
+    //   Cart,
+    // ];
+    // updateCart({ ...cart, items: data.items });
+    invalidate((key) => key.startsWith(`/api/cart/${data.cartId}`));
     return await fetch(`/api/cart/items/`, {
       method: "PUT",
       headers: {
@@ -211,7 +216,7 @@ export const $createSwellAccount = createMutatorStore<SwellAccountCreate>(
 
 export const $updateSwellAccount = createMutatorStore<SwellAccountUpdate>(
   async ({ data, invalidate }) => {
-    invalidate(`/api/account/${data.id}`);
+    invalidate((key) => key.startsWith(`/api/account/${data.id}`));
     return await fetch(`/api/account/${data.id}`, {
       method: "PUT",
       headers: {
