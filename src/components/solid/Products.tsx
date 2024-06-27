@@ -112,7 +112,7 @@ const Products: Component<IProps> = ({
           {({ name, slug, products }) => (
             <div class="my-12">
               <h1
-                class="text-3xl sm:text-5xl font-bold text-green-600 mb-4 scroll-mt-20 sticky top-20 bg-white p-2"
+                class="text-3xl sm:text-5xl font-bold text-green-600 mb-4 scroll-mt-20 sticky top-20 p-2 bg-white/90 backdrop-blur-[7.9px]"
                 id={slug}
               >
                 {name}
