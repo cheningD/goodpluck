@@ -45,7 +45,7 @@ const SideMenu: Component<NavProps> = ({ collections }) => {
       </button>
       <Show when={isOpen()}>
         <div class="absolute top-20 left-0 w-screen flex h-[calc(100vh-80px)]">
-          <div class="w-7/12  bg-white border-r-4 border-gray-300 p-4 flex flex-col">
+          <div class="w-full sm:w-7/12  bg-white border-r-4 border-gray-300 p-4 flex flex-col">
             {/* Search */}
             <div class="relative w-full h-10 my-2">
               <input
@@ -115,7 +115,7 @@ const SideMenu: Component<NavProps> = ({ collections }) => {
                 when={!!account()}
                 fallback={
                   <>
-                    <a href="/login">Sign in</a> | <a href="/join">Sign up</a>
+                    <a href="/login">Sign in</a> | <a href="/join">Join</a>
                   </>
                 }
               >

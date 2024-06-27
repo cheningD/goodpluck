@@ -8,34 +8,32 @@ export interface ProductProps {
 
 const Product: Component<ProductProps> = ({ product }) => {
   return (
-    <div class="rounded-es-md border border-gray-200 overflow-clip flex flex-col">
-      <a href={`/product/${product.slug}`}>
-        <Show when={product.images !== undefined}>
-          <img
-            class="h-[200px] w-full object-cover"
-            alt={`Image of ${product.name}`}
-            src={
-              product.images?.[0]?.file?.url ?? "via.placeholder.com/300x200"
-            }
-            width="300"
-            height="200"
-            loading="lazy"
-            decoding="async"
-          />
-        </Show>
-        <div class="p-4">
+    <div class="sm:rounded-es-md sm:border border-gray-200 overflow-clip flex sm:flex-col w-full justify-stretch">
+      <Show when={product.images !== undefined}>
+        <img
+          class="sm:h-[200px] w-1/4 sm:w-full object-cover"
+          alt={`Image of ${product.name}`}
+          src={product.images?.[0]?.file?.url ?? "via.placeholder.com/300x200"}
+          width="300"
+          height="200"
+          loading="lazy"
+          decoding="async"
+        />
+      </Show>
+      <div class=" flex flex-col justify-between flex-1 sm:p-4">
+        <div class="px-2 sm:px-0">
           <p class="text-lg">{product.name}</p>
           <p class="text-gray-500 text-sm">{`${product.vendor.name}`}</p>
         </div>
-      </a>
-      <div class="mx-4 mb-4 bg-brand-off-white rounded-sm flex flex-col justify-start">
-        <div class="flex px-4 py-3">
-          <span> ${product.price} • </span>
-          <span class="text-gray-500 pl-2">
-            {product.unit_quantity} {product.unit.toLowerCase()}
-          </span>
+        <div class="w-full bg-brand-off-white sm:rounded-sm flex sm:flex-col justify-stretch sm:justify-start mt-3">
+          <div class="flex p-2 flex-1 w-1/2 sm:w-full">
+            <span> ${product.price}</span>
+            <span class="text-gray-500 pl-2">
+              {product.unit_quantity} {product.unit.toLowerCase()}
+            </span>
+          </div>
+          <AddToCartButton productId={product.id} />
         </div>
-        <AddToCartButton productId={product.id} />
       </div>
     </div>
   );

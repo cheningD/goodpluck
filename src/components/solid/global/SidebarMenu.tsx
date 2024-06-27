@@ -112,7 +112,7 @@ const SidebarMenu: Component<SidebarMenuProps> = ({
 
   return (
     <aside
-      class="sidebar-menu hidden md:flex flex-col items-start px-10 py-4 w-64 fixed top-0 pt-28"
+      class="sidebar-menu hidden md:flex flex-col items-start px-4 py-4 w-64 fixed top-0 pt-28"
       aria-labelledby="sidebar-heading"
       data-testid="desktop-sidebar"
     >

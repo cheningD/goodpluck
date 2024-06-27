@@ -15,7 +15,7 @@ const CartFlyout: Component = () => {
         <Presence exitBeforeEnter>
           <Show when={isCartOpen()}>
             <Motion
-              class="absolute right-0 w-[475px] bg-white  h-[calc(100vh-80px)] overflow-y-scroll"
+              class="absolute right-0 w-full sm:w-[475px] bg-white  h-[calc(100vh-80px)] overflow-y-scroll"
               animate={{ x: [475, 0] }}
               transition={{ duration: 0.2, easing: "ease-in-out" }}
               exit={{ x: 475 }}

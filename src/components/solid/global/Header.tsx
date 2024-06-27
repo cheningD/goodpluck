@@ -36,7 +36,9 @@ const Header: Component<HeaderProps> = ({ collections }) => {
       </div>
       <div class="flex items-center gap-8">
         {/* Account */}
-        <AccountButton />
+        <div class="hidden sm:block">
+          <AccountButton />
+        </div>
         {/* Basket */}
         <button
           data-testid="cart-btn"

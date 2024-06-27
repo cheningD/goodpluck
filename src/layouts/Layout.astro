@@ -32,7 +32,7 @@ const { title, currentCategory } = Astro.props;
             categorySlug={currentCategory.slug}
             client:only
           />
-          <div class="md:ml-64">
+          <div class="md:ml-64 w-full px-0 md:px-4">
             <slot />
           </div>
         </div>
