@@ -54,24 +54,24 @@ const AddToCartButton: Component<AddToCartButtonProps> = ({ productId }) => {
           />
         }
       >
-        <div class="flex w-full items-baseline justify-center">
+        <div class="flex flex-1 items-baseline">
           <button
             aria-label="Decrease Quantity"
             type="button"
-            class="flex-1 bg-brand-red rounded-bl-sm text-white p-2"
+            class="flex-1 bg-brand-red sm:rounded-bl-sm text-white p-2"
             onClick={() => {
               void handleQuantityChange(productId, getQuantity() - 1);
             }}
           >
-            {getQuantity() === 1 ? "Remove" : "-"}
+            {getQuantity() === 1 ? "x" : "-"}
           </button>
-          <p class="flex-1 flex items-center justify-center">
+          <p class="flex-1 flex items-center justify-center px-2">
             x{getQuantity()}
           </p>
           <button
             aria-label="Increase Quantity"
             type="button"
-            class="flex-1 bg-brand-red text-white p-2 rounded-br-sm hover:bg-blue-700"
+            class="flex-1 bg-brand-red text-white p-2 sm:rounded-br-sm hover:bg-blue-700"
             onClick={() => {
               void handleQuantityChange(productId, getQuantity() + 1);
             }}
@@ -96,7 +96,7 @@ const AddButton: Component<AddButtonProps> = ({
       aria-label="Add to Cart"
       data-testid="add-to-cart"
       type="button"
-      class="bg-brand-red text-white p-2 rounded-b-sm"
+      class=" flex-1 bg-brand-red text-white p-2 sm:rounded-b-sm"
       onClick={() => {
         void handleQuantityChange(productId, 1);
       }}

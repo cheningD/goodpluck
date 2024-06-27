@@ -112,12 +112,12 @@ const Products: Component<IProps> = ({
           {({ name, slug, products }) => (
             <div class="my-12">
               <h1
-                class="text-5xl font-bold text-green-600 mb-4 scroll-mt-20"
+                class="text-3xl sm:text-5xl font-bold text-green-600 mb-4 scroll-mt-20 sticky top-20 bg-white p-2"
                 id={slug}
               >
                 {name}
               </h1>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <For each={products}>
                   {(product) => <Product product={product} />}
                 </For>

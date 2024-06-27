@@ -18,7 +18,9 @@ const AccountButton: Component = () => {
           />
         }
       >
-        <a href="/login">Sign in</a>
+        <a class="pr-4" href="/login">
+          Sign in
+        </a>
         <a
           href="/join"
           class="px-4 py-1 bg-brand-yellow border-2 border-black text-center font-bold rounded shadow-md hover:bg-yellow-400 focus:shadow-md focus:top-[1px] focus:left-[1px] transition ease-in duration-50"
