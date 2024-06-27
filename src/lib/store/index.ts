@@ -160,8 +160,8 @@ export const $updateCart = createMutatorStore<SwellCartUpdate>(
 );
 
 export const $updateCartItems = createMutatorStore<SwellCartItemsPutArgs>(
-  async ({ data, invalidate }) => {
-    invalidate((key) => key.startsWith(`/api/cart/${data.cartId}`));
+  async ({ data, revalidate }) => {
+    revalidate((key) => key.startsWith(`/api/cart/${data.cartId}`));
     return await fetch(`/api/cart/items/`, {
       method: "PUT",
       headers: {
