@@ -71,7 +71,7 @@ const Breadcrumbs: Component<IProps> = ({
   };
 
   return (
-    <div>
+    <div class="md:hidden">
       <ol
         class="flex items-center whitespace-nowrap w-full max-w-7xl mx-auto p-4"
         aria-label="Breadcrumbs"

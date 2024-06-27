@@ -78,7 +78,7 @@ const SubcategoryList = ({
 }: {
   subcategories: EnhancedCategory[];
 }): JSX.Element => (
-  <ul class="subcategories-list pl-4">
+  <ul class="subcategories-list pl-3">
     <For each={subcategories}>
       {(subcategory) => (
         <li class="py-3 last:pb-0">
@@ -112,11 +112,14 @@ const SidebarMenu: Component<SidebarMenuProps> = ({
 
   return (
     <aside
-      class="sidebar-menu hidden md:flex flex-col items-start px-10 py-4 w-72"
+      class="sidebar-menu hidden md:flex flex-col items-start px-10 py-4 w-64 fixed top-0 pt-28"
       aria-labelledby="sidebar-heading"
       data-testid="desktop-sidebar"
     >
-      <div id="sidebar-heading" class="pb-5 border-b border-custom-silver w-48">
+      <div
+        id="sidebar-heading"
+        class="pb-5 border-b border-custom-silver w-48 sticky top-0"
+      >
         <h2 class="text-brand-black uppercase text-sm font-bold leading-tight tracking-wide">
           Browse by Category
         </h2>

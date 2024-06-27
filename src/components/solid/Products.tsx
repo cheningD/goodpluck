@@ -110,8 +110,11 @@ const Products: Component<IProps> = ({
       >
         <For each={getFilteredCategories()}>
           {({ name, slug, products }) => (
-            <div class="my-8">
-              <h1 class="text-2xl font-bold mb-4 scroll-mt-20" id={slug}>
+            <div class="my-12">
+              <h1
+                class="text-5xl font-bold text-green-600 mb-4 scroll-mt-20"
+                id={slug}
+              >
                 {name}
               </h1>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -14,12 +14,13 @@ const Cart: Component = () => {
   const getDeliveryFee = (): number => cart()?.shipment_total ?? 0;
   const getTotalTax = (): number => cart()?.tax_total ?? 0;
   const getTotal = (): number => cart()?.grand_total ?? 0;
-  const getDate = (): string => cart()?.delivery_date ?? "";
+  const getDeliveryDate = (): string => cart()?.delivery_date ?? "";
+  const getEditByDate = (): string => cart()?.ordering_window_end_date ?? "";
   return (
     <>
-      {getDate() ? (
+      {getDeliveryDate() ? (
         <div class="bg-brand-green text-white px-4 py-2">
-          Shopping for {format(getDate(), "EEE, MMM d")}
+          Delivery on {format(getDeliveryDate(), "EEE, MMM d")}
         </div>
       ) : null}
       <div class="px-4 py-4">
@@ -80,19 +81,19 @@ const Cart: Component = () => {
                   Skip
                 </a>{" "}
                 or edit by{" "}
-                <strong>{format(getDate(), "h:mma EEE, MMM d")}.</strong>
+                <strong>{format(getEditByDate(), "h:mma EEE, MMM d")}.</strong>
               </div>
             </div>
           </Show>
 
-          <p>
-            {getDate()
-              ? `Complete your order by ${format(getDate(), "h:mma EEE, MMM d")} or your basket will be refreshed when we update the market.`
+          <p class="pt-4">
+            {getEditByDate()
+              ? `Create an account before midnight on ${format(getEditByDate(), "EEE, MMM d")} or your basket will be reset.`
               : "Complete your order to get your delivery!"}
           </p>
 
           <Show when={!cart()?.account_id}>
-            <p class="py-8">
+            <p class="py-4">
               Already have an account?{" "}
               <a class="text-brand-green underline" href="/login">
                 Sign in here
