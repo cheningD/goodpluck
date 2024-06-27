@@ -8,7 +8,7 @@ export interface ProductProps {
 
 const Product: Component<ProductProps> = ({ product }) => {
   return (
-    <div>
+    <div class="rounded-es-md border border-gray-200 overflow-clip flex flex-col">
       <a href={`/product/${product.slug}`}>
         <Show when={product.images !== undefined}>
           <img
@@ -23,11 +23,20 @@ const Product: Component<ProductProps> = ({ product }) => {
             decoding="async"
           />
         </Show>
-        <p>{product.name}</p>
-        <p>{`${product.unit_quantity} ${product.unit}`}</p>
-        <p>${product.price}</p>
-      </a>{" "}
-      <AddToCartButton productId={product.id} />
+        <div class="p-4">
+          <p class="text-lg">{product.name}</p>
+          <p class="text-gray-500 text-sm">{`${product.vendor.name}`}</p>
+        </div>
+      </a>
+      <div class="mx-4 mb-4 bg-brand-off-white rounded-sm flex flex-col justify-start">
+        <div class="flex px-4 py-3">
+          <span> ${product.price} • </span>
+          <span class="text-gray-500 pl-2">
+            {product.unit_quantity} {product.unit.toLowerCase()}
+          </span>
+        </div>
+        <AddToCartButton productId={product.id} />
+      </div>
     </div>
   );
 };

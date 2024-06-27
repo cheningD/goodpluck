@@ -45,6 +45,7 @@ try {
   // Get all products in this category heirarchy (e.g. get all products under "Produce")
   const listProductsResponse = await swell.get("/products", {
     categories: currentCategory.top_id,
+    expand: "vendor",
   });
 
   if (!listProductsResponse.results) {
@@ -62,10 +63,7 @@ try {
 }
 ---
 
-<Layout
-  title={`${currentCategory?.name || "market"}`}
-  currentCategory={currentCategory}
->
+<Layout title="Goodpluck" currentCategory={currentCategory}>
   {
     categories && productIdToProductMap.size && (
       <Products
