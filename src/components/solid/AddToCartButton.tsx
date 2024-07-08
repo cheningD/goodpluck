@@ -96,7 +96,7 @@ const AddButton: Component<AddButtonProps> = ({
       aria-label="Add to Cart"
       data-testid="add-to-cart"
       type="button"
-      class=" flex-1 bg-brand-red text-white p-2 sm:rounded-b-sm"
+      class="flex-1 bg-brand-red text-white p-2 sm:rounded-b-sm"
       onClick={() => {
         void handleQuantityChange(productId, 1);
       }}

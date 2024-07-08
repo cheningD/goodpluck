@@ -48,9 +48,8 @@ export const ZipForm: Component = () => {
     >
       <Show when={cart()?.id} fallback={<div>No cart found.</div>}>
         <form class="flex flex-col gap-2 p-4" onSubmit={handleSubmit}>
-          <p>
-            Before we add items to your order, let's make sure they can get to
-            you.
+          <p class="pb-4 text-xl">
+            First, let's make sure we can deliver to you.
           </p>
           <label for="zipInput">Zip code</label>
           <ZipInput zipInput={zipInput} setZipInput={setZipInput} />
@@ -95,7 +94,7 @@ const ZipInput: Component<any> = ({ zipInput, setZipInput }) => {
       data-testid="zip-input"
       id="zipInput"
       type="text"
-      placeholder="Enter Zip"
+      placeholder="Enter zip code"
       value={zipInput()}
       onInput={(e) => setZipInput(e.currentTarget.value)}
     />
