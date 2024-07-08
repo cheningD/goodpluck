@@ -86,9 +86,9 @@ const Cart: Component = () => {
             </div>
           </Show>
 
-          <p class="pt-4">
+          <p class="py-4">
             {getEditByDate()
-              ? `Create an account before midnight on ${format(getEditByDate(), "EEE, MMM d")} or your basket will be reset.`
+              ? `Complete your order by midnight on ${format(getEditByDate(), "EEE, MMM d")} or your basket will be reset for the next week.`
               : "Complete your order to get your delivery!"}
           </p>
 

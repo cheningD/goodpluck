@@ -8,7 +8,7 @@ export interface ProductProps {
 
 const Product: Component<ProductProps> = ({ product }) => {
   return (
-    <div class="sm:rounded-es-md sm:border border-gray-200 overflow-clip flex sm:flex-col w-full justify-stretch">
+    <div class="sm:rounded-md sm:border border-gray-200 overflow-clip flex sm:flex-col w-full justify-stretch">
       <Show when={product.images !== undefined}>
         <img
           class="sm:h-[200px] w-1/4 sm:w-full object-cover"
